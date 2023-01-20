@@ -1,0 +1,962 @@
+﻿<ContentPage Style="{StaticResource ContentPageStyle}"
+             x:Class="SimTuning.Maui.UI.Views.Einstellungen.EinstellungenVehiclesView"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:SimTuning.Maui.UI.Behaviors"
+             xmlns:customcomponents="clr-namespace:SimTuning.Maui.UI.Components"
+             Title="Fahrzeuge"
+             xmlns:vm="clr-namespace:SimTuning.Core.ViewModels.Einstellungen;assembly=SimTuning.Core"
+             x:DataType="vm:VehiclesViewModel">
+    <ScrollView>
+        <StackLayout>
+
+            <Frame Style="{StaticResource FrameStyle}"
+                   Margin="10"
+                   VerticalOptions="CenterAndExpand">
+                <StackLayout>
+                    <Label Style="{StaticResource LabelTitleStyle}"
+                           Text="Auswahl" />
+
+                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+
+                    <ListView HeightRequest="200"
+                              ItemsSource="{Binding Vehicles}"
+                              SelectedItem="{Binding Mode=TwoWay, Path=Vehicle}"
+                              RowHeight="50">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <customcomponents:CustomViewCell SelectedBackgroundColor="{DynamicResource DesignSelection}">
+                                    <StackLayout>
+                                        <Label Style="{StaticResource LabelStyle}"
+                                               Text="{Binding VehicleName}"
+                                               FontAttributes="Bold"
+                                               Margin="0, 0, 0, -5" />
+                                        <Label Style="{StaticResource LabelStyle}"
+                                               Text="{Binding VehicleBeschreibung}" />
+                                    </StackLayout>
+                                </customcomponents:CustomViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+                    <Grid Margin="5, 0, 0, 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="2*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Button Grid.Column="1"
+                                VerticalOptions="CenterAndExpand"
+                                HorizontalOptions="FillAndExpand"
+                                HeightRequest="50"
+                                Style="{StaticResource ButtonMediumStyle}"
+                                ImageSource="{StaticResource IconAddCircleOutlineMedium}"
+                                Command="{Binding NewVehicleCommand}">
+                        </Button>
+
+                        <Button Grid.Column="2"
+                                VerticalOptions="CenterAndExpand"
+                                HorizontalOptions="FillAndExpand"
+                                HeightRequest="50"
+                                Style="{StaticResource ButtonMediumStyle}"
+                                ImageSource="{StaticResource IconRemoveCircleOutlineMedium}"
+                                Command="{Binding DeleteVehicleCommand}">
+                        </Button>
+                    </Grid>
+                </StackLayout>
+            </Frame>
+
+            <Frame Style="{StaticResource FrameStyle}"
+                   Margin="10">
+                <StackLayout>
+                    <Label Style="{StaticResource LabelTitleStyle}"
+                           Text="Daten" />
+
+                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackLayout Grid.Column="0">
+                            <Entry Placeholder="Name"
+                                   Text="{Binding Mode=TwoWay, Path=VehicleName}"
+                                   Margin="5">
+                            </Entry>
+
+                            <Editor Placeholder="Beschreibung"
+                                    Text="{Binding Mode=TwoWay, Path=VehicleBeschreibung}"
+                                    Margin="5"
+                                    HeightRequest="150">
+                            </Editor>
+                            <!--<Entry Placeholder="Beschreibung"
+                                                        Text="{Binding Mode=TwoWay, Path=VehicleBeschreibung}"
+                                                        Margin="5">
+                            </Entry>-->
+                        </StackLayout>
+
+                        <Button Grid.Column="1"
+                                Margin="15"
+                                VerticalOptions="Center"
+                                HorizontalOptions="FillAndExpand"
+                                HeightRequest="60"
+                                Style="{StaticResource ButtonMediumStyle}"
+                                ImageSource="{StaticResource IconSaveMedium}"
+                                Command="{Binding SaveVehicleCommand}">
+                        </Button>
+                    </Grid>
+
+                    <!--#region Allgemein-->
+                    <!--<Expander>
+                        <Expander.Header>
+                            <Frame Style="{StaticResource FrameStyle}">
+                                <Label Style="{StaticResource LabelStyle}">
+                                    Allgemein
+                                </Label>
+                            </Frame>
+                        </Expander.Header>
+                        <HorizontalStackLayout>
+                            <DataTemplate>
+                                <Grid Margin="20, 0, 0, 0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="100" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Entry Placeholder="Gewicht"
+                                           Text="{Binding Mode=TwoWay, Path=VehicleGewicht}"
+                                           Keyboard="Numeric"
+                                           Grid.Row="0"
+                                           Grid.Column="0">
+                                    </Entry>
+
+                                    <Picker Margin="5, 0, 0, 0"
+                                            ItemsSource="{Binding Path=MassQuantityUnits, Mode=OneTime}"
+                                            HorizontalOptions="StartAndExpand"
+                                            VerticalOptions="CenterAndExpand"
+                                            SelectedItem="{Binding Mode=TwoWay, Path=VehicleGewichtUnit}"
+                                            ItemDisplayBinding="{Binding Abbreviation}"
+                                            Grid.Column="1"
+                                            Grid.Row="0">
+                                    </Picker>
+                                </Grid>
+                            </DataTemplate>
+                        </HorizontalStackLayout>
+                    </Expander>-->
+                    <!--#endregion Allgemein-->
+
+                    <!--#region Motor-->
+                    <!--<Expander>
+                        <Expander.Header>
+                            <Frame Style="{StaticResource FrameStyle}">
+                                <Label Style="{StaticResource LabelStyle}">
+                                    Motor
+                                </Label>
+                            </Frame>
+                        </Expander.Header>
+                        <HorizontalStackLayout>
+                            <DataTemplate>
+                                <StackLayout Margin="20, 0, 0, 0">
+
+                                    --><!--#region Engine--><!--
+                                    <Picker Title="Motor"
+                                            ItemsSource="{Binding Engines}"
+                                            SelectedItem="{Binding Engine}"
+                                            ItemDisplayBinding="{Binding Name}">
+                                    </Picker>
+
+                                    <Entry Placeholder="Name"
+                                           Text="{Binding Mode=TwoWay, Path=VehicleMotorName}"
+                                           Keyboard="Numeric">
+                                    </Entry>
+                                    --><!--#endregion Engine-->
+
+                                    <!--#region Daten--><!--
+                                    <Expander Grid.ColumnSpan="2">
+                                        <Expander.Header>
+                                            <Frame Style="{StaticResource FrameStyle}">
+                                                <Label Style="{StaticResource LabelStyle}">
+                                                    Daten
+                                                </Label>
+                                            </Frame>
+                                        </Expander.Header>
+                                        <HorizontalStackLayout>
+                                            <DataTemplate>
+                                                <Grid Margin="20, 0, 0, 0">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="100" />
+                                                    </Grid.ColumnDefinitions>
+
+                                                    --><!--#region VehicleMotorHubL--><!--
+                                                    <Entry Placeholder="Hub"
+                                                           Text="{Binding Mode=TwoWay, Path=VehicleMotorHubL}"
+                                                           Grid.Column="0"
+                                                           Grid.Row="0"
+                                                           Keyboard="Numeric">
+                                                    </Entry>
+
+                                                    <Picker Margin="5, 0, 0, 0"
+                                                            ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+                                                            HorizontalOptions="StartAndExpand"
+                                                            VerticalOptions="CenterAndExpand"
+                                                            SelectedItem="{Binding Mode=TwoWay, Path=VehicleMotorHubLUnit}"
+                                                            ItemDisplayBinding="{Binding Abbreviation}"
+                                                            Grid.Column="1"
+                                                            Grid.Row="0">
+                                                    </Picker>
+                                                    --><!--#endregion Motor-->
+
+                                                    <!--#region VehicleMotorPleulL--><!--
+                                                    <Entry Placeholder="Pleuellänge"
+                                                           Text="{Binding Mode=TwoWay, Path=VehicleMotorPleulL}"
+                                                           Grid.Column="0"
+                                                           Grid.Row="1"
+                                                           Keyboard="Numeric">
+                                                    </Entry>
+
+                                                    <Picker Margin="5, 0, 0, 0"
+                                                            ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+                                                            HorizontalOptions="StartAndExpand"
+                                                            VerticalOptions="CenterAndExpand"
+                                                            SelectedItem="{Binding Mode=TwoWay, Path=VehicleMotorPleulLUnit}"
+                                                            ItemDisplayBinding="{Binding Abbreviation}"
+                                                            Grid.Column="1"
+                                                            Grid.Row="1">
+                                                    </Picker>
+                                                    --><!--#endregion VehicleMotorPleulL-->
+
+                                                    <!--#region VehicleMotorKolbenG--><!--
+                                                    <Entry Placeholder="Kolben-Geschwindikeit"
+                                                           Text="{Binding Mode=TwoWay, Path=VehicleMotorKolbenG}"
+                                                           Grid.Column="0"
+                                                           Grid.Row="2"
+                                                           Keyboard="Numeric">
+                                                    </Entry>
+
+                                                    <Picker Margin="5, 0, 0, 0"
+                                                            ItemsSource="{Binding Path=SpeedQuantityUnits, Mode=OneTime}"
+                                                            HorizontalOptions="StartAndExpand"
+                                                            VerticalOptions="CenterAndExpand"
+                                                            SelectedItem="{Binding Mode=TwoWay, Path=VehicleMotorKolbenGUnit}"
+                                                            ItemDisplayBinding="{Binding Abbreviation}"
+                                                            Grid.Column="1"
+                                                            Grid.Row="2">
+                                                    </Picker>
+                                                    --><!--#endregion VehicleMotorKolbenG-->
+
+                                                    <!--#region VehicleMotorDeachsierungL--><!--
+                                                    <Entry Placeholder="Deachsierung"
+                                                           Text="{Binding Mode=TwoWay, Path=VehicleMotorDeachsierungL}"
+                                                           Grid.Column="0"
+                                                           Grid.Row="3"
+                                                           Keyboard="Numeric">
+                                                    </Entry>
+
+                                                    <Picker Margin="5, 0, 0, 0"
+                                                            ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+                                                            HorizontalOptions="StartAndExpand"
+                                                            VerticalOptions="CenterAndExpand"
+                                                            SelectedItem="{Binding Mode=TwoWay, Path=VehicleMotorDeachsierungLUnit}"
+                                                            ItemDisplayBinding="{Binding Abbreviation}"
+                                                            Grid.Column="1"
+                                                            Grid.Row="3">
+                                                    </Picker>
+                                                    --><!--#endregion VehicleMotorDeachsierungL-->
+
+                                                    <!--#region VehicleMotorBohrungD--><!--
+                                                    <Entry Placeholder="Bohrung"
+                                                           Text="{Binding Mode=TwoWay, Path=VehicleMotorBohrungD}"
+                                                           Grid.Column="0"
+                                                           Grid.Row="4"
+                                                           Keyboard="Numeric">
+                                                    </Entry>
+
+                                                    <Picker Margin="5, 0, 0, 0"
+                                                            ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+                                                            HorizontalOptions="StartAndExpand"
+                                                            VerticalOptions="CenterAndExpand"
+                                                            SelectedItem="{Binding Mode=TwoWay, Path=VehicleMotorBohrungDUnit}"
+                                                            ItemDisplayBinding="{Binding Abbreviation}"
+                                                            Grid.Column="1"
+                                                            Grid.Row="4">
+                                                    </Picker>
+                                                    --><!--#endregion VehicleMotorBohrungD-->
+
+                                                    <!--#region VehicleMotorResonanzU-->
+                                                    <!--ohne Unit--><!--
+                                                    <Entry Placeholder="Resonanzdrehzahl"
+                                                           Text="{Binding Mode=TwoWay, Path=VehicleMotorResonanzU}"
+                                                           Grid.ColumnSpan="2"
+                                                           Grid.Row="5"
+                                                           Keyboard="Numeric">
+                                                    </Entry>
+                                                    --><!--#endregion VehicleMotorResonanzU-->
+
+                                                    <!--#region VehicleMotorHubraumV--><!--
+                                                    <Entry Placeholder="Hubraum Volumen"
+                                                           Text="{Binding Mode=TwoWay, Path=VehicleMotorHubraumV}"
+                                                           Grid.Column="0"
+                                                           Grid.Row="6"
+                                                           Keyboard="Numeric">
+                                                    </Entry>
+
+                                                    <Picker Margin="5, 0, 0, 0"
+                                                            ItemsSource="{Binding Path=VolumeQuantityUnits, Mode=OneTime}"
+                                                            SelectedItem="{Binding Mode=TwoWay, Path=VehicleMotorHubraumVUnit}"
+                                                            ItemDisplayBinding="{Binding Abbreviation}"
+                                                            HorizontalOptions="StartAndExpand"
+                                                            VerticalOptions="CenterAndExpand"
+                                                            Grid.Column="1"
+                                                            Grid.Row="6">
+                                                    </Picker>
+                                                    --><!--#endregion VehicleMotorHubraumV-->
+
+                                                    <!--#region VehicleMotorBrennraumV--><!--
+                                                    <Entry Placeholder="Brennraum Volumen"
+                                                           Text="{Binding Mode=TwoWay, Path=VehicleMotorBrennraumV}"
+                                                           Grid.Column="0"
+                                                           Grid.Row="7"
+                                                           Keyboard="Numeric">
+
+                                                        <Entry.Behaviors>
+                                                            <local:EventToCommandBehavior EventName="TextChanged"
+                                                                                          Command="{Binding ShowSaveButtonCommand}" />
+                                                        </Entry.Behaviors>
+                                                    </Entry>
+
+                                                    <Picker Margin="5, 0, 0, 0"
+                                                            ItemsSource="{Binding Path=VolumeQuantityUnits, Mode=OneTime}"
+                                                            SelectedItem="{Binding VehicleMotorBrennraumVUnit}"
+                                                            ItemDisplayBinding="{Binding Abbreviation}"
+                                                            HorizontalOptions="StartAndExpand"
+                                                            VerticalOptions="CenterAndExpand"
+                                                            Grid.Column="1"
+                                                            Grid.Row="7">
+                                                    </Picker>
+                                                    --><!--#endregion VehicleMotorBrennraumV-->
+
+                                                    <!--#region VehicleMotorKurbelgehaeuseV--><!--
+                                                    <Entry Placeholder="Kurbelgehaeuse Volumen"
+                                                           Text="{Binding Mode=TwoWay, Path=VehicleMotorKurbelgehaeuseV}"
+                                                           Grid.Column="0"
+                                                           Grid.Row="8"
+                                                           Keyboard="Numeric">
+
+                                                        <Entry.Behaviors>
+                                                            <local:EventToCommandBehavior EventName="TextChanged"
+                                                                                          Command="{Binding ShowSaveButtonCommand}" />
+                                                        </Entry.Behaviors>
+                                                    </Entry>
+
+                                                    <Picker Margin="5, 0, 0, 0"
+                                                            ItemsSource="{Binding Path=VolumeQuantityUnits, Mode=OneTime}"
+                                                            SelectedItem="{Binding VehicleMotorKurbelgehaeuseVUnit}"
+                                                            ItemDisplayBinding="{Binding Abbreviation}"
+                                                            HorizontalOptions="StartAndExpand"
+                                                            VerticalOptions="CenterAndExpand"
+                                                            Grid.Column="1"
+                                                            Grid.Row="8">
+                                                    </Picker>
+                                                    --><!--#endregion VehicleMotorKurbelgehaeuseV-->
+
+                                                    <!--#region VehicleMotorVerdichtungV-->
+                                                    <!-- ohne Unit--><!--
+                                                    <Entry Placeholder="Verdichtungsverhältnis"
+                                                           Text="{Binding Mode=TwoWay, Path=VehicleMotorVerdichtungV}"
+                                                           Grid.ColumnSpan="2"
+                                                           Grid.Row="9"
+                                                           Keyboard="Numeric">
+                                                    </Entry>
+                                                    --><!--#endregion VehicleMotorVerdichtungV-->
+
+                                                    <!--#region VehicleMotorZylinderAnz-->
+                                                    <!-- ohne Unit--><!--
+                                                    <Entry Placeholder="Zylinder-Anzahl"
+                                                           Text="{Binding Mode=TwoWay, Path=VehicleMotorZylinderAnz}"
+                                                           Grid.ColumnSpan="2"
+                                                           Grid.Row="10"
+                                                           Keyboard="Numeric">
+                                                    </Entry>
+                                                    --><!--#endregion VehicleMotorZylinderAnz-->
+
+                                                    <!--#region VehicleMotorZuendzeitpunkt-->
+                                                    <!-- ohne Unit--><!--
+                                                    <Entry Placeholder="Zündzeitpunkt"
+                                                           Text="{Binding Mode=TwoWay, Path=VehicleMotorZuendzeitpunkt}"
+                                                           Grid.ColumnSpan="2"
+                                                           Grid.Row="11"
+                                                           Keyboard="Numeric">
+                                                    </Entry>
+                                                    --><!--#endregion VehicleMotorZuendzeitpunkt-->
+
+                                                    <!--#region VehicleMotorHeizwertU-->
+                                                    <!--VehicleMotorHeizwertU ohne Unit--><!--
+                                                    <Entry Placeholder="Heizwert"
+                                                           Text="{Binding Mode=TwoWay, Path=VehicleMotorHeizwertU}"
+                                                           Grid.ColumnSpan="2"
+                                                           Grid.Row="12"
+                                                           Keyboard="Numeric">
+                                                    </Entry>
+                                                    --><!--#endregion VehicleMotorHeizwertU--><!--
+                                                </Grid>
+                                            </DataTemplate>
+                                        </HorizontalStackLayout>
+                                    </Expander>
+                                    --><!--#endregion Daten-->
+
+                                    <!--#region Einlass--><!--
+                                    <Expander>
+                                        <Expander.Header>
+                                            <Frame Style="{StaticResource FrameStyle}">
+                                                <Label Style="{StaticResource LabelStyle}">
+                                                    Einlass
+                                                </Label>
+                                            </Frame>
+                                        </Expander.Header>
+                                        <HorizontalStackLayout>
+                                            <DataTemplate>
+                                                <StackLayout>
+
+                                                    <Grid Margin="20, 0, 0, 0">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="100" />
+                                                        </Grid.ColumnDefinitions>
+
+                                                        --><!--#region VehicleMotorEinlassHoeheH--><!--
+                                                        <Entry Placeholder="Hoehe"
+                                                               Text="{Binding Mode=TwoWay, Path=VehicleMotorEinlassHoeheH}"
+                                                               Grid.Column="0"
+                                                               Grid.Row="0"
+                                                               Keyboard="Numeric">
+                                                        </Entry>
+
+                                                        <Picker Margin="5, 0, 0, 0"
+                                                                ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+                                                                HorizontalOptions="StartAndExpand"
+                                                                VerticalOptions="CenterAndExpand"
+                                                                SelectedItem="{Binding Mode=TwoWay, Path=VehicleMotorEinlassHoeheHUnit}"
+                                                                ItemDisplayBinding="{Binding Abbreviation}"
+                                                                Grid.Column="1"
+                                                                Grid.Row="0">
+                                                        </Picker>
+                                                        --><!--#endregion VehicleMotorEinlassHoeheH-->
+
+                                                        <!--#region VehicleMotorEinlassBreiteB--><!--
+                                                        <Entry Placeholder="Breite"
+                                                               Text="{Binding Mode=TwoWay, Path=VehicleMotorEinlassBreiteB}"
+                                                               Grid.Column="0"
+                                                               Grid.Row="1"
+                                                               Keyboard="Numeric">
+                                                        </Entry>
+
+                                                        <Picker Margin="5, 0, 0, 0"
+                                                                ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+                                                                HorizontalOptions="StartAndExpand"
+                                                                VerticalOptions="CenterAndExpand"
+                                                                SelectedItem="{Binding Mode=TwoWay, Path=VehicleMotorEinlassBreiteBUnit}"
+                                                                ItemDisplayBinding="{Binding Abbreviation}"
+                                                                Grid.Column="1"
+                                                                Grid.Row="1">
+                                                        </Picker>
+                                                        --><!--#endregion VehicleMotorEinlassBreiteB-->
+
+                                                        <!--#region VehicleMotorEinlassDurchmesserD--><!--
+                                                        <Entry Placeholder="Durchmesser"
+                                                               Text="{Binding Mode=TwoWay, Path=VehicleMotorEinlassDurchmesserD}"
+                                                               Grid.Column="0"
+                                                               Grid.Row="2"
+                                                               Keyboard="Numeric">
+                                                        </Entry>
+
+                                                        <Picker Margin="5, 0, 0, 0"
+                                                                ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+                                                                HorizontalOptions="StartAndExpand"
+                                                                VerticalOptions="CenterAndExpand"
+                                                                SelectedItem="{Binding Mode=TwoWay, Path=VehicleMotorEinlassDurchmesserDUnit}"
+                                                                ItemDisplayBinding="{Binding Abbreviation}"
+                                                                Grid.Column="1"
+                                                                Grid.Row="2">
+                                                        </Picker>
+                                                        --><!--#endregion VehicleMotorEinlassDurchmesserD-->
+
+                                                        <!--#region VehicleMotorEinlassFlaecheA--><!--
+                                                        <Entry Placeholder="Flaeche"
+                                                               Text="{Binding Mode=TwoWay, Path=VehicleMotorEinlassFlaecheA}"
+                                                               Grid.Column="0"
+                                                               Grid.Row="3"
+                                                               Keyboard="Numeric">
+                                                        </Entry>
+
+                                                        <Picker Margin="5, 0, 0, 0"
+                                                                ItemsSource="{Binding Path=AreaQuantityUnits, Mode=OneTime}"
+                                                                HorizontalOptions="StartAndExpand"
+                                                                VerticalOptions="CenterAndExpand"
+                                                                SelectedItem="{Binding Mode=TwoWay, Path=VehicleMotorEinlassFlaecheAUnit}"
+                                                                ItemDisplayBinding="{Binding Abbreviation}"
+                                                                Grid.Column="1"
+                                                                Grid.Row="3">
+                                                        </Picker>
+                                                        --><!--#endregion VehicleMotorEinlassFlaecheA-->
+
+                                                        <!--#region VehicleMotorEinlassSteuerzeitSZ-->
+                                                        <!--ohne Unit--><!--
+                                                        <Entry Placeholder="Steuerzeit"
+                                                               Text="{Binding Mode=TwoWay, Path=VehicleMotorEinlassSteuerzeitSZ}"
+                                                               Grid.ColumnSpan="2"
+                                                               Grid.Row="4"
+                                                               Keyboard="Numeric">
+                                                        </Entry>
+                                                        --><!--#endregion VehicleMotorEinlassSteuerzeitSZ-->
+
+                                                        <!--#region VehicleMotorEinlassLaengeL--><!--
+                                                        <Entry Placeholder="Länge"
+                                                               Text="{Binding Mode=TwoWay, Path=VehicleMotorEinlassLaengeL}"
+                                                               Grid.Column="0"
+                                                               Grid.Row="5"
+                                                               Keyboard="Numeric">
+                                                        </Entry>
+
+                                                        <Picker Margin="5, 0, 0, 0"
+                                                                ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+                                                                HorizontalOptions="StartAndExpand"
+                                                                VerticalOptions="CenterAndExpand"
+                                                                SelectedItem="{Binding Mode=TwoWay, Path=VehicleMotorEinlassLaengeLUnit}"
+                                                                ItemDisplayBinding="{Binding Abbreviation}"
+                                                                Grid.Column="1"
+                                                                Grid.Row="5">
+                                                        </Picker>
+                                                        --><!--#endregion VehicleMotorEinlassLaengeL-->
+
+                                                        <!--#region VehicleMotorEinlassLuftBedarf-->
+                                                        <!--ohne Unit--><!--
+                                                        <Entry Placeholder="LuftBedarf"
+                                                               Text="{Binding Mode=TwoWay, Path=VehicleMotorEinlassLuftBedarf}"
+                                                               Grid.ColumnSpan="2"
+                                                               Grid.Row="6"
+                                                               Keyboard="Numeric">
+                                                        </Entry>
+                                                        --><!--#endregion VehicleMotorEinlassLuftBedarf--><!--
+                                                    </Grid>
+
+                                                    --><!--#region Vergaser--><!--
+                                                    <Expander>
+                                                        <Expander.Header>
+                                                            <Frame Style="{StaticResource FrameStyle}">
+                                                                <Label Style="{StaticResource LabelStyle}">
+                                                                    Vergaser
+                                                                </Label>
+                                                            </Frame>
+                                                        </Expander.Header>
+                                                        <HorizontalStackLayout>
+                                                            <DataTemplate>
+                                                                <Grid Margin="20, 0, 0, 0">
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="*" />
+                                                                        <ColumnDefinition Width="100" />
+                                                                    </Grid.ColumnDefinitions>
+
+                                                                    --><!--#region VehicleMotorEinlassVergaserDurchmesserD--><!--
+                                                                    <Entry Placeholder="Durchmesser"
+                                                                           Text="{Binding Mode=TwoWay, Path=VehicleMotorEinlassVergaserDurchmesserD}"
+                                                                           Grid.Column="0"
+                                                                           Grid.Row="0"
+                                                                           Keyboard="Numeric">
+                                                                    </Entry>
+
+                                                                    <Picker Margin="5, 0, 0, 0"
+                                                                            ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+                                                                            HorizontalOptions="StartAndExpand"
+                                                                            VerticalOptions="CenterAndExpand"
+                                                                            SelectedItem="{Binding Mode=TwoWay, Path=VehicleMotorEinlassVergaserDurchmesserDUnit}"
+                                                                            ItemDisplayBinding="{Binding Abbreviation}"
+                                                                            Grid.Column="1"
+                                                                            Grid.Row="0">
+                                                                    </Picker>
+                                                                    --><!--#endregion VehicleMotorEinlassVergaserDurchmesserD-->
+
+                                                                    <!--#region VehicleMotorEinlassVergaserBenzinLuftF-->
+                                                                    <!--ohne Unit--><!--
+                                                                    <Entry Placeholder="BenzinLuftF"
+                                                                           Text="{Binding Mode=TwoWay, Path=VehicleMotorEinlassVergaserBenzinLuftF}"
+                                                                           Grid.ColumnSpan="2"
+                                                                           Grid.Row="1"
+                                                                           Keyboard="Numeric">
+                                                                    </Entry>
+                                                                    --><!--#endregion VehicleMotorEinlassVergaserBenzinLuftF--><!--
+                                                                </Grid>
+                                                            </DataTemplate>
+                                                        </HorizontalStackLayout>
+                                                    </Expander>
+                                                    --><!--#endregion Vergaser--><!--
+                                                </StackLayout>
+                                            </DataTemplate>
+                                        </HorizontalStackLayout>
+                                    </Expander>
+                                    --><!--#endregion Einlass-->
+
+                                    <!--#region Auslass--><!--
+                                    <Expander>
+                                        <Expander.Header>
+                                            <Frame Style="{StaticResource FrameStyle}">
+                                                <Label Style="{StaticResource LabelStyle}">
+                                                    Auslass
+                                                </Label>
+                                            </Frame>
+                                        </Expander.Header>
+                                        <HorizontalStackLayout>
+                                            <DataTemplate>
+                                                <StackLayout>
+                                                    <Grid Margin="20, 0, 0, 0">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="100" />
+                                                        </Grid.ColumnDefinitions>
+
+                                                        --><!--#region VehicleMotorAuslassHoeheH--><!--
+                                                        <Entry Placeholder="Hoehe"
+                                                               Text="{Binding Mode=TwoWay, Path=VehicleMotorAuslassHoeheH}"
+                                                               Grid.Column="0"
+                                                               Grid.Row="0"
+                                                               Keyboard="Numeric">
+                                                        </Entry>
+
+                                                        <Picker Margin="5, 0, 0, 0"
+                                                                ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+                                                                HorizontalOptions="StartAndExpand"
+                                                                VerticalOptions="CenterAndExpand"
+                                                                SelectedItem="{Binding Mode=TwoWay, Path=VehicleMotorAuslassHoeheHUnit}"
+                                                                ItemDisplayBinding="{Binding Abbreviation}"
+                                                                Grid.Column="1"
+                                                                Grid.Row="0">
+                                                        </Picker>
+                                                        --><!--#endregion VehicleMotorAuslassHoeheH-->
+
+                                                        <!--#region VehicleMotorAuslassBreiteB--><!--
+                                                        <Entry Placeholder="Breite"
+                                                               Text="{Binding Mode=TwoWay, Path=VehicleMotorAuslassBreiteB}"
+                                                               Grid.Column="0"
+                                                               Grid.Row="1"
+                                                               Keyboard="Numeric">
+                                                        </Entry>
+
+                                                        <Picker Margin="5, 0, 0, 0"
+                                                                ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+                                                                HorizontalOptions="StartAndExpand"
+                                                                VerticalOptions="CenterAndExpand"
+                                                                SelectedItem="{Binding Mode=TwoWay, Path=VehicleMotorAuslassBreiteBUnit}"
+                                                                ItemDisplayBinding="{Binding Abbreviation}"
+                                                                Grid.Column="1"
+                                                                Grid.Row="1">
+                                                        </Picker>
+                                                        --><!--#endregion VehicleMotorAuslassBreiteB-->
+
+                                                        <!--#region VehicleMotorAuslassFlaecheA--><!--
+                                                        <Entry Placeholder="Flaeche"
+                                                               Text="{Binding Mode=TwoWay, Path=VehicleMotorAuslassFlaecheA}"
+                                                               Grid.Column="0"
+                                                               Grid.Row="2"
+                                                               Keyboard="Numeric">
+
+                                                            <Entry.Behaviors>
+                                                                <local:EventToCommandBehavior EventName="TextChanged"
+                                                                                              Command="{Binding ShowSaveButtonCommand}" />
+                                                            </Entry.Behaviors>
+                                                        </Entry>
+
+                                                        <Picker Margin="5, 0, 0, 0"
+                                                                ItemsSource="{Binding Path=AreaQuantityUnits, Mode=OneTime}"
+                                                                HorizontalOptions="StartAndExpand"
+                                                                VerticalOptions="CenterAndExpand"
+                                                                SelectedItem="{Binding Mode=TwoWay, Path=VehicleMotorAuslassFlaecheAUnit}"
+                                                                ItemDisplayBinding="{Binding Abbreviation}"
+                                                                Grid.Column="1"
+                                                                Grid.Row="2">
+                                                        </Picker>
+                                                        --><!--#endregion VehicleMotorAuslassFlaecheA-->
+
+                                                        <!--#region VehicleMotorAuslassLaengeL--><!--
+                                                        <Entry Placeholder="Länge"
+                                                               Text="{Binding Mode=TwoWay, Path=VehicleMotorAuslassLaengeL}"
+                                                               Grid.Column="0"
+                                                               Grid.Row="3"
+                                                               Keyboard="Numeric">
+
+                                                            <Entry.Behaviors>
+                                                                <local:EventToCommandBehavior EventName="TextChanged"
+                                                                                              Command="{Binding ShowSaveButtonCommand}" />
+                                                            </Entry.Behaviors>
+                                                        </Entry>
+
+                                                        <Picker Margin="5, 0, 0, 0"
+                                                                ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+                                                                HorizontalOptions="StartAndExpand"
+                                                                VerticalOptions="CenterAndExpand"
+                                                                SelectedItem="{Binding Mode=TwoWay, Path=VehicleMotorAuslassLaengeLUnit}"
+                                                                ItemDisplayBinding="{Binding Abbreviation}"
+                                                                Grid.Column="1"
+                                                                Grid.Row="3">
+                                                        </Picker>
+                                                        --><!--#endregion VehicleMotorAuslassLaengeL-->
+
+                                                        <!--#region VehicleMotorAuslassSteuerzeitSZ-->
+                                                        <!--ohne Unit--><!--
+                                                        <Entry Placeholder="Steuerzeit"
+                                                               Text="{Binding Mode=TwoWay, Path=VehicleMotorAuslassSteuerzeitSZ}"
+                                                               Grid.ColumnSpan="2"
+                                                               Grid.Row="4"
+                                                               Keyboard="Numeric">
+                                                        </Entry>
+                                                        --><!--#endregion VehicleMotorAuslassSteuerzeitSZ--><!--
+                                                    </Grid>
+
+                                                    --><!--#region Auspuff--><!--
+                                                    <Expander>
+                                                        <Expander.Header>
+                                                            <Frame Style="{StaticResource FrameStyle}">
+                                                                <Label Style="{StaticResource LabelStyle}">
+                                                                    Auspuff
+                                                                </Label>
+                                                            </Frame>
+                                                        </Expander.Header>
+                                                        <HorizontalStackLayout>
+                                                            <DataTemplate>
+                                                                <StackLayout Margin="20, 0, 0, 0">
+                                                                </StackLayout>
+                                                            </DataTemplate>
+                                                        </HorizontalStackLayout>
+                                                    </Expander>
+                                                    --><!--#endregion Auspuff--><!--
+                                                </StackLayout>
+                                            </DataTemplate>
+                                        </HorizontalStackLayout>
+                                    </Expander>
+                                    --><!--#endregion Auslass-->
+
+                                    <!--#region Ueberströmer--><!--
+                                    <Expander>
+                                        <Expander.Header>
+                                            <Frame Style="{StaticResource FrameStyle}">
+                                                <Label Style="{StaticResource LabelStyle}">
+                                                    Ueberströmer
+                                                </Label>
+                                            </Frame>
+                                        </Expander.Header>
+                                        <HorizontalStackLayout>
+                                            <DataTemplate>
+                                                <Grid Margin="20, 0, 0, 0">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="100" />
+                                                    </Grid.ColumnDefinitions>
+
+                                                    --><!--#region VehicleMotorUeberstroemerHoeheH--><!--
+                                                    <Entry Placeholder="Hoehe"
+                                                           Text="{Binding Mode=TwoWay, Path=VehicleMotorUeberstroemerHoeheH}"
+                                                           Grid.Column="0"
+                                                           Grid.Row="0"
+                                                           Keyboard="Numeric">
+                                                    </Entry>
+
+                                                    <Picker Margin="5, 0, 0, 0"
+                                                            ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+                                                            HorizontalOptions="StartAndExpand"
+                                                            VerticalOptions="CenterAndExpand"
+                                                            SelectedItem="{Binding Mode=TwoWay, Path=VehicleMotorUeberstroemerHoeheHUnit}"
+                                                            ItemDisplayBinding="{Binding Abbreviation}"
+                                                            Grid.Column="1"
+                                                            Grid.Row="0">
+                                                    </Picker>
+                                                    --><!--#endregion VehicleMotorUeberstroemerHoeheH-->
+
+                                                    <!--#region VehicleMotorUeberstroemerBreiteB--><!--
+                                                    <Entry Placeholder="Breite"
+                                                           Text="{Binding Mode=TwoWay, Path=VehicleMotorUeberstroemerBreiteB}"
+                                                           Grid.Column="0"
+                                                           Grid.Row="1"
+                                                           Keyboard="Numeric">
+                                                    </Entry>
+
+                                                    <Picker Margin="5, 0, 0, 0"
+                                                            ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+                                                            HorizontalOptions="StartAndExpand"
+                                                            VerticalOptions="CenterAndExpand"
+                                                            SelectedItem="{Binding Mode=TwoWay, Path=VehicleMotorUeberstroemerBreiteBUnit}"
+                                                            ItemDisplayBinding="{Binding Abbreviation}"
+                                                            Grid.Column="1"
+                                                            Grid.Row="1">
+                                                    </Picker>
+                                                    --><!--#endregion VehicleMotorUeberstroemerBreiteB-->
+
+                                                    <!--#region VehicleMotorUeberstroemerFlaecheA--><!--
+                                                    <Entry Placeholder="Flaeche"
+                                                           Text="{Binding Mode=TwoWay, Path=VehicleMotorUeberstroemerFlaecheA}"
+                                                           Grid.Column="0"
+                                                           Grid.Row="2"
+                                                           Keyboard="Numeric">
+                                                    </Entry>
+
+                                                    <Picker Margin="5, 0, 0, 0"
+                                                            ItemsSource="{Binding Path=AreaQuantityUnits, Mode=OneTime}"
+                                                            HorizontalOptions="StartAndExpand"
+                                                            VerticalOptions="CenterAndExpand"
+                                                            SelectedItem="{Binding Mode=TwoWay, Path=VehicleMotorUeberstroemerFlaecheAUnit}"
+                                                            ItemDisplayBinding="{Binding Abbreviation}"
+                                                            Grid.Column="1"
+                                                            Grid.Row="2">
+                                                    </Picker>
+                                                    --><!--#endregion VehicleMotorUeberstroemerFlaecheA-->
+
+                                                    <!--#region VehicleMotorUeberstroemerAnzahl-->
+                                                    <!--ohne Unit--><!--
+                                                    <Entry Placeholder="Anzahl"
+                                                           Text="{Binding Mode=TwoWay, Path=VehicleMotorUeberstroemerAnzahl}"
+                                                           Grid.ColumnSpan="2"
+                                                           Grid.Row="3"
+                                                           Keyboard="Numeric">
+                                                    </Entry>
+                                                    --><!--#endregion VehicleMotorUeberstroemerAnzahl-->
+
+                                                    <!--#region VehicleMotorUeberstroemerSteuerzeitSZ-->
+                                                    <!--ohne Unit--><!--
+                                                    <Entry Placeholder="Steuerzeit"
+                                                           Text="{Binding Mode=TwoWay, Path=VehicleMotorUeberstroemerSteuerzeitSZ}"
+                                                           Grid.ColumnSpan="2"
+                                                           Grid.Row="4"
+                                                           Keyboard="Numeric">
+                                                    </Entry>
+                                                    --><!--#endregion VehicleMotorUeberstroemerSteuerzeitSZ--><!--
+                                                </Grid>
+                                            </DataTemplate>
+                                        </HorizontalStackLayout>
+                                    </Expander>
+                                    --><!--#endregion Ueberströmer--><!--
+                                </StackLayout>
+                            </DataTemplate>
+                        </HorizontalStackLayout>
+                    </Expander>-->
+                    <!--#endregion Motor-->
+
+                    <!--Dyno-->
+                    <!--<Expander>
+                        <Expander.Header>
+                            <Frame Style="{StaticResource FrameStyle}">
+                                <Label Style="{StaticResource LabelStyle}">
+                                    Dyno
+                                </Label>
+                            </Frame>
+                        </Expander.Header>
+                        <HorizontalStackLayout>
+                            <DataTemplate>
+                                <StackLayout Margin="20, 0, 0, 0">
+
+                                    <Entry Placeholder="Name"
+                                           Text="{Binding Mode=TwoWay, Path=VehicleDynoName}"
+                                           Grid.Column="0"
+                                           Keyboard="Numeric">
+                                    </Entry>
+
+                                    <Editor Placeholder="Beschreibung"
+                                            Text="{Binding Mode=TwoWay, Path=VehicleDynoBeschreibung}"
+                                            Grid.Column="0"
+                                            HeightRequest="150">
+                                    </Editor>
+                                    --><!--<Entry Placeholder="Beschreibung"
+                                                                Text="{Binding Mode=TwoWay, Path=VehicleDynoBeschreibung}"
+                                                                Grid.Column="0" Keyboard="Numeric">
+                                    </Entry>-->
+
+                                    <!--Audio--><!--
+                                    <Expander>
+                                        <Expander.Header>
+                                            <Frame Style="{StaticResource FrameStyle}">
+                                                <Label Style="{StaticResource LabelStyle}">
+                                                    Audio
+                                                </Label>
+                                            </Frame>
+                                        </Expander.Header>
+                                        <HorizontalStackLayout>
+                                            <DataTemplate>
+                                                <StackLayout Orientation="Horizontal"
+                                                             Margin="20, 0, 0, 0">
+                                                    <Picker Title="X"
+                                                            ItemsSource="{Binding Mode=OneTime, Path=VehicleDynoAudio}"
+                                                            ItemDisplayBinding="X">
+                                                    </Picker>
+
+                                                    <Picker Title="Y"
+                                                            ItemsSource="{Binding Mode=OneTime, Path=VehicleDynoAudio}"
+                                                            ItemDisplayBinding="Y">
+                                                    </Picker>
+                                                </StackLayout>
+                                            </DataTemplate>
+                                        </HorizontalStackLayout>
+                                    </Expander>
+
+                                    --><!--PS--><!--
+                                    <Expander>
+                                        <Expander.Header>
+                                            <Frame Style="{StaticResource FrameStyle}">
+                                                <Label Style="{StaticResource LabelStyle}">
+                                                    PS
+                                                </Label>
+                                            </Frame>
+                                        </Expander.Header>
+                                        <HorizontalStackLayout>
+                                            <DataTemplate>
+                                                <StackLayout Orientation="Horizontal"
+                                                             Margin="20, 0, 0, 0">
+                                                    <Picker Title="X"
+                                                            ItemsSource="{Binding Mode=OneTime, Path=VehicleDynoDynoPS}"
+                                                            ItemDisplayBinding="X">
+                                                    </Picker>
+
+                                                    <Picker Title="Y"
+                                                            ItemsSource="{Binding Mode=OneTime, Path=VehicleDynoDynoPS}"
+                                                            ItemDisplayBinding="Y">
+                                                    </Picker>
+                                                </StackLayout>
+                                            </DataTemplate>
+                                        </HorizontalStackLayout>
+                                    </Expander>
+
+                                    --><!--Nm--><!--
+                                    <Expander>
+                                        <Expander.Header>
+                                            <Frame Style="{StaticResource FrameStyle}">
+                                                <Label Style="{StaticResource LabelStyle}">
+                                                    Nm
+                                                </Label>
+                                            </Frame>
+                                        </Expander.Header>
+                                        <HorizontalStackLayout>
+                                            <DataTemplate>
+                                                <StackLayout Orientation="Horizontal"
+                                                             Margin="20, 0, 0, 0">
+                                                    <Picker Title="X"
+                                                            ItemsSource="{Binding Mode=OneTime, Path=VehicleDynoDynoNm}"
+                                                            ItemDisplayBinding="X">
+                                                    </Picker>
+
+                                                    <Picker Title="Y"
+                                                            ItemsSource="{Binding Mode=OneTime, Path=VehicleDynoDynoNm}"
+                                                            ItemDisplayBinding="Y">
+                                                    </Picker>
+                                                </StackLayout>
+                                            </DataTemplate>
+                                        </HorizontalStackLayout>
+                                    </Expander>
+                                </StackLayout>
+                            </DataTemplate>
+                        </HorizontalStackLayout>
+                    </Expander>-->
+                </StackLayout>
+            </Frame>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

@@ -1,10 +1,8 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using MvvmCross.Commands;
-using MvvmCross.Navigation;
-using MvvmCross.Plugin.Messenger;
-using MvvmCross.ViewModels;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
 using SimTuning.Core.Models;
 using SimTuning.Core.Services;
 using System;
@@ -14,70 +12,37 @@ using System.Threading.Tasks;
 
 namespace SimTuning.Core.ViewModels.Einstellungen
 {
-    /// <summary>
-    /// VehiclesViewModel.
-    /// </summary>
-    /// <seealso cref="MvvmCross.ViewModels.MvxViewModel" />
-    public class VehiclesViewModel : MvxViewModel
+    public class VehiclesViewModel : ViewModelBase
     {
-        /// <summary> Initializes a new instance of the <see cref="VehiclesViewModel"/>
-        /// class. </summary> <param name="logger"><inheritdoc cref="ILogger"
-        /// path="/summary/node()" /></param> <param name="navigationService"><inheritdoc
-        /// cref="IMvxNavigationService" path="/summary/node()" /></param
         public VehiclesViewModel(
             ILogger<VehiclesViewModel> logger,
-            IMvxNavigationService navigationService,
-            IVehicleService vehicleService,
-            IMvxMessenger messenger)
+            INavigationService INavigationService,
+            IVehicleService vehicleService)
         {
             this._logger = logger;
-            this._navigationService = navigationService;
+            this._INavigationService = INavigationService;
             this._vehicleService = vehicleService;
-            this._messenger = messenger;
+            //this._messenger = messenger;
 
             this.AreaQuantityUnits = new AreaQuantity();
             this.VolumeQuantityUnits = new VolumeQuantity();
             this.LengthQuantityUnits = new LengthQuantity();
             this.MassQuantityUnits = new MassQuantity();
             this.SpeedQuantityUnits = new SpeedQuantity();
+
+            this.NewVehicleCommand = new RelayCommand(this.NewVehicle);
+            this.DeleteVehicleCommand = new RelayCommand(this.DeleteVehicle);
+            this.SaveVehicleCommand = new RelayCommand(this.SaveVehicle);
+
+            this.ReloadData();
         }
 
         #region Methods
 
         /// <summary>
-        /// Initializes this instance.
-        /// </summary>
-        /// <returns>Initilisierung.</returns>
-        public override Task Initialize()
-        {
-            this.ReloadData();
-
-            return base.Initialize();
-        }
-
-        /// <summary>
-        /// Prepares the specified user.
-        /// </summary>
-        public override void Prepare()
-        {
-            base.Prepare();
-        }
-
-        /// <summary>
-        /// Determines whether this instance can execute.
-        /// </summary>
-        /// <returns>
-        /// <c>true</c> if this instance can execute; otherwise, <c>false</c>.
-        /// </returns>
-        protected virtual bool CanExecute()
-        {
-            return UserSettings.LicenseValid;
-        }
-
-        /// <summary>
         /// Deletes the vehicle.
         /// </summary>
-        protected virtual bool DeleteVehicle()
+        protected void DeleteVehicle()
         {
             try
             {
@@ -91,20 +56,17 @@ namespace SimTuning.Core.ViewModels.Einstellungen
 
                     this.Vehicle = null;
                 }
-
-                return true;
             }
             catch (Exception exc)
             {
                 _logger.LogError(exc, exc.Message, null);
-                return false;
             }
         }
 
         /// <summary>
         /// Creates new vehicle.
         /// </summary>
-        protected virtual bool NewVehicle()
+        protected void NewVehicle()
         {
             try
             {
@@ -119,37 +81,18 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                 this.Vehicle = this.Vehicles.Last();
 
                 this._saveButton = true;
-                SaveVehicleCommand.RaiseCanExecuteChanged();
-
-                return true;
+                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
             catch (Exception exc)
             {
                 _logger.LogError(exc, exc.Message, null);
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Saves the can execute.
-        /// </summary>
-        /// <returns></returns>
-        protected bool SaveCanExecute()
-        {
-            if (!CanExecute())
-            {
-                return false;
-            }
-            else
-            {
-                return _saveButton;
             }
         }
 
         /// <summary>
         /// Saves the vehicle.
         /// </summary>
-        protected virtual bool SaveVehicle()
+        protected void SaveVehicle()
         {
             try
             {
@@ -163,14 +106,11 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                 }
 
                 this._saveButton = false;
-                SaveVehicleCommand.RaiseCanExecuteChanged();
-
-                return true;
+                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
             catch (Exception exc)
             {
                 _logger.LogError(exc, exc.Message, null);
-                return false;
             }
         }
 
@@ -188,8 +128,8 @@ namespace SimTuning.Core.ViewModels.Einstellungen
 
         #region Values
 
-        protected readonly IMvxMessenger _messenger;
-        protected readonly IMvxNavigationService _navigationService;
+        
+        protected readonly INavigationService _INavigationService;
         protected readonly IVehicleService _vehicleService;
 
         /// <summary>
@@ -212,7 +152,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
         /// Gets or sets the delete vehicle command.
         /// </summary>
         /// <value>The delete vehicle command.</value>
-        public IMvxCommand DeleteVehicleCommand { get; set; }
+        public IRelayCommand DeleteVehicleCommand { get; set; }
 
         /// <summary>
         /// Gets or sets the engine.
@@ -244,7 +184,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                 this.SetProperty(ref this._engine, value);
 
                 // Motor-Werte für UI updaten
-                this.RaiseAllPropertiesChanged();
+                //this.RaiseAllPropertiesChanged();
             }
         }
 
@@ -274,13 +214,13 @@ namespace SimTuning.Core.ViewModels.Einstellungen
         /// Creates new vehiclecommand.
         /// </summary>
         /// <value>The new vehicle command.</value>
-        public IMvxCommand NewVehicleCommand { get; set; }
+        public IRelayCommand NewVehicleCommand { get; set; }
 
         /// <summary>
         /// Gets or sets the save vehicle command.
         /// </summary>
         /// <value>The save vehicle command.</value>
-        public IMvxCommand SaveVehicleCommand { get; set; }
+        public IRelayCommand SaveVehicleCommand { get; set; }
 
         /// <summary>
         /// Gets the speed quantity units.
@@ -316,12 +256,12 @@ namespace SimTuning.Core.ViewModels.Einstellungen
 
                 // nix mehr zu speichern
                 this._saveButton = false;
-                SaveVehicleCommand.RaiseCanExecuteChanged();
+                SaveVehicleCommand.NotifyCanExecuteChanged();
 
                 // Motor refreshen
                 this.Engine = null;
 
-                this.RaiseAllPropertiesChanged();
+                //this.RaiseAllPropertiesChanged();
             }
         }
 
@@ -341,7 +281,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
 
                 this.Vehicle.Beschreibung = value;
                 this._saveButton = true;
-                SaveVehicleCommand.RaiseCanExecuteChanged();
+                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -353,7 +293,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
         // null) { return; }
 
         // this.Vehicle.Cw = value; this._saveButton = true;
-        // SaveVehicleCommand.RaiseCanExecuteChanged(); } }
+        // SaveVehicleCommand.NotifyCanExecuteChanged(); } }
 
         /// <summary>
         /// Gets the vehicle dyno audio.
@@ -380,7 +320,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
 
                 this.Vehicle.Dyno.Beschreibung = value;
                 this._saveButton = true;
-                SaveVehicleCommand.RaiseCanExecuteChanged();
+                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -417,7 +357,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                 }
                 this.Vehicle.Dyno.Name = value;
                 this._saveButton = true;
-                SaveVehicleCommand.RaiseCanExecuteChanged();
+                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -440,7 +380,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
         // null) { return; }
 
         // this.Vehicle.FrontAUnit = (UnitsNet.Units.AreaUnit)value?.UnitEnumValue;
-        // this.RaisePropertyChanged(() => VehicleFrontA); } }
+        // this.OnPropertyChanged(nameof(VehicleFrontA); } }
 
         /// <summary>
         /// Gets or sets the vehicle gewicht.
@@ -458,7 +398,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
 
                 this.Vehicle.Gewicht = value;
                 this._saveButton = true;
-                SaveVehicleCommand.RaiseCanExecuteChanged();
+                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -477,7 +417,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                 }
 
                 this.Vehicle.GewichtUnit = (UnitsNet.Units.MassUnit)value?.UnitEnumValue;
-                this.RaisePropertyChanged(() => this.VehicleGewicht);
+                this.OnPropertyChanged(nameof(this.VehicleGewicht));
             }
         }
 
@@ -496,7 +436,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                 }
                 this.Vehicle.Motor.Auslass.BreiteB = value;
                 this._saveButton = true;
-                SaveVehicleCommand.RaiseCanExecuteChanged();
+                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -514,7 +454,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.Auslass.BreiteBUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
-                this.RaisePropertyChanged(() => VehicleMotorAuslassBreiteB);
+                this.OnPropertyChanged(nameof(VehicleMotorAuslassBreiteB));
             }
         }
 
@@ -533,7 +473,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                 }
                 this.Vehicle.Motor.Auslass.FlaecheA = value;
                 this._saveButton = true;
-                SaveVehicleCommand.RaiseCanExecuteChanged();
+                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -551,7 +491,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.Auslass.FlaecheAUnit = (UnitsNet.Units.AreaUnit)value?.UnitEnumValue;
-                this.RaisePropertyChanged(() => VehicleMotorAuslassFlaecheA);
+                this.OnPropertyChanged(nameof(VehicleMotorAuslassFlaecheA));
             }
         }
 
@@ -570,7 +510,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                 }
                 this.Vehicle.Motor.Auslass.HoeheH = value;
                 this._saveButton = true;
-                SaveVehicleCommand.RaiseCanExecuteChanged();
+                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -588,7 +528,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.Auslass.HoeheHUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
-                this.RaisePropertyChanged(() => VehicleMotorAuslassHoeheH);
+                this.OnPropertyChanged(nameof(VehicleMotorAuslassHoeheH));
             }
         }
 
@@ -607,7 +547,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                 }
                 this.Vehicle.Motor.Auslass.LaengeL = value;
                 this._saveButton = true;
-                SaveVehicleCommand.RaiseCanExecuteChanged();
+                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -625,7 +565,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.Auslass.LaengeLUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
-                this.RaisePropertyChanged(() => VehicleMotorAuslassLaengeL);
+                this.OnPropertyChanged(nameof(VehicleMotorAuslassLaengeL));
             }
         }
 
@@ -644,7 +584,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                 }
                 this.Vehicle.Motor.Auslass.SteuerzeitSZ = value;
                 this._saveButton = true;
-                SaveVehicleCommand.RaiseCanExecuteChanged();
+                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -663,7 +603,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                 }
                 this.Vehicle.Motor.BohrungD = value;
                 this._saveButton = true;
-                SaveVehicleCommand.RaiseCanExecuteChanged();
+                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -681,7 +621,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.BohrungDUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
-                this.RaisePropertyChanged(() => VehicleMotorBohrungD);
+                this.OnPropertyChanged(nameof(VehicleMotorBohrungD));
             }
         }
 
@@ -700,7 +640,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                 }
                 this.Vehicle.Motor.BrennraumV = value;
                 this._saveButton = true;
-                SaveVehicleCommand.RaiseCanExecuteChanged();
+                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -718,7 +658,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.BrennraumVUnit = (UnitsNet.Units.VolumeUnit)value?.UnitEnumValue;
-                this.RaisePropertyChanged(() => VehicleMotorBrennraumV);
+                this.OnPropertyChanged(nameof(VehicleMotorBrennraumV));
             }
         }
 
@@ -737,7 +677,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                 }
                 this.Vehicle.Motor.DeachsierungL = value;
                 this._saveButton = true;
-                SaveVehicleCommand.RaiseCanExecuteChanged();
+                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -755,7 +695,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.DeachsierungLUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
-                this.RaisePropertyChanged(() => VehicleMotorDeachsierungL);
+                this.OnPropertyChanged(nameof(VehicleMotorDeachsierungL));
             }
         }
 
@@ -774,7 +714,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                 }
                 this.Vehicle.Motor.Einlass.BreiteB = value;
                 this._saveButton = true;
-                SaveVehicleCommand.RaiseCanExecuteChanged();
+                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -792,7 +732,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.Einlass.BreiteBUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
-                this.RaisePropertyChanged(() => VehicleMotorEinlassBreiteB);
+                this.OnPropertyChanged(nameof(VehicleMotorEinlassBreiteB));
             }
         }
 
@@ -807,7 +747,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                 }
                 this.Vehicle.Motor.Einlass.DurchmesserD = value;
                 this._saveButton = true;
-                SaveVehicleCommand.RaiseCanExecuteChanged();
+                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -821,7 +761,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.Einlass.DurchmesserDUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
-                this.RaisePropertyChanged(() => VehicleMotorEinlassDurchmesserD);
+                this.OnPropertyChanged(nameof(VehicleMotorEinlassDurchmesserD));
             }
         }
 
@@ -840,7 +780,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                 }
                 this.Vehicle.Motor.Einlass.FlaecheA = value;
                 this._saveButton = true;
-                SaveVehicleCommand.RaiseCanExecuteChanged();
+                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -858,7 +798,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.Einlass.FlaecheAUnit = (UnitsNet.Units.AreaUnit)value?.UnitEnumValue;
-                this.RaisePropertyChanged(() => VehicleMotorEinlassFlaecheA);
+                this.OnPropertyChanged(nameof(VehicleMotorEinlassFlaecheA));
             }
         }
 
@@ -877,7 +817,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                 }
                 this.Vehicle.Motor.Einlass.HoeheH = value;
                 this._saveButton = true;
-                SaveVehicleCommand.RaiseCanExecuteChanged();
+                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -895,7 +835,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.Einlass.HoeheHUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
-                this.RaisePropertyChanged(() => VehicleMotorEinlassHoeheH);
+                this.OnPropertyChanged(nameof(VehicleMotorEinlassHoeheH));
             }
         }
 
@@ -914,7 +854,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                 }
                 this.Vehicle.Motor.Einlass.LaengeL = value;
                 this._saveButton = true;
-                SaveVehicleCommand.RaiseCanExecuteChanged();
+                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -932,7 +872,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.Einlass.LaengeLUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
-                this.RaisePropertyChanged(() => VehicleMotorEinlassLaengeL);
+                this.OnPropertyChanged(nameof(VehicleMotorEinlassLaengeL));
             }
         }
 
@@ -951,7 +891,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                 }
                 this.Vehicle.Motor.Einlass.LuftBedarf = value;
                 this._saveButton = true;
-                SaveVehicleCommand.RaiseCanExecuteChanged();
+                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -970,7 +910,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                 }
                 this.Vehicle.Motor.Einlass.SteuerzeitSZ = value;
                 this._saveButton = true;
-                SaveVehicleCommand.RaiseCanExecuteChanged();
+                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -989,7 +929,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                 }
                 this.Vehicle.Motor.Einlass.Vergaser.BenzinLuftF = value;
                 this._saveButton = true;
-                SaveVehicleCommand.RaiseCanExecuteChanged();
+                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -1008,7 +948,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                 }
                 this.Vehicle.Motor.Einlass.Vergaser.DurchmesserD = value;
                 this._saveButton = true;
-                SaveVehicleCommand.RaiseCanExecuteChanged();
+                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -1027,7 +967,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                 }
 
                 this.Vehicle.Motor.Einlass.Vergaser.DurchmesserDUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
-                this.RaisePropertyChanged(() => this.VehicleMotorEinlassVergaserDurchmesserD);
+                this.OnPropertyChanged(nameof(this.VehicleMotorEinlassVergaserDurchmesserD));
             }
         }
 
@@ -1047,7 +987,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
 
                 this.Vehicle.Motor.HeizwertU = value;
                 this._saveButton = true;
-                SaveVehicleCommand.RaiseCanExecuteChanged();
+                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -1066,7 +1006,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                 }
                 this.Vehicle.Motor.HubL = value;
                 this._saveButton = true;
-                SaveVehicleCommand.RaiseCanExecuteChanged();
+                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -1085,7 +1025,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                 }
 
                 this.Vehicle.Motor.HubLUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
-                this.RaisePropertyChanged(() => this.VehicleMotorHubL);
+                this.OnPropertyChanged(nameof(this.VehicleMotorHubL));
             }
         }
 
@@ -1104,7 +1044,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                 }
                 this.Vehicle.Motor.HubraumV = value;
                 this._saveButton = true;
-                SaveVehicleCommand.RaiseCanExecuteChanged();
+                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -1122,7 +1062,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.HubraumVUnit = (UnitsNet.Units.VolumeUnit)value?.UnitEnumValue;
-                this.RaisePropertyChanged(() => VehicleMotorHubraumV);
+                this.OnPropertyChanged(nameof(VehicleMotorHubraumV));
             }
         }
 
@@ -1141,7 +1081,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                 }
                 this.Vehicle.Motor.KolbenG = value;
                 this._saveButton = true;
-                SaveVehicleCommand.RaiseCanExecuteChanged();
+                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -1159,7 +1099,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.KolbenGUnit = (UnitsNet.Units.SpeedUnit)value?.UnitEnumValue;
-                this.RaisePropertyChanged(() => VehicleMotorKolbenG);
+                this.OnPropertyChanged(nameof(VehicleMotorKolbenG));
             }
         }
 
@@ -1178,7 +1118,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                 }
                 this.Vehicle.Motor.KurbelgehaeuseV = value;
                 this._saveButton = true;
-                SaveVehicleCommand.RaiseCanExecuteChanged();
+                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -1197,7 +1137,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.KurbelgehaeuseVUnit = (UnitsNet.Units.VolumeUnit)value?.UnitEnumValue;
-                this.RaisePropertyChanged(() => VehicleMotorKurbelgehaeuseV);
+                this.OnPropertyChanged(nameof(VehicleMotorKurbelgehaeuseV));
             }
         }
 
@@ -1216,7 +1156,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                 }
                 this.Vehicle.Motor.Name = value;
                 this._saveButton = true;
-                SaveVehicleCommand.RaiseCanExecuteChanged();
+                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -1235,7 +1175,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                 }
                 this.Vehicle.Motor.PleulL = value;
                 this._saveButton = true;
-                SaveVehicleCommand.RaiseCanExecuteChanged();
+                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -1253,7 +1193,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.PleulLUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
-                this.RaisePropertyChanged(() => VehicleMotorPleulL);
+                this.OnPropertyChanged(nameof(VehicleMotorPleulL));
             }
         }
 
@@ -1272,7 +1212,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                 }
                 this.Vehicle.Motor.ResonanzU = value;
                 this._saveButton = true;
-                SaveVehicleCommand.RaiseCanExecuteChanged();
+                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -1291,7 +1231,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                 }
                 this.Vehicle.Motor.Ueberstroemer.Anzahl = value;
                 this._saveButton = true;
-                SaveVehicleCommand.RaiseCanExecuteChanged();
+                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -1310,7 +1250,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                 }
                 this.Vehicle.Motor.Ueberstroemer.BreiteB = value;
                 this._saveButton = true;
-                SaveVehicleCommand.RaiseCanExecuteChanged();
+                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -1329,7 +1269,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.Ueberstroemer.BreiteBUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
-                this.RaisePropertyChanged(() => VehicleMotorUeberstroemerBreiteB);
+                this.OnPropertyChanged(nameof(VehicleMotorUeberstroemerBreiteB));
             }
         }
 
@@ -1348,7 +1288,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                 }
                 this.Vehicle.Motor.Ueberstroemer.FlaecheA = value;
                 this._saveButton = true;
-                SaveVehicleCommand.RaiseCanExecuteChanged();
+                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -1366,7 +1306,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.Ueberstroemer.FlaecheAUnit = (UnitsNet.Units.AreaUnit)value?.UnitEnumValue;
-                this.RaisePropertyChanged(() => VehicleMotorUeberstroemerFlaecheA);
+                this.OnPropertyChanged(nameof(VehicleMotorUeberstroemerFlaecheA));
             }
         }
 
@@ -1385,7 +1325,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                 }
                 this.Vehicle.Motor.Ueberstroemer.HoeheH = value;
                 this._saveButton = true;
-                SaveVehicleCommand.RaiseCanExecuteChanged();
+                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -1403,7 +1343,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.Ueberstroemer.HoeheHUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
-                this.RaisePropertyChanged(() => VehicleMotorUeberstroemerHoeheH);
+                this.OnPropertyChanged(nameof(VehicleMotorUeberstroemerHoeheH));
             }
         }
 
@@ -1422,7 +1362,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                 }
                 this.Vehicle.Motor.Ueberstroemer.SteuerzeitSZ = value;
                 this._saveButton = true;
-                SaveVehicleCommand.RaiseCanExecuteChanged();
+                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -1441,7 +1381,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                 }
                 this.Vehicle.Motor.VerdichtungV = value;
                 this._saveButton = true;
-                SaveVehicleCommand.RaiseCanExecuteChanged();
+                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -1460,7 +1400,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                 }
                 this.Vehicle.Motor.Zuendzeitpunkt = value;
                 this._saveButton = true;
-                SaveVehicleCommand.RaiseCanExecuteChanged();
+                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -1479,7 +1419,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                 }
                 this.Vehicle.Motor.ZylinderAnz = value;
                 this._saveButton = true;
-                SaveVehicleCommand.RaiseCanExecuteChanged();
+                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -1498,7 +1438,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
                 }
                 this.Vehicle.Name = value;
                 this._saveButton = true;
-                SaveVehicleCommand.RaiseCanExecuteChanged();
+                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -1519,7 +1459,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
         // public double? VehicleUebersetzung { get => this.Vehicle?.ueb; set { if
         // (this.Vehicle == null) { return; } this.Vehicle.Uebersetzung = value;
         // this._saveButton = true;
-        //SaveVehicleCommand.RaiseCanExecuteChanged(); } }
+        //SaveVehicleCommand.NotifyCanExecuteChanged(); } }
 
         /// <summary>
         /// Gets the volume quantity units.

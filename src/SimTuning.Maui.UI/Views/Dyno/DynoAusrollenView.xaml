@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage Style="{StaticResource ContentPageStyle}"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="Auswertung-Ausrollen"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
+             x:Class="SimTuning.Maui.UI.Views.Dyno.DynoAusrollenView"
+             xmlns:vm="clr-namespace:SimTuning.Core.ViewModels.Dyno;assembly=SimTuning.Core"
+             x:DataType="vm:AusrollenViewModel">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <Frame Style="{StaticResource FrameStyle}"
+               Margin="10"
+               Grid.Row="0">
+            <StackLayout>
+                <ImageButton Style="{StaticResource IconButtonMediumStyle}"
+                             Margin="5"
+                             HorizontalOptions="FillAndExpand"
+                             VerticalOptions="Center"
+                             Source="{StaticResource IconRefreshMedium}"
+                             Command="{Binding RefreshPlotCommand}" />
+            </StackLayout>
+        </Frame>
+
+        <Frame Style="{StaticResource FrameStyle}"
+               Margin="10"
+               Grid.Row="1"
+               VerticalOptions="FillAndExpand">
+            <StackLayout>
+                <!--<Label Style="{StaticResource LabelStyle}" Text="Ausroll-Experiment"
+                                        FontSize="Medium"
+                                        FontAttributes="Bold" />
+
+                <BoxView Color="{DynamicResource DesignDivider}"
+                         HeightRequest="2"
+                         HorizontalOptions="Fill"
+                         Margin="0, 0, 0, 5" />-->
+
+                <lvc:CartesianChart Series="{Binding Mode=OneWay, Path=PlotAusrollen}"
+                                    HeightRequest="400" />
+            </StackLayout>
+        </Frame>
+
+        <Button Style="{StaticResource ButtonMediumStyle}"
+                WidthRequest="100"
+                HeightRequest="60"
+                Margin="15"
+                Grid.Row="2"
+                HorizontalOptions="End"
+                VerticalOptions="Center"
+                ImageSource="{StaticResource IconChevronRightMedium}"
+                Command="{Binding ShowDiagnosisCommand}" />
+    </Grid>
+</ContentPage>

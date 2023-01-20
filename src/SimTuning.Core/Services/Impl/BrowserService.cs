@@ -1,9 +1,10 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
 using Microsoft.Extensions.Logging;
+using Microsoft.Maui.ApplicationModel;
+using Microsoft.Maui.Devices;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using Xamarin.Essentials;
 
 namespace SimTuning.Core.Services
 {

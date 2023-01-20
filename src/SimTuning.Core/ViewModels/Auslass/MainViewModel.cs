@@ -1,58 +1,25 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
 using Microsoft.Extensions.Logging;
-using MvvmCross.Navigation;
-using MvvmCross.ViewModels;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System.Threading.Tasks;
+using SimTuning.Core.Services;
 
 namespace SimTuning.Core.ViewModels.Auslass
 {
-    /// <summary>
-    /// Auslass-Main-ViewModel.
-    /// </summary>
-    /// <seealso cref="MvvmCross.ViewModels.MvxViewModel" />
-    public class MainViewModel : MvxViewModel
+    public class MainViewModel : ViewModelBase
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MainViewModel" /> class.
-        /// </summary>
-        /// <param name="logger">
-        /// <inheritdoc cref="ILogger" path="/summary/node()" />
-        /// </param>
-        /// <param name="navigationService">
-        /// <inheritdoc cref="IMvxNavigationService" path="/summary/node()" />
-        /// </param>
         public MainViewModel(
             ILogger<MainViewModel> logger,
-            IMvxNavigationService navigationService)
+            INavigationService INavigationService)
         {
             this._logger = logger;
-            this._navigationService = navigationService;
+            this._INavigationService = INavigationService;
         }
 
-        #region Methods
-
-        /// <summary>
-        /// Initializes this instance.
-        /// </summary>
-        /// <returns>Initilisierung.</returns>
-        public override Task Initialize()
-        {
-            return base.Initialize();
-        }
-
-        /// <summary>
-        /// Prepares the specified user.
-        /// </summary>
-
-        public override void Prepare()
-        {
-        }
-
-        #endregion Methods
 
         #region Values
 
-        protected readonly IMvxNavigationService _navigationService;
+        protected readonly INavigationService _INavigationService;
         private readonly ILogger<MainViewModel> _logger;
         private int _auslassTabIndex;
 

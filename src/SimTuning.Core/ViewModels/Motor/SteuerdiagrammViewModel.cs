@@ -3,9 +3,8 @@ namespace SimTuning.Core.ViewModels.Motor
 {
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
-    using MvvmCross.Commands;
-    using MvvmCross.Navigation;
-    using MvvmCross.ViewModels;
+    using CommunityToolkit.Mvvm.Input;
+    using CommunityToolkit.Mvvm.ComponentModel;
     using SimTuning.Core.ModuleLogic;
     using SimTuning.Core.Services;
     using SimTuning.Data;
@@ -15,36 +14,24 @@ namespace SimTuning.Core.ViewModels.Motor
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
+    using Microsoft.Maui.Controls;
 
-    /// <summary>
-    /// SteuerdiagrammViewModel.
-    /// </summary>
-    /// <seealso cref="MvvmCross.ViewModels.MvxViewModel" />
-    public class SteuerdiagrammViewModel : MvxViewModel
+    public class SteuerdiagrammViewModel : ViewModelBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SteuerdiagrammViewModel" /> class.
         /// </summary>
         /// <param name="logger"><inheritdoc cref="ILogger" path="/summary/node()" /></param>
-        /// <param name="navigationService"><inheritdoc cref="IMvxNavigationService" path="/summary/node()" /></param>
+        /// <param name="INavigationService"><inheritdoc cref="INavigationService" path="/summary/node()" /></param>
         /// <param name="vehicleService"><inheritdoc cref="IVehicleService" path="/summary/node()" /></param>
         public SteuerdiagrammViewModel(
             ILogger<SteuerdiagrammViewModel> logger,
-            IMvxNavigationService navigationService,
+            INavigationService INavigationService,
             IVehicleService vehicleService)
         {
             this._logger = logger;
             this._vehicleService = vehicleService;
-        }
 
-        #region Methods
-
-        /// <summary>
-        /// Initializes this instance.
-        /// </summary>
-        /// <returns>Initilisierung.</returns>
-        public override Task Initialize()
-        {
             // lokale liste kreieren
             this.MotorSteuerzeiten = new ObservableCollection<MotorModel>()
             {
@@ -87,24 +74,19 @@ namespace SimTuning.Core.ViewModels.Motor
 
             this.HelperVehicles = new ObservableCollection<VehiclesModel>(_vehicleService.RetrieveVehicles());
 
-            this.InsertReferenceCommand = new MvxCommand(this.InsertReference);
-            this.InsertVehicleCommand = new MvxCommand(this.InsertVehicle);
-
-            return base.Initialize();
+            this.InsertReferenceCommand = new RelayCommand(this.InsertReference);
+            this.InsertVehicleCommand = new RelayCommand(this.InsertVehicle);
         }
 
-        /// <summary>
-        /// Prepares this instance. called after construction.
-        /// </summary>
-        public override void Prepare()
-        {
-        }
+        #region Methods
+
+
 
         /// <summary>
         /// Refreshes the steuerzeit.
         /// </summary>
         /// <returns></returns>
-        protected virtual Stream RefreshSteuerzeit()
+        protected void RefreshSteuerzeit()
         {
             if (this.SteuerzeitEinlass.HasValue)
             {
@@ -132,11 +114,10 @@ namespace SimTuning.Core.ViewModels.Motor
             if (this.SteuerzeitEinlass.HasValue && this.SteuerzeitUeberstroemer.HasValue && this.SteuerzeitAuslass.HasValue)
             {
                 Stream stream = SimTuning.Core.Converters.Converts.SKBitmapToStream(bitmap: EngineLogic.GetSteuerdiagramm(this.SteuerzeitEinlass.Value, this.SteuerzeitAuslass.Value, this.SteuerzeitUeberstroemer.Value));
-                return stream;
-            }
-            else
-            {
-                return null;
+                if (stream != null)
+                {
+                    this.PortTimingCircle = ImageSource.FromStream(() => stream);
+                }
             }
         }
 
@@ -185,6 +166,13 @@ namespace SimTuning.Core.ViewModels.Motor
         #endregion Methods
 
         #region Values
+        private ImageSource _portTimingCircle;
+
+        public ImageSource PortTimingCircle
+        {
+            get => _portTimingCircle;
+            private set => SetProperty(ref _portTimingCircle, value);
+        }
 
         private readonly ILogger<SteuerdiagrammViewModel> _logger;
 
@@ -258,13 +246,13 @@ namespace SimTuning.Core.ViewModels.Motor
         /// Gets or sets the insert reference command.
         /// </summary>
         /// <value>The insert reference command.</value>
-        public IMvxCommand InsertReferenceCommand { get; set; }
+        public IRelayCommand InsertReferenceCommand { get; set; }
 
         /// <summary>
         /// Gets or sets the insert vehicle command.
         /// </summary>
         /// <value>The insert vehicle command.</value>
-        public IMvxCommand InsertVehicleCommand { get; set; }
+        public IRelayCommand InsertVehicleCommand { get; set; }
 
         public Data.Models.MotorModel MotorSteuerzeit
         {
@@ -282,30 +270,42 @@ namespace SimTuning.Core.ViewModels.Motor
         /// Gets or sets the steuerzeit auslass.
         /// </summary>
         /// <value>The steuerzeit auslass.</value>
-        public virtual double? SteuerzeitAuslass
+        public double? SteuerzeitAuslass
         {
             get => this._steuerzeitAuslass;
-            set => this.SetProperty(ref this._steuerzeitAuslass, value);
+            set
+            {
+                this.SetProperty(ref this._steuerzeitAuslass, value);
+                this.RefreshSteuerzeit();
+            }
         }
 
         /// <summary>
         /// Gets or sets the steuerzeit einlass.
         /// </summary>
         /// <value>The steuerzeit einlass.</value>
-        public virtual double? SteuerzeitEinlass
+        public double? SteuerzeitEinlass
         {
             get => this._steuerzeitEinlass;
-            set => this.SetProperty(ref this._steuerzeitEinlass, value);
+            set
+            {
+                this.SetProperty(ref this._steuerzeitEinlass, value);
+                this.RefreshSteuerzeit();
+            }
         }
 
         /// <summary>
         /// Gets or sets the steuerzeit ueberstroemer.
         /// </summary>
         /// <value>The steuerzeit ueberstroemer.</value>
-        public virtual double? SteuerzeitUeberstroemer
+        public double? SteuerzeitUeberstroemer
         {
             get => this._steuerzeitUeberstroemer;
-            set => this.SetProperty(ref this._steuerzeitUeberstroemer, value);
+            set
+            {
+                this.SetProperty(ref this._steuerzeitUeberstroemer, value);
+                this.RefreshSteuerzeit();
+            }
         }
 
         public double? SteuerzeitVorauslass

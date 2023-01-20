@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    xmlns:tabs="http://sharpnado.com">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Colors.xaml" />
+        <ResourceDictionary Source="Text.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <x:Double x:Key="SizeSmallButton">25</x:Double>
+    <x:Double x:Key="SizeMediumButton">45</x:Double>
+    <x:Double x:Key="SizeLargeButton">100</x:Double>
+
+    <!--#region Pages-->
+    <Style x:Key="ContentPageStyle"
+           TargetType="{x:Type ContentPage}">
+        <Setter Property="BackgroundColor"
+                Value="{AppThemeBinding Light={StaticResource DesignPaperLight}, Dark={StaticResource DesignPaperDark}}" />
+    </Style>
+
+    <Style x:Key="ContentViewStyle"
+           TargetType="{x:Type ContentView}">
+        <Setter Property="BackgroundColor"
+                Value="{AppThemeBinding Light={StaticResource DesignPaperLight}, Dark={StaticResource DesignPaperDark}}" />
+    </Style>
+    <!--#endregion Pages-->
+
+    <!--#region Button-->
+    <Style x:Key="ButtonSmallStyle"
+           TargetType="{x:Type Button}">
+        <Setter Property="HeightRequest"
+                Value="{StaticResource SizeSmallButton}" />
+        <Setter Property="WidthRequest"
+                Value="{StaticResource SizeSmallButton}" />
+        <Setter Property="TextColor"
+                Value="{AppThemeBinding Light={StaticResource DesignBodyLight}, Dark={StaticResource DesignBodyDark}}" />
+    </Style>
+
+    <Style x:Key="ButtonMediumStyle"
+           TargetType="{x:Type Button}">
+        <Setter Property="HeightRequest"
+                Value="{StaticResource SizeMediumButton}" />
+        <Setter Property="WidthRequest"
+                Value="{StaticResource SizeMediumButton}" />
+        <Setter Property="TextColor"
+                Value="{AppThemeBinding Light={StaticResource DesignBodyLight}, Dark={StaticResource DesignBodyDark}}" />
+    </Style>
+
+    <Style x:Key="ButtonLargeStyle"
+           TargetType="{x:Type Button}">
+        <Setter Property="HeightRequest"
+                Value="{StaticResource SizeLargeButton}" />
+        <Setter Property="WidthRequest"
+                Value="{StaticResource SizeLargeButton}" />
+        <Setter Property="TextColor"
+                Value="{AppThemeBinding Light={StaticResource DesignBodyLight}, Dark={StaticResource DesignBodyDark}}" />
+    </Style>
+    <!--#endregion Button-->
+
+    <!--#region ImageButton-->
+    <Style x:Key="ImageButtonSmallStyle"
+           TargetType="{x:Type ImageButton}">
+        <Setter Property="HeightRequest"
+                Value="{StaticResource SizeSmallButton}" />
+        <Setter Property="WidthRequest"
+                Value="{StaticResource SizeSmallButton}" />
+        <Setter Property="TintColor"
+                Value="{AppThemeBinding Light={StaticResource DesignBodyLight}, Dark={StaticResource DesignBodyDark}}" />
+    </Style>
+
+    <Style x:Key="ImageButtonMediumStyle"
+           TargetType="{x:Type ImageButton}">
+        <Setter Property="HeightRequest"
+                Value="{StaticResource SizeMediumButton}" />
+        <Setter Property="WidthRequest"
+                Value="{StaticResource SizeMediumButton}" />
+        <Setter Property="TintColor"
+                Value="{AppThemeBinding Light={StaticResource DesignBodyLight}, Dark={StaticResource DesignBodyDark}}" />
+    </Style>
+
+    <Style x:Key="ImageButtonLargeStyle"
+           TargetType="{x:Type ImageButton}">
+        <Setter Property="HeightRequest"
+                Value="{StaticResource SizeLargeButton}" />
+        <Setter Property="WidthRequest"
+                Value="{StaticResource SizeLargeButton}" />
+        <Setter Property="TintColor"
+                Value="{AppThemeBinding Light={StaticResource DesignBodyLight}, Dark={StaticResource DesignBodyDark}}" />
+    </Style>
+    <!--#endregion ImageButton-->
+
+    <!--#region Round_ImageButton-->
+    <Style x:Key="ImageButtonSmallRoundStyle"
+           BasedOn="{StaticResource ImageButtonSmallStyle}"
+           TargetType="{x:Type ImageButton}">
+        <Setter Property="CornerRadius"
+                Value="100" />
+    </Style>
+    <Style x:Key="ImageButtonMediumRoundStyle"
+           BasedOn="{StaticResource ImageButtonMediumStyle}"
+           TargetType="{x:Type ImageButton}">
+        <Setter Property="CornerRadius"
+                Value="100" />
+    </Style>
+    <Style x:Key="ImageButtonLargeRoundStyle"
+           BasedOn="{StaticResource ImageButtonLargeStyle}"
+           TargetType="{x:Type ImageButton}">
+        <Setter Property="CornerRadius"
+                Value="100" />
+    </Style>
+    <!--#endregion Round_ImageButton-->
+
+    <!--#region Round_Button-->
+    <Style x:Key="ButtonSmallRoundStyle"
+           BasedOn="{StaticResource ButtonSmallStyle}"
+           TargetType="{x:Type Button}">
+        <Setter Property="CornerRadius"
+                Value="100" />
+    </Style>
+
+    <Style x:Key="ButtonMediumRoundStyle"
+           BasedOn="{StaticResource ButtonMediumStyle}"
+           TargetType="{x:Type Button}">
+        <Setter Property="CornerRadius"
+                Value="100" />
+    </Style>
+
+    <Style x:Key="ButtonLargeRoundStyle"
+           BasedOn="{StaticResource ButtonLargeStyle}"
+           TargetType="{x:Type Button}">
+        <Setter Property="CornerRadius"
+                Value="100" />
+    </Style>
+    <!--#endregion Round_Button-->
+
+    <Style x:Key="CheckBoxStyle"
+           TargetType="{x:Type CheckBox}">
+        <Setter Property="TextColor"
+                Value="{AppThemeBinding Light={StaticResource DesignBodyLight}, Dark={StaticResource DesignBodyDark}}" />
+        <Setter Property="BackgroundColor"
+                Value="{AppThemeBinding Light={StaticResource DesignCardBackgroundLight}, Dark={StaticResource DesignCardBackgroundDark}}" />
+        <Setter Property="SelectedColor"
+                Value="{StaticResource Accent700}" />
+        <Setter Property="UnselectedColor"
+                Value="{AppThemeBinding Light={StaticResource DesignCheckBoxOffLight}, Dark={StaticResource DesignCheckBoxOffDark}}" />
+    </Style>
+
+    <Style x:Key="FrameStyle"
+           TargetType="{x:Type Frame}">
+        <Setter Property="BackgroundColor"
+                Value="{AppThemeBinding Light={StaticResource DesignCardBackgroundLight}, Dark={StaticResource DesignCardBackgroundDark}}" />
+        <Setter Property="HasShadow"
+                Value="True" />
+        <Setter Property="CornerRadius"
+                Value="5" />
+        <Setter Property="Padding"
+                Value="15, 10" />
+    </Style>
+
+    <Style x:Key="TaskLoaderViewStyle"
+           TargetType="{x:Type tabs:TaskLoaderView}">
+        <Setter Property="TextColor"
+                Value="{AppThemeBinding Light={StaticResource DesignBodyLight}, Dark={StaticResource DesignBodyDark}}" />
+        <Setter Property="AccentColor"
+                Value="{StaticResource Primary700}" />
+    </Style>
+
+    <Style x:Key="SegmentedTabStyle"
+           TargetType="{x:Type tabs:SegmentedTabItem}">
+        <Setter Property="SelectedTabColor"
+                Value="{StaticResource Primary700}" />
+        <Setter Property="LabelSize"
+                Value="14" />
+        <Setter Property="SelectedLabelColor"
+                Value="{StaticResource Accent200Foreground}" />
+        <Setter Property="UnselectedLabelColor"
+                Value="{AppThemeBinding Light={StaticResource DesignBodyLight}, Dark={StaticResource DesignBodyDark}}" />
+        <Setter Property="BackgroundColor"
+                Value="{AppThemeBinding Light={StaticResource DesignBodyDark}, Dark={StaticResource DesignPaperDark}}" />
+    </Style>
+
+    <Style x:Key="BottomTabStyle"
+           TargetType="{x:Type tabs:BottomTabItem}">
+        <Setter Property="SelectedTabColor"
+                Value="{StaticResource Primary700}" />
+        <Setter Property="UnselectedLabelColor"
+                Value="{AppThemeBinding Light={StaticResource DesignBodyLight}, Dark={StaticResource DesignBodyDark}}" />
+        <Setter Property="UnselectedIconColor"
+                Value="LightGray" />
+        <Setter Property="LabelSize"
+                Value="14" />
+        <Setter Property="IconSize"
+                Value="28" />
+    </Style>
+
+    <!--Shades können nicht global gestyled werden!-->
+    <Style x:Key="TabHostViewStyle"
+           TargetType="{x:Type tabs:TabHostView}">
+        <Setter Property="TabType"
+                Value="Fixed" />
+        <Setter Property="IsSegmented"
+                Value="True" />
+        <Setter Property="CornerRadius"
+                Value="5" />
+        <Setter Property="HeightRequest"
+                Value="50" />
+        <Setter Property="Margin"
+                Value="10" />
+        <Setter Property="VerticalOptions"
+                Value="CenterAndExpand" />
+        <Setter Property="SegmentedHasSeparator"
+                Value="True" />
+    </Style>
+    
+    
+    <!--
+    <sh:SingleShade x:Key="ShadowAccentTop"
+                    BlurRadius="6"
+                    Opacity="0.15"
+                    Offset="0,-8"
+                    Color="{StaticResource Accent700}" />
+
+    <sh:SingleShade x:Key="ShadowAccentBottom"
+                    BlurRadius="6"
+                    Opacity="0.075"
+                    Offset="0,5"
+                    Color="{StaticResource Accent700}" />
+
+    <sh:ImmutableShades x:Key="ShadowNone" />
+
+    <sh:NeumorphismShades x:Key="ShadowNeumorphism" />
+
+    <sh:NeumorphismShades x:Key="ShadowThinNeumorphism"
+                          LowerOffset="8, 6"
+                          UpperOffset="-8,-6" />
+    -->
+
+    <Style x:Key="DividerBoxViewStyle"
+           TargetType="BoxView">
+        <Setter Property="HorizontalOptions"
+                Value="FillAndExpand" />
+        <Setter Property="Margin"
+                Value="0, 0, 0, 5" />
+        <Setter Property="HeightRequest"
+                Value="2" />
+        <Setter Property="Color"
+                Value="{AppThemeBinding Light={StaticResource DesignDividerLight}, Dark={StaticResource DesignDividerDark}}" />
+    </Style>
+</ResourceDictionary>

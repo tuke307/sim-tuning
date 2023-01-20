@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SimTuning.Maui.UI.Views.Einstellungen.EinstellungenMenuView"
+             Style="{StaticResource ContentPageStyle}"
+             xmlns:vm="clr-namespace:SimTuning.Core.ViewModels.Einstellungen;assembly=SimTuning.Core"
+             x:DataType="vm:MenuViewModel">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Frame Style="{StaticResource FrameStyle}"
+               Grid.Row="1"
+               CornerRadius="2"
+               HeightRequest="70"
+               Margin="20, 10, 20, 10"
+               HorizontalOptions="FillAndExpand">
+            <!--IsClickable="true"
+               ClickCommand="{Binding OpenApplicationCommand}"-->
+            <StackLayout>
+
+                <Label Style="{StaticResource LabelStyle}">
+                    Allgemein
+                </Label>
+                <Label Style="{StaticResource LabelStyle}">
+                    Einheiten, Runden, Sprache
+                </Label>
+            </StackLayout>
+        </Frame>
+
+        <Frame Style="{StaticResource FrameStyle}"
+               Grid.Row="2"
+               CornerRadius="2"
+               HeightRequest="70"
+               Margin="20, 10, 20, 10"
+               HorizontalOptions="FillAndExpand">
+            <!--IsClickable="true"
+               ClickCommand="{Binding OpenVehiclesCommand}"-->
+            <StackLayout>
+                <Label Style="{StaticResource LabelStyle}">
+                    Fahrzeuge
+                </Label>
+                <Label Style="{StaticResource LabelStyle}">
+                    Datensätze, Modelle, Dyno, Motor
+                </Label>
+            </StackLayout>
+        </Frame>
+    </Grid>
+</ContentPage>

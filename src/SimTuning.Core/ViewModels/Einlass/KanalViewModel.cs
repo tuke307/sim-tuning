@@ -1,35 +1,22 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
+using SimTuning.Core.Models;
+using SimTuning.Core.ModuleLogic;
+using SimTuning.Core.Services;
+using SimTuning.Data.Models;
+using System.Collections.ObjectModel;
+using System.Linq;
+using UnitsNet.Units;
+
 namespace SimTuning.Core.ViewModels.Einlass
 {
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.Logging;
-    using MvvmCross.Commands;
-    using MvvmCross.Navigation;
-    using MvvmCross.ViewModels;
-    using SimTuning.Core.Models;
-    using SimTuning.Core.ModuleLogic;
-    using SimTuning.Core.Services;
-    using SimTuning.Data;
-    using SimTuning.Data.Models;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using UnitsNet.Units;
-
-    /// <summary>
-    /// KanalViewModel.
-    /// </summary>
-    /// <seealso cref="MvvmCross.ViewModels.MvxViewModel" />
-    public class KanalViewModel : MvxViewModel
+    public class KanalViewModel : ViewModelBase
     {
-        /// <summary> Initializes a new instance of the <see cref="KanalViewModel"/>
-        /// class. </summary> <param name="logger"><inheritdoc cref="ILogger"
-        /// path="/summary/node()" /></param> <param name="navigationService"><inheritdoc
-        /// cref="IMvxNavigationService" path="/summary/node()" /></param
         public KanalViewModel(
             ILogger<KanalViewModel> logger,
-            IMvxNavigationService navigationService,
+            INavigationService INavigationService,
             IVehicleService vehicleService)
         {
             this._logger = logger;
@@ -38,16 +25,7 @@ namespace SimTuning.Core.ViewModels.Einlass
             this.AreaQuantityUnits = new AreaQuantity();
             this.VolumeQuantityUnits = new VolumeQuantity();
             this.LengthQuantityUnits = new LengthQuantity();
-        }
 
-        #region Methods
-
-        /// <summary>
-        /// Initializes this instance.
-        /// </summary>
-        /// <returns>Initilisierung.</returns>
-        public override Task Initialize()
-        {
             // Vehicle Creation
             this.Vehicle = new VehiclesModel();
             this.Vehicle.Motor = new MotorModel();
@@ -57,17 +35,11 @@ namespace SimTuning.Core.ViewModels.Einlass
 
             this.HelperVehicles = new ObservableCollection<VehiclesModel>(_vehicleService.RetrieveVehicles());
 
-            this.InsertDataCommand = new MvxCommand(this.InsertData);
-
-            return base.Initialize();
+            this.InsertDataCommand = new RelayCommand(this.InsertData);
         }
 
-        /// <summary>
-        /// Prepares this instance. called after construction.
-        /// </summary>
-        public override void Prepare()
-        {
-        }
+        #region Methods
+
 
         /// <summary>
         /// Inserts the data.
@@ -77,31 +49,31 @@ namespace SimTuning.Core.ViewModels.Einlass
             if (this.HelperVehicle.Motor.Einlass.FlaecheA.HasValue)
             {
                 this.VehicleMotorEinlassFlaecheA = this.HelperVehicle.Motor.Einlass.FlaecheA;
-                this.RaisePropertyChanged(() => this.VehicleMotorEinlassFlaecheA);
+                this.OnPropertyChanged(nameof(this.VehicleMotorEinlassFlaecheA));
             }
 
             if (this.HelperVehicle.Motor.Einlass.SteuerzeitSZ.HasValue)
             {
                 this.Einlasssteuerwinkel = this.HelperVehicle.Motor.Einlass.SteuerzeitSZ;
-                this.RaisePropertyChanged(() => this.Einlasssteuerwinkel);
+                this.OnPropertyChanged(nameof(this.Einlasssteuerwinkel));
             }
 
             if (this.HelperVehicle.Motor.ResonanzU.HasValue)
             {
                 this.VehicleMotorResonanzU = this.HelperVehicle.Motor.ResonanzU;
-                this.RaisePropertyChanged(() => this.VehicleMotorResonanzU);
+                this.OnPropertyChanged(nameof(this.VehicleMotorResonanzU));
             }
 
             if (this.HelperVehicle.Motor.KurbelgehaeuseV.HasValue)
             {
                 this.VehicleMotorKurbelgehaeuseV = this.HelperVehicle.Motor.KurbelgehaeuseV;
-                this.RaisePropertyChanged(() => this.VehicleMotorKurbelgehaeuseV);
+                this.OnPropertyChanged(nameof(this.VehicleMotorKurbelgehaeuseV));
             }
 
             if (this.HelperVehicle.Motor.Einlass.DurchmesserD.HasValue)
             {
                 this.VehicleMotorEinlassDurchmesserD = this.HelperVehicle.Motor.Einlass.DurchmesserD;
-                this.RaisePropertyChanged(() => this.VehicleMotorEinlassDurchmesserD);
+                this.OnPropertyChanged(nameof(this.VehicleMotorEinlassDurchmesserD));
             }
         }
 
@@ -168,7 +140,7 @@ namespace SimTuning.Core.ViewModels.Einlass
         /// Gets or sets the insert data command.
         /// </summary>
         /// <value>The insert data command.</value>
-        public IMvxCommand InsertDataCommand { get; set; }
+        public IRelayCommand InsertDataCommand { get; set; }
 
         /// <summary>
         /// Gets the length quantity units.
@@ -229,7 +201,7 @@ namespace SimTuning.Core.ViewModels.Einlass
                 }
 
                 this.Vehicle.Motor.Einlass.DurchmesserDUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
-                this.RaisePropertyChanged(() => this.VehicleMotorEinlassDurchmesserD);
+                this.OnPropertyChanged(nameof(this.VehicleMotorEinlassDurchmesserD));
             }
         }
 
@@ -259,7 +231,7 @@ namespace SimTuning.Core.ViewModels.Einlass
                 }
 
                 this.Vehicle.Motor.Einlass.FlaecheAUnit = (UnitsNet.Units.AreaUnit)value?.UnitEnumValue;
-                this.RaisePropertyChanged(() => this.VehicleMotorEinlassFlaecheA);
+                this.OnPropertyChanged(nameof(this.VehicleMotorEinlassFlaecheA));
             }
         }
 
@@ -289,7 +261,7 @@ namespace SimTuning.Core.ViewModels.Einlass
                 }
 
                 this.Vehicle.Motor.KurbelgehaeuseVUnit = (UnitsNet.Units.VolumeUnit)value?.UnitEnumValue;
-                this.RaisePropertyChanged(() => this.VehicleMotorKurbelgehaeuseV);
+                this.OnPropertyChanged(nameof(this.VehicleMotorKurbelgehaeuseV));
             }
         }
 

@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="SimTuning.Maui.UI.Views.Auslass.AuslassMainView"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:tabs="http://sharpnado.com"
+             xmlns:local="clr-namespace:SimTuning.Maui.UI.Views.Auslass"
+             xmlns:vm="clr-namespace:SimTuning.Core.ViewModels.Auslass;assembly=SimTuning.Core"
+             x:DataType="vm:MainViewModel"
+             Style="{StaticResource ContentPageStyle}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--  swipable views  -->
+        <tabs:TabHostView Grid.Row="0"
+                          Style="{StaticResource TabHostViewStyle}"
+                          SelectedIndex="{Binding Source={x:Reference Switcher}, Path=SelectedIndex, Mode=TwoWay}">
+            <tabs:TabHostView.Tabs>
+                <tabs:UnderlinedTabItem Style="{StaticResource SegmentedTabStyle}"
+                                        Label="Anwendung" />
+                <tabs:UnderlinedTabItem Style="{StaticResource SegmentedTabStyle}"
+                                        Label="Theorie" />
+            </tabs:TabHostView.Tabs>
+        </tabs:TabHostView>
+
+        <tabs:ViewSwitcher x:Name="Switcher"
+                           Grid.Row="1"
+                           Animate="True"
+                           SelectedIndex="{Binding AuslassTabIndex, Mode=TwoWay}">
+            <local:AuslassAnwendungView />
+            <local:AuslassTheorieView />
+        </tabs:ViewSwitcher>
+    </Grid>
+</ContentPage>

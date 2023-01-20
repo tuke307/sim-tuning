@@ -3,9 +3,8 @@ namespace SimTuning.Core.ViewModels.Motor
 {
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
-    using MvvmCross.Commands;
-    using MvvmCross.Navigation;
-    using MvvmCross.ViewModels;
+    using CommunityToolkit.Mvvm.Input;
+    using CommunityToolkit.Mvvm.ComponentModel;
     using SimTuning.Core.Models;
     using SimTuning.Core.ModuleLogic;
     using SimTuning.Core.Services;
@@ -20,16 +19,15 @@ namespace SimTuning.Core.ViewModels.Motor
     /// <summary>
     /// UmrechnungViewModel.
     /// </summary>
-    /// <seealso cref="MvvmCross.ViewModels.MvxViewModel" />
-    public class UmrechnungViewModel : MvxViewModel
+    public class UmrechnungViewModel : ViewModelBase
     {
         /// <summary> Initializes a new instance of the <see cref="UmrechnungViewModel"/>
         /// class. </summary> <param name="logger"><inheritdoc cref="ILogger"
-        /// path="/summary/node()" /></param> <param name="navigationService"><inheritdoc
-        /// cref="IMvxNavigationService" path="/summary/node()" /></param
+        /// path="/summary/node()" /></param> <param name="INavigationService"><inheritdoc
+        /// cref="INavigationService" path="/summary/node()" /></param
         public UmrechnungViewModel(
             ILogger<UmrechnungViewModel> logger,
-            IMvxNavigationService navigationService,
+            INavigationService INavigationService,
             IVehicleService vehicleService)
         {
             this._logger = logger;
@@ -37,16 +35,7 @@ namespace SimTuning.Core.ViewModels.Motor
 
             this.VolumeQuantityUnits = new VolumeQuantity();
             this.LengthQuantityUnits = new LengthQuantity();
-        }
 
-        #region Methods
-
-        /// <summary>
-        /// Initializes this instance.
-        /// </summary>
-        /// <returns>Initilisierung.</returns>
-        public override Task Initialize()
-        {
             // vordefinieren der nicht model werte
             // TODO: den rest der unmodelt.units definieren! this.UnitAbstandOTlength =
             // this.LengthQuantityUnits.Where(x =>
@@ -57,21 +46,15 @@ namespace SimTuning.Core.ViewModels.Motor
 
             this.HelperVehicles = new ObservableCollection<VehiclesModel>(_vehicleService.RetrieveVehicles());
 
-            this.InsertDataCommand = new MvxCommand(this.InsertData);
+            this.InsertDataCommand = new RelayCommand(this.InsertData);
 
             // Vehicle Creation
             this.Vehicle = new VehiclesModel();
             this.Vehicle.Motor = new MotorModel();
-
-            return base.Initialize();
         }
 
-        /// <summary>
-        /// Prepares this instance. called after construction.
-        /// </summary>
-        public override void Prepare()
-        {
-        }
+        #region Methods
+
 
         /// <summary>
         /// Inserts the data.
@@ -81,19 +64,19 @@ namespace SimTuning.Core.ViewModels.Motor
             if (this.HelperVehicle.Motor.HubL.HasValue)
             {
                 this.VehicleMotorHubL = this.HelperVehicle.Motor.HubL;
-                this.RaisePropertyChanged(() => this.VehicleMotorHubL);
+                this.OnPropertyChanged(nameof(this.VehicleMotorHubL));
             }
 
             if (this.HelperVehicle.Motor.PleulL.HasValue)
             {
                 this.VehicleMotorPleulL = this.HelperVehicle.Motor.PleulL;
-                this.RaisePropertyChanged(() => this.VehicleMotorPleulL);
+                this.OnPropertyChanged(nameof(this.VehicleMotorPleulL));
             }
 
             if (this.HelperVehicle.Motor.DeachsierungL.HasValue)
             {
                 this.VehicleMotorDeachsierungL = this.HelperVehicle.Motor.DeachsierungL;
-                this.RaisePropertyChanged(() => this.VehicleMotorDeachsierungL);
+                this.OnPropertyChanged(nameof(this.VehicleMotorDeachsierungL));
             }
         }
 
@@ -282,7 +265,7 @@ namespace SimTuning.Core.ViewModels.Motor
         /// Gets or sets the insert data command.
         /// </summary>
         /// <value>The insert data command.</value>
-        public IMvxCommand InsertDataCommand { get; set; }
+        public IRelayCommand InsertDataCommand { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether [kolbenoberkante checked].
@@ -458,7 +441,7 @@ namespace SimTuning.Core.ViewModels.Motor
                 }
 
                 this.Vehicle.Motor.DeachsierungLUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
-                this.RaisePropertyChanged(() => this.VehicleMotorDeachsierungL);
+                this.OnPropertyChanged(nameof(this.VehicleMotorDeachsierungL));
             }
         }
 
@@ -488,7 +471,7 @@ namespace SimTuning.Core.ViewModels.Motor
                 }
 
                 this.Vehicle.Motor.HubLUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
-                this.RaisePropertyChanged(() => this.VehicleMotorHubL);
+                this.OnPropertyChanged(nameof(this.VehicleMotorHubL));
             }
         }
 
@@ -543,7 +526,7 @@ namespace SimTuning.Core.ViewModels.Motor
                 }
 
                 this.Vehicle.Motor.PleulLUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
-                this.RaisePropertyChanged(() => this.VehicleMotorPleulL);
+                this.OnPropertyChanged(nameof(this.VehicleMotorPleulL));
             }
         }
 

@@ -1,8 +1,7 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using MvvmCross.Navigation;
-using MvvmCross.ViewModels;
+using CommunityToolkit.Mvvm.ComponentModel;
 using SimTuning.Core.Models;
 using SimTuning.Core.ModuleLogic;
 using SimTuning.Core.Services;
@@ -16,15 +15,15 @@ using UnitsNet.Units;
 
 namespace SimTuning.Core.ViewModels.Motor
 {
-    public class HubraumViewModel : MvxViewModel
+    public class HubraumViewModel : ViewModelBase
     {
         /// <summary> Initializes a new instance of the <see cref="HubraumViewModel"/>
         /// class. </summary> <param name="logger"><inheritdoc cref="ILogger"
-        /// path="/summary/node()" /></param> <param name="navigationService"><inheritdoc
-        /// cref="IMvxNavigationService" path="/summary/node()" /></param
+        /// path="/summary/node()" /></param> <param name="INavigationService"><inheritdoc
+        /// cref="INavigationService" path="/summary/node()" /></param
         public HubraumViewModel(
             ILogger<HubraumViewModel> logger,
-            IMvxNavigationService navigationService,
+            INavigationService INavigationService,
             IVehicleService vehicleService)
         {
             this._logger = logger;
@@ -32,16 +31,7 @@ namespace SimTuning.Core.ViewModels.Motor
 
             VolumeQuantityUnits = new VolumeQuantity();
             LengthQuantityUnits = new LengthQuantity();
-        }
 
-        #region Commands
-
-        /// <summary>
-        /// Initializes this instance.
-        /// </summary>
-        /// <returns>Initilisierung.</returns>
-        public override Task Initialize()
-        {
             UnitEinbauspiel = LengthQuantityUnits.Where(x => x.UnitEnumValue.Equals(LengthUnit.Millimeter)).First();
             UnitHub = LengthQuantityUnits.Where(x => x.UnitEnumValue.Equals(LengthUnit.Centimeter)).First();
             UnitHubraumV = VolumeQuantityUnits.Where(x => x.UnitEnumValue.Equals(VolumeUnit.CubicCentimeter)).First();
@@ -49,16 +39,9 @@ namespace SimTuning.Core.ViewModels.Motor
             UnitBohrungD = LengthQuantityUnits.Where(x => x.UnitEnumValue.Equals(LengthUnit.Centimeter)).First();
 
             HelperVehicles = new ObservableCollection<VehiclesModel>(_vehicleService.RetrieveVehicles());
-
-            return base.Initialize();
         }
 
-        /// <summary>
-        /// Prepares this instance. called after construction.
-        /// </summary>
-        public override void Prepare()
-        {
-        }
+        #region Commands
 
         private void Refresh_all()
         {

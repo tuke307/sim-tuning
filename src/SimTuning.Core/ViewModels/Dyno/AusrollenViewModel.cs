@@ -1,46 +1,37 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
+using Microsoft.Extensions.Logging;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
+using SimTuning.Core.ModuleLogic;
+using SimTuning.Core.Services;
+using SimTuning.Data.Models;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using LiveChartsCore;
+
 namespace SimTuning.Core.ViewModels.Dyno
 {
-    using Microsoft.Extensions.Logging;
-    using MvvmCross.Commands;
-    using MvvmCross.Navigation;
-    using MvvmCross.Plugin.Messenger;
-    using MvvmCross.ViewModels;
-    using OxyPlot;
-    using SimTuning.Core.ModuleLogic;
-    using SimTuning.Core.Services;
-    using SimTuning.Data.Models;
-    using System;
-    using System.Linq;
-    using System.Threading.Tasks;
-
-    /// <summary>
-    /// AusrollenViewModel.
-    /// </summary>
-    public class AusrollenViewModel : MvxViewModel
+    public class AusrollenViewModel : ViewModelBase
     {
-        /// <summary> Initializes a new instance of the <see cref="AusrollenViewModel"/>
-        /// class. </summary> <param name="logger"><inheritdoc cref="ILogger"
-        /// path="/summary/node()" /></param> <param name="navigationService"><inheritdoc
-        /// cref="IMvxNavigationService" path="/summary/node()" /></param <param
-        /// name="vehicleService"><inheritdoc cref="IVehicleService"
-        /// path="/summary/node()" /></param>
         public AusrollenViewModel(
             ILogger<AusrollenViewModel> logger,
-            IMvxNavigationService navigationService,
-            IVehicleService vehicleService,
-            IMvxMessenger messenger)
+            INavigationService INavigationService,
+            IVehicleService vehicleService)
         {
             this._logger = logger;
-            this._navigationService = navigationService;
+            this._INavigationService = INavigationService;
             this._vehicleService = vehicleService;
-            this._messenger = messenger;
+
+            this.ShowDiagnosisCommand = new AsyncRelayCommand(async () => await _INavigationService.Navigate<Dyno.DiagnosisViewModel>());
+
+            this.RefreshPlotCommand = new AsyncRelayCommand(this.RefreshPlot);
+            this.ReloadData();
         }
 
         #region Values
 
-        protected readonly IMvxMessenger _messenger;
-        protected readonly IMvxNavigationService _navigationService;
+        protected readonly INavigationService _INavigationService;
         protected readonly IVehicleService _vehicleService;
         private readonly ILogger<AusrollenViewModel> _logger;
         private DynoModel _dyno;
@@ -58,38 +49,20 @@ namespace SimTuning.Core.ViewModels.Dyno
         /// <summary>
         /// PlotAusrollen.
         /// </summary>
-        public PlotModel PlotAusrollen
+        public ISeries PlotAusrollen
         {
             get => DynoLogic.PlotAusrollen;
         }
 
-        public MvxAsyncCommand RefreshPlotCommand { get; set; }
+        public IAsyncRelayCommand RefreshPlotCommand { get; set; }
 
-        public MvxAsyncCommand ShowDiagnosisCommand { get; set; }
+        public IAsyncRelayCommand ShowDiagnosisCommand { get; set; }
 
         #endregion Values
 
         #region Methods
 
-        /// <summary>
-        /// Initializes this instance.
-        /// </summary>
-        /// <returns>Initilisierung.</returns>
-        public override Task Initialize()
-        {
-            this.RefreshPlotCommand = new MvxAsyncCommand(this.RefreshPlot);
-            this.ReloadData();
 
-            return base.Initialize();
-        }
-
-        /// <summary>
-        /// Prepares this instance. called after construction.
-        /// </summary>
-        public override void Prepare()
-        {
-            base.Prepare();
-        }
 
         /// <summary>
         /// Reloads the data.
@@ -105,18 +78,48 @@ namespace SimTuning.Core.ViewModels.Dyno
                 _logger.LogError("Fehler bei ReloadData: ", exc);
             }
         }
+        /// <summary>
+        /// Überprüft ob wichtige Dyno-Audio-Daten vorhanden sind.
+        /// </summary>
+        private bool CheckDynoData()
+        {
+            if (this.Dyno == null)
+            {
+                Helpers.Functions.ShowSnackbarDialog(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_NODATA"));
+
+                return false;
+            }
+
+            if (this.Dyno.Ausrollen == null)
+            {
+                Helpers.Functions.ShowSnackbarDialog(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_NODATA"));
+
+                return false;
+            }
+
+            return true;
+        }
 
         /// <summary>
         /// Aktualisiert den Ausroll-Graphen.
         /// </summary>
         /// <returns></returns>
-        protected virtual async Task RefreshPlot()
+        protected async Task RefreshPlot()
         {
+            if (!this.CheckDynoData())
+            {
+                return;
+            }
+
             try
             {
+                //var loadingDialog = await DisplayAlert(message: SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "MES_LOAD")).ConfigureAwait(false);
+
                 DynoLogic.GetAusrollGraphFitted(this.Dyno?.Ausrollen.ToList());
 
-                await this.RaisePropertyChanged(() => PlotAusrollen).ConfigureAwait(true);
+                this.OnPropertyChanged(nameof(PlotAusrollen));
+
+                //await loadingDialog.DismissAsync().ConfigureAwait(false);
             }
             catch (Exception exc)
             {

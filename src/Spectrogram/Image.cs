@@ -1,5 +1,5 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
-using SciColorMaps.Portable;
+//using SciColorMaps.Portable;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
@@ -20,17 +20,17 @@ namespace Spectrogram
             byte[] btable = new byte[256];
 
             // Farben der ColorMap holen
-            ColorMap colorMap = new ColorMap(colormap.ToString());
-            var mapColors = colorMap.Colors().ToList();
+            //ColorMap colorMap = new ColorMap(colormap.ToString());
+            //var mapColors = colorMap.Colors().ToList();
 
             // Farbtabellen zuweisen
-            for (int i = 0; i < 256; i++)
-            {
-                atable[i] = (byte)255;
-                rtable[i] = mapColors[i][0];
-                gtable[i] = mapColors[i][1];
-                btable[i] = mapColors[i][2];
-            }
+            //for (int i = 0; i < 256; i++)
+            //{
+            //    atable[i] = (byte)255;
+            //    rtable[i] = mapColors[i][0];
+            //    gtable[i] = mapColors[i][1];
+            //    btable[i] = mapColors[i][2];
+            //}
 
             SKBitmap colorBitmap = new SKBitmap(bmp.Width, bmp.Height, SKColorType.Alpha8, SKAlphaType.Opaque);
             SKCanvas sKCanvas = new SKCanvas(colorBitmap);

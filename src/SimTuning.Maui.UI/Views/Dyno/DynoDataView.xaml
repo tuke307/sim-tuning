@@ -1,0 +1,310 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage Style="{StaticResource ContentPageStyle}"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:customcomponents="clr-namespace:SimTuning.Maui.UI.Components"
+             Title="Datensatz"
+             x:Class="SimTuning.Maui.UI.Views.Dyno.DynoDataView"
+             xmlns:vm="clr-namespace:SimTuning.Core.ViewModels.Dyno;assembly=SimTuning.Core"
+             x:DataType="vm:DataViewModel">
+    <ScrollView>
+        <StackLayout>
+            <!--<Button Style="{StaticResource ButtonMediumStyle}"  Margin="15"
+                                     VerticalOptions="Center"
+                                     HorizontalOptions="Start"
+                                     ImageSource="ic_arrow_back_black_18dp.png"
+                                     Command="{Binding CloseCommand}"
+                                     WidthRequest="100"
+                                     HeightRequest="60">
+            </Button>-->
+
+            <Frame Style="{StaticResource FrameStyle}"
+                   Margin="10"
+                   VerticalOptions="Center">
+                <StackLayout>
+                    <Label Style="{StaticResource LabelStyle}"
+                           Text="Auswahl"
+                           FontSize="Medium"
+                           FontAttributes="Bold" />
+
+                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+
+                    <ListView HeightRequest="200"
+                              ItemsSource="{Binding Mode=TwoWay, Path=Dynos}"
+                              SelectedItem="{Binding Mode=TwoWay, Path=Dyno}"
+                              RowHeight="50">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <customcomponents:CustomViewCell SelectedBackgroundColor="{DynamicResource DesignSelection}">
+                                    <StackLayout>
+                                        <Label Style="{StaticResource LabelStyle}"
+                                               Text="{Binding DynoName}"
+                                               FontAttributes="Bold"
+                                               Margin="0, 0, 0, -5" />
+                                        <Label Style="{StaticResource LabelStyle}"
+                                               Text="{Binding DynoBeschreibung}" />
+                                    </StackLayout>
+                                </customcomponents:CustomViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+                    <Grid Margin="5, 0, 0, 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="2*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Button Grid.Column="1"
+                                VerticalOptions="CenterAndExpand"
+                                HorizontalOptions="FillAndExpand"
+                                HeightRequest="50"
+                                Style="{StaticResource ButtonMediumStyle}"
+                                ImageSource="{StaticResource IconAddCircleOutlineMedium}"
+                                Command="{Binding NewDynoCommand}">
+                        </Button>
+
+                        <Button Grid.Column="2"
+                                VerticalOptions="CenterAndExpand"
+                                HorizontalOptions="FillAndExpand"
+                                HeightRequest="50"
+                                Style="{StaticResource ButtonMediumStyle}"
+                                ImageSource="{StaticResource IconRemoveCircleOutlineMedium}"
+                                Command="{Binding DeleteDynoCommand}">
+                        </Button>
+                    </Grid>
+
+                    <Grid Margin="0, 20, 0, 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1.5*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <!--<RadioButton x:Name="RB1"
+                                     Grid.Column="0"
+                                     Grid.Row="0"
+                                     Text="neues Fahrzeug erstellen"
+                                     IsChecked="{Binding Mode=TwoWay, Path=CreateNewVehicle}">
+                            <RadioButton.Triggers>
+                                <DataTrigger TargetType="RadioButton"
+                                             Binding="{Binding Source={x:Reference RB2},Path=IsChecked}"
+                                             Value="true">
+                                    <Setter Property="IsChecked"
+                                            Value="false" />
+                                </DataTrigger>
+                            </RadioButton.Triggers>
+                        </RadioButton>
+
+                        <RadioButton x:Name="RB2"
+                                     Grid.Column="0"
+                                     Grid.Row="1"
+                                     VerticalOptions="CenterAndExpand"
+                                     Text="vorhandenes Fahrzeug verknüpfen"
+                                     IsChecked="{Binding Mode=TwoWay, Path=TakeExistingVehicle}">
+                            <RadioButton.Triggers>
+                                <DataTrigger TargetType="RadioButton"
+                                             Binding="{Binding Source={x:Reference RB1},Path=IsChecked}"
+                                             Value="true">
+                                    <Setter Property="IsChecked"
+                                            Value="false" />
+                                </DataTrigger>
+                            </RadioButton.Triggers>
+                        </RadioButton>-->
+
+                        <Picker  Grid.Column="1"
+                                 Grid.Row="1"
+                                 VerticalOptions="CenterAndExpand"
+                                 Title="Fahrzeug"
+                                 IsEnabled="{Binding Source={x:Reference Name=RB2}, Path=IsChecked}"
+                                 ItemsSource="{Binding Mode=TwoWay, Path=Vehicles}"
+                                 SelectedItem="{Binding Mode=TwoWay, Path=Vehicle}"
+                                 ItemDisplayBinding="{Binding Name}">
+                        </Picker>
+                    </Grid>
+                </StackLayout>
+            </Frame>
+
+            <Frame Style="{StaticResource FrameStyle}"
+                   Margin="10">
+                <StackLayout>
+                    <Label Style="{StaticResource LabelStyle}"
+                           Text="Daten"
+                           FontSize="Medium"
+                           FontAttributes="Bold" />
+
+                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <StackLayout Grid.Column="0"
+                                     Grid.RowSpan="3">
+                            <Entry Placeholder="Name"
+                                   Text="{Binding Mode=TwoWay, Path=DynoName}"
+                                   Margin="5">
+                            </Entry>
+
+                            <Editor Placeholder="Beschreibung"
+                                    Text="{Binding Mode=TwoWay, Path=DynoBeschreibung}"
+                                    HeightRequest="150"
+                                    Margin="5">
+                            </Editor>
+                        </StackLayout>
+
+                        <Button Style="{StaticResource ButtonMediumStyle}"
+                                Margin="5"
+                                Grid.Column="1"
+                                Grid.Row="0"
+                                VerticalOptions="Center"
+                                HorizontalOptions="FillAndExpand"
+                                ImageSource="{StaticResource IconSaveMedium}"
+                                IsEnabled="{Binding Mode=OneWay, Path=SaveButton}"
+                                Command="{Binding SaveDynoCommand}"
+                                HeightRequest="60">
+                        </Button>
+
+                        <Button Style="{StaticResource ButtonMediumStyle}"
+                                Margin="5"
+                                Grid.Column="1"
+                                Grid.Row="1"
+                                VerticalOptions="Center"
+                                HorizontalOptions="FillAndExpand"
+                                ImageSource="{StaticResource IconBackupMedium}"
+                                Command="{Binding ExportDynoCommand}"
+                                HeightRequest="60">
+                        </Button>
+
+                        <Button Style="{StaticResource ButtonMediumStyle}"
+                                Margin="5"
+                                Grid.Column="1"
+                                Grid.Row="2"
+                                VerticalOptions="Center"
+                                HorizontalOptions="FillAndExpand"
+                                ImageSource="{StaticResource IconFindInPageMedium}"
+                                Command="{Binding ImportDynoCommand}"
+                                HeightRequest="60">
+                        </Button>
+                    </Grid>
+
+                    <!--Audio-->
+                    <!--<Expander>
+                        <Expander.Header>
+                            <Frame Style="{StaticResource FrameStyle}">
+                                <Label Style="{StaticResource LabelStyle}">
+                                    Drehzahl
+                                </Label>
+                            </Frame>
+                        </Expander.Header>
+                        <HorizontalStackLayout>
+                            <DataTemplate>
+                                <StackLayout Orientation="Horizontal"
+                                             Margin="20, 0, 0, 0">
+                                    <Picker Title="X"
+                                            WidthRequest="100"
+                                            ItemsSource="{Binding Dyno.Drehzahl}"
+                                            ItemDisplayBinding="Zeit">
+                                    </Picker>
+
+                                    <Picker Title="Y"
+                                            WidthRequest="100"
+                                            ItemsSource="{Binding Dyno.Drehzahl}"
+                                            ItemDisplayBinding="Drehzahl">
+                                    </Picker>
+                                </StackLayout>
+                            </DataTemplate>
+                        </HorizontalStackLayout>
+                    </Expander>
+
+                    --><!--PS--><!--
+                    <Expander>
+                        <Expander.Header>
+                            <Frame Style="{StaticResource FrameStyle}">
+                                <Label Style="{StaticResource LabelStyle}">
+                                    PS
+                                </Label>
+                            </Frame>
+                        </Expander.Header>
+                        <HorizontalStackLayout>
+                            <DataTemplate>
+                                <StackLayout Orientation="Horizontal"
+                                             Margin="20, 0, 0, 0">
+                                    <Picker Title="X"
+                                            WidthRequest="100"
+                                            ItemsSource="{Binding Dyno.DynoPs}"
+                                            ItemDisplayBinding="Drehzahl">
+                                    </Picker>
+
+                                    <Picker Title="Y"
+                                            WidthRequest="100"
+                                            ItemsSource="{Binding Dyno.DynoPs}"
+                                            ItemDisplayBinding="Ps">
+                                    </Picker>
+                                </StackLayout>
+                            </DataTemplate>
+                        </HorizontalStackLayout>
+                    </Expander>-->
+
+                    <!--Nm-->
+                    <!--<Expander>
+                        <Expander.Header>
+                            <Frame Style="{StaticResource FrameStyle}">
+                                <Label Style="{StaticResource LabelStyle}">
+                                    Nm
+                                </Label>
+                            </Frame>
+                        </Expander.Header>
+                        <HorizontalStackLayout>
+                            <DataTemplate>
+                                <StackLayout Orientation="Horizontal"
+                                             Margin="20, 0, 0, 0">
+                                    <Entry Keyboard="Choice"
+                                                                
+                                                                
+                                                                Placeholder="X"
+                                                                WidthRequest="100"
+                                                                ItemsSource="{Binding Dyno.DynoNm}"
+                                                                ItemDisplayBinding="Drehzahl">
+                                    </Entry>
+
+                                    <Entry Keyboard="Choice"
+                                                                
+                                                                
+                                                                Placeholder="Y"
+                                                                WidthRequest="100"
+                                                                ItemsSource="{Binding Dyno.DynoNm}"
+                                                                ItemDisplayBinding="Nm">
+                                    </Entry>
+                                </StackLayout>
+                            </DataTemplate>
+                        </HorizontalStackLayout>
+                    </Expander>-->
+                </StackLayout>
+            </Frame>
+
+            <!--<Button Style="{StaticResource ButtonMediumStyle}"
+                    Margin="15"
+                    VerticalOptions="Center"
+                    HorizontalOptions="End"
+                    ImageSource="{StaticResource IconChevronRightMedium}"
+                    Command="{Binding ShowSettingsCommand}"
+                    WidthRequest="100"
+                    HeightRequest="60">
+            </Button>-->
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

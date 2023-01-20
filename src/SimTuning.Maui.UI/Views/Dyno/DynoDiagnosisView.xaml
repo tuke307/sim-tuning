@@ -1,0 +1,311 @@
+﻿<ContentPage Style="{StaticResource ContentPageStyle}"
+             x:Class="SimTuning.Maui.UI.Views.Dyno.DynoDiagnosisView"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
+             Title="Ergebnis"
+             xmlns:vm="clr-namespace:SimTuning.Core.ViewModels.Dyno;assembly=SimTuning.Core"
+             x:DataType="vm:DiagnosisViewModel">
+    <ScrollView>
+        <StackLayout>
+
+            <!--Plot-->
+            <Frame Style="{StaticResource FrameStyle}"
+                   Margin="10">
+                <StackLayout>
+                    <!--<Label Style="{StaticResource LabelStyle}" Text="Graph"
+                                            FontSize="Medium"
+                                            FontAttributes="Bold" />
+
+                    <BoxView Color="{DynamicResource DesignDivider}"
+                             HeightRequest="2"
+                             HorizontalOptions="Fill"
+                             Margin="0, 0, 0, 5" />-->
+
+                    <lvc:CartesianChart Series="{Binding PlotStrength}"
+                                        HeightRequest="400" />
+                </StackLayout>
+            </Frame>
+
+            <!--Einstellungen-->
+            <Frame Style="{StaticResource FrameStyle}"
+                   Margin="10">
+                <StackLayout>
+                    <Label Style="{StaticResource LabelStyle}"
+                           Text="Einstellungen"
+                           FontSize="Medium"
+                           FontAttributes="Bold" />
+
+                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+
+                    <!--<Entry Placeholder="Gesamtübersetzung"
+                                                Keyboard="Numeric"
+                                                Text="{Binding Mode=TwoWay, Path=DynoVehicleUebersetzung}"
+                                                WidthRequest="250">
+                    </Entry>-->
+
+                    <StackLayout Orientation="Horizontal">
+                        <Entry Placeholder="Gewicht"
+                               Keyboard="Numeric"
+                               Text="{Binding Mode=TwoWay, Path=DynoVehicleGewicht}"
+                               WidthRequest="250">
+                        </Entry>
+
+                        <Picker Margin="5, 0, 0, 0"
+                                ItemsSource="{Binding Path=MassQuantityUnits, Mode=OneTime}"
+                                HorizontalOptions="StartAndExpand"
+                                VerticalOptions="CenterAndExpand"
+                                SelectedItem="{Binding Mode=TwoWay, Path=DynoVehicleGewichtUnit}"
+                                ItemDisplayBinding="{Binding Abbreviation}">
+                        </Picker>
+                    </StackLayout>
+
+                    <!--<StackLayout Orientation="Horizontal">
+                        <Entry Placeholder="Frontfläche"
+                                                    Keyboard="Numeric"
+                                                    Text="{Binding Mode=TwoWay, Path=DynoVehicleFrontA}"
+                                                    WidthRequest="250">
+                        </Entry>
+
+                        <Entry Keyboard="Choice"
+                                                    VerticalOptions="Center"
+                                                    
+                                                    Margin="5, 0, 0, 0"
+                                                    ItemsSource="{Binding Path=AreaQuantityUnits, Mode=OneTime}" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand"
+                                                    SelectedItem="{Binding Mode=TwoWay, Path=DynoVehicleFrontAUnit}"
+                                                    
+                                                    ItemDisplayBinding="{Binding Abbreviation}">
+                        </Entry>
+                    </StackLayout>
+
+                    <Entry Placeholder="cw"
+                                                Keyboard="Numeric"
+                                                Text="{Binding Mode=TwoWay, Path=DynoVehicleCw}"
+                                                WidthRequest="250">
+                    </Entry>
+
+                    <StackLayout Orientation="Horizontal">
+                        <Entry Placeholder="Temperatur"
+                                                    Keyboard="Numeric"
+                                                    Text="{Binding Mode=TwoWay, Path=DynoEnvironmentTemperaturT}"
+                                                    WidthRequest="250">
+                        </Entry>
+
+                        <Entry Keyboard="Choice"
+                                                    VerticalOptions="Center"
+                                                    
+                                                    Margin="5, 0, 0, 0"
+                                                    ItemsSource="{Binding Path=TemperatureQuantityUnits, Mode=OneTime}"
+                                                    SelectedItem="{Binding Mode=TwoWay, Path=DynoEnvironmentTemperaturTUnit}"
+                                                    
+                                                    ItemDisplayBinding="{Binding Abbreviation}">
+                        </Entry>
+                    </StackLayout>
+
+                    <StackLayout Orientation="Horizontal">
+                        <Entry Placeholder="Luftdruck"
+                                                    Keyboard="Numeric"
+                                                    Text="{Binding Mode=TwoWay, Path=DynoEnvironmentLuftdruckP}"
+                                                    WidthRequest="250">
+                        </Entry>
+
+                        <Entry Keyboard="Choice"
+                                                    VerticalOptions="Center"
+                                                    
+                                                    Margin="5, 0, 0, 0"
+                                                    ItemsSource="{Binding Path=PressureQuantityUnits, Mode=OneTime}"
+                                                    SelectedItem="{Binding Mode=TwoWay, Path=DynoEnvironmentLuftdruckPUnit}"
+                                                    
+                                                    ItemDisplayBinding="{Binding Abbreviation}">
+                        </Entry>
+                    </StackLayout>-->
+
+                    <!--Refresh-->
+                    <Button Style="{StaticResource ButtonMediumStyle}"
+                            HorizontalOptions="FillAndExpand"
+                            ImageSource="{StaticResource IconRefreshMedium}"
+                            Command="{Binding RefreshPlotCommand}">
+                    </Button>
+                </StackLayout>
+            </Frame>
+
+            <!--Hilfe-Fahrzeug-->
+            <Frame Style="{StaticResource FrameStyle}"
+                   Margin="10">
+                <StackLayout>
+                    <Label Style="{StaticResource LabelStyle}"
+                           Text="Hilfe"
+                           FontSize="Medium"
+                           FontAttributes="Bold" />
+
+                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+
+                    <Picker Title="Fahrzeug"
+                            ItemsSource="{Binding Mode=OneTime, Path=HelperVehicles}"
+                            SelectedItem="{Binding Mode=TwoWay, Path=HelperVehicle}"
+                            ItemDisplayBinding="{Binding Name}">
+                    </Picker>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <!--<RowDefinition Height="auto" />-->
+                            <!--<RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />-->
+                        </Grid.RowDefinitions>
+
+                        <!--<Label Style="{StaticResource LabelStyle}" Text="Gesamtübersetzung"
+                                                VerticalOptions="Center"
+                                                Grid.Row="0"
+                                                Grid.Column="0" />-->
+                        <Label Style="{StaticResource LabelStyle}"
+                               Text="Gewicht"
+                               VerticalOptions="Center"
+                               Grid.Row="0"
+                               Grid.Column="0" />
+                        <!--<Label Style="{StaticResource LabelStyle}" Text="Frontfläche"
+                                                VerticalOptions="Center"
+                                                Grid.Row="2"
+                                                Grid.Column="0" />
+                        <Label Style="{StaticResource LabelStyle}" Text="cw-Wert"
+                                                VerticalOptions="Center"
+                                                Grid.Row="3"
+                                                Grid.Column="0" />-->
+
+                        <!--<Entry Text="{Binding Mode=OneWay, Path=HelperVehicle.Uebersetzung}"
+                                                    Grid.Row="0"
+                                                    Grid.Column="1"
+                                                    Placeholder=" "
+                                                    IsEnabled="False"
+                                                    
+                                                    WidthRequest="100"
+                                                    Margin="10, 0, 0, 0" />-->
+                        <Entry Text="{Binding Mode=OneWay, Path=HelperVehicle.Gewicht}"
+                               Grid.Row="0"
+                               Grid.Column="1"
+                               Placeholder=" "
+                               IsEnabled="False"
+                               WidthRequest="100"
+                               Margin="10, 0, 0, 0" />
+                        <!--<Entry Text="{Binding Mode=OneWay, Path=HelperVehicle.Frontflaeche}"
+                                                    Grid.Row="2"
+                                                    Placeholder=" "
+                                                    IsEnabled="False"
+                                                    
+                                                    WidthRequest="100"
+                                                    Grid.Column="1"
+                                                    Margin="10, 0, 0, 0" />
+                        <Entry Text="{Binding Mode=OneWay, Path=HelperVehicle.Cw}"
+                                                    Grid.Row="3"
+                                                    Placeholder=" "
+                                                    
+                                                    WidthRequest="100"
+                                                    Grid.Column="1"
+                                                    IsEnabled="False"
+                                                    Margin="10, 0, 0, 0" />-->
+
+                        <Label Style="{StaticResource LabelStyle}"
+                               Grid.Row="0"
+                               Grid.Column="2"
+                               Margin="10, 0, 0, 0">
+                            kg
+                        </Label>
+
+                        <!--<Label Style="{StaticResource LabelStyle}" Grid.Row="2"
+                                                Grid.Column="2"
+                                                Margin="10, 0, 0, 0">
+                            cm²
+                        </Label>-->
+                    </Grid>
+
+                    <Button Style="{StaticResource ButtonMediumStyle}"
+                            ImageSource="{StaticResource IconChevronRightMedium}"
+                            Command="{Binding InsertVehicleCommand}"
+                            WidthRequest="100"
+                            HeightRequest="60"
+                            Margin="15"
+                            HorizontalOptions="Center" />
+                </StackLayout>
+            </Frame>
+
+            <!--Hilfe-Environment-->
+            <!--<Frame Style="{StaticResource FrameStyle}" Margin="10">
+                <StackLayout>
+                    <Label Style="{StaticResource LabelStyle}" Text="Hilfe"
+                                            FontSize="Medium"
+                                            FontAttributes="Bold" />
+
+                    <BoxView Color="{DynamicResource DesignDivider}"
+                             HeightRequest="2"
+                             HorizontalOptions="Fill"
+                             Margin="0, 0, 0, 5" />
+
+                    <Entry Keyboard="Choice"
+                                                Placeholder="Umwelt"
+                                                
+                                                ItemsSource="{Binding Mode=OneTime, Path=HelperEnvironments}"
+                                                SelectedItem="{Binding  Mode=TwoWay, Path=HelperEnvironment}"
+                                                ItemDisplayBinding="{Binding Name}">
+                    </Entry>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+
+                        <Label Style="{StaticResource LabelStyle}" Text="Temperatur"
+                                                VerticalOptions="Center"
+                                                Grid.Row="0"
+                                                Grid.Column="0" />
+                        <Label Style="{StaticResource LabelStyle}" Text="Luftdruck"
+                                                VerticalOptions="Center"
+                                                Grid.Row="1"
+                                                Grid.Column="0" />
+
+                        <Entry Text="{Binding Mode=OneWay, Path= HelperEnvironment.TemperaturT}"
+                                                    Placeholder=" "
+                                                    
+                                                    Grid.Row="0"
+                                                    Grid.Column="1"
+                                                    IsEnabled="False"
+                                                    WidthRequest="100" />
+                        <Entry Text="{Binding Mode=OneWay, Path= HelperEnvironment.LuftdruckP}"
+                                                    Placeholder=" "
+                                                    
+                                                    Grid.Row="1"
+                                                    Grid.Column="1"
+                                                    IsEnabled="False"
+                                                    WidthRequest="100" />
+
+                        <Label Style="{StaticResource LabelStyle}" Grid.Row="0"
+                                                Grid.Column="2"
+                                                Margin="10, 15, 0, 0">
+                            mbar
+                        </Label>
+
+                        <Label Style="{StaticResource LabelStyle}" Grid.Row="1"
+                                                Grid.Column="2"
+                                                Margin="10, 15, 0, 0">
+                            °C
+                        </Label>
+                    </Grid>
+
+                    <Button Style="{StaticResource ButtonMediumStyle}"  ImageSource="{StaticResource IconChevronRightMedium}"
+                                             Command="{Binding InsertEnvironmentCommand}"
+                                             WidthRequest="90" />
+                </StackLayout>
+            </Frame>-->
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

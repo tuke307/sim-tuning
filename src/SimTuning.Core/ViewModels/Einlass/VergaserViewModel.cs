@@ -1,35 +1,26 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
+using SimTuning.Core.Models;
+using SimTuning.Core.ModuleLogic;
+using SimTuning.Core.Services;
+using SimTuning.Data;
+using SimTuning.Data.Models;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
+using UnitsNet.Units;
+
 namespace SimTuning.Core.ViewModels.Einlass
 {
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.Logging;
-    using MvvmCross.Commands;
-    using MvvmCross.Navigation;
-    using MvvmCross.ViewModels;
-    using SimTuning.Core.Models;
-    using SimTuning.Core.ModuleLogic;
-    using SimTuning.Core.Services;
-    using SimTuning.Data;
-    using SimTuning.Data.Models;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using UnitsNet.Units;
-
-    /// <summary>
-    /// VergaserViewModel.
-    /// </summary>
-    /// <seealso cref="MvvmCross.ViewModels.MvxViewModel" />
-    public class VergaserViewModel : MvxViewModel
+    public class VergaserViewModel : ViewModelBase
     {
-        /// <summary> Initializes a new instance of the <see cref="VergaserViewModel"/>
-        /// class. </summary> <param name="logger"><inheritdoc cref="ILogger"
-        /// path="/summary/node()" /></param> <param name="navigationService"><inheritdoc
-        /// cref="IMvxNavigationService" path="/summary/node()" /></param
         public VergaserViewModel(
             ILogger<VergaserViewModel> logger,
-            IMvxNavigationService navigationService,
+            INavigationService INavigationService,
             IVehicleService vehicleService)
         {
             this._logger = logger;
@@ -37,26 +28,19 @@ namespace SimTuning.Core.ViewModels.Einlass
 
             VolumeQuantityUnits = new VolumeQuantity();
             LengthQuantityUnits = new LengthQuantity();
-        }
 
-        #region Commands
-
-        /// <summary>
-        /// Initializes this instance.
-        /// </summary>
-        /// <returns>Initilisierung.</returns>
-        public override Task Initialize()
-        {
             UnitHubvolumen = VolumeQuantityUnits.Where(x => x.UnitEnumValue.Equals(VolumeUnit.CubicMillimeter)).First();
             UnitVergasergroeße = LengthQuantityUnits.Where(x => x.UnitEnumValue.Equals(LengthUnit.Millimeter)).First();
             UnitHauptdueseD = LengthQuantityUnits.Where(x => x.UnitEnumValue.Equals(LengthUnit.Micrometer)).First();
 
             HelperVehicles = new ObservableCollection<VehiclesModel>(_vehicleService.RetrieveVehicles());
 
-            InsertDataCommand = new MvxCommand(InsertData);
-
-            return base.Initialize();
+            InsertDataCommand = new RelayCommand(InsertData);
         }
+
+        #region Commands
+
+
 
         public void InsertData()
         {
@@ -67,12 +51,6 @@ namespace SimTuning.Core.ViewModels.Einlass
                 Resonanzdrehzahl = HelperVehicle.Motor.ResonanzU;
         }
 
-        /// <summary>
-        /// Prepares this instance. called after construction.
-        /// </summary>
-        public override void Prepare()
-        {
-        }
 
         private void Refresh_Hauptduesendurchmesser()
         {
@@ -151,7 +129,7 @@ namespace SimTuning.Core.ViewModels.Einlass
             }
         }
 
-        public IMvxCommand InsertDataCommand { get; set; }
+        public IRelayCommand InsertDataCommand { get; set; }
 
         public ObservableCollection<UnitListItem> LengthQuantityUnits { get; }
 

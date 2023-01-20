@@ -1,9 +1,6 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
+using LiveChartsCore;
 using MathNet.Numerics;
-using OxyPlot;
-using OxyPlot.Axes;
-using OxyPlot.Legends;
-using OxyPlot.Series;
 using SimTuning.Data.Models;
 using System;
 using System.Collections.Generic;
@@ -19,11 +16,11 @@ namespace SimTuning.Core.ModuleLogic
         #region variables
 
         private static Func<double, double> ausrollFunction;
-        private static List<DataPoint> ausrollPoints = new List<DataPoint>();
+        private static List<ISeries> ausrollPoints = new List<ISeries>();
         private static Func<double, double> drehzahlfunction;
         private static Func<double, double> geschwindigkeitsFunction;
-        private static List<DataPoint> geschwindigkeitsPoints = new List<DataPoint>();
-        private static List<DataPoint> leistungsPoints = new List<DataPoint>();
+        private static List<ISeries> geschwindigkeitsPoints = new List<ISeries>();
+        private static List<ISeries> leistungsPoints = new List<ISeries>();
         private static int regressionsAnzahl = 5;
 
         /// <summary>
@@ -36,37 +33,37 @@ namespace SimTuning.Core.ModuleLogic
         /// Gets the plot audio.
         /// </summary>
         /// <value>The plot audio.</value>
-        public static PlotModel PlotAudio { get; private set; }
+        public static ISeries PlotAudio { get; private set; }
 
         /// <summary>
         /// Gets the plot ausrollen.
         /// </summary>
         /// <value>The plot ausrollen.</value>
-        public static PlotModel PlotAusrollen { get; private set; }
+        public static ISeries PlotAusrollen { get; private set; }
 
         /// <summary>
         /// Gets the plot beschleunigung.
         /// </summary>
         /// <value>The plot beschleunigung.</value>
-        public static PlotModel PlotGeschwindigkeit { get; private set; }
+        public static ISeries PlotGeschwindigkeit { get; private set; }
 
         /// <summary>
         /// Gets the plot strength.
         /// </summary>
         /// <value>The plot strength.</value>
-        public static PlotModel PlotLeistung { get; private set; }
+        public static ISeries PlotLeistung { get; private set; }
 
         /// <summary>
         /// Gets array Handling.
         /// 1. Liste = Graphen, 2. Liste = Punkte.
         /// </summary>
-        private static List<List<DataPoint>> DrehzahlArrayPoints => AudioLogic.DrehzahlPoints;
+        private static List<List<ISeries>> DrehzahlArrayPoints => AudioLogic.DrehzahlPoints;
 
         /// <summary>
         /// Gets the drehzahl points.
         /// </summary>
         /// <value>The drehzahl points.</value>
-        private static List<DataPoint> DrehzahlPoints => AudioLogic.DrehzahlPoints[Graphauswahl];
+        private static List<ISeries> DrehzahlPoints => AudioLogic.DrehzahlPoints[Graphauswahl];
 
         #endregion variables
 
@@ -74,23 +71,23 @@ namespace SimTuning.Core.ModuleLogic
         /// Entfernt einen Punkt in einer PlotSeries.
         /// TODO: implement.
         /// </summary>
-        /// <param name="dataPoint">The data point.</param>
-        public static void EntfernePunkt(this PlotModel plotModel, ScreenPoint screenPoint)
+        /// <param name="ISeries">The data point.</param>
+        public static void EntfernePunkt(this ISeries ISeries/*, ScreenPoint screenPoint*/)
         {
             try
             {
-                OxyPlot.ElementCollection<OxyPlot.Axes.Axis> axisList = plotModel.Axes;
+                //OxyPlot.ElementCollection<OxyPlot.Axes.Axis> axisList = ISeries.Axes;
 
-                Axis xAxis = axisList.FirstOrDefault(ax => ax.Position == AxisPosition.Bottom);
-                Axis yAxis = axisList.FirstOrDefault(ax => ax.Position == AxisPosition.Left);
+                //Axis xAxis = axisList.FirstOrDefault(ax => ax.Position == AxisPosition.Bottom);
+                //Axis yAxis = axisList.FirstOrDefault(ax => ax.Position == AxisPosition.Left);
 
-                DataPoint dataPoint = OxyPlot.Axes.Axis.InverseTransform(screenPoint, xAxis, yAxis);
+                //ISeries ISeries = OxyPlot.Axes.Axis.InverseTransform(screenPoint, xAxis, yAxis);
 
-                int count;
-                count = ((LineSeries)plotModel.Series[0]).Points.Count();
-                ((LineSeries)plotModel.Series[0]).Points.Remove(dataPoint);
-                count = ((LineSeries)plotModel.Series[0]).Points.Count();
-                plotModel.InvalidatePlot(true);
+                //int count;
+                //count = ((LineSeries)ISeries.Series[0]).Points.Count();
+                //((LineSeries)ISeries.Series[0]).Points.Remove(ISeries);
+                //count = ((LineSeries)ISeries.Series[0]).Points.Count();
+                //ISeries.InvalidatePlot(true);
             }
             catch (Exception)
             {
@@ -109,17 +106,17 @@ namespace SimTuning.Core.ModuleLogic
             // Points definieren
             for (int i = 0; i < ausrollenModels.Count; i++)
             {
-                ausrollPoints.Add(new DataPoint(
-                    (double)ausrollenModels[i].CreatedDate.Value.Millisecond,
-                    ausrollenModels[i].Speed.Value
-                ));
+                //ausrollPoints.Add(new ISeries(
+                //    (double)ausrollenModels[i].CreatedDate.Value.Millisecond,
+                //    ausrollenModels[i].Speed.Value
+                //));
             }
 
             // Regressions-Punkte bilden
-            ausrollFunction = Fit.PolynomialFunc(
-                ausrollPoints.Select(x => x.X).ToArray(),
-                ausrollPoints.Select(y => y.Y).ToArray(),
-                regressionsAnzahl);
+            //ausrollFunction = Fit.PolynomialFunc(
+            //    ausrollPoints.Select(x => x.X).ToArray(),
+            //    ausrollPoints.Select(y => y.Y).ToArray(),
+            //    regressionsAnzahl);
 
             LadeAusrollGraph(fitted: true);
         }
@@ -146,21 +143,21 @@ namespace SimTuning.Core.ModuleLogic
             DefiniereDrehzahlGraph();
 
             // Regressions-Punkte bilden
-            drehzahlfunction = Fit.PolynomialFunc(
-                DrehzahlPoints.Select(x => x.X).ToArray(),
-                DrehzahlPoints.Select(x => x.Y).ToArray(),
-                regressionsAnzahl);
+            //drehzahlfunction = Fit.PolynomialFunc(
+            //    DrehzahlPoints.Select(x => x.X).ToArray(),
+            //    DrehzahlPoints.Select(x => x.Y).ToArray(),
+            //    regressionsAnzahl);
 
             var _drehzahlModels = new List<DrehzahlModel>();
 
             // Audio Werte (X, Y) hinzufügen
             for (int count = 0; count < DrehzahlPoints.Count; count++)
             {
-                _drehzahlModels.Add(new DrehzahlModel()
-                {
-                    Zeit = DrehzahlPoints[count].X,
-                    Drehzahl = DrehzahlPoints[count].Y,
-                });
+                //_drehzahlModels.Add(new DrehzahlModel()
+                //{
+                //    Zeit = DrehzahlPoints[count].X,
+                //    Drehzahl = DrehzahlPoints[count].Y,
+                //});
             }
 
             LadeDrehzahlGraph(fitted: true);
@@ -179,17 +176,17 @@ namespace SimTuning.Core.ModuleLogic
             // Points definieren
             for (int i = 0; i < beschleunigungModels.Count; i++)
             {
-                geschwindigkeitsPoints.Add(new DataPoint(
-                    (double)beschleunigungModels[i].CreatedDate.Value.Millisecond,
-                    beschleunigungModels[i].Speed.Value
-                ));
+                //geschwindigkeitsPoints.Add(new ISeries(
+                //    (double)beschleunigungModels[i].CreatedDate.Value.Millisecond,
+                //    beschleunigungModels[i].Speed.Value
+                //));
             }
 
             // Regressions-Punkte bilden
-            geschwindigkeitsFunction = Fit.PolynomialFunc(
-                geschwindigkeitsPoints.Select(x => x.X).ToArray(),
-                geschwindigkeitsPoints.Select(y => y.Y).ToArray(),
-                regressionsAnzahl);
+            //geschwindigkeitsFunction = Fit.PolynomialFunc(
+            //    geschwindigkeitsPoints.Select(x => x.X).ToArray(),
+            //    geschwindigkeitsPoints.Select(y => y.Y).ToArray(),
+            //    regressionsAnzahl);
 
             LadeGeschwindigkeitsGraph(fitted: true);
         }
@@ -208,23 +205,23 @@ namespace SimTuning.Core.ModuleLogic
             List<DynoPsModel> dynoPs = new List<DynoPsModel>();
 
             // var max = ausrollPoints.Select(x => x.X).Max();
-            double max = geschwindigkeitsPoints.Select(x => x.X).Max();
+            //double max = geschwindigkeitsPoints.Select(x => x.X).Max();
 
             // jede 1/100 (0.01) sekunde wird die Formel ausgeführt
-            for (double i = 0.0; i < max; i += 0.01)
-            {
-                double zeit = i;
-                double masse = gewicht;
-                double geschwindigkeit = geschwindigkeitsFunction(zeit);
-                // a = v/t
-                double beschleunigung = geschwindigkeit / zeit;
-                double cw = 0;
-                double y = 0;
+            //for (double i = 0.0; i < max; i += 0.01)
+            //{
+            //    double zeit = i;
+            //    double masse = gewicht;
+            //    double geschwindigkeit = geschwindigkeitsFunction(zeit);
+            //    // a = v/t
+            //    double beschleunigung = geschwindigkeit / zeit;
+            //    double cw = 0;
+            //    double y = 0;
 
-                double ps = DynoLogic.StrengthFormula(masse, geschwindigkeit, beschleunigung, cw, y);
+            //    double ps = DynoLogic.StrengthFormula(masse, geschwindigkeit, beschleunigung, cw, y);
 
-                leistungsPoints.Add(new DataPoint(zeit, ps));
-            }
+            //    //leistungsPoints.Add(new ISeries(zeit, ps));
+            //}
 
             LadeLeistungsGraph();
 
@@ -256,14 +253,14 @@ namespace SimTuning.Core.ModuleLogic
                 return;
             }
 
-            PlotAusrollen = new PlotModel();
+            //PlotAusrollen = new ISeries();
 
-            // Achsen
-            PlotAusrollen.Axes.Add(new OxyPlot.Axes.LinearAxis { Title = "Zeit in s", Position = OxyPlot.Axes.AxisPosition.Bottom, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
-            PlotAusrollen.Axes.Add(new OxyPlot.Axes.LinearAxis { Title = "Geschwindigkeit in km/h", Position = OxyPlot.Axes.AxisPosition.Left, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+            //// Achsen
+            //PlotAusrollen.Axes.Add(new OxyPlot.Axes.LinearAxis { Title = "Zeit in s", Position = OxyPlot.Axes.AxisPosition.Bottom, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+            //PlotAusrollen.Axes.Add(new OxyPlot.Axes.LinearAxis { Title = "Geschwindigkeit in km/h", Position = OxyPlot.Axes.AxisPosition.Left, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
 
-            PlotAusrollen.IsLegendVisible = true;
-            PlotAusrollen.Legends.FirstOrDefault().LegendPosition = LegendPosition.RightTop;
+            //PlotAusrollen.IsLegendVisible = true;
+            //PlotAusrollen.Legends.FirstOrDefault().LegendPosition = LegendPosition.RightTop;
         }
 
         /// <summary>
@@ -273,14 +270,14 @@ namespace SimTuning.Core.ModuleLogic
         {
             // if (PlotAudio != null) { return; }
 
-            PlotAudio = new PlotModel();
+            //PlotAudio = new ISeries();
 
-            // Achsen
-            PlotAudio.Axes.Add(new OxyPlot.Axes.LinearAxis { Title = "Zeit in s", Position = OxyPlot.Axes.AxisPosition.Bottom, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
-            PlotAudio.Axes.Add(new OxyPlot.Axes.LinearAxis { Title = "Drehzahl in 1/min", Position = OxyPlot.Axes.AxisPosition.Left, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+            //// Achsen
+            //PlotAudio.Axes.Add(new OxyPlot.Axes.LinearAxis { Title = "Zeit in s", Position = OxyPlot.Axes.AxisPosition.Bottom, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+            //PlotAudio.Axes.Add(new OxyPlot.Axes.LinearAxis { Title = "Drehzahl in 1/min", Position = OxyPlot.Axes.AxisPosition.Left, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
 
-            PlotAudio.IsLegendVisible = true;
-            PlotAudio.Legends.FirstOrDefault().LegendPosition = LegendPosition.RightTop;
+            //PlotAudio.IsLegendVisible = true;
+            //PlotAudio.Legends.FirstOrDefault().LegendPosition = LegendPosition.RightTop;
         }
 
         /// <summary>
@@ -293,14 +290,14 @@ namespace SimTuning.Core.ModuleLogic
                 return;
             }
 
-            PlotGeschwindigkeit = new PlotModel();
+            //PlotGeschwindigkeit = new ISeries();
 
-            // Achsen
-            PlotGeschwindigkeit.Axes.Add(new OxyPlot.Axes.LinearAxis { Title = "Zeit in s", Position = OxyPlot.Axes.AxisPosition.Bottom, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
-            PlotGeschwindigkeit.Axes.Add(new OxyPlot.Axes.LinearAxis { Title = "Geschwindigkeit in km/h", Position = OxyPlot.Axes.AxisPosition.Left, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+            //// Achsen
+            //PlotGeschwindigkeit.Axes.Add(new OxyPlot.Axes.LinearAxis { Title = "Zeit in s", Position = OxyPlot.Axes.AxisPosition.Bottom, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
+            //PlotGeschwindigkeit.Axes.Add(new OxyPlot.Axes.LinearAxis { Title = "Geschwindigkeit in km/h", Position = OxyPlot.Axes.AxisPosition.Left, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot });
 
-            PlotGeschwindigkeit.IsLegendVisible = true;
-            PlotGeschwindigkeit.Legends.FirstOrDefault().LegendPosition = LegendPosition.RightTop;
+            //PlotGeschwindigkeit.IsLegendVisible = true;
+            //PlotGeschwindigkeit.Legends.FirstOrDefault().LegendPosition = LegendPosition.RightTop;
         }
 
         /// <summary>
@@ -308,14 +305,14 @@ namespace SimTuning.Core.ModuleLogic
         /// </summary>
         private static void DefiniereLeistungsGraph()
         {
-            PlotLeistung = new PlotModel();
+            //PlotLeistung = new ISeries();
 
-            // Achsen
-            PlotLeistung.Axes.Add(new OxyPlot.Axes.LinearAxis { Title = "Drehzahl in 1/min", Position = OxyPlot.Axes.AxisPosition.Bottom });
-            PlotLeistung.Axes.Add(new OxyPlot.Axes.LinearAxis { Title = "Leistung in PS", Position = OxyPlot.Axes.AxisPosition.Left });
+            //// Achsen
+            //PlotLeistung.Axes.Add(new OxyPlot.Axes.LinearAxis { Title = "Drehzahl in 1/min", Position = OxyPlot.Axes.AxisPosition.Bottom });
+            //PlotLeistung.Axes.Add(new OxyPlot.Axes.LinearAxis { Title = "Leistung in PS", Position = OxyPlot.Axes.AxisPosition.Left });
 
-            PlotLeistung.IsLegendVisible = true;
-            PlotLeistung.Legends.FirstOrDefault().LegendPosition = LegendPosition.RightTop;
+            //PlotLeistung.IsLegendVisible = true;
+            //PlotLeistung.Legends.FirstOrDefault().LegendPosition = LegendPosition.RightTop;
         }
 
         /// <summary>
@@ -325,24 +322,24 @@ namespace SimTuning.Core.ModuleLogic
         {
             if (fitted)
             {
-                OxyPlot.Series.FunctionSeries functionSeries = new OxyPlot.Series.FunctionSeries(
-                   ausrollFunction,
-                   ausrollPoints.Select(x => x.X).Min(),
-                   ausrollPoints.Select(x => x.X).Max(),
-                   100);
+                //OxyPlot.Series.FunctionSeries functionSeries = new OxyPlot.Series.FunctionSeries(
+                //   ausrollFunction,
+                //   ausrollPoints.Select(x => x.X).Min(),
+                //   ausrollPoints.Select(x => x.X).Max(),
+                //   100);
 
-                PlotAusrollen.Series.Add(functionSeries);
+                //PlotAusrollen.Series.Add(functionSeries);
             }
             else
             {
-                OxyPlot.Series.LineSeries lineSeries = new OxyPlot.Series.LineSeries();
+                //OxyPlot.Series.LineSeries lineSeries = new OxyPlot.Series.LineSeries();
 
-                lineSeries.Points.AddRange(ausrollPoints);
+                //lineSeries.Points.AddRange(ausrollPoints);
 
-                lineSeries.LineStyle = LineStyle.None;
-                lineSeries.MarkerType = MarkerType.Diamond;
+                //lineSeries.LineStyle = LineStyle.None;
+                //lineSeries.MarkerType = MarkerType.Diamond;
 
-                PlotAusrollen.Series.Add(lineSeries);
+                //PlotAusrollen.Series.Add(lineSeries);
             }
         }
 
@@ -356,34 +353,34 @@ namespace SimTuning.Core.ModuleLogic
             if (fitted)
             {
                 // Graph
-                OxyPlot.Series.FunctionSeries functionSeries = new OxyPlot.Series.FunctionSeries(
-                    drehzahlfunction,
-                    DrehzahlPoints.Select(x => x.X).Min(),
-                    DrehzahlPoints.Select(x => x.X).Max(),
-                    100);
+                //OxyPlot.Series.FunctionSeries functionSeries = new OxyPlot.Series.FunctionSeries(
+                //    drehzahlfunction,
+                //    DrehzahlPoints.Select(x => x.X).Min(),
+                //    DrehzahlPoints.Select(x => x.X).Max(),
+                //    100);
 
-                PlotAudio.Series.Add(functionSeries);
+                //PlotAudio.Series.Add(functionSeries);
             }
             else
             {
                 // graph
-                List<OxyPlot.Series.LineSeries> audioLine = new List<OxyPlot.Series.LineSeries>();
+                //List<OxyPlot.Series.LineSeries> audioLine = new List<OxyPlot.Series.LineSeries>();
 
-                // spalte einfügen
-                for (int anzahl = 0; anzahl < DrehzahlArrayPoints.Count; anzahl++)
-                {
-                    audioLine.Add(new OxyPlot.Series.LineSeries { });
-                    audioLine[anzahl].Points.AddRange(DrehzahlArrayPoints[anzahl]);
+                //// spalte einfügen
+                //for (int anzahl = 0; anzahl < DrehzahlArrayPoints.Count; anzahl++)
+                //{
+                //    audioLine.Add(new OxyPlot.Series.LineSeries { });
+                //    audioLine[anzahl].Points.AddRange(DrehzahlArrayPoints[anzahl]);
 
-                    // Style
-                    audioLine[anzahl].Title = "Graph " + (anzahl + 1);
-                    // if (filtered_graph) { sound_graph[anzahl].LineStyle = LineStyle.Automatic; filtered_graph = false; } else { sound_graph[anzahl].LineStyle = LineStyle.None; }
-                    audioLine[anzahl].LineStyle = LineStyle.None;
-                    audioLine[anzahl].MarkerType = MarkerType.Diamond;
+                //    // Style
+                //    audioLine[anzahl].Title = "Graph " + (anzahl + 1);
+                //    // if (filtered_graph) { sound_graph[anzahl].LineStyle = LineStyle.Automatic; filtered_graph = false; } else { sound_graph[anzahl].LineStyle = LineStyle.None; }
+                //    audioLine[anzahl].LineStyle = LineStyle.None;
+                //    audioLine[anzahl].MarkerType = MarkerType.Diamond;
 
-                    // Graph einfügen
-                    PlotAudio.Series.Add(audioLine[anzahl]);
-                }
+                //    // Graph einfügen
+                //    PlotAudio.Series.Add(audioLine[anzahl]);
+                //}
             }
         }
 
@@ -394,24 +391,24 @@ namespace SimTuning.Core.ModuleLogic
         {
             if (fitted)
             {
-                OxyPlot.Series.FunctionSeries functionSeries = new OxyPlot.Series.FunctionSeries(
-                   geschwindigkeitsFunction,
-                   geschwindigkeitsPoints.Select(x => x.X).Min(),
-                   geschwindigkeitsPoints.Select(x => x.X).Max(),
-                   100);
+                //OxyPlot.Series.FunctionSeries functionSeries = new OxyPlot.Series.FunctionSeries(
+                //   geschwindigkeitsFunction,
+                //   geschwindigkeitsPoints.Select(x => x.X).Min(),
+                //   geschwindigkeitsPoints.Select(x => x.X).Max(),
+                //   100);
 
-                PlotGeschwindigkeit.Series.Add(functionSeries);
+                //PlotGeschwindigkeit.Series.Add(functionSeries);
             }
             else
             {
-                OxyPlot.Series.LineSeries lineSeries = new OxyPlot.Series.LineSeries();
+                //OxyPlot.Series.LineSeries lineSeries = new OxyPlot.Series.LineSeries();
 
-                lineSeries.Points.AddRange(geschwindigkeitsPoints);
+                //lineSeries.Points.AddRange(geschwindigkeitsPoints);
 
-                lineSeries.LineStyle = LineStyle.None;
-                lineSeries.MarkerType = MarkerType.Diamond;
+                //lineSeries.LineStyle = LineStyle.None;
+                //lineSeries.MarkerType = MarkerType.Diamond;
 
-                PlotGeschwindigkeit.Series.Add(lineSeries);
+                //PlotGeschwindigkeit.Series.Add(lineSeries);
             }
         }
 
@@ -425,11 +422,11 @@ namespace SimTuning.Core.ModuleLogic
             //// Punkte
             ////for (int zaehler = 0; zaehler < dyno.Drehzahl.Count; zaehler++)
             ////{
-            ////    // Nm leistung_nm.Points.Add(new DataPoint(dynoNm[zaehler].Drehzahl,
+            ////    // Nm leistung_nm.Points.Add(new ISeries(dynoNm[zaehler].Drehzahl,
             ////    // dynoNm[zaehler].Nm));
 
             ////    // PS
-            // leistungPsSeries.Points.Add(new DataPoint(dynoPs[zaehler].Drehzahl, dynoPs[zaehler].Ps)); }
+            // leistungPsSeries.Points.Add(new ISeries(dynoPs[zaehler].Drehzahl, dynoPs[zaehler].Ps)); }
 
             //// Style, Beschriftung leistung_nm.Title = "Leistung-Nm"; leistung_nm.Color =
             //// OxyColors.DarkRed;

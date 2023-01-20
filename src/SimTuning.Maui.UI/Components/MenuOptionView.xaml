@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<StackLayout xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SimTuning.Maui.UI.Components.MenuOptionView"
+             Padding="10"
+             Orientation="Horizontal">
+    <Button x:Name="Icon"
+            HeightRequest="25"
+            Style="{StaticResource ImageButtonMediumStyle}"
+            WidthRequest="25" />
+
+    <Label x:Name="Label"
+           HorizontalOptions="StartAndExpand"
+           Style="{StaticResource LabelStyle}"
+           VerticalOptions="Center" />
+</StackLayout>

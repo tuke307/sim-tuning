@@ -7,7 +7,7 @@
     <Owners>Tony Meißner</Owners>
     <Product>SimTuning</Product>
     <Description>Ein Tool, um Simson-Begeisterte etwas unter die Arme zu greifen und zu helfen.</Description>
-    <PackageTags>c#, wpf, xamarin</PackageTags>
+    <PackageTags>c#, maui, windows, android, iOS, mac</PackageTags>
     <NeutralLanguage>de-DE</NeutralLanguage>
     <RepositoryUrl>https://github.com/tuke307/SimTuning</RepositoryUrl>
     <PackageReleaseNotes>https://github.com/tuke307/SimTuning/releases</PackageReleaseNotes>
@@ -23,8 +23,6 @@
 
   <!-- execution configuration -->
   <PropertyGroup>
-    <!--<Nullable>enable</Nullable>-->
-    <NoWarn>$(NoWarn);1591;1701;1702;1705;VSX1000;NU1603</NoWarn>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
@@ -36,46 +34,39 @@
 
   <!-- release configuration -->
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <IncludeSymbols>true</IncludeSymbols>
-    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-
-    <DesignTimeBuild>false</DesignTimeBuild>
-    <DebugType>portable</DebugType>
-    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
   <!-- debug configuration -->
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DefineConstants>DEBUG</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>full</DebugType>
-    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
   <!-- Nuget configuration -->
   <ItemGroup>
     <!-- Nugets -->
-    <PackageReference Include="MvvmCross" Version="8.0.2" />
-    <PackageReference Include="MvvmCross.Plugin.Location" Version="8.0.2" />
-    <PackageReference Include="MvvmCross.Plugin.Messenger" Version="8.0.2" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.7.1" />
-    <PackageReference Include="Xam.Plugins.Settings" Version="4.1.0-beta" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.7.1" />
-    <PackageReference Include="UnitsNet" Version="4.126.0" />
-
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
+    <PackageReference Include="UnitsNet" Version="4.150.0" />
+    <PackageReference Include="CommunityToolkit.Maui" Version="3.1.0" />
+    <PackageReference Include="Sharpnado.Maui.TaskLoaderView" Version="2.5.1" />
+    <PackageReference Include="Sharpnado.Tabs.Maui" Version="3.0.1" />
+    <PackageReference Include="LiveChartsCore.SkiaSharpView.Maui" Version="2.0.0-beta.700" />
+    <PackageReference Include="SkiaSharp" Version="2.88.3" />
+    <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+    <PackageReference Include="Serilog" Version="2.12.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
     <!-- Analyzers -->
-    <PackageReference Include="AsyncFixer" Version="1.5.1">
+    <PackageReference Include="AsyncFixer" Version="1.6.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
 
-    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="5.0.3">
+    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="7.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
 
-    <PackageReference Include="Roslynator.Analyzers" Version="4.0.2">
+    <PackageReference Include="Roslynator.Analyzers" Version="4.2.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

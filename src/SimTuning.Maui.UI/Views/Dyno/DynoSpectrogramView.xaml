@@ -1,0 +1,288 @@
+﻿<ContentPage x:Class="SimTuning.Maui.UI.Views.Dyno.DynoSpectrogramView"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:behavior="clr-namespace:SimTuning.Maui.UI.Behaviors"
+             xmlns:views1="clr-namespace:SimTuning.Maui.UI.Views.Dyno"
+             Style="{StaticResource ContentPageStyle}"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
+             Title="Auswertung-Beschleunigung"
+             xmlns:vm="clr-namespace:SimTuning.Core.ViewModels.Dyno;assembly=SimTuning.Core"
+             x:DataType="vm:SpectrogramViewModel">
+    <ContentPage.Resources>
+        <behavior:InvertedBoolConverter x:Key="inverter" />
+    </ContentPage.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <ScrollView  Grid.Row="0">
+
+            <StackLayout>
+                <!--AUDIO PLAYER & CONTROL-->
+                <!--<Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    -->
+                <!--EINSTELLUNGEN-->
+                <!--
+                    <Frame Style="{StaticResource FrameStyle}" Margin="10"
+                                           Grid.Row="0">
+
+                        <StackLayout>
+                            <Label Style="{StaticResource LabelStyle}" Text="Audio"
+                                                    FontSize="Medium"
+                                                    FontAttributes="Bold" />
+
+                            <BoxView Color="{DynamicResource DesignDivider}"
+                                     HeightRequest="2"
+                                     HorizontalOptions="Fill"
+                                     Margin="0, 0, 0, 5" />
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <Button Style="{StaticResource ButtonMediumStyle}"  Grid.Column="0"
+                                                         ImageSource="{StaticResource IconRefreshMedium}"
+                                                         Command="{Binding RefreshAudioFileCommand}"
+                                                         CommandParameter="true"
+                                                         WidthRequest="90">
+                                </Button>
+
+                                -->
+                <!--<Button Style="{StaticResource ButtonMediumStyle}"  Grid.Row="0"
+                                                 ImageSource="{StaticResource IconFindInPageMedium}"
+                                IsVisible="{Binding Path=IsVisible, Source={x:Reference badge_open}, Converter={StaticResource inverter}}"
+                                Text="Datei auswählen"
+                                Command="{Binding OpenFileCommand}">
+                        </Button>-->
+                <!--
+
+                                <StackLayout Grid.Column="1"
+                                             Orientation="Horizontal"
+                                             Margin="30, 0, 0, 0">
+
+                                    <Button Style="{StaticResource ButtonMediumStyle}"  ImageSource="ic_pause_black_18dp"
+                                                             Command="{Binding PauseCommand}"
+                                                             WidthRequest="70"
+                                                             Margin="-10, 0, 0, 0" />
+                                    <Button Style="{StaticResource ButtonMediumStyle}"  ImageSource="ic_play_arrow_black_18dp"
+                                                             Command="{Binding PlayCommand}"
+                                                             WidthRequest="70"
+                                                             Margin="-10, 0, 0, 0" />
+                                </StackLayout>
+                            </Grid>
+
+                            <Slider Value="{Binding Mode=TwoWay, Path=AudioPosition}"
+                                                     Minimum="0"
+                                                     Maximum="{Binding Mode=OneWay, Path=AudioMaximum}">
+                            </Slider>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <StackLayout Grid.Column="0">
+                                    <Label Style="{StaticResource LabelStyle}" Text="links schneiden"
+                                                            Margin="10, 0, 0, 0"></Label>
+
+                                    <Button Style="{StaticResource ButtonMediumStyle}"  Command="{Binding CutBeginnCommand }"
+                                                             ImageSource="content_cut"
+                                                             WidthRequest="70">
+                                    </Button>
+                                </StackLayout>
+
+                                <StackLayout Grid.Column="1">
+                                    <Label Style="{StaticResource LabelStyle}" Text="rechts schneiden"
+                                                            Margin="10, 0, 0, 0"></Label>
+
+                                    <Button Style="{StaticResource ButtonMediumStyle}"  Command="{Binding CutEndCommand }"
+                                                             ImageSource="content_cut"
+                                                             WidthRequest="70">
+                                    </Button>
+                                </StackLayout>
+                            </Grid>
+                        </StackLayout>
+                    </Frame>
+                </Grid>-->
+                <Frame Style="{StaticResource FrameStyle}"
+                       Margin="10">
+                    <StackLayout>
+                        <Label Style="{StaticResource LabelStyle}"
+                               Text="Spectrogram"
+                               FontSize="Medium"
+                               FontAttributes="Bold" />
+
+                        <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+
+                        <Image Source="{Binding Mode=OneWay, Path=DisplayedImage}"
+                               HeightRequest="350"
+                               Aspect="Fill"
+                               VerticalOptions="FillAndExpand"
+                               HorizontalOptions="FillAndExpand">
+                        </Image>
+                    </StackLayout>
+                </Frame>
+
+                <!--EINSTELLUNGEN-->
+                <Frame Style="{StaticResource FrameStyle}"
+                       Margin="10">
+                    <StackLayout>
+                        <Label Style="{StaticResource LabelStyle}"
+                               Text="Spectrogram-Einstellungen"
+                               FontSize="Medium"
+                               FontAttributes="Bold" />
+
+                        <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+
+                        <!--Colormap-->
+                        <Picker Title="Colormap"
+                                ItemsSource="{Binding Mode=OneTime, Path=Colormaps}"
+                                SelectedItem="{Binding Mode=TwoWay, Path=Colormap}">
+                        </Picker>
+
+                        <!--Intensität-->
+                        <Picker Title="Intensität"
+                                ItemsSource="{Binding Mode=OneTime, Path=Intensitys}"
+                                SelectedItem="{Binding Mode=TwoWay, Path=Intensity}">
+                        </Picker>
+
+                        <!--Auflösungsqualität-->
+                        <Picker Title="Qualität"
+                                ItemsSource="{Binding Mode=OneTime, Path=Qualitys}"
+                                SelectedItem="{Binding Mode=TwoWay, Path=Quality}">
+                        </Picker>
+
+                        <!--Frequenzbereich-->
+                        <StackLayout Margin="0, 10, 0, 0">
+                            <Label Style="{StaticResource LabelStyle}">
+                                Drehzahl
+                            </Label>
+
+                            <StackLayout Orientation="Horizontal">
+                                <Entry Text="{Binding Mode=TwoWay, Path=Frequenzbeginn}"
+                                       Placeholder="von"
+                                       WidthRequest="100"
+                                       Keyboard="Numeric" />
+                                <Label Style="{StaticResource LabelStyle}"
+                                       Text="-"
+                                       Margin="10, 0, 10, 0"
+                                       VerticalOptions="Center" />
+                                <Entry Text="{Binding Mode=TwoWay, Path=Frequenzende}"
+                                       Placeholder="bis"
+                                       WidthRequest="100"
+                                       Keyboard="Numeric" />
+                            </StackLayout>
+                        </StackLayout>
+
+                        <!--Refresh-->
+                        <!--<materialDesign:Badged Grid.Row="5"
+                                               Visibility="{Binding Badge_Refresh}"
+                                               Badge="{materialDesign:PackIcon ShieldWarning}"
+                                               BadgeColorZoneMode="Accent">
+                            <Button Width="60"
+                                    Height="35"
+                                    ImageSource="ressources//refresh"
+                                    Command="{Binding RefreshSpectrogramCommand}"
+                                    ToolTip="Aktualisiere das Spectrogram mit den vorgenommen Änderungen">
+                            </Button>
+                        </materialDesign:Badged>-->
+
+                        <Button Style="{StaticResource ButtonMediumStyle}"
+                                HorizontalOptions="Center"
+                                WidthRequest="90"
+                                ImageSource="{StaticResource IconRefreshMedium}"
+                                Command="{Binding RefreshSpectrogramCommand}"
+                                CommandParameter="false">
+                        </Button>
+                    </StackLayout>
+                </Frame>
+
+                <!--1. Group box Plot-->
+                <Frame Style="{StaticResource FrameStyle}"
+                       Margin="10">
+                    <StackLayout>
+                        <Label Style="{StaticResource LabelStyle}"
+                               Text="Graph"
+                               FontSize="Medium"
+                               FontAttributes="Bold" />
+
+                        <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+
+                        <lvc:CartesianChart Series="{Binding Mode=OneWay, Path=PlotAudio}"
+                                            HeightRequest="400" />
+                    </StackLayout>
+                </Frame>
+
+                <!--Graph-Einstellungen-->
+                <Frame Style="{StaticResource FrameStyle}"
+                       Margin="10">
+                    <StackLayout>
+                        <Label Style="{StaticResource LabelStyle}"
+                               Text="Graph-Einstellungen"
+                               FontSize="Medium"
+                               FontAttributes="Bold" />
+
+                        <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+
+                        <!--Intensität-->
+                        <Picker Title="Intensität"
+                                ItemsSource="{Binding Mode=OneTime, Path=Intensitys}"
+                                SelectedItem="{Binding Mode=TwoWay, Path=Intensity}">
+                        </Picker>
+
+                        <!--Filter-->
+                        <Button Style="{StaticResource ButtonMediumStyle}"
+                                WidthRequest="90"
+                                ImageSource="{StaticResource IconFilterMedium}"
+                                Command="{Binding FilterPlotCommand}" />
+
+                        <!--Refresh-->
+                        <Button Style="{StaticResource ButtonMediumStyle}"
+                                WidthRequest="90"
+                                ImageSource="{StaticResource IconRefreshMedium}"
+                                Command="{Binding RefreshPlotCommand}">
+                        </Button>
+
+                        <!--Filter Intensität-->
+                        <Slider Minimum="0"
+                                Maximum="25"
+                                Value="{Binding Mode=TwoWay, Path=FilterValue}"
+                                VerticalOptions="CenterAndExpand" />
+
+                        <!--Graph-->
+                        <Picker Title="Graphauswahl"
+                                ItemsSource="{Binding Mode=OneWay, Path=Graphs}"
+                                SelectedItem="{Binding Mode=TwoWay, Path=Graph}"
+                                ItemDisplayBinding="{Binding Name}">
+                            <!--<Entry.Behaviors>
+                            <behavior:EventToCommandBehavior EventName="ChoiceSelected"
+                                                             Command="{Binding SpecificGraphCommand}" />
+                        </Entry.Behaviors>-->
+                        </Picker>
+                    </StackLayout>
+                </Frame>
+
+                <ImageButton Style="{StaticResource IconButtonMediumStyle}"
+                             WidthRequest="100"
+                             HeightRequest="60"
+                             Margin="15"
+                             HorizontalOptions="End"
+                             VerticalOptions="Center"
+                             Source="{StaticResource IconChevronRightMedium}"
+                             Command="{Binding ShowBeschleunigungCommand}" />
+            </StackLayout>
+        </ScrollView>
+
+        <views1:DynoAudioPlayerView Grid.Row="1" />
+    </Grid>
+</ContentPage>

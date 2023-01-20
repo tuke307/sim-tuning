@@ -1,48 +1,39 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
+using Microsoft.Extensions.Logging;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
+using SimTuning.Core.ModuleLogic;
+using SimTuning.Core.Services;
+using SimTuning.Data;
+using SimTuning.Data.Models;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using LiveChartsCore;
+
 namespace SimTuning.Core.ViewModels.Dyno
 {
-    using Microsoft.Extensions.Logging;
-    using MvvmCross.Commands;
-    using MvvmCross.Navigation;
-    using MvvmCross.Plugin.Messenger;
-    using MvvmCross.ViewModels;
-    using OxyPlot;
-    using SimTuning.Core.ModuleLogic;
-    using SimTuning.Core.Services;
-    using SimTuning.Data;
-    using SimTuning.Data.Models;
-    using System;
-    using System.Linq;
-    using System.Threading.Tasks;
-
-    /// <summary>
-    /// BeschleunigungViewModel.
-    /// </summary>
-    /// <seealso cref="MvvmCross.ViewModels.MvxViewModel" />
-    public class GeschwindigkeitViewModel : MvxViewModel
+    public class GeschwindigkeitViewModel : ViewModelBase
     {
-        /// <summary> Initializes a new instance of the <see
-        /// cref="GeschwindigkeitViewModel"/> class. </summary> <param
-        /// name="logger"><inheritdoc cref="ILogger" path="/summary/node()" /></param>
-        /// <param name="navigationService"><inheritdoc cref="IMvxNavigationService"
-        /// path="/summary/node()" /></param <param name="messenger"><inheritdoc
-        /// cref="IMvxMessenger" path="/summary/node()" /></param>
         public GeschwindigkeitViewModel(
             ILogger<GeschwindigkeitViewModel> logger,
-            IMvxNavigationService navigationService,
-            IVehicleService vehicleService,
-            IMvxMessenger messenger)
+            INavigationService INavigationService,
+            IVehicleService vehicleService)
         {
             this._logger = logger;
-            this._navigationService = navigationService;
+            this._INavigationService = INavigationService;
             this._vehicleService = vehicleService;
-            this._messenger = messenger;
+
+            this.ShowAusrollenCommand = new AsyncRelayCommand(async () => await _INavigationService.Navigate<Dyno.AusrollenViewModel>());
+
+            this.RefreshPlotCommand = new AsyncRelayCommand(this.RefreshPlot);
+
+            this.ReloadData();
         }
 
         #region Values
 
-        protected readonly IMvxMessenger _messenger;
-        protected readonly IMvxNavigationService _navigationService;
+        protected readonly INavigationService _INavigationService;
         protected readonly IVehicleService _vehicleService;
         private readonly ILogger<GeschwindigkeitViewModel> _logger;
         private DynoModel _dyno;
@@ -57,39 +48,18 @@ namespace SimTuning.Core.ViewModels.Dyno
             set => SetProperty(ref _dyno, value);
         }
 
-        public PlotModel PlotGeschwindigkeit
+        public ISeries PlotGeschwindigkeit
         {
             get => DynoLogic.PlotGeschwindigkeit;
         }
 
-        public MvxAsyncCommand RefreshPlotCommand { get; set; }
+        public IAsyncRelayCommand RefreshPlotCommand { get; set; }
 
-        public MvxAsyncCommand ShowAusrollenCommand { get; set; }
+        public IAsyncRelayCommand ShowAusrollenCommand { get; set; }
 
         #endregion Values
 
         #region Methods
-
-        /// <summary>
-        /// Initializes this instance.
-        /// </summary>
-        /// <returns>Initilisierung.</returns>
-        public override Task Initialize()
-        {
-            this.RefreshPlotCommand = new MvxAsyncCommand(this.RefreshPlot);
-
-            this.ReloadData();
-
-            return base.Initialize();
-        }
-
-        /// <summary>
-        /// Prepares this instance. called after construction.
-        /// </summary>
-        public override void Prepare()
-        {
-            base.Prepare();
-        }
 
         /// <summary>
         /// Reloads the data.
@@ -107,16 +77,47 @@ namespace SimTuning.Core.ViewModels.Dyno
         }
 
         /// <summary>
+        /// Überprüft ob wichtige Dyno-Audio-Daten vorhanden sind.
+        /// </summary>
+        private bool CheckDynoData()
+        {
+            if (this.Dyno == null)
+            {
+                Helpers.Functions.ShowSnackbarDialog(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_NODATA"));
+
+                return false;
+            }
+
+            if (this.Dyno.Geschwindigkeit == null)
+            {
+                Helpers.Functions.ShowSnackbarDialog(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_NODATA"));
+
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// Aktualisiert den Beschleunigungs-Graphen.
         /// </summary>
         /// <returns></returns>
-        protected virtual async Task RefreshPlot()
+        protected async Task RefreshPlot()
         {
+            if (!this.CheckDynoData())
+            {
+                return;
+            }
+
             try
             {
+                //var loadingDialog = await DisplayAlert(message: SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "MES_LOAD")).ConfigureAwait(false);
+
                 DynoLogic.GetGeschwindigkeitsGraphFitted(this.Dyno?.Geschwindigkeit.ToList());
 
-                await this.RaisePropertyChanged(() => PlotGeschwindigkeit).ConfigureAwait(true);
+                this.OnPropertyChanged(nameof(PlotGeschwindigkeit));
+
+                //await loadingDialog.DismissAsync().ConfigureAwait(false);
             }
             catch (Exception exc)
             {

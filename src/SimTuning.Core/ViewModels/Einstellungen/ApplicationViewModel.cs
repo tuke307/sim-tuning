@@ -1,51 +1,36 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
+using Microsoft.Extensions.Logging;
+using CommunityToolkit.Mvvm.ComponentModel;
+using System.Threading.Tasks;
+using SimTuning.Core.Services;
+
 namespace SimTuning.Core.ViewModels.Einstellungen
 {
-    using Microsoft.Extensions.Logging;
-    using MvvmCross.Navigation;
-    using MvvmCross.ViewModels;
-    using System.Threading.Tasks;
-
-    /// <summary>
-    /// ApplicationViewModel.
-    /// </summary>
-    /// <seealso cref="MvvmCross.ViewModels.MvxViewModel" />
-    public class ApplicationViewModel : MvxViewModel
+    public class ApplicationViewModel : ViewModelBase
     {
         /// <summary> Initializes a new instance of the <see cref="ApplicationViewModel"/>
         /// class. </summary> <param name="logger"><inheritdoc cref="ILogger"
-        /// path="/summary/node()" /></param> <param name="navigationService"><inheritdoc
-        /// cref="IMvxNavigationService" path="/summary/node()" /></param
+        /// path="/summary/node()" /></param> <param name="INavigationService"><inheritdoc
+        /// cref="INavigationService" path="/summary/node()" /></param
         public ApplicationViewModel(
             ILogger<ApplicationViewModel> logger,
-            IMvxNavigationService navigationService)
+            INavigationService INavigationService)
         {
             this._logger = logger;
-            this._navigationService = navigationService;
+            this._INavigationService = INavigationService;
         }
 
         #region Methods
 
         private readonly ILogger<ApplicationViewModel> _logger;
 
-        /// <summary>
-        /// Initializes this instance.
-        /// </summary>
-        /// <returns>Initilisierung.</returns>
-        public override Task Initialize()
-        {
-            return base.Initialize();
-        }
 
-        public override void Prepare()
-        {
-        }
 
         #endregion Methods
 
         #region Values
 
-        protected readonly IMvxNavigationService _navigationService;
+        protected readonly INavigationService _INavigationService;
 
         /// <summary>
         /// Gets or sets the rounding accuracy.
@@ -57,7 +42,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
             set
             {
                 Data.UnitSettings.RoundingAccuracy = value;
-                this.RaisePropertyChanged(() => this.RoundingAccuracy);
+                this.OnPropertyChanged(nameof(this.RoundingAccuracy));
             }
         }
 
@@ -71,7 +56,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
             set
             {
                 Data.UnitSettings.RoundOnUnitChange = value;
-                this.RaisePropertyChanged(() => this.RoundOnUnitChange);
+                this.OnPropertyChanged(nameof(this.RoundOnUnitChange));
             }
         }
 

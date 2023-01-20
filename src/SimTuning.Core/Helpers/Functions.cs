@@ -11,6 +11,11 @@ using System.Resources;
 using System.Security;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
+using static Microsoft.Maui.ApplicationModel.Permissions;
+using CommunityToolkit.Maui.Alerts;
+using Microsoft.Maui.ApplicationModel;
+using System.Collections;
 
 namespace SimTuning.Core.Helpers
 {
@@ -28,6 +33,68 @@ namespace SimTuning.Core.Helpers
         private const int Keysize = 128;
 
         #endregion variables
+
+        /// <summary>
+        /// Gets the permission.
+        /// </summary>
+        /// <typeparam name="TPermission">The type of the permission.</typeparam>
+        /// <returns></returns>
+        public static async Task<bool> GetPermission<TPermission>()
+            where TPermission : BasePermission, new()
+        {
+            var hasPermission = await CheckStatusAsync<TPermission>().ConfigureAwait(true);
+
+            if (hasPermission == PermissionStatus.Granted)
+            {
+                return true;
+            }
+            else if (hasPermission == PermissionStatus.Disabled)
+            {
+                return false;
+            }
+
+            var result = await RequestAsync<TPermission>().ConfigureAwait(true);
+            if (result != PermissionStatus.Granted)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Shows the snackbar dialog.
+        /// </summary>
+        /// <param name="content">The content.</param>
+        public static async void ShowSnackbarDialog(object content)
+        {
+            if (content == null)
+            {
+                return;
+            }
+
+            if (content.GetType().IsGenericType && content is IEnumerable)
+            {
+                List<string> messages = (List<string>)content;
+
+                foreach (var message in messages)
+                {
+                    await Snackbar
+                        .Make(
+                        message: message,
+                        duration: TimeSpan.FromSeconds(3))
+                        .Show();
+                }
+            }
+            else
+            {
+                await Snackbar
+                    .Make(
+                    message: content.ToString(),
+                    duration: TimeSpan.FromSeconds(3))
+                    .Show();
+            }
+        }
 
         /// <summary>
         /// Create a ZIP file of the files provided.
@@ -163,32 +230,6 @@ namespace SimTuning.Core.Helpers
         }
 
         /// <summary>
-        /// Gets the login credentials.
-        /// </summary>
-        /// <param name="email">The email.</param>
-        /// <param name="password">The password.</param>
-        public static void GetLoginCredentials(out string email, out SecureString password)
-        {
-            if (!string.IsNullOrEmpty(UserSettings.Mail))
-            {
-                email = Functions.Decrypt(UserSettings.Mail, GeneralSettings.UserAuthent);
-            }
-            else
-            {
-                email = null;
-            }
-
-            if (!string.IsNullOrEmpty(UserSettings.Password))
-            {
-                password = Converts.StringToSecureString(Functions.Decrypt(UserSettings.Password, GeneralSettings.UserAuthent));
-            }
-            else
-            {
-                password = null;
-            }
-        }
-
-        /// <summary>
         /// Berechnet den Punkt auf einem beliebigen Kreis.
         /// </summary>
         /// <param name="angle">The angle.</param>
@@ -232,25 +273,6 @@ namespace SimTuning.Core.Helpers
             surface.DrawBitmap(bitmap, 0, 0);
 
             return rotated;
-        }
-
-        /// <summary>
-        /// Saves the login credentials.
-        /// </summary>
-        /// <param name="email">The email.</param>
-        /// <param name="password">The password.</param>
-        public static void SaveLoginCredentials(string email, SecureString password)
-        {
-            // speichern der daten
-            if (email != null)
-            {
-                UserSettings.Mail = Functions.Encrypt(email, GeneralSettings.UserAuthent);
-            }
-
-            if (password != null)
-            {
-                UserSettings.Password = Functions.Encrypt(Converts.SecureStringToString(password), GeneralSettings.UserAuthent);
-            }
         }
 
         /// <summary>

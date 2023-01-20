@@ -1,58 +1,38 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
+using Microsoft.Extensions.Logging;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
+using SimTuning.Core.ModuleLogic;
+using SimTuning.Core.Services;
+using SimTuning.Data.Models;
+using SkiaSharp;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.Maui.Controls;
+using SimTuning.Core.Helpers;
+using LiveChartsCore;
+
 namespace SimTuning.Core.ViewModels.Dyno
 {
-    using MediaManager;
-    using MediaManager.Library;
-    using Microsoft.Extensions.Logging;
-    using MvvmCross.Commands;
-    using MvvmCross.Navigation;
-    using MvvmCross.Plugin.Messenger;
-    using MvvmCross.ViewModels;
-    using OxyPlot;
-    using SimTuning.Core.ModuleLogic;
-    using SimTuning.Core.Services;
-    using SimTuning.Data.Models;
-    using SkiaSharp;
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Threading.Tasks;
-
-    /// <summary>
-    /// SpectrogramViewModel.
-    /// </summary>
-    /// <seealso cref="MvvmCross.ViewModels.MvxViewModel" />
-    public class SpectrogramViewModel : MvxViewModel
+    public class SpectrogramViewModel : ViewModelBase
     {
-        /// <summary> Initializes a new instance of the <see cref="SpectrogramViewModel"/>
-        /// class. </summary> <param name="logger"><inheritdoc cref="ILogger"
-        /// path="/summary/node()" /></param> <param name="navigationService"><inheritdoc
-        /// cref="IMvxNavigationService" path="/summary/node()" /></param <param
-        /// name="messenger"><inheritdoc cref="IMvxMessenger" path="/summary/node()"
-        /// /></param> <param name="mediaManager">The media manager.</param>
         public SpectrogramViewModel(
             ILogger<SpectrogramViewModel> logger,
-            IMvxNavigationService navigationService,
-            IMvxMessenger messenger,
-            IVehicleService vehicleService,
-            IMediaManager mediaManager)
+            INavigationService INavigationService,
+            IVehicleService vehicleService)
         {
             this._logger = logger;
-            this._mediaManager = mediaManager;
-            this._navigationService = navigationService;
+            this._INavigationService = INavigationService;
             this._vehicleService = vehicleService;
-            this._messenger = messenger;
-        }
 
-        #region Methods
+            this.RefreshSpectrogramCommand = new RelayCommand(this.ReloadImageAudioSpectrogram);
+            this.SpecificGraphCommand = new RelayCommand(this.SpecificGraph);
 
-        /// <summary>
-        /// Initializes this instance.
-        /// </summary>
-        /// <returns>Initilisierung.</returns>
-        public override Task Initialize()
-        {
+            this.ShowBeschleunigungCommand = new AsyncRelayCommand(() => this._INavigationService.Navigate<Dyno.GeschwindigkeitViewModel>());
+
             this.Frequenzbeginn = 3000;
             this.Frequenzende = 12000;
             this.FilterValue = 2;
@@ -64,51 +44,66 @@ namespace SimTuning.Core.ViewModels.Dyno
             this.Normal_Refresh = true;
             this.Badge_Refresh = false;
 
-            this.FilterPlotCommand = new MvxAsyncCommand(this.FilterPlot);
-            this.RefreshAudioFileCommand = new MvxAsyncCommand(this.RefreshAudioFileAsync);
-            this.RefreshPlotCommand = new MvxAsyncCommand(this.RefreshPlot);
+            this.FilterPlotCommand = new AsyncRelayCommand(this.FilterPlot);
+            this.RefreshAudioFileCommand = new AsyncRelayCommand(this.RefreshAudioFileAsync);
+            this.RefreshPlotCommand = new AsyncRelayCommand(this.RefreshPlot);
 
-            this.ReloadData();
-
-            return base.Initialize();
+            //this.ReloadData();
         }
+
+        #region Methods
 
         /// <summary>
-        /// Prepares this instance. called after construction.
+        /// Überprüft ob wichtige Dyno-Audio-Daten vorhanden sind.
         /// </summary>
-        public override void Prepare()
+        private bool CheckDynoData()
         {
-            base.Prepare();
+            if (!File.Exists(SimTuning.Core.GeneralSettings.AudioAccelerationFilePath))
+            {
+                Functions.ShowSnackbarDialog(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_NOAUDIOFILE"));
+
+                return false;
+            }
+
+            if (this.Dyno == null)
+            {
+                Functions.ShowSnackbarDialog(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_NODATA"));
+
+                return false;
+            }
+
+            return true;
         }
+
 
         /// <summary>
         /// Reloads the data.
         /// </summary>
         /// <param name="mvxReloaderMessage">The MVX reloader message.</param>
-        public void ReloadData(Models.MvxReloaderMessage mvxReloaderMessage = null)
-        {
-            try
-            {
-                this.Dyno = _vehicleService.RetrieveOneActive();
-            }
-            catch (Exception exc)
-            {
-                _logger.LogError("Fehler beim Laden des Dyno-Datensatz: ", exc);
-            }
-        }
+        //public void ReloadData(Models.MvxReloaderMessage mvxReloaderMessage = null)
+        //{
+        //    try
+        //    {
+        //        this.Dyno = _vehicleService.RetrieveOneActive();
+        //    }
+        //    catch (Exception exc)
+        //    {
+        //        _logger.LogError("Fehler beim Laden des Dyno-Datensatz: ", exc);
+        //    }
+        //}
 
         /// <summary>
         /// Filters the plot.
         /// </summary>
-        protected virtual async Task FilterPlot()
+        protected async Task FilterPlot()
         {
             try
             {
                 DynoLogic.GetDrehzahlGraph(areas: true, areaAbstand: this.FilterValue);
 
-                await this.RaisePropertyChanged(() => this.Graphs).ConfigureAwait(true);
+                //this.OnPropertyChanged(nameof(this.Graphs));
 
-                await this.RaisePropertyChanged(() => this.PlotAudio).ConfigureAwait(true);
+                //this.OnPropertyChanged(nameof(this.PlotAudio));
             }
             catch (Exception exc)
             {
@@ -120,7 +115,7 @@ namespace SimTuning.Core.ViewModels.Dyno
         /// Opens the file dialog.
         /// </summary>
         /// <param name="fileName">Name of the file.</param>
-        // protected virtual async Task OpenFileDialog(string fileName) { //bool status =
+        // protected async Task OpenFileDialog(string fileName) { //bool status =
         // false;
 
         // // zip extrahieren if
@@ -150,12 +145,12 @@ namespace SimTuning.Core.ViewModels.Dyno
         /// <placeholder>A <see cref="Task" /> representing the asynchronous
         /// operation.</placeholder>
         /// </returns>
-        protected virtual async Task RefreshAudioFileAsync()
+        protected async Task RefreshAudioFileAsync()
         {
             try
             {
-                var generatedMediaItem = await _mediaManager.Extractor.CreateMediaItem(GeneralSettings.AudioAccelerationFilePath).ConfigureAwait(true);
-                _mediaManager.Queue.Add(generatedMediaItem);
+                //var generatedMediaItem = await _mediaManager.Extractor.CreateMediaItem(GeneralSettings.AudioAccelerationFilePath).ConfigureAwait(true);
+                //_mediaManager.Queue.Add(generatedMediaItem);
             }
             catch (Exception exc)
             {
@@ -170,15 +165,20 @@ namespace SimTuning.Core.ViewModels.Dyno
         /// <placeholder>A <see cref="Task" /> representing the asynchronous
         /// operation.</placeholder>
         /// </returns>
-        protected virtual async Task RefreshPlot()
+        protected async Task RefreshPlot()
         {
+            if (!this.CheckDynoData())
+            {
+                return;
+            }
+
             try
             {
                 DynoLogic.GetDrehzahlGraph(intensity: this.Intensity);
 
-                await this.RaisePropertyChanged(() => this.PlotAudio).ConfigureAwait(true);
+                this.OnPropertyChanged(nameof(this.PlotAudio));
 
-                PlotAudio.MouseDown += PlotAudioMouseDown;
+                //PlotAudio.MouseDown += PlotAudioMouseDown;
             }
             catch (Exception exc)
             {
@@ -190,8 +190,13 @@ namespace SimTuning.Core.ViewModels.Dyno
         /// Reloads the image audio spectrogram.
         /// </summary>
         /// <returns></returns>
-        protected Stream ReloadImageAudioSpectrogram()
+        protected void ReloadImageAudioSpectrogram()
         {
+            if (!this.CheckDynoData())
+            {
+                return;
+            }
+
             try
             {
                 // Normal_Refresh = true; Badge_Refresh = false;
@@ -231,34 +236,33 @@ namespace SimTuning.Core.ViewModels.Dyno
 
                 Stream stream = SimTuning.Core.Converters.Converts.SKBitmapToStream(spec);
 
-                return stream;
+                this.DisplayedImage = ImageSource.FromStream(() => stream);
             }
             catch (Exception exc)
             {
                 _logger.LogError("Fehler bei ReloadImageAudioSpectrogram: ", exc);
-                return null;
             }
         }
 
         /// <summary>
         /// Specifics the graph.
         /// </summary>
-        protected virtual void SpecificGraph()
+        protected void SpecificGraph()
         {
-            if (this.Graphs == null || this.Graph == null)
-            {
-                return;
-            }
+            //if (this.Graphs == null || this.Graph == null)
+            //{
+            //    return;
+            //}
 
             try
             {
-                DynoLogic.Graphauswahl = this.Graphs.IndexOf(this.Graph);
-                DynoLogic.GetDrehzahlGraphFitted(out var drehzahlModels);
-                this.Dyno.Drehzahl = drehzahlModels;
+                //DynoLogic.Graphauswahl = this.Graphs.IndexOf(this.Graph);
+                //DynoLogic.GetDrehzahlGraphFitted(out var drehzahlModels);
+                //this.Dyno.Drehzahl = drehzahlModels;
 
-                _vehicleService.UpdateOne(this.Dyno);
+                //_vehicleService.UpdateOne(this.Dyno);
 
-                this.RaisePropertyChanged(() => PlotAudio);
+                //this.OnPropertyChanged(nameof(PlotAudio));
             }
             catch (Exception exc)
             {
@@ -266,9 +270,9 @@ namespace SimTuning.Core.ViewModels.Dyno
             }
         }
 
-        private void PlotAudioMouseDown(object sender, OxyMouseDownEventArgs e)
+        private void PlotAudioMouseDown(object sender/*, OxyMouseDownEventArgs e*/)
         {
-            PlotAudio.EntfernePunkt(e.Position);
+            //PlotAudio.EntfernePunkt(e.Position);
         }
 
         #endregion Methods
@@ -283,51 +287,51 @@ namespace SimTuning.Core.ViewModels.Dyno
         /// Gets or sets the filter plot command.
         /// </summary>
         /// <value>The filter plot command.</value>
-        public IMvxAsyncCommand FilterPlotCommand { get; set; }
+        public IAsyncRelayCommand FilterPlotCommand { get; set; }
 
         /// <summary>
         /// Gets or sets the open file command.
         /// </summary>
         /// <value>The open file command.</value>
-        // public IMvxAsyncCommand OpenFileCommand { get; set; }
+        // public IAsyncRelayCommand OpenFileCommand { get; set; }
 
         /// <summary>
         /// Gets or sets the open file command.
         /// </summary>
         /// <value>The open file command.</value>
-        public IMvxAsyncCommand RefreshAudioFileCommand { get; set; }
+        public IAsyncRelayCommand RefreshAudioFileCommand { get; set; }
 
         /// <summary>
         /// Gets or sets the refresh plot command.
         /// </summary>
         /// <value>The refresh plot command.</value>
-        public IMvxAsyncCommand RefreshPlotCommand { get; set; }
+        public IAsyncRelayCommand RefreshPlotCommand { get; set; }
 
         /// <summary>
         /// Gets or sets the refresh spectrogram command.
         /// </summary>
         /// <value>The refresh spectrogram command.</value>
-        public IMvxAsyncCommand RefreshSpectrogramCommand { get; set; }
+        public IRelayCommand RefreshSpectrogramCommand { get; set; }
 
         /// <summary>
         /// Gets or sets the specific graph command.
         /// </summary>
         /// <value>The specific graph command.</value>
-        public IMvxAsyncCommand SpecificGraphCommand { get; set; }
+        public IRelayCommand SpecificGraphCommand { get; set; }
 
         /// <summary>
         /// Gets or sets the stop command.
         /// </summary>
         /// <value>The stop command.</value>
-        // public IMvxAsyncCommand StopCommand { get; set; }
+        // public IAsyncRelayCommand StopCommand { get; set; }
 
         #endregion Commands
 
         #region private
 
-        protected readonly IMediaManager _mediaManager;
-        protected readonly IMvxMessenger _messenger;
-        protected readonly IMvxNavigationService _navigationService;
+        //protected readonly IMediaManager _mediaManager;
+
+        protected readonly INavigationService _INavigationService;
         protected readonly IVehicleService _vehicleService;
         private static readonly List<string> _qualitys = new List<string>() { "schlecht", "mittel", "gut", "sehr gut" };
         private bool _badge_Refresh;
@@ -358,6 +362,21 @@ namespace SimTuning.Core.ViewModels.Dyno
 
         #endregion private
 
+
+        private ImageSource _displayedImage;
+
+        public ImageSource DisplayedImage
+        {
+            get => _displayedImage;
+            set => SetProperty(ref _displayedImage, value);
+        }
+
+        /// <summary>
+        /// Gets the show beschleunigung command.
+        /// </summary>
+        /// <value>The show beschleunigung command.</value>
+        public IAsyncRelayCommand ShowBeschleunigungCommand { get; private set; }
+
         /// <summary>
         /// Gets or sets a value indicating whether [badge refresh].
         /// </summary>
@@ -372,7 +391,7 @@ namespace SimTuning.Core.ViewModels.Dyno
         /// Gets the buffered.
         /// </summary>
         /// <value>The buffered.</value>
-        public int Buffered => Convert.ToInt32(_mediaManager.Buffered.TotalSeconds);
+        //public int Buffered => Convert.ToInt32(_mediaManager.Buffered.TotalSeconds);
 
         /// <summary>
         /// Gets or sets the colormap.
@@ -405,19 +424,19 @@ namespace SimTuning.Core.ViewModels.Dyno
         /// Gets the current.
         /// </summary>
         /// <value>The current.</value>
-        public IMediaItem Current => _mediaManager.Queue.Current;
+        //public IMediaItem Current => _mediaManager.Queue.Current;
 
         /// <summary>
         /// Gets the current subtitle.
         /// </summary>
         /// <value>The current subtitle.</value>
-        public string CurrentSubtitle => Current.DisplaySubtitle;
+        //public string CurrentSubtitle => Current.DisplaySubtitle;
 
         /// <summary>
         /// Gets the current title.
         /// </summary>
         /// <value>The current title.</value>
-        public string CurrentTitle => Current.DisplayTitle;
+        //public string CurrentTitle => Current.DisplayTitle;
 
         /// <summary>
         /// Gets or sets the dyno.
@@ -474,7 +493,7 @@ namespace SimTuning.Core.ViewModels.Dyno
                 }
 
                 SetProperty(ref _graph, value);
-                SpecificGraphCommand.Execute();
+                SpecificGraphCommand.Execute(null);
             }
         }
 
@@ -484,7 +503,7 @@ namespace SimTuning.Core.ViewModels.Dyno
         /// <value>The graphs.</value>
         public List<string> Graphs
         {
-            get => DynoLogic.PlotAudio?.Series?.Select(x => x.Title).ToList();
+            get => null;//DynoLogic.PlotAudio?.Series?.Select(x => x.Title).ToList();
         }
 
         /// <summary>
@@ -521,7 +540,7 @@ namespace SimTuning.Core.ViewModels.Dyno
         /// Gets the plot audio.
         /// </summary>
         /// <value>The plot audio.</value>
-        public PlotModel PlotAudio
+        public ISeries PlotAudio
         {
             get => DynoLogic.PlotAudio;
         }

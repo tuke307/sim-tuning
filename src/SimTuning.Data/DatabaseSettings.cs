@@ -1,11 +1,10 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
 namespace SimTuning.Data
 {
-    using Plugin.Settings;
-    using Plugin.Settings.Abstractions;
+    using Microsoft.Maui.Devices;
+    using Microsoft.Maui.Storage;
     using System;
     using System.IO;
-    using Xamarin.Essentials;
 
     /// <summary>
     /// Konstanten für die Datenbank-Abwicklung.
@@ -34,11 +33,11 @@ namespace SimTuning.Data
                     DatabasePath = _databasePath;
                 }
 
-                return AppSettings.GetValueOrDefault(nameof(DatabasePath), _databasePath);
+                return Preferences.Default.Get(nameof(DatabasePath), _databasePath);
             }
             set
             {
-                AppSettings.AddOrUpdateValue(nameof(DatabasePath), value);
+                Preferences.Default.Set(nameof(DatabasePath), value);
             }
         }
 
@@ -72,15 +71,13 @@ namespace SimTuning.Data
                     FileDirectory = _fileDirectory;
                 }
 
-                return AppSettings.GetValueOrDefault(nameof(FileDirectory), _fileDirectory);
+                return Preferences.Default.Get(nameof(FileDirectory), _fileDirectory);
             }
 
             set
             {
-                AppSettings.AddOrUpdateValue(nameof(FileDirectory), value);
+                Preferences.Default.Set(nameof(FileDirectory), value);
             }
         }
-
-        private static ISettings AppSettings => CrossSettings.Current;
     }
 }

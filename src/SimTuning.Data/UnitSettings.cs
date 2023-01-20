@@ -1,16 +1,13 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
+using Microsoft.Maui.Storage;
+
 namespace SimTuning.Data
 {
-    using Plugin.Settings;
-    using Plugin.Settings.Abstractions;
-
     /// <summary>
     /// UnitSettings.
     /// </summary>
     public class UnitSettings
     {
-        private const string unitFile = "unit";
-
         /// <summary>
         /// Gets or sets the rounding accuracy.
         /// </summary>
@@ -19,12 +16,12 @@ namespace SimTuning.Data
         {
             get
             {
-                return AppSettings.GetValueOrDefault(nameof(RoundingAccuracy), 2, unitFile);
+                return Preferences.Default.Get(nameof(RoundingAccuracy), 2);
             }
 
             set
             {
-                AppSettings.AddOrUpdateValue(nameof(RoundingAccuracy), value, unitFile);
+                Preferences.Default.Set(nameof(RoundingAccuracy), value);
             }
         }
 
@@ -36,15 +33,13 @@ namespace SimTuning.Data
         {
             get
             {
-                return AppSettings.GetValueOrDefault(nameof(RoundOnUnitChange), true, unitFile);
+                return Preferences.Default.Get(nameof(RoundOnUnitChange), true);
             }
 
             set
             {
-                AppSettings.AddOrUpdateValue(nameof(RoundOnUnitChange), value, unitFile);
+                Preferences.Default.Set(nameof(RoundOnUnitChange), value);
             }
         }
-
-        private static ISettings AppSettings => CrossSettings.Current;
     }
 }

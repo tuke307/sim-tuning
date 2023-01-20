@@ -2,61 +2,37 @@
 namespace SimTuning.Core.ViewModels.Einstellungen
 {
     using Microsoft.Extensions.Logging;
-    using MvvmCross.Commands;
-    using MvvmCross.Navigation;
-    using MvvmCross.ViewModels;
+    using CommunityToolkit.Mvvm.Input;
+    using CommunityToolkit.Mvvm.ComponentModel;
     using System.Threading.Tasks;
+    using SimTuning.Core.Services;
 
-    /// <summary>
-    /// MenuViewModel.
-    /// </summary>
-    /// <seealso cref="MvvmCross.ViewModels.MvxViewModel" />
-    public class MenuViewModel : MvxViewModel
+    public class MenuViewModel : ViewModelBase
     {
-        /// <summary> Initializes a new instance of the <see cref="MenuViewModel"/> class.
-        /// </summary> <param name="logger"><inheritdoc cref="ILogger"
-        /// path="/summary/node()" /></param> <param name="navigationService"><inheritdoc
-        /// cref="IMvxNavigationService" path="/summary/node()" /></param
         public MenuViewModel(
             ILogger<MenuViewModel> logger,
-            IMvxNavigationService navigationService)
+            INavigationService INavigationService)
         {
             this._logger = logger;
-            this._navigationService = navigationService;
+            this._INavigationService = INavigationService;
+
+            this.OpenVehiclesCommand = new AsyncRelayCommand(() => this._INavigationService.Navigate<Einstellungen.VehiclesViewModel>());
+            this.OpenApplicationCommand = new AsyncRelayCommand(() => this._INavigationService.Navigate<Einstellungen.ApplicationViewModel>());
         }
 
         #region Methods
 
-        // <summary>
-        /// Initializes this instance. </summary> <returns>Initilisierung.</returns>
-        public override Task Initialize()
-        {
-            return base.Initialize();
-        }
-
-        /// <summary>
-        /// Prepares the specified user.
-        /// </summary>
-
-        public override void Prepare()
-        {
-            base.Prepare();
-        }
+       
 
         #endregion Methods
 
         #region Values
 
-        protected readonly IMvxNavigationService _navigationService;
+        protected readonly INavigationService _INavigationService;
         private readonly ILogger<MenuViewModel> _logger;
 
-        public MvxAsyncCommand OpenApplicationCommand { get; set; }
-
-        public MvxAsyncCommand OpenAussehenCommand { get; set; }
-
-        public MvxAsyncCommand OpenKontoCommand { get; set; }
-
-        public MvxAsyncCommand OpenVehiclesCommand { get; set; }
+        public IAsyncRelayCommand OpenApplicationCommand { get; set; }
+        public IAsyncRelayCommand OpenVehiclesCommand { get; set; }
 
         #endregion Values
     }

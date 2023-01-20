@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<ResourceDictionary x:Class="SimTuning.Maui.UI.Themes.Base.Dark"
+                    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    <Color x:Key="ValidationErrorColor">#f44336</Color>
+    <Color x:Key="DesignBackgroundDark">#FF000000</Color>
+    <Color x:Key="DesignPaperDark">#FF303030</Color>
+    <Color x:Key="DesignCardBackgroundDark">#FF424242</Color>
+    <Color x:Key="DesignBodyDark">#DDFFFFFF</Color>
+    <Color x:Key="DesignBodyLightDark">#89FFFFFF</Color>
+    <Color x:Key="DesignColumnHeaderDark">#BCFFFFFF</Color>
+    <Color x:Key="DesignCheckBoxOffDark">#89FFFFFF</Color>
+    <Color x:Key="DesignTextBoxBorderDark">#89FFFFFF</Color>
+    <Color x:Key="DesignDividerDark">#1FFFFFFF</Color>
+    <Color x:Key="DesignSelectionDark">#757575</Color>
+    <Color x:Key="DesignToolForegroundDark">#616161</Color>
+    <Color x:Key="DesignToolBackgroundDark">#e0e0e0</Color>
+    <Color x:Key="DesignFlatButtonClickDark">#19757575</Color>
+    <Color x:Key="DesignFlatButtonRippleDark">#FFB6B6B6</Color>
+    <Color x:Key="DesignChipBackgroundDark">#FF2E3C43</Color>
+    <Color x:Key="DesignSnackbarBackgroundDark">#FFCDCDCD</Color>
+    <Color x:Key="DesignSnackbarRippleDark">#FF494949</Color>
+    <Color x:Key="DesignTextFieldBoxBackgroundDark">#1AFFFFFF</Color>
+    <Color x:Key="DesignTextAreaBorderDark">#BCFFFFFF</Color>
+    <Color x:Key="DesignTextAreaInactiveBorderDark">#1AFFFFFF</Color>
+</ResourceDictionary>

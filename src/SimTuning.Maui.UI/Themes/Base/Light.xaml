@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<ResourceDictionary x:Class="SimTuning.Maui.UI.Themes.Base.Light"
+                    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    <Color x:Key="ValidationErrorColor">#f44336</Color>
+    <Color x:Key="DesignBackgroundLight">#FFFFFFFF</Color>
+    <Color x:Key="DesignPaperLight">#FFfafafa</Color>
+    <Color x:Key="DesignCardBackgroundLight">#FFFFFFFF</Color>
+    <Color x:Key="DesignBodyLight">#DD000000</Color>
+    <Color x:Key="DesignBodyLightLight">#89000000</Color>
+    <Color x:Key="DesignColumnHeaderLight">#BC000000</Color>
+    <Color x:Key="DesignCheckBoxOffLight">#89000000</Color>
+    <Color x:Key="DesignTextBoxBorderLight">#89000000</Color>
+    <Color x:Key="DesignDividerLight">#1f000000</Color>
+    <Color x:Key="DesignSelectionLight">#FFDeDeDe</Color>
+    <Color x:Key="DesignToolForegroundLight">#616161</Color>
+    <Color x:Key="DesignToolBackgroundLight">#e0e0e0</Color>
+    <Color x:Key="DesignFlatButtonClickLight">#FFDeDeDe</Color>
+    <Color x:Key="DesignFlatButtonRippleLight">#FFB6B6B6</Color>
+    <Color x:Key="DesignChipBackgroundLight">#12000000</Color>
+    <Color x:Key="DesignSnackbarBackgroundLight">#FF323232</Color>
+    <Color x:Key="DesignSnackbarRippleLight">#FFB6B6B6</Color>
+    <Color x:Key="DesignTextFieldBoxBackgroundLight">#0F000000</Color>
+    <Color x:Key="DesignTextAreaBorderLight">#BC000000</Color>
+    <Color x:Key="DesignTextAreaInactiveBorderLight">#0F000000</Color>
+</ResourceDictionary>

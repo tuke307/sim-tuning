@@ -1,20 +1,22 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
-using MvvmCross.Converters;
+using Microsoft.Maui.Controls;
 using System;
 using System.Globalization;
 
 namespace SimTuning.Core.Converters
 {
-    public class TimeSpanToDoubleValueConverter : MvxValueConverter<TimeSpan, double>
+    public class TimeSpanToDoubleValueConverter : IValueConverter
     {
-        protected override double Convert(TimeSpan value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value.TotalSeconds;
+            var timeSpan = (TimeSpan)value;
+            return timeSpan.TotalSeconds;
         }
 
-        protected override TimeSpan ConvertBack(double value, Type targetType, object parameter, CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return TimeSpan.FromSeconds(value);
+            var totalSeconds = (double)value;
+            return TimeSpan.FromSeconds(totalSeconds);
         }
     }
 }

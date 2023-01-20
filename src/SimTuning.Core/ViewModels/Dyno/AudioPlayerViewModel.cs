@@ -1,43 +1,57 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
-using MediaManager;
-using MediaManager.Library;
 using Microsoft.Extensions.Logging;
-using MvvmCross.Commands;
-using MvvmCross.Navigation;
-using MvvmCross.Plugin.Messenger;
-using MvvmCross.ViewModels;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using SimTuning.Core.Services;
 
 namespace SimTuning.Core.ViewModels.Dyno
 {
-    /// <summary>
-    /// AudioPlayerViewModel.
-    /// </summary>
-    /// <seealso cref="MvvmCross.ViewModels.MvxViewModel" />
-    public class AudioPlayerViewModel : MvxViewModel
+    public class AudioPlayerViewModel : ViewModelBase
     {
-        /// <summary> Initializes a new instance of the <see cref="AudioPlayerViewModel"/>
-        /// class. </summary> <param name="logger"><inheritdoc cref="ILogger"
-        /// path="/summary/node()" /></param> <param name="navigationService"><inheritdoc
-        /// cref="IMvxNavigationService" path="/summary/node()" /></param <param
-        /// name="mediaManager">The media manager.</param>
         public AudioPlayerViewModel(
             ILogger<AudioPlayerViewModel> logger,
-            IMvxNavigationService navigationService,
-            IMediaManager mediaManager,
-            IMvxMessenger messenger)
+            INavigationService INavigationService)
         {
-            this._mediaManager = mediaManager;
             this._logger = logger;
-            this._messenger = messenger;
+            //this._messenger = messenger;
+
+            this.CutBeginnCommand = new AsyncRelayCommand(this.CutBeginn);
+            this.CutEndCommand = new AsyncRelayCommand(this.CutEnd);
+
+            //this.PlayPauseCommand = new AsyncRelayCommand(() => this.PlayPause());
+            ////this.SkipBackwardsCommand = new AsyncRelayCommand(() => this._mediaManager.StepBackward());
+            ////this.SkipForwardCommand = new AsyncRelayCommand(() => this._mediaManager.StepForward());
+            //this.DragCompletedCommand = new AsyncRelayCommand(() =>
+            //{
+            //    this.DragStarted = false;
+            //    return this._mediaManager.SeekTo(TimeSpan.FromSeconds(this.Position));
+            //});
+            this.DragStartedCommand = new RelayCommand(() => this.DragStarted = true);
+
+            // MediaItem von Quee holen, falls bereits Play ausgelöst wurde
+            //Source = _mediaManager.Queue.Current;
+
+            //if (Source != null)
+            //{
+            //    //TimeSpanPosition = _mediaManager.Position;
+            //    //Position = _mediaManager.Position.TotalSeconds;
+            //    //TimeSpanDuration = _mediaManager.Duration;
+            //    //Duration = _mediaManager.Duration.TotalSeconds;
+            //}
+
+            //_mediaManager.MediaItemChanged += this.MediaManager_MediaItemChanged;
+            //_mediaManager.PositionChanged += this.MediaManager_PositionChanged;
+            //_mediaManager.StateChanged += this.MediaManager_StateChanged;
+            //_mediaManager.MediaItemFailed += this.Current_MediaItemFailed;
+            //_mediaManager.MediaItemFinished += this.Current_MediaItemFinished;
+            //_mediaManager.BufferedChanged += this.Current_BufferingChanged;
         }
 
         #region Values
 
-        protected readonly IMediaManager _mediaManager;
-        protected readonly IMvxMessenger _messenger;
         private readonly ILogger<AudioPlayerViewModel> _logger;
         private bool _dragStarted = false;
 
@@ -45,8 +59,6 @@ namespace SimTuning.Core.ViewModels.Dyno
 
         private bool _isPlaying;
         private double _position = 0;
-
-        private IMediaItem _source;
 
         private TimeSpan _timeSpanDuration = TimeSpan.Zero;
 
@@ -56,20 +68,20 @@ namespace SimTuning.Core.ViewModels.Dyno
         /// Gets or sets the cut beginn command.
         /// </summary>
         /// <value>The cut beginn command.</value>
-        public IMvxAsyncCommand CutBeginnCommand { get; set; }
+        public IAsyncRelayCommand CutBeginnCommand { get; set; }
 
         /// <summary>
         /// Gets or sets the pause command.
         /// </summary>
         /// <value>The pause command.</value>
-        // public IMvxAsyncCommand PauseCommand { get; set; }
+        // public IAsyncRelayCommand PauseCommand { get; set; }
         /// <summary>
         /// Gets or sets the cut end command.
         /// </summary>
         /// <value>The cut end command.</value>
-        public IMvxAsyncCommand CutEndCommand { get; set; }
+        public IAsyncRelayCommand CutEndCommand { get; set; }
 
-        public IMvxAsyncCommand DragCompletedCommand { get; set; }
+        public IAsyncRelayCommand DragCompletedCommand { get; set; }
 
         public bool DragStarted
         {
@@ -77,7 +89,7 @@ namespace SimTuning.Core.ViewModels.Dyno
             set => SetProperty(ref _dragStarted, value);
         }
 
-        public IMvxCommand DragStartedCommand { get; set; }
+        public IRelayCommand DragStartedCommand { get; set; }
 
         public double Duration
         {
@@ -87,14 +99,14 @@ namespace SimTuning.Core.ViewModels.Dyno
 
         public bool IsPlaying
         {
-            get => this._mediaManager.IsPlaying();
+            get => true;//this._mediaManager.IsPlaying();
         }
 
         /// <summary>
         /// Gets or sets the play command.
         /// </summary>
         /// <value>The play command.</value>
-        public IMvxAsyncCommand PlayPauseCommand { get; set; }
+        public IAsyncRelayCommand PlayPauseCommand { get; set; }
 
         public double Position
         {
@@ -102,15 +114,15 @@ namespace SimTuning.Core.ViewModels.Dyno
             set => SetProperty(ref _position, value);
         }
 
-        public IMvxAsyncCommand SkipBackwardsCommand { get; set; }
+        public IAsyncRelayCommand SkipBackwardsCommand { get; set; }
 
-        public IMvxAsyncCommand SkipForwardCommand { get; set; }
+        public IAsyncRelayCommand SkipForwardCommand { get; set; }
 
-        public IMediaItem Source
-        {
-            get => _source;
-            set => SetProperty(ref _source, value);
-        }
+        //public IMediaItem Source
+        //{
+        //    get => _source;
+        //    set => SetProperty(ref _source, value);
+        //}
 
         public TimeSpan TimeSpanDuration
         {
@@ -124,59 +136,25 @@ namespace SimTuning.Core.ViewModels.Dyno
             set => this.SetProperty(ref _timeSpanPosition, value);
         }
 
-        /*= CrossMediaManager.Current*/
-
         #endregion Values
 
         #region Methods
 
-        public override Task Initialize()
-        {
-            this.PlayPauseCommand = new MvxAsyncCommand(() => this.PlayPause());
-            this.SkipBackwardsCommand = new MvxAsyncCommand(() => this._mediaManager.StepBackward());
-            this.SkipForwardCommand = new MvxAsyncCommand(() => this._mediaManager.StepForward());
-            this.DragCompletedCommand = new MvxAsyncCommand(() =>
-            {
-                this.DragStarted = false;
-                return this._mediaManager.SeekTo(TimeSpan.FromSeconds(this.Position));
-            });
-            this.DragStartedCommand = new MvxCommand(() => this.DragStarted = true);
 
-            // MediaItem von Quee holen, falls bereits Play ausgelöst wurde
-            Source = _mediaManager.Queue.Current;
+        //protected void Current_BufferingChanged(object sender, MediaManager.Playback.BufferedChangedEventArgs e)
+        //{
+        //    _logger.LogDebug($"Total buffered time is {e.Buffered};");
+        //}
 
-            if (Source != null)
-            {
-                TimeSpanPosition = _mediaManager.Position;
-                Position = _mediaManager.Position.TotalSeconds;
-                TimeSpanDuration = _mediaManager.Duration;
-                Duration = _mediaManager.Duration.TotalSeconds;
-            }
+        //protected void Current_MediaItemFailed(object sender, MediaManager.Media.MediaItemFailedEventArgs e)
+        //{
+        //    _logger.LogDebug($"Media item failed: {e.MediaItem.Title}, Message: {e.Message}, Exception: {e.Exeption?.ToString()};");
+        //}
 
-            _mediaManager.MediaItemChanged += this.MediaManager_MediaItemChanged;
-            _mediaManager.PositionChanged += this.MediaManager_PositionChanged;
-            _mediaManager.StateChanged += this.MediaManager_StateChanged;
-            _mediaManager.MediaItemFailed += this.Current_MediaItemFailed;
-            _mediaManager.MediaItemFinished += this.Current_MediaItemFinished;
-            _mediaManager.BufferedChanged += this.Current_BufferingChanged;
-
-            return base.Initialize();
-        }
-
-        protected void Current_BufferingChanged(object sender, MediaManager.Playback.BufferedChangedEventArgs e)
-        {
-            _logger.LogDebug($"Total buffered time is {e.Buffered};");
-        }
-
-        protected void Current_MediaItemFailed(object sender, MediaManager.Media.MediaItemFailedEventArgs e)
-        {
-            _logger.LogDebug($"Media item failed: {e.MediaItem.Title}, Message: {e.Message}, Exception: {e.Exeption?.ToString()};");
-        }
-
-        protected void Current_MediaItemFinished(object sender, MediaManager.Media.MediaItemEventArgs e)
-        {
-            _logger.LogDebug($"Media item finished: {e.MediaItem.Title};");
-        }
+        //protected void Current_MediaItemFinished(object sender, MediaManager.Media.MediaItemEventArgs e)
+        //{
+        //    _logger.LogDebug($"Media item finished: {e.MediaItem.Title};");
+        //}
 
         /// <summary>
         /// Cuts the beginn.
@@ -185,15 +163,30 @@ namespace SimTuning.Core.ViewModels.Dyno
         /// <placeholder>A <see cref="Task" /> representing the asynchronous
         /// operation.</placeholder>
         /// </returns>
-        protected virtual async Task CutBeginn()
+        protected async Task CutBeginn()
         {
-            await _mediaManager.Stop().ConfigureAwait(true);
-            this._mediaManager.Queue.Clear();
-            // this.MediaManager.Dispose();
+            //await _mediaManager.Stop().ConfigureAwait(true);
+            //this._mediaManager.Queue.Clear();
+            //// this.MediaManager.Dispose();
 
-            this.TrimAudio(this.Position, 0);
+            //this.TrimAudio(this.Position, 0);
 
-            await PlayFileAsync().ConfigureAwait(true);
+            //await PlayFileAsync().ConfigureAwait(true);
+
+            //var check = this.CheckDynoData();
+            //if (!check)
+            //{
+            //    return;
+            //}
+
+            //var loadingDialog = await DisplayAlert(message:
+            //SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "MES_LOAD")).ConfigureAwait(false);
+
+            //await base.CutBeginn().ConfigureAwait(true);
+
+            //await loadingDialog.DismissAsync().ConfigureAwait(false);
+
+            //// await this.ReloadImageAudioSpectrogram().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -203,41 +196,55 @@ namespace SimTuning.Core.ViewModels.Dyno
         /// <placeholder>A <see cref="Task" /> representing the asynchronous
         /// operation.</placeholder>
         /// </returns>
-        protected virtual async Task CutEnd()
+        protected async Task CutEnd()
         {
-            await _mediaManager.Stop().ConfigureAwait(true);
-            this._mediaManager.Queue.Clear();
-            // this.MediaManager.Dispose();
+            //await _mediaManager.Stop().ConfigureAwait(true);
+            //this._mediaManager.Queue.Clear();
+            //// this.MediaManager.Dispose();
 
-            this.TrimAudio(0, Position);
+            //this.TrimAudio(0, Position);
 
-            await PlayFileAsync().ConfigureAwait(true);
+            //await PlayFileAsync().ConfigureAwait(true);
+
+            //var check = this.CheckDynoData();
+            //if (!check)
+            //{
+            //    return;
+            //}
+
+            //var loadingDialog = await DisplayAlert(message: SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "MES_LOAD")).ConfigureAwait(false);
+
+            //await base.CutEnd().ConfigureAwait(true);
+
+            //await loadingDialog.DismissAsync().ConfigureAwait(false);
+
+            //// await this.ReloadImageAudioSpectrogram().ConfigureAwait(false);
         }
 
-        protected void MediaManager_MediaItemChanged(object sender, MediaManager.Media.MediaItemEventArgs e)
-        {
-            this.Source = e.MediaItem;
-        }
+        //protected void MediaManager_MediaItemChanged(object sender, MediaManager.Media.MediaItemEventArgs e)
+        //{
+        //    this.Source = e.MediaItem;
+        //}
 
-        protected void MediaManager_PositionChanged(object sender, MediaManager.Playback.PositionChangedEventArgs e)
-        {
-            if (!this.DragStarted)
-            {
-                this.TimeSpanPosition = e.Position;
-                this.Position = e.Position.TotalSeconds;
-            }
-            this.TimeSpanDuration = this._mediaManager.Duration;
-            this.Duration = this._mediaManager.Duration.TotalSeconds;
+        //protected void MediaManager_PositionChanged(object sender, MediaManager.Playback.PositionChangedEventArgs e)
+        //{
+        //    if (!this.DragStarted)
+        //    {
+        //        this.TimeSpanPosition = e.Position;
+        //        this.Position = e.Position.TotalSeconds;
+        //    }
+        //    this.TimeSpanDuration = this._mediaManager.Duration;
+        //    this.Duration = this._mediaManager.Duration.TotalSeconds;
 
-            this.RaisePropertyChanged(() => this.IsPlaying);
+        //    this.OnPropertyChanged(nameof(this.IsPlaying);
 
-            this._logger.LogDebug($"Current position is {e.Position};");
-        }
+        //    this._logger.LogDebug($"Current position is {e.Position};");
 
-        protected void MediaManager_StateChanged(object sender, MediaManager.Playback.StateChangedEventArgs e)
-        {
-            _logger.LogDebug($"Status changed: {System.Enum.GetName(typeof(MediaManager.Player.MediaPlayerState), e.State)};");
-        }
+
+        //protected void MediaManager_StateChanged(object sender, MediaManager.Playback.StateChangedEventArgs e)
+        //{
+        //    _logger.LogDebug($"Status changed: {System.Enum.GetName(typeof(MediaManager.Player.MediaPlayerState), e.State)};");
+        //}
 
         /// <summary>
         /// Opens the file.
@@ -245,25 +252,51 @@ namespace SimTuning.Core.ViewModels.Dyno
         /// <returns>
         /// A <see cref="Task" /> representing the asynchronous operation.
         /// </returns>
-        protected virtual async Task PlayFileAsync()
+        protected async Task PlayFileAsync()
         {
-            try
-            {
-                Source = await _mediaManager.Play(SimTuning.Core.GeneralSettings.AudioAccelerationFilePath).ConfigureAwait(true);
-            }
-            catch (Exception exc)
-            {
-                this._logger.LogError("Fehler bei PlayFileAsync: ", exc);
-            }
+            //    try
+            //    {
+            //        Source = await _mediaManager.Play(SimTuning.Core.GeneralSettings.AudioAccelerationFilePath).ConfigureAwait(true);
+            //    }
+            //    catch (Exception exc)
+            //    {
+            //        this._logger.LogError("Fehler bei PlayFileAsync: ", exc);
+            //    }
+
+            //var check = this.CheckDynoData();
+            //if (!check)
+            //{
+            //    return;
+            //}
+
+            //var loadingDialog = await DisplayAlert(message: SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "MES_LOAD")).ConfigureAwait(false);
+
+            //await base.PlayFileAsync().ConfigureAwait(true);
+
+            //await loadingDialog.DismissAsync().ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Überprüft ob wichtige Dyno-Audio-Daten vorhanden sind.
+        /// </summary>
+        private bool CheckDynoData()
+        {
+            if (!File.Exists(SimTuning.Core.GeneralSettings.AudioAccelerationFilePath))
+            {
+                //Maui.UI.Helpers.Functions.ShowSnackbarDialog(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_NOAUDIOFILE"));
+
+                return false;
+            }
+
+            return true;
+        }
         /// <summary>
         /// Schneidet die Audio Datei zurecht speichert den geschnittenen Schnipsel in
         /// einem Stream und überschreibt diese dann.
         /// </summary>
         /// <param name="cutStart">The cut start.</param>
         /// <param name="cutEnd">The cut end.</param>
-        protected virtual void TrimAudio(double cutStart, double cutEnd)
+        protected void TrimAudio(double cutStart, double cutEnd)
         {
             try
             {
@@ -290,23 +323,23 @@ namespace SimTuning.Core.ViewModels.Dyno
             }
             catch (Exception exc)
             {
-                this._logger.LogError("Fehler bei TrimAudio: ", exc);
+                //this._logger.LogError("Fehler bei TrimAudio: ", exc);
             }
         }
 
         private async Task PlayPause()
         {
-            if (Source == null)
-            {
-                // abspielen zum ersten mal
-                await PlayFileAsync().ConfigureAwait(true);
-            }
-            else
-            {
-                await _mediaManager.PlayPause().ConfigureAwait(true);
-            }
+            //    //if (Source == null)
+            //    //{
+            //    //    // abspielen zum ersten mal
+            //    //    await PlayFileAsync().ConfigureAwait(true);
+            //    //}
+            //    //else
+            //    //{
+            //    //    await _mediaManager.PlayPause().ConfigureAwait(true);
+            //    //}
 
-            await this.RaisePropertyChanged(() => this.IsPlaying).ConfigureAwait(true);
+            //    await this.OnPropertyChanged(nameof(this.IsPlaying).ConfigureAwait(true);
         }
 
         ///// <summary>

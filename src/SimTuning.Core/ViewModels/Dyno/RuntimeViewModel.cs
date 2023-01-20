@@ -1,68 +1,48 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
+using Microsoft.Extensions.Logging;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
+using SimTuning.Core.Models;
+using SimTuning.Core.Services;
+using SimTuning.Data;
+using SimTuning.Data.Models;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Timers;
+using Microsoft.Maui.ApplicationModel;
+using SimTuning.Core.Helpers;
+
 namespace SimTuning.Core.ViewModels.Dyno
 {
-    using Microsoft.Extensions.Logging;
-    using MvvmCross.Commands;
-    using MvvmCross.Navigation;
-    using MvvmCross.Plugin.Messenger;
-    using MvvmCross.ViewModels;
-    using Plugin.AudioRecorder;
-    using SimTuning.Core.Models;
-    using SimTuning.Core.Services;
-    using SimTuning.Data;
-    using SimTuning.Data.Models;
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Drawing;
-    using System.IO;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using System.Timers;
-
-    /// <summary>
-    /// RuntimeViewModel.
-    /// </summary>
-    /// <seealso cref="MvvmCross.ViewModels.MvxViewModel" />
-    public class RuntimeViewModel : MvxViewModel
+    public class RuntimeViewModel : ViewModelBase
     {
-        /// <summary> Initializes a new instance of the <see cref="RuntimeViewModel"/>
-        /// class. </summary> <param name="logger"><inheritdoc cref="ILogger"
-        /// path="/summary/node()" /></param> <param name="navigationService"><inheritdoc
-        /// cref="IMvxNavigationService" path="/summary/node()" /></param <param
-        /// name="locationService">The location service.</param> <param
-        /// name="messenger"><inheritdoc cref="IMvxMessenger" path="/summary/node()"
-        /// /></param>
         public RuntimeViewModel(
             ILogger<RuntimeViewModel> logger,
-            IMvxNavigationService navigationService,
+            INavigationService INavigationService,
             ILocationService locationService,
-            IMvxMessenger messenger,
             IVehicleService vehicleService)
         {
             this._logger = logger;
-            this._token = messenger.Subscribe<MvxReloaderMessage>(this.ReloadData);
-            this._token = messenger.Subscribe<MvxLocationMessage>(this.OnLocationUpdated);
+            //this._token = messenger.Subscribe<MvxReloaderMessage>(this.ReloadData);
+            //this._token = messenger.Subscribe<MvxLocationMessage>(this.OnLocationUpdated);
             // this._token =
             // messenger.SubscribeOnMainThread<MvxLocationMessage>(this.OnLocationUpdated);
 
             this._locationService = locationService;
-            this._navigationService = navigationService;
+            this._INavigationService = INavigationService;
             this._vehicleService = vehicleService;
-        }
 
-        #region Methods
+            this.ShowSpectrogramCommand = new AsyncRelayCommand(() => _INavigationService.Navigate<Dyno.SpectrogramViewModel>());
 
-        /// <summary>
-        /// Initializes this instance.
-        /// </summary>
-        /// <returns>Initilisierung.</returns>
-        public override Task Initialize()
-        {
             // Commands
-            this.StartAccelerationCommand = new MvxAsyncCommand(this.StartBeschleunigung);
-            this.ResetAccelerationCommand = new MvxAsyncCommand(this.ResetRun);
-            // this.StopAccelerationCommand = new MvxAsyncCommand(this.StopRun);
+            this.StartAccelerationCommand = new AsyncRelayCommand(this.StartBeschleunigung);
+            this.ResetAccelerationCommand = new AsyncRelayCommand(this.ResetRun);
+            // this.StopAccelerationCommand = new AsyncRelayCommand(this.StopRun);
 
             // Visibility this.StopAccelerationButtonVis = false;
             this.ShowAudioButtonVis = true;
@@ -73,44 +53,69 @@ namespace SimTuning.Core.ViewModels.Dyno
             this.CurrentState = PreState;
             this.StartAccelerationButtonVis = true;
 
-            this.ReloadData();
-
-            return base.Initialize();
+            //this.ReloadData();
         }
+
+        #region Methods
 
         /// <summary>
-        /// Prepares this instance. called after construction.
+        /// Überprüft ob wichtige Dyno-Audio-Daten vorhanden sind.
         /// </summary>
-        public override void Prepare()
+        private async Task<bool> CheckDynoData()
         {
-            base.Prepare();
+            var location = await Functions.GetPermission<Permissions.LocationWhenInUse>().ConfigureAwait(true);
+            if (!location)
+            {
+                Functions.ShowSnackbarDialog(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_LOCATION"));
+
+                return false;
+            }
+
+            var microphone = await Functions.GetPermission<Permissions.Microphone>().ConfigureAwait(true);
+            if (!microphone)
+            {
+                Functions.ShowSnackbarDialog(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_MICROPHONE"));
+
+                return false;
+            }
+
+            if (this.Dyno == null)
+            {
+                Functions.ShowSnackbarDialog(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_NODATA"));
+
+                return false;
+            }
+
+            return true;
         }
+
+        
 
         /// <summary>
         /// Reloads the data.
         /// </summary>
         /// <param name="mvxReloaderMessage">The MVX reloader message.</param>
-        public virtual void ReloadData(Models.MvxReloaderMessage mvxReloaderMessage = null)
-        {
-            try
-            {
-                this.Dyno = _vehicleService.RetrieveOneActive();
+        //public void ReloadData(Models.MvxReloaderMessage mvxReloaderMessage = null)
+        //{
+        //    try
+        //    {
+        //        this.Dyno = _vehicleService.RetrieveOneActive();
 
-                if (this.Dyno.Geschwindigkeit == null)
-                {
-                    Dyno.Geschwindigkeit = new List<GeschwindigkeitModel>();
-                }
+        //        if (this.Dyno.Geschwindigkeit == null)
+        //        {
+        //            Dyno.Geschwindigkeit = new List<GeschwindigkeitModel>();
+        //        }
 
-                if (this.Dyno.Ausrollen == null)
-                {
-                    Dyno.Ausrollen = new List<AusrollenModel>();
-                }
-            }
-            catch (Exception exc)
-            {
-                _logger.LogError("Fehler beim Laden des Dyno-Datensatz: ", exc);
-            }
-        }
+        //        if (this.Dyno.Ausrollen == null)
+        //        {
+        //            Dyno.Ausrollen = new List<AusrollenModel>();
+        //        }
+        //    }
+        //    catch (Exception exc)
+        //    {
+        //        _logger.LogError("Fehler beim Laden des Dyno-Datensatz: ", exc);
+        //    }
+        //}
 
         /// <summary>
         /// Ends the acceleration asynchronous.
@@ -118,7 +123,7 @@ namespace SimTuning.Core.ViewModels.Dyno
         protected async Task EndRunAsync()
         {
             // tracking und recording stoppen
-            await this.recorder.StopRecording().ConfigureAwait(true);
+            //await this.recorder.StopRecording().ConfigureAwait(true);
             this.trackingStarted = false;
 
             // UI aktualisieren
@@ -144,7 +149,7 @@ namespace SimTuning.Core.ViewModels.Dyno
         protected void OnCountdownTimedEvent(object sender, ElapsedEventArgs e)
         {
             countdownMilliseconds -= 10;
-            this.RaisePropertyChanged(() => this.Countdown);
+            this.OnPropertyChanged(nameof(this.Countdown));
 
             if (this.countdownMilliseconds == 0)
             {
@@ -166,88 +171,88 @@ namespace SimTuning.Core.ViewModels.Dyno
         /// Called when [location updated].
         /// </summary>
         /// <param name="obj">The object.</param>
-        protected void OnLocationUpdated(MvxLocationMessage obj)
+        protected void OnLocationUpdated(/*MvxLocationMessage obj*/)
         {
-            this.Speed = obj.Speed;
+            //this.Speed = obj.Speed;
 
-            if (!this.trackingStarted)
-            {
-                return;
-            }
+            //if (!this.trackingStarted)
+            //{
+            //    return;
+            //}
 
-            List<double?> lastSpeedValues;
+            //List<double?> lastSpeedValues;
 
-            if (this.CurrentState == AccelerationState)
-            {
-                // TODO: verbessern bei keiner Veränderung der Maximalgeschwindigkeit
-                // StartAusrollen() beginnen.
+            //if (this.CurrentState == AccelerationState)
+            //{
+            //    // TODO: verbessern bei keiner Veränderung der Maximalgeschwindigkeit
+            //    // StartAusrollen() beginnen.
 
-                using (var db = new Data.DatabaseContext())
-                {
-                    lastSpeedValues = db.Geschwindigkeit.OrderByDescending(x => x.CreatedDate).Select(x => x.Speed).Take(10).ToList();
-                }
+            //    using (var db = new Data.DatabaseContext())
+            //    {
+            //        lastSpeedValues = db.Geschwindigkeit.OrderByDescending(x => x.CreatedDate).Select(x => x.Speed).Take(10).ToList();
+            //    }
 
-                if (lastSpeedValues != null && lastSpeedValues.Count == 10)
-                {
-                    var max = lastSpeedValues.Max();
-                    var min = lastSpeedValues.Min();
-                    var avg = lastSpeedValues.Average();
+            //    if (lastSpeedValues != null && lastSpeedValues.Count == 10)
+            //    {
+            //        var max = lastSpeedValues.Max();
+            //        var min = lastSpeedValues.Min();
+            //        var avg = lastSpeedValues.Average();
 
-                    // im Bereich von 2 km/h
-                    if ((avg - min) <= 2 && (max - avg) <= 2)
-                    {
-                        Task.Run(() => StartAusrollen());
-                        return;
-                    }
-                }
+            //        // im Bereich von 2 km/h
+            //        if ((avg - min) <= 2 && (max - avg) <= 2)
+            //        {
+            //            Task.Run(() => StartAusrollen());
+            //            return;
+            //        }
+            //    }
 
-                // asynchrones speichern der Beschlenugigungswerte Task.Run(async () => {
-                GeschwindigkeitModel beschleunigung = new GeschwindigkeitModel()
-                {
-                    Latitude = obj.Latitude,
-                    Longitude = obj.Longitude,
-                    Altitude = obj.Altitude,
-                    Speed = obj.Speed,
-                };
+            //    // asynchrones speichern der Beschlenugigungswerte Task.Run(async () => {
+            //    GeschwindigkeitModel beschleunigung = new GeschwindigkeitModel()
+            //    {
+            //        Latitude = obj.Latitude,
+            //        Longitude = obj.Longitude,
+            //        Altitude = obj.Altitude,
+            //        Speed = obj.Speed,
+            //    };
 
-                Dyno.Geschwindigkeit.Add(beschleunigung);
-                _vehicleService.UpdateOne(this.Dyno);
-                // });
-            }
+            //    Dyno.Geschwindigkeit.Add(beschleunigung);
+            //    _vehicleService.UpdateOne(this.Dyno);
+            //    // });
+            //}
 
-            if (this.CurrentState == RolloutState)
-            {
-                using (var db = new Data.DatabaseContext())
-                {
-                    lastSpeedValues = db.Ausrollen.OrderByDescending(x => x.CreatedDate).Select(x => x.Speed).Take(5).ToList();
-                }
+            //if (this.CurrentState == RolloutState)
+            //{
+            //    using (var db = new Data.DatabaseContext())
+            //    {
+            //        lastSpeedValues = db.Ausrollen.OrderByDescending(x => x.CreatedDate).Select(x => x.Speed).Take(5).ToList();
+            //    }
 
-                if (lastSpeedValues != null && lastSpeedValues.Count == 5)
-                {
-                    // var max = lastSpeedValues.Max(); var min = lastSpeedValues.Min();
-                    var avg = lastSpeedValues.Average();
+            //    if (lastSpeedValues != null && lastSpeedValues.Count == 5)
+            //    {
+            //        // var max = lastSpeedValues.Max(); var min = lastSpeedValues.Min();
+            //        var avg = lastSpeedValues.Average();
 
-                    // im Bereich unter 1 km/h
-                    if (avg < 1)
-                    {
-                        Task.Run(() => EndRunAsync());
-                        return;
-                    }
-                }
+            //        // im Bereich unter 1 km/h
+            //        if (avg < 1)
+            //        {
+            //            Task.Run(() => EndRunAsync());
+            //            return;
+            //        }
+            //    }
 
-                // Task.Run(async () => {
-                AusrollenModel ausrollen = new AusrollenModel()
-                {
-                    Latitude = obj.Latitude,
-                    Longitude = obj.Longitude,
-                    Altitude = obj.Altitude,
-                    Speed = obj.Speed,
-                };
+            //    // Task.Run(async () => {
+            //    AusrollenModel ausrollen = new AusrollenModel()
+            //    {
+            //        Latitude = obj.Latitude,
+            //        Longitude = obj.Longitude,
+            //        Altitude = obj.Altitude,
+            //        Speed = obj.Speed,
+            //    };
 
-                Dyno.Ausrollen.Add(ausrollen);
-                _vehicleService.UpdateOne(this.Dyno);
-                // });
-            }
+            //    Dyno.Ausrollen.Add(ausrollen);
+            //    _vehicleService.UpdateOne(this.Dyno);
+            //    // });
+            //}
         }
 
         /// <summary>
@@ -266,7 +271,7 @@ namespace SimTuning.Core.ViewModels.Dyno
             }
             else
             {
-                this.RaisePropertyChanged(() => this.Stopwatch);
+                this.OnPropertyChanged(nameof(this.Stopwatch));
             }
         }
 
@@ -286,10 +291,12 @@ namespace SimTuning.Core.ViewModels.Dyno
         /// <summary>
         /// Resets the acceleration.
         /// </summary>
-        protected virtual async Task ResetRun()
+        protected async Task ResetRun()
         {
             try
             {
+                //var loadingDialog = await DisplayAlert(message: SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "MES_LOAD")).ConfigureAwait(false);
+
                 // Timer und Stopwatch stoppen
                 if (this.stopwatch != null)
                 {
@@ -303,11 +310,11 @@ namespace SimTuning.Core.ViewModels.Dyno
                 }
 
                 // tracking und recording stoppen
-                await this.recorder.StopRecording();
+                //await this.recorder.StopRecording();
                 this.trackingStarted = false;
 
                 // UI aktualisieren
-                await RaisePropertyChanged(() => Stopwatch).ConfigureAwait(true);
+                OnPropertyChanged(nameof(Stopwatch));
                 this.PageBackColor = System.Drawing.Color.White;
                 this.SpeedBackColor = System.Drawing.Color.White;
                 this.CurrentState = PreState;
@@ -319,6 +326,8 @@ namespace SimTuning.Core.ViewModels.Dyno
                 // zuletzt probieren die Audio-Aufnahme zu löschen
                 File.Delete(GeneralSettings.AudioAccelerationFilePath);
                 File.Delete(GeneralSettings.AudioRolloutFilePath);
+
+                //await loadingDialog.DismissAsync().ConfigureAwait(false);
             }
             catch (Exception exc)
             {
@@ -329,7 +338,7 @@ namespace SimTuning.Core.ViewModels.Dyno
         /// <summary>
         /// Starts the ausrollen.
         /// </summary>
-        protected virtual async Task StartAusrollen()
+        protected async Task StartAusrollen()
         {
             try
             {
@@ -340,7 +349,7 @@ namespace SimTuning.Core.ViewModels.Dyno
                 this.SpeedBackColor = skyBlue;
                 this.trackingStarted = true;
 
-                await this.StartRecording().ConfigureAwait(true);
+                //await this.StartRecording().ConfigureAwait(true);
 
                 timer = new System.Timers.Timer();
 
@@ -363,10 +372,17 @@ namespace SimTuning.Core.ViewModels.Dyno
         /// <summary>
         /// Starts the acceleration.
         /// </summary>
-        protected virtual async Task StartBeschleunigung()
+        protected async Task StartBeschleunigung()
         {
+            if (!await this.CheckDynoData().ConfigureAwait(true))
+            {
+                return;
+            }
+
             try
             {
+                //var loadingDialog = await DisplayAlert(message: SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "MES_LOAD")).ConfigureAwait(false);
+
                 this.ResetDynoData();
 
                 this.CurrentState = AccelerationState;
@@ -376,7 +392,7 @@ namespace SimTuning.Core.ViewModels.Dyno
                 // es kann nun nicht mehr weiter navigiert werden
                 this.ShowAudioButtonVis = false;
 
-                await this.StartRecording().ConfigureAwait(true);
+                //await this.StartRecording().ConfigureAwait(true);
 
                 this.StartAccelerationButtonVis = false;
 
@@ -391,6 +407,8 @@ namespace SimTuning.Core.ViewModels.Dyno
 
                 timer.Start();
                 this.CountdownVis = true;
+
+                //await loadingDialog.DismissAsync().ConfigureAwait(false);
             }
             catch (Exception exc)
             {
@@ -401,26 +419,26 @@ namespace SimTuning.Core.ViewModels.Dyno
         /// <summary>
         /// Starts the recording.
         /// </summary>
-        protected Task StartRecording()
-        {
-            // Recorder
-            this.recorder = new AudioRecorderService();
+        //protected Task StartRecording()
+        //{
+        // Recorder
+        //this.recorder = new AudioRecorderService();
 
-            // audio datei zum schreiben auswählen
-            if (this.CurrentState == AccelerationState)
-            {
-                this.recorder.FilePath = GeneralSettings.AudioAccelerationFilePath;
-            }
-            else if (this.CurrentState == RolloutState)
-            {
-                this.recorder.FilePath = GeneralSettings.AudioRolloutFilePath;
-            }
+        //// audio datei zum schreiben auswählen
+        //if (this.CurrentState == AccelerationState)
+        //{
+        //    this.recorder.FilePath = GeneralSettings.AudioAccelerationFilePath;
+        //}
+        //else if (this.CurrentState == RolloutState)
+        //{
+        //    this.recorder.FilePath = GeneralSettings.AudioRolloutFilePath;
+        //}
 
-            this.recorder.PreferredSampleRate = 44100;
+        //this.recorder.PreferredSampleRate = 44100;
 
-            // start recording audio
-            return this.recorder.StartRecording();
-        }
+        //// start recording audio
+        //return this.recorder.StartRecording();
+        //}
 
         /// <summary>
         /// Starts the stopwatch.
@@ -454,38 +472,38 @@ namespace SimTuning.Core.ViewModels.Dyno
         /// Gets or sets the close command.
         /// </summary>
         /// <value>The close command.</value>
-        // public IMvxAsyncCommand CloseCommand { get; protected set; }
+        // public IAsyncRelayCommand CloseCommand { get; protected set; }
 
         /// <summary>
         /// Gets or sets the reset tracking command.
         /// </summary>
         /// <value>The reset tracking command.</value>
-        public MvxAsyncCommand ResetAccelerationCommand { get; protected set; }
+        public IAsyncRelayCommand ResetAccelerationCommand { get; protected set; }
 
         /// <summary>
         /// Gets or sets the show audio command.
         /// </summary>
         /// <value>The show audio command.</value>
-        public IMvxAsyncCommand ShowSpectrogramCommand { get; protected set; }
+        public IAsyncRelayCommand ShowSpectrogramCommand { get; protected set; }
 
         /// <summary>
         /// Gets or sets the start tracking command.
         /// </summary>
         /// <value>The start tracking command.</value>
-        public MvxAsyncCommand StartAccelerationCommand { get; protected set; }
+        public IAsyncRelayCommand StartAccelerationCommand { get; protected set; }
 
         /// <summary>
         /// Gets or sets the stop acceleration command.
         /// </summary>
         /// <value>The stop acceleration command.</value>
-        public MvxAsyncCommand StopAccelerationCommand { get; protected set; }
+        public IAsyncRelayCommand StopAccelerationCommand { get; protected set; }
 
         #endregion Commands
 
         protected static System.Drawing.Color stdBg;
         protected static System.Drawing.Color stdSur;
 
-        protected readonly IMvxNavigationService _navigationService;
+        protected readonly INavigationService _INavigationService;
         private const string AccelerationState = "Vollgas";
         private const string PostState = "Fertig";
         private const string PreState = "Anfahren";
@@ -497,7 +515,6 @@ namespace SimTuning.Core.ViewModels.Dyno
 
         private readonly ILocationService _locationService;
         private readonly ILogger<RuntimeViewModel> _logger;
-        private readonly MvxSubscriptionToken _token;
         private readonly IVehicleService _vehicleService;
         private bool _countdownVis;
         private string _currentState;
@@ -512,7 +529,7 @@ namespace SimTuning.Core.ViewModels.Dyno
         private bool _stopwatchVis;
 
         private double countdownMilliseconds;
-        private AudioRecorderService recorder;
+        //private AudioRecorderService recorder;
         private System.Diagnostics.Stopwatch stopwatch;
         private System.Timers.Timer timer;
         private bool trackingStarted;

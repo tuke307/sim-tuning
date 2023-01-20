@@ -1,8 +1,7 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
 namespace SimTuning.Core
 {
-    using Plugin.Settings;
-    using Plugin.Settings.Abstractions;
+    using Microsoft.Maui.Storage;
     using SimTuning.Data;
     using System.IO;
 
@@ -24,12 +23,12 @@ namespace SimTuning.Core
         {
             get
             {
-                return AppSettings.GetValueOrDefault(nameof(AudioAccelerationFile), "DynoAccelerationAudio.wav");
+                return Preferences.Default.Get(nameof(AudioAccelerationFile), "DynoAccelerationAudio.wav");
             }
 
             set
             {
-                AppSettings.AddOrUpdateValue(nameof(AudioAccelerationFile), value);
+                Preferences.Default.Set(nameof(AudioAccelerationFile), value);
             }
         }
 
@@ -53,12 +52,12 @@ namespace SimTuning.Core
         {
             get
             {
-                return AppSettings.GetValueOrDefault(nameof(AudioRolloutFile), "DynoAusrollenAudio.wav");
+                return Preferences.Default.Get(nameof(AudioRolloutFile), "DynoAusrollenAudio.wav");
             }
 
             set
             {
-                AppSettings.AddOrUpdateValue(nameof(AudioRolloutFile), value);
+                Preferences.Default.Set(nameof(AudioRolloutFile), value);
             }
         }
 
@@ -82,12 +81,12 @@ namespace SimTuning.Core
         {
             get
             {
-                return AppSettings.GetValueOrDefault(nameof(DataExportArchive), "DataExport.zip");
+                return Preferences.Default.Get(nameof(DataExportArchive), "DataExport.zip");
             }
 
             set
             {
-                AppSettings.AddOrUpdateValue(nameof(DataExportArchive), value);
+                Preferences.Default.Set(nameof(DataExportArchive), value);
             }
         }
 
@@ -111,12 +110,12 @@ namespace SimTuning.Core
         {
             get
             {
-                return AppSettings.GetValueOrDefault(nameof(DataExportFile), "DataExport.json");
+                return Preferences.Default.Get(nameof(DataExportFile), "DataExport.json");
             }
 
             set
             {
-                AppSettings.AddOrUpdateValue(nameof(DataExportFile), value);
+                Preferences.Default.Set(nameof(DataExportFile), value);
             }
         }
 
@@ -140,12 +139,12 @@ namespace SimTuning.Core
         {
             get
             {
-                return AppSettings.GetValueOrDefault(nameof(LogFile), "simtuning_log_.log");
+                return Preferences.Default.Get(nameof(LogFile), "simtuning_log_.log");
             }
 
             set
             {
-                AppSettings.AddOrUpdateValue(nameof(LogFile), value);
+                Preferences.Default.Set(nameof(LogFile), value);
             }
         }
 
@@ -169,12 +168,12 @@ namespace SimTuning.Core
         {
             get
             {
-                return AppSettings.GetValueOrDefault(nameof(ReleaseNotesFile), "releasenotes.txt");
+                return Preferences.Default.Get(nameof(ReleaseNotesFile), "releasenotes.txt");
             }
 
             set
             {
-                AppSettings.AddOrUpdateValue(nameof(ReleaseNotesFile), value);
+                Preferences.Default.Set(nameof(ReleaseNotesFile), value);
             }
         }
 
@@ -189,7 +188,5 @@ namespace SimTuning.Core
                 return Path.Combine(DatabaseSettings.FileDirectory, ReleaseNotesFile);
             }
         }
-
-        private static ISettings AppSettings => CrossSettings.Current;
     }
 }

@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:behaviors="clr-namespace:SimTuning.Maui.UI.Behaviors"
+             xmlns:converters="clr-namespace:SimTuning.Core.Converters;assembly=SimTuning.Core"
+             Style="{StaticResource ContentViewStyle}"
+             x:Class="SimTuning.Maui.UI.Views.Dyno.DynoAudioPlayerView"
+             xmlns:vm="clr-namespace:SimTuning.Core.ViewModels.Dyno;assembly=SimTuning.Core"
+             x:DataType="vm:AudioPlayerViewModel">
+    <ContentView.Resources>
+        <!--CONVERTER-->
+        <behaviors:InvertedBoolConverter x:Key="Inverter" />
+
+        <converters:TimeSpanToStringConverter x:Key="TimeSpanToString" />
+    </ContentView.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Slider x:Name="Slider"
+                Grid.Row="1"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="End"
+                Value="{Binding Position}"
+                Minimum="0"
+                Maximum="{Binding Mode=OneWay, Path=Duration}"
+                DragStartedCommand="{Binding DragStartedCommand}"
+                DragCompletedCommand="{Binding DragCompletedCommand}"
+                MinimumTrackColor="{DynamicResource Key=Primary400}" />
+
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Label Style="{StaticResource LabelStyle}"
+                   Grid.Column="0"
+                   Text="{Binding TimeSpanPosition, Converter={StaticResource TimeSpanToString}}"
+                   HorizontalOptions="Start"
+                   VerticalOptions="Center"
+                   TextColor="{DynamicResource PrimaryTextColor}" />
+            <Label Style="{StaticResource LabelStyle}"
+                   Grid.Column="1"
+                   Text="{Binding TimeSpanDuration, Converter={StaticResource TimeSpanToString}}"
+                   HorizontalOptions="End"
+                   VerticalOptions="Center"
+                   TextColor="{DynamicResource PrimaryTextColor}" />
+        </Grid>
+
+        <Grid Grid.Row="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.5*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="1.5*" />
+            </Grid.ColumnDefinitions>
+
+            <Button Style="{StaticResource ButtonMediumStyle}"
+                    Grid.Column="1"
+                    Command="{Binding SkipBackwardsCommand}"
+                    ImageSource="{StaticResource IconFastRewindMedium}"
+                    HorizontalOptions="Center"
+                    VerticalOptions="CenterAndExpand"
+                    BackgroundColor="Transparent" />
+
+            <!--PLAYPAUSE ANFANG-->
+            <ImageButton Style="{StaticResource IconButtonMediumStyle}"
+                         Grid.Column="2"
+                         Source="{StaticResource IconPlayArrowMedium}"
+                         Command="{Binding PlayPauseCommand}"
+                         IsVisible="{Binding Path=IsPlaying, Mode=OneWay, Converter={StaticResource Inverter}}"
+                         HorizontalOptions="Center"
+                         VerticalOptions="CenterAndExpand"
+                         BackgroundColor="Transparent"
+                         WidthRequest="75" />
+
+            <Button Style="{StaticResource ButtonMediumStyle}"
+                    Grid.Column="2"
+                    ImageSource="{StaticResource IconPauseMedium}"
+                    Command="{Binding PlayPauseCommand}"
+                    IsVisible="{Binding Path=IsPlaying, Mode=OneWay}"
+                    HorizontalOptions="Center"
+                    VerticalOptions="CenterAndExpand"
+                    BackgroundColor="Transparent"
+                    WidthRequest="75" />
+            <!--PLAYPAUSE ENDE-->
+
+            <Button Style="{StaticResource ButtonMediumStyle}"
+                    Grid.Column="3"
+                    ImageSource="{StaticResource IconFastForwardMedium}"
+                    Command="{Binding SkipForwardCommand}"
+                    HorizontalOptions="Center"
+                    VerticalOptions="CenterAndExpand"
+                    BackgroundColor="Transparent" />
+        </Grid>
+    </Grid>
+</ContentView>

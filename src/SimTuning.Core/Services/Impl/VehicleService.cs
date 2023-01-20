@@ -1,9 +1,11 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
+using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using SimTuning.Data;
 using SimTuning.Data.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Intrinsics.X86;
 
 namespace SimTuning.Core.Services
 {
@@ -20,15 +22,9 @@ namespace SimTuning.Core.Services
 
         private List<VehiclesModel> Vehicles { get; set; }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="VehicleService" /> class.
-        /// </summary>
-        /// <param name="context">
-        /// <inheritdoc cref="DatabaseContext" path="/summary/node()" />
-        /// </param>
-        public VehicleService(DatabaseContext context)
+        public VehicleService()
         {
-            this._context = context;
+            this._context = Ioc.Default.GetRequiredService<DatabaseContext>();
 
             Dynos = new List<DynoModel>();
             Vehicles = new List<VehiclesModel>();

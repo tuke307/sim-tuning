@@ -1,0 +1,196 @@
+﻿<ContentView x:Class="SimTuning.Maui.UI.Views.Einlass.EinlassVergaserView"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Style="{StaticResource ContentPageStyle}"
+             xmlns:vm="clr-namespace:SimTuning.Core.ViewModels.Einlass;assembly=SimTuning.Core"
+             x:DataType="vm:VergaserViewModel">
+    <ScrollView>
+        <StackLayout>
+
+            <!--  Vergasergröße  -->
+            <Frame Margin="10"
+                   Style="{StaticResource FrameStyle}">
+                <StackLayout>
+                    <Label Style="{StaticResource LabelTitleStyle}"
+                           Text="Vergasergröße" />
+
+                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+
+                    <StackLayout Orientation="Horizontal">
+                        <Entry Keyboard="Numeric"
+                               Placeholder="Hubraum Volumen"
+                               Text="{Binding Mode=TwoWay, Path=Hubvolumen}"
+                               WidthRequest="250" />
+
+                        <Picker Margin="5,0,0,0"
+                                ItemsSource="{Binding Path=VolumeQuantityUnits, Mode=OneTime}"
+                                ItemDisplayBinding="{Binding Abbreviation}"
+                                HorizontalOptions="StartAndExpand"
+                                SelectedItem="{Binding UnitHubvolumen}"
+                                VerticalOptions="CenterAndExpand" />
+                    </StackLayout>
+
+                    <StackLayout Orientation="Horizontal">
+                        <Entry Keyboard="Numeric"
+                               Placeholder="Resonanzdrehzahl"
+                               Text="{Binding Mode=TwoWay, Path=Resonanzdrehzahl}"
+                               WidthRequest="250" />
+
+                        <Label Margin="5,0,0,0"
+                               Style="{StaticResource LabelStyle}"
+                               VerticalOptions="Center">
+                            1/min
+                        </Label>
+                    </StackLayout>
+
+                    <StackLayout Orientation="Horizontal">
+                        <Entry Keyboard="Numeric"
+                               IsEnabled="False"
+                               Placeholder="Ø Vergaser"
+                               Text="{Binding Mode=TwoWay, Path=Vergasergroeße}"
+                               WidthRequest="250" />
+
+                        <Picker Margin="5,0,0,0"
+                                ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+                                ItemDisplayBinding="{Binding Abbreviation}"
+                                HorizontalOptions="StartAndExpand"
+                                SelectedItem="{Binding UnitVergasergroeße}"
+                                VerticalOptions="CenterAndExpand" />
+                        <!--<Label Style="{StaticResource LabelStyle}" Margin="5, 0, 0, 0"
+                               VerticalOptions="Center">
+                            mm
+                        </Label>-->
+                    </StackLayout>
+                </StackLayout>
+            </Frame>
+
+            <!--  Hauptdüsendurchmesser  -->
+            <Frame Margin="10"
+                   Style="{StaticResource FrameStyle}">
+                <StackLayout>
+                    <Label Style="{StaticResource LabelTitleStyle}"
+                           Text="Hauptdüsendurchmesser" />
+
+                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+
+                    <StackLayout Orientation="Horizontal">
+                        <Entry Keyboard="Numeric"
+                               Placeholder="Ø Vergaser"
+                               Text="{Binding Mode=OneWay, Path=Vergasergroeße}"
+                               WidthRequest="250" />
+
+                        <Picker Margin="5,0,0,0"
+                                ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+                                ItemDisplayBinding="{Binding Abbreviation}"
+                                HorizontalOptions="StartAndExpand"
+                                SelectedItem="{Binding UnitVergasergroeße}"
+                                VerticalOptions="CenterAndExpand" />
+                        <!--<Label Style="{StaticResource LabelStyle}" Margin="5, 0, 0, 0"
+                               VerticalOptions="Center">
+                            mm
+                        </Label>-->
+                    </StackLayout>
+
+                    <StackLayout Orientation="Horizontal">
+                        <Entry Keyboard="Numeric"
+                               IsEnabled="False"
+                               Placeholder="Ø Hauptdüse"
+                               Text="{Binding Mode=TwoWay, Path=HauptdueseD}"
+                               WidthRequest="250" />
+
+                        <Picker Margin="5,0,0,0"
+                                ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+                                ItemDisplayBinding="{Binding Abbreviation}"
+                                HorizontalOptions="StartAndExpand"
+                                SelectedItem="{Binding UnitHauptdueseD}"
+                                VerticalOptions="CenterAndExpand" />
+                        <!--<Label Style="{StaticResource LabelStyle}" Margin="5, 0, 0, 0"
+                               VerticalOptions="Center">
+                            µm
+                        </Label>-->
+                    </StackLayout>
+                </StackLayout>
+            </Frame>
+
+            <!--  Hilfe  -->
+            <Frame Margin="10,10,10,10"
+                   Style="{StaticResource FrameStyle}">
+                <StackLayout>
+                    <Label Style="{StaticResource LabelTitleStyle}"
+                           Text="Hilfe" />
+
+                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+
+                    <Picker ItemsSource="{Binding HelperVehicles}"
+                            ItemDisplayBinding="{Binding Name}"
+                            Title="Fahrzeug"
+                            SelectedItem="{Binding HelperVehicle}" />
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <Label Grid.Row="0"
+                               Grid.Column="0"
+                               Style="{StaticResource LabelStyle}"
+                               Text="Hubraum"
+                               VerticalOptions="Center" />
+                        <Label Grid.Row="1"
+                               Grid.Column="0"
+                               Style="{StaticResource LabelStyle}"
+                               Text="Resonanzdrehzahl"
+                               VerticalOptions="Center" />
+
+                        <StackLayout Grid.Row="0"
+                                     Grid.Column="1"
+                                     Orientation="Horizontal">
+                            <Entry Margin="10,0,0,0"
+                                   Keyboard="Numeric"
+                                   IsEnabled="False"
+                                   Placeholder=" "
+                                   Text="{Binding Mode=OneWay, Path=HelperVehicle.Motor.HubraumV}"
+                                   WidthRequest="100" />
+
+                            <Label Margin="5,0,0,0"
+                                   Style="{StaticResource LabelStyle}"
+                                   VerticalOptions="Center">
+                                mm³
+                            </Label>
+                        </StackLayout>
+
+                        <StackLayout Grid.Row="1"
+                                     Grid.Column="1"
+                                     Orientation="Horizontal">
+                            <Entry Margin="10,0,0,0"
+                                   Keyboard="Numeric"
+                                   IsEnabled="False"
+                                   Placeholder=" "
+                                   Text="{Binding Mode=OneWay, Path=HelperVehicle.Motor.ResonanzU}"
+                                   WidthRequest="100" />
+
+                            <Label Margin="5,0,0,0"
+                                   Style="{StaticResource LabelStyle}"
+                                   VerticalOptions="Center">
+                                1/min
+                            </Label>
+                        </StackLayout>
+                    </Grid>
+
+                    <Button Margin="10"
+                            Command="{Binding InsertDataCommand}"
+                            HeightRequest="70"
+                            HorizontalOptions="Center"
+                            ImageSource="{StaticResource IconChevronRightMedium}"
+                            Style="{StaticResource ButtonMediumStyle}"
+                            WidthRequest="100" />
+                </StackLayout>
+            </Frame>
+        </StackLayout>
+    </ScrollView>
+</ContentView>

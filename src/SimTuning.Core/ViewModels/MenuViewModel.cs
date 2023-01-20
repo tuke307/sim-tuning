@@ -3,69 +3,69 @@ namespace SimTuning.Core.ViewModels
 {
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
-    using MvvmCross.Commands;
-    using MvvmCross.Navigation;
-    using MvvmCross.Plugin.Messenger;
-    using MvvmCross.ViewModels;
+    using CommunityToolkit.Mvvm.Input;
+    using CommunityToolkit.Mvvm.ComponentModel;
     using SimTuning.Core.Models;
     using SimTuning.Data;
     using System.Threading.Tasks;
+    using Microsoft.Maui.ApplicationModel;
+    using System.IO;
+    using SimTuning.Core.Helpers;
+    using SimTuning.Core.Services;
 
-    /// <summary>
-    /// Menu-ViewModel.
-    /// </summary>
-    /// <seealso cref="MvvmCross.ViewModels.MvxViewModel" />
-    public class MenuViewModel : MvxViewModel
+    public class MenuViewModel : ViewModelBase
     {
-        /// <summary> Initializes a new instance of the <see cref="MenuViewModel"/> class. </summary> <param name="logger"><inheritdoc cref="ILogger" path="/summary/node()" /></param> <param
-        /// name="navigationService"><inheritdoc cref="IMvxNavigationService" path="/summary/node()" /></param <param name="messenger"><inheritdoc cref="IMvxMessenger" path="/summary/node()"
-        /// /></param>
         public MenuViewModel(
             ILogger<MenuViewModel> logger,
-            IMvxNavigationService navigationService,
-            IMvxMessenger messenger)
+            INavigationService INavigationService)
         {
             this._logger = logger;
-            this._navigationService = navigationService;
-            this._messenger = messenger;
-            this._token = messenger.Subscribe<MvxUserReloadMessage>(this.ReloadUserAsync);
+            this._INavigationService = INavigationService;
+            //this._token = messenger.Subscribe<MvxUserReloadMessage>(this.ReloadUserAsync);
+
+            this.ShowHomeCommand = new AsyncRelayCommand(() => this._INavigationService.Navigate<Home.HomeViewModel>());
+            this.ShowEinlassCommand = new AsyncRelayCommand(() => this._INavigationService.Navigate<Einlass.MainViewModel>());
+            this.ShowAuslassCommand = new AsyncRelayCommand(() => this._INavigationService.Navigate<Auslass.MainViewModel>());
+            this.ShowMotorCommand = new AsyncRelayCommand(() => this._INavigationService.Navigate<Motor.MainViewModel>());
+            this.ShowDynoCommand = new AsyncRelayCommand(() => this._INavigationService.Navigate<Dyno.DataViewModel>());
+            this.ShowEinstellungenCommand = new AsyncRelayCommand(() => this._INavigationService.Navigate<Einstellungen.MenuViewModel>());
+            this.InitializeDatabase = new AsyncRelayCommand(this.InitializeDatabaseAsync);
+
+            //this.InitializeDatabase.ExecuteAsync();
         }
 
         #region Methods
 
         /// <summary>
-        /// Initializes this instance.
-        /// </summary>
-        /// <returns>Initilisierung.</returns>
-        public override Task Initialize()
-        {
-            return base.Initialize();
-        }
-
-        /// <summary>
-        /// Prepares this instance. called after construction.
-        /// </summary>
-        public override void Prepare()
-        {
-        }
-
-        /// <summary>
         /// Initializes the database asynchronous.
         /// </summary>
-        protected virtual async Task InitializeDatabaseAsync()
+        protected async Task InitializeDatabaseAsync()
         {
-            using (var db = new DatabaseContext())
+            // da die GetPermission Funktionen teilweise zu lange dauern oder die funktion beenden wird der Task davor gestartet.
+            _ = Task.Run(async () =>
             {
-                await db.Database.MigrateAsync().ConfigureAwait(true);
-                await db.Database.EnsureCreatedAsync().ConfigureAwait(true);
+                // 5 sekunden warten => solange ist zeit um die permission zu geben.
+                await Task.Delay(5000).ConfigureAwait(true);
+
+                // since android 10, database has to be created at the first time
+                if (!File.Exists(Data.DatabaseSettings.DatabasePath))
+                {
+                    var fs = File.Create(Data.DatabaseSettings.DatabasePath);
+                    fs.Dispose();
+                }
+
+                using (var db = new DatabaseContext())
+                {
+                    await db.Database.MigrateAsync().ConfigureAwait(true);
+                    await db.Database.EnsureCreatedAsync().ConfigureAwait(true);
+                }
             }
+               ).ConfigureAwait(false);
+
+            await Functions.GetPermission<Permissions.StorageRead>().ConfigureAwait(true);
+            await Functions.GetPermission<Permissions.StorageWrite>().ConfigureAwait(true);
         }
 
-        protected virtual void ReloadUserAsync(MvxUserReloadMessage mvxUserReloadMessage = null)
-        {
-            this.RaisePropertyChanged(() => this.LicenseValid).ConfigureAwait(true);
-            this.RaisePropertyChanged(() => this.UserValid).ConfigureAwait(true);
-        }
 
         #endregion Methods
 
@@ -75,43 +75,27 @@ namespace SimTuning.Core.ViewModels
 
         private readonly ILogger<MenuViewModel> _logger;
 
-        public MvxCommand ButtonCloseMenu { get; set; }
+        public IRelayCommand ButtonCloseMenu { get; set; }
 
-        public MvxCommand ButtonOpenMenu { get; set; }
+        public IRelayCommand ButtonOpenMenu { get; set; }
 
-        public IMvxAsyncCommand InitializeDatabase { get; protected set; }
+        public IAsyncRelayCommand InitializeDatabase { get; protected set; }
 
-        public IMvxAsyncCommand LoginUserCommand { get; protected set; }
+        public IAsyncRelayCommand ShowAuslassCommand { get; set; }
 
-        public IMvxAsyncCommand ShowAuslassCommand { get; set; }
+        public IAsyncRelayCommand ShowDynoCommand { get; set; }
 
-        public IMvxAsyncCommand ShowDynoCommand { get; set; }
+        public IAsyncRelayCommand ShowEinlassCommand { get; set; }
 
-        public IMvxAsyncCommand ShowEinlassCommand { get; set; }
+        public IAsyncRelayCommand ShowEinstellungenCommand { get; set; }
 
-        public IMvxAsyncCommand ShowEinstellungenCommand { get; set; }
+        public IAsyncRelayCommand ShowHomeCommand { get; set; }
 
-        public IMvxAsyncCommand ShowHomeCommand { get; set; }
-
-        public IMvxAsyncCommand ShowMotorCommand { get; set; }
-
-        public IMvxAsyncCommand ShowTuningCommand { get; set; }
+        public IAsyncRelayCommand ShowMotorCommand { get; set; }
 
         #endregion Commands
 
-        protected readonly IMvxMessenger _messenger;
-        protected readonly IMvxNavigationService _navigationService;
-        protected readonly MvxSubscriptionToken _token;
-
-        public bool LicenseValid
-        {
-            get => UserSettings.LicenseValid;
-        }
-
-        public bool UserValid
-        {
-            get => UserSettings.UserValid;
-        }
+        protected readonly INavigationService _INavigationService;
 
         #endregion Values
     }

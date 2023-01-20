@@ -1,53 +1,43 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
+using Microsoft.Extensions.Logging;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
+using SimTuning.Core.Models;
+using SimTuning.Core.Models.Quantity;
+using SimTuning.Core.ModuleLogic;
+using SimTuning.Core.Services;
+using SimTuning.Data.Models;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
+using UnitsNet.Units;
+
 namespace SimTuning.Core.ViewModels.Auslass
 {
-    using Microsoft.Extensions.Logging;
-    using MvvmCross.Commands;
-    using MvvmCross.Navigation;
-    using MvvmCross.ViewModels;
-    using SimTuning.Core.Models;
-    using SimTuning.Core.Models.Quantity;
-    using SimTuning.Core.ModuleLogic;
-    using SimTuning.Core.Services;
-    using SimTuning.Data.Models;
-    using System.Collections.ObjectModel;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using UnitsNet.Units;
-
     /// <summary>
     /// Einlass-Theorie-ViewModel.
     /// </summary>
-    /// <seealso cref="MvvmCross.ViewModels.MvxViewModel" />
-    public class TheorieViewModel : MvxViewModel
+
+    public class TheorieViewModel : ViewModelBase
     {
         /// <summary> Initializes a new instance of the <see cref="TheorieViewModel" />
         /// class. </summary> <param name="logger"> <inheritdoc cref="ILogger"
-        /// path="/summary/node()" /> </param> <param name="navigationService">
-        /// <inheritdoc cref="IMvxNavigationService" path="/summary/node()" /> </param
+        /// path="/summary/node()" /> </param> <param name="INavigationService">
+        /// <inheritdoc cref="INavigationService" path="/summary/node()" /> </param
         public TheorieViewModel(
             ILogger<TheorieViewModel> logger,
-            IMvxNavigationService navigationService,
+            INavigationService INavigationService,
             IVehicleService vehicleService)
         {
             this._logger = logger;
-            this._navigationService = navigationService;
+            this._INavigationService = INavigationService;
             this._vehicleService = vehicleService;
 
             this.AreaQuantityUnits = new AreaQuantity();
             this.LengthQuantityUnits = new LengthQuantity();
             this.SpeedQuantityUnits = new SpeedQuantity();
             this.TemperatureQuantityUnits = new TemperatureQuantity();
-        }
 
-        #region Methods
-
-        /// <summary>
-        /// Initializes this instance.
-        /// </summary>
-        /// <returns>Initilisierung.</returns>
-        public override Task Initialize()
-        {
             // Vehicle Creation
             this.Vehicle = new VehiclesModel();
             this.Vehicle.Motor = new MotorModel();
@@ -59,42 +49,39 @@ namespace SimTuning.Core.ViewModels.Auslass
             this.HelperVehicles = new ObservableCollection<VehiclesModel>(_vehicleService.RetrieveVehicles());
 
             // Commands
-            this.InsertDataCommand = new MvxCommand(this.InsertData);
+            this.InsertDataCommand = new RelayCommand(this.InsertData);
 
             // andere unit vorbelegen
             VehicleMotorAuslassFlaecheAUnit = this.AreaQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(AreaUnit.SquareCentimeter));
 
-            return base.Initialize();
         }
 
-        /// <summary>
-        /// Prepares this instance. called after construction.
-        /// </summary>
-        public override void Prepare()
-        {
-        }
+        #region Methods
+
+
+
 
         /// <summary>
         /// Inserts the data.
         /// </summary>
-        protected virtual void InsertData()
+        protected void InsertData()
         {
             if (this.HelperVehicle.Motor.Auslass.FlaecheA.HasValue)
             {
                 this.VehicleMotorAuslassFlaecheA = this.HelperVehicle.Motor.Auslass.FlaecheA;
-                this.RaisePropertyChanged(() => this.VehicleMotorAuslassFlaecheA);
+                this.OnPropertyChanged(nameof(this.VehicleMotorAuslassFlaecheA));
             }
 
             if (this.HelperVehicle.Motor.ResonanzU.HasValue)
             {
                 this.VehicleMotorResonanzU = this.HelperVehicle.Motor.ResonanzU;
-                this.RaisePropertyChanged(() => this.VehicleMotorResonanzU);
+                this.OnPropertyChanged(nameof(this.VehicleMotorResonanzU));
             }
 
             if (this.HelperVehicle.Motor.Auslass.SteuerzeitSZ.HasValue)
             {
                 this.VehicleMotorAuslassSteuerzeitSZ = this.HelperVehicle.Motor.Auslass.SteuerzeitSZ;
-                this.RaisePropertyChanged(() => this.VehicleMotorAuslassSteuerzeitSZ);
+                this.OnPropertyChanged(nameof(this.VehicleMotorAuslassSteuerzeitSZ));
             }
         }
 
@@ -106,7 +93,7 @@ namespace SimTuning.Core.ViewModels.Auslass
             if (this.ModAuspuffAbgasT.HasValue)
             {
                 this.ModAuspuffAbgasV = AuslassLogic.GetGasGeschwindigkeit(this.ModAuspuffAbgasT.Value);
-                this.RaisePropertyChanged(() => this.ModAuspuffAbgasV);
+                this.OnPropertyChanged(nameof(this.ModAuspuffAbgasV));
             }
         }
 
@@ -149,7 +136,7 @@ namespace SimTuning.Core.ViewModels.Auslass
                      this.VehicleMotorAuslassAuspuffKruemmerF.Value,
                      0);
 
-                this.RaisePropertyChanged(() => this.VehicleMotorAuslassAuspuffKruemmerL);
+                this.OnPropertyChanged(nameof(this.VehicleMotorAuslassAuspuffKruemmerL));
             }
         }
 
@@ -161,7 +148,7 @@ namespace SimTuning.Core.ViewModels.Auslass
             if (this.VehicleMotorAuslassSteuerzeitSZ.HasValue && this.VehicleMotorAuslassAuspuffAbgasT.HasValue && this.VehicleMotorResonanzU.HasValue)
             {
                 this.VehicleMotorAuslassAuspuffResonanzL = AuslassLogic.GetResonanzLaenge(this.VehicleMotorAuslassSteuerzeitSZ.Value, this.VehicleMotorAuslassAuspuffAbgasT.Value, this.VehicleMotorResonanzU.Value);
-                this.RaisePropertyChanged(() => this.VehicleMotorAuslassAuspuffResonanzL);
+                this.OnPropertyChanged(nameof(this.VehicleMotorAuslassAuspuffResonanzL));
             }
         }
 
@@ -171,11 +158,11 @@ namespace SimTuning.Core.ViewModels.Auslass
 
         #region Commands
 
-        public IMvxCommand InsertDataCommand { get; set; }
+        public IRelayCommand InsertDataCommand { get; set; }
 
         #endregion Commands
 
-        protected readonly IMvxNavigationService _navigationService;
+        protected readonly INavigationService _INavigationService;
         private readonly ILogger<TheorieViewModel> _logger;
         private readonly IVehicleService _vehicleService;
         private VehiclesModel _helperVehicle;
@@ -272,7 +259,7 @@ namespace SimTuning.Core.ViewModels.Auslass
                 }
 
                 this.ModAuspuff.AbgasTUnit = (UnitsNet.Units.TemperatureUnit)value?.UnitEnumValue;
-                this.RaisePropertyChanged(() => this.ModAuspuffAbgasT);
+                this.OnPropertyChanged(nameof(this.ModAuspuffAbgasT));
             }
         }
 
@@ -309,7 +296,7 @@ namespace SimTuning.Core.ViewModels.Auslass
                 }
 
                 this.ModAuspuff.AbgasVUnit = (UnitsNet.Units.SpeedUnit)value?.UnitEnumValue;
-                this.RaisePropertyChanged(() => this.ModAuspuffAbgasV);
+                this.OnPropertyChanged(nameof(this.ModAuspuffAbgasV));
             }
         }
 
@@ -369,7 +356,7 @@ namespace SimTuning.Core.ViewModels.Auslass
                 }
 
                 this.Vehicle.Motor.Auslass.Auspuff.AbgasTUnit = (UnitsNet.Units.TemperatureUnit)value?.UnitEnumValue;
-                this.RaisePropertyChanged(() => this.VehicleMotorAuslassAuspuffAbgasT);
+                this.OnPropertyChanged(nameof(this.VehicleMotorAuslassAuspuffAbgasT));
             }
         }
 
@@ -407,7 +394,7 @@ namespace SimTuning.Core.ViewModels.Auslass
                 }
 
                 this.Vehicle.Motor.Auslass.Auspuff.KruemmerDUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
-                this.RaisePropertyChanged(() => this.VehicleMotorAuslassAuspuffKruemmerD);
+                this.OnPropertyChanged(nameof(this.VehicleMotorAuslassAuspuffKruemmerD));
             }
         }
 
@@ -463,7 +450,7 @@ namespace SimTuning.Core.ViewModels.Auslass
                 }
 
                 this.Vehicle.Motor.Auslass.Auspuff.KruemmerLUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
-                this.RaisePropertyChanged(() => this.VehicleMotorAuslassAuspuffKruemmerL);
+                this.OnPropertyChanged(nameof(this.VehicleMotorAuslassAuspuffKruemmerL));
             }
         }
 
@@ -500,7 +487,7 @@ namespace SimTuning.Core.ViewModels.Auslass
                 }
 
                 this.Vehicle.Motor.Auslass.Auspuff.ResonanzLUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
-                this.RaisePropertyChanged(() => this.VehicleMotorAuslassAuspuffResonanzL);
+                this.OnPropertyChanged(nameof(this.VehicleMotorAuslassAuspuffResonanzL));
             }
         }
 
@@ -538,7 +525,7 @@ namespace SimTuning.Core.ViewModels.Auslass
                 }
 
                 this.Vehicle.Motor.Auslass.FlaecheAUnit = (UnitsNet.Units.AreaUnit)value?.UnitEnumValue;
-                this.RaisePropertyChanged(() => this.VehicleMotorAuslassFlaecheA);
+                this.OnPropertyChanged(nameof(this.VehicleMotorAuslassFlaecheA));
             }
         }
 

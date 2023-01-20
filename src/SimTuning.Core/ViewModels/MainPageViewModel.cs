@@ -1,67 +1,52 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
 namespace SimTuning.Core.ViewModels
 {
+    using CommunityToolkit.Mvvm.ComponentModel;
+    using CommunityToolkit.Mvvm.Input;
     using Microsoft.Extensions.Logging;
-    using MvvmCross.Commands;
-    using MvvmCross.Navigation;
-    using MvvmCross.ViewModels;
+    using SimTuning.Core.Services;
+    using SimTuning.Core.ViewModels.Home;
     using System.Threading.Tasks;
 
-    /// <summary>
-    /// MainPage-ViewModel.
-    /// </summary>
-    /// <seealso cref="MvvmCross.ViewModels.MvxViewModel" />
-    public class MainPageViewModel : MvxViewModel
+    public class MainPageViewModel : ViewModelBase
     {
-        /// <summary> Initializes a new instance of the <see cref="MainPageViewModel"/>
-        /// class. </summary> <param name="logger"><inheritdoc cref="ILogger"
-        /// path="/summary/node()" /></param> <param name="navigationService"><inheritdoc
-        /// cref="IMvxNavigationService" path="/summary/node()" /></param
         public MainPageViewModel(
             ILogger<MainPageViewModel> logger,
-            IMvxNavigationService navigationService)
+            INavigationService INavigationService)
         {
             this._logger = logger;
-            this._navigationService = navigationService;
+            this._INavigationService = INavigationService;
+
+            this.ShowHomeViewModelCommand = new AsyncRelayCommand(() => _INavigationService.Navigate<HomeViewModel>());
+            this.ShowMenuViewModelCommand = new AsyncRelayCommand(() => _INavigationService.Navigate<MenuViewModel>());
         }
 
         #region Methods
 
-        /// <summary>
-        /// Initializes this instance.
-        /// </summary>
-        /// <returns>Initialisierung.</returns>
-        public override Task Initialize()
+        public void ViewAppeared()
         {
-            return base.Initialize();
-        }
-
-        /// <summary>
-        /// Prepares this instance. called after construction.
-        /// </summary>
-        public override void Prepare()
-        {
-            base.Prepare();
+            //this.ShowMenuViewModelCommand.Execute();
+            //this.ShowHomeViewModelCommand.Execute();
         }
 
         #endregion Methods
 
         #region Values
 
-        protected readonly IMvxNavigationService _navigationService;
+        protected readonly INavigationService _INavigationService;
         private readonly ILogger<MainPageViewModel> _logger;
 
         /// <summary>
         /// Gets or sets the show home view model command.
         /// </summary>
         /// <value>The show home view model command.</value>
-        public IMvxAsyncCommand ShowHomeViewModelCommand { get; protected set; }
+        public IAsyncRelayCommand ShowHomeViewModelCommand { get; protected set; }
 
         /// <summary>
         /// Gets or sets the show menu view model command.
         /// </summary>
         /// <value>The show menu view model command.</value>
-        public IMvxAsyncCommand ShowMenuViewModelCommand { get; protected set; }
+        public IAsyncRelayCommand ShowMenuViewModelCommand { get; protected set; }
 
         #endregion Values
     }

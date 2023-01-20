@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SimTuning.Maui.UI.Views.Dyno.DynoRuntimeView"
+             Title="Messung"
+             Style="{StaticResource ContentPageStyle}"
+             BackgroundColor="{Binding Path=PageBackColor, Mode=OneWay}"
+             xmlns:vm="clr-namespace:SimTuning.Core.ViewModels.Dyno;assembly=SimTuning.Core"
+             x:DataType="vm:RuntimeViewModel">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.5*" />
+            <RowDefinition Height="3*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <!--<ImageButton Style="{StaticResource ImageButtonMediumStyle}" Button Style="{StaticResource IconButtonMediumStyle}"  Grid.Row="0"
+                                     WidthRequest="100"
+                                     HeightRequest="60"
+                                     Margin="15"
+                                     
+                                     HorizontalOptions="Start"
+                                     VerticalOptions="Center"
+                                     Image="ic_arrow_back_black_18dp.png"
+                                     Command="{Binding CloseCommand}" />-->
+
+        <Frame Grid.Row="1"
+               HorizontalOptions="FillAndExpand"
+               VerticalOptions="Center"
+               HeightRequest="200"
+               Margin="10, 0, 10, 0"
+               BackgroundColor="{Binding Path=SpeedBackColor, Mode=OneWay}">
+
+            <Grid>
+                <StackLayout Orientation="Horizontal"
+                             HorizontalOptions="Center"
+                             VerticalOptions="Center">
+
+                    <Label Style="{StaticResource LabelStyle}"
+                           Text="{Binding Path=Speed, Mode=OneWay}" />
+
+                    <Label Style="{StaticResource LabelStyle}"
+                           Text="km/h"
+                           Margin="0, 40, 0, 0"
+                           VerticalOptions="Center" />
+                </StackLayout>
+            </Grid>
+        </Frame>
+
+        <StackLayout Grid.Row="2">
+            <Label Style="{StaticResource LabelStyle}"
+                   HorizontalOptions="Center"
+                   Text="{Binding Path=CurrentState, Mode=OneWay}" />
+
+            <StackLayout Orientation="Horizontal"
+                         HorizontalOptions="Center"
+                         IsVisible="{Binding Path=CountdownVis ,Mode=OneWay}">
+                <Label Style="{StaticResource LabelStyle}"
+                       Text="Start in: " />
+
+                <Label Style="{StaticResource LabelStyle}"
+                       Text="{Binding Path=Countdown, Mode=OneWay}" />
+            </StackLayout>
+        </StackLayout>
+
+        <StackLayout Grid.Row="3"
+                     HorizontalOptions="Center"
+                     Orientation="Horizontal"
+                     IsVisible="{Binding Path=StopwatchVis, Mode=OneWay}">
+            <Label Style="{StaticResource LabelStyle}"
+                   Text="{Binding Path=Stopwatch, Mode=OneWay}"
+                   VerticalOptions="End" />
+
+            <!--<Label Style="{StaticResource LabelStyle}" Text="ms"
+                                    TypeScale="H4"
+                                    VerticalOptions="End" />-->
+        </StackLayout>
+
+        <StackLayout  Grid.Row="4"
+                      Orientation="Horizontal"
+                      HorizontalOptions="Center">
+            <Button Style="{StaticResource ButtonMediumStyle}"
+                    Text="Start"
+                    IsVisible="{Binding StartAccelerationButtonVis}"
+                    VerticalOptions="Center"
+                    WidthRequest="125"
+                    HeightRequest="60"
+                    BackgroundColor="{StaticResource Primary700}"
+                    Command="{Binding StartAccelerationCommand}" />
+
+            <!--<Button Style="{StaticResource ButtonMediumStyle}"  Text="Stop"
+                                     IsVisible="{Binding StopAccelerationButtonVis}"
+                                     
+                                     VerticalOptions="Center"
+                                     WidthRequest="125"
+                                     Image="ic_stop_black_18dp.png"
+                                     Command="{Binding StopAccelerationCommand}" />-->
+        </StackLayout>
+
+        <ImageButton Style="{StaticResource IconButtonMediumStyle}"
+                     Grid.Row="5"
+                     Margin="15"
+                     VerticalOptions="End"
+                     HorizontalOptions="Start"
+                     Source="{StaticResource IconRefreshMedium}"
+                     Command="{Binding ResetAccelerationCommand}" />
+
+        <ImageButton Style="{StaticResource IconButtonMediumStyle}"
+                     Grid.Row="5"
+                     WidthRequest="100"
+                     HeightRequest="60"
+                     Margin="15"
+                     HorizontalOptions="End"
+                     VerticalOptions="Center"
+                     Source="{StaticResource IconChevronRightMedium}"
+                     Command="{Binding ShowSpectrogramCommand}"
+                     IsVisible="{Binding ShowAudioButtonVis}" />
+    </Grid>
+</ContentPage>

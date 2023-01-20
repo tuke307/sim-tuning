@@ -1,8 +1,8 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
 namespace SimTuning.Core.ModuleLogic
 {
+    using LiveChartsCore;
     using NAudio.Wave;
-    using OxyPlot;
     using SkiaSharp;
     using System;
     using System.Collections.Generic;
@@ -37,7 +37,7 @@ namespace SimTuning.Core.ModuleLogic
         /// Gets array Handling.
         /// 1. Liste = Graphen, 2. Liste = Punkte.
         /// </summary>
-        public static List<List<DataPoint>> DrehzahlPoints { get; private set; }
+        public static List<List<ISeries>> DrehzahlPoints { get; private set; }
 
         /// <summary>
         /// Gets the spectrogram audio.
@@ -148,13 +148,13 @@ namespace SimTuning.Core.ModuleLogic
         /// </summary>
         private static void HotPoints()
         {
-            DrehzahlPoints = new List<List<DataPoint>>();
-            List<DataPoint> temp_data = new List<DataPoint>();
+            DrehzahlPoints = new List<List<ISeries>>();
+            List<ISeries> temp_data = new List<ISeries>();
 
             for (int col = 0; col < SpecData.Count; col++)
             {
                 // nur für ausgewählten bereich
-                List<DataPoint> temp_points = new List<DataPoint>();
+                List<ISeries> temp_points = new List<ISeries>();
 
                 for (int row = /*(int)FftBeginn*/0; row < /*FftEnde*/ SpecData[col].Length; row++)
                 {
@@ -166,7 +166,7 @@ namespace SimTuning.Core.ModuleLogic
                     if (value == 255)
                     {
                         // row speichern
-                        temp_points.Add(new DataPoint(col, row));
+                        //temp_points.Add(new ISeries(col, row));
                     }
                 }
 
@@ -188,14 +188,14 @@ namespace SimTuning.Core.ModuleLogic
         /// </summary>
         private static void PointsToAreas()
         {
-            List<DataPoint> unfiltered_data = new List<DataPoint>();
+            List<ISeries> unfiltered_data = new List<ISeries>();
             unfiltered_data.AddRange(DrehzahlPoints[0]);
             DrehzahlPoints.Clear();
 
             // erste area hinzufügen
-            DrehzahlPoints.Add(new List<DataPoint>());
+            DrehzahlPoints.Add(new List<ISeries>());
             // Dummy punkt hinzufügen
-            DrehzahlPoints[0].Add(new DataPoint(0, 0));
+            //DrehzahlPoints[0].Add(new ISeries(0, 0));
 
             foreach (var point in unfiltered_data)
             {
@@ -206,26 +206,26 @@ namespace SimTuning.Core.ModuleLogic
                     foreach (var areaPoint in DrehzahlPoints[area])
                     {
                         // Horizontal
-                        double differenz_horizontal = Math.Abs(point.X - areaPoint.X);
+                        //double differenz_horizontal = Math.Abs(point.X - areaPoint.X);
 
                         // Vertikal
-                        double differenz_vertikal = Math.Abs(point.Y - areaPoint.Y);
+                        //double differenz_vertikal = Math.Abs(point.Y - areaPoint.Y);
 
                         // in vorhandene area hinzufügen
-                        if (differenz_vertikal <= _areaAbstand && differenz_horizontal <= _areaAbstand)
-                        {
-                            DrehzahlPoints[area].Add(point);
+                        //if (differenz_vertikal <= _areaAbstand && differenz_horizontal <= _areaAbstand)
+                        //{
+                        //    DrehzahlPoints[area].Add(point);
 
-                            goto nextPoint;
-                        }
-                        // wenn auch in letzter Area nichts gefunden werden konnte
-                        else if (area == DrehzahlPoints.Count - 1)
-                        {
-                            // neue area beginnen
-                            DrehzahlPoints.Add(new List<DataPoint>() { point });
+                        //    goto nextPoint;
+                        //}
+                        //// wenn auch in letzter Area nichts gefunden werden konnte
+                        //else if (area == DrehzahlPoints.Count - 1)
+                        //{
+                        //    // neue area beginnen
+                        //    DrehzahlPoints.Add(new List<ISeries>() { point });
 
-                            goto nextPoint;
-                        }
+                        //    goto nextPoint;
+                        //}
                     }
                 }
 
@@ -242,19 +242,19 @@ namespace SimTuning.Core.ModuleLogic
         /// </summary>
         private static void PointsToRotionalSpeed()
         {
-            List<List<DataPoint>> temp_plot_data = new List<List<DataPoint>>();
+            List<List<ISeries>> temp_plot_data = new List<List<ISeries>>();
 
             // anzahl graphen
             for (int area = 0; area < DrehzahlPoints.Count; area++)
             {
-                List<DataPoint> temp_list = new List<DataPoint>();
+                List<ISeries> temp_list = new List<ISeries>();
 
                 // Punkt in graphen
                 for (int col = 0; col < DrehzahlPoints[area].Count; col++)
                 {
                     // Y(vertikal) = 1U/min; 1Hz = 60 U/min bei Einzylider Motoren
                     // X(horizontal) = 1s
-                    temp_list.Add(new DataPoint(Math.Round(DrehzahlPoints[area][col].X * SegmentsPerSecond, 4), Math.Round(DrehzahlPoints[area][col].Y * HzPerFFT * 60, 4)));
+                    //temp_list.Add(new ISeries(Math.Round(DrehzahlPoints[area][col].X * SegmentsPerSecond, 4), Math.Round(DrehzahlPoints[area][col].Y * HzPerFFT * 60, 4)));
                 }
 
                 temp_plot_data.Add(temp_list);

@@ -1,0 +1,334 @@
+﻿<ContentView x:Class="SimTuning.Maui.UI.Views.Motor.MotorSteuerdiagrammView"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Style="{StaticResource ContentPageStyle}"
+             xmlns:vm="clr-namespace:SimTuning.Core.ViewModels.Motor;assembly=SimTuning.Core"
+             x:DataType="vm:SteuerdiagrammViewModel">
+
+    <ScrollView>
+        <StackLayout>
+
+            <!--  Steuerzeiten Rad  -->
+            <Frame Margin="10"
+                   Style="{StaticResource FrameStyle}">
+                <StackLayout>
+                    <Label Style="{StaticResource LabelTitleStyle}"
+                           Text="Diagramm" />
+
+                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+
+                    <Image Margin="10"
+                           HeightRequest="200"
+                           Source="{Binding Mode=OneWay, Path=PortTimingCircle}" />
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <Label Grid.Row="1"
+                               Grid.Column="0"
+                               Style="{StaticResource LabelStyle}"
+                               Text="Einlass (°)"
+                               VerticalOptions="Center" />
+                        <Label Grid.Row="2"
+                               Grid.Column="0"
+                               Style="{StaticResource LabelStyle}"
+                               Text="Auslass (°)"
+                               VerticalOptions="Center" />
+                        <Label Grid.Row="3"
+                               Grid.Column="0"
+                               Style="{StaticResource LabelStyle}"
+                               Text="Überströmer (°)"
+                               VerticalOptions="Center" />
+                        <Entry Grid.Row="1"
+                               Grid.Column="1"
+                               Keyboard="Numeric"
+                               MinimumWidthRequest="60"
+                               Placeholder=" "
+                               Text="{Binding Mode=TwoWay, Path=SteuerzeitEinlass}" />
+                        <Entry Grid.Row="2"
+                               Grid.Column="1"
+                               Keyboard="Numeric"
+                               MinimumWidthRequest="60"
+                               Placeholder=" "
+                               Text="{Binding Mode=TwoWay, Path=SteuerzeitAuslass}" />
+                        <Entry Grid.Row="3"
+                               Grid.Column="1"
+                               Keyboard="Numeric"
+                               MinimumWidthRequest="60"
+                               Placeholder=" "
+                               Text="{Binding Mode=TwoWay, Path=SteuerzeitUeberstroemer}" />
+
+                        <Label Grid.Row="0"
+                               Grid.Column="2"
+                               Style="{StaticResource LabelStyle}"
+                               Text="öffnet (°)" />
+                        <Entry Grid.Row="1"
+                               Grid.Column="2"
+                               Keyboard="Numeric"
+                               IsEnabled="False"
+                               MinimumWidthRequest="46"
+                               Placeholder=" "
+                               Text="{Binding Mode=OneWay, Path=Einlass_Steuerwinkel_oeffnen}" />
+                        <Entry Grid.Row="2"
+                               Grid.Column="2"
+                               Keyboard="Numeric"
+                               IsEnabled="False"
+                               MinimumWidthRequest="46"
+                               Placeholder=" "
+                               Text="{Binding Mode=OneWay, Path=Auslass_Steuerwinkel_oeffnen}" />
+                        <Entry Grid.Row="3"
+                               Grid.Column="2"
+                               Keyboard="Numeric"
+                               IsEnabled="False"
+                               MinimumWidthRequest="46"
+                               Placeholder=" "
+                               Text="{Binding Mode=OneWay, Path=Ueberstroemer_Steuerwinkel_oeffnen}" />
+
+                        <Label Grid.Row="0"
+                               Grid.Column="3"
+                               Style="{StaticResource LabelStyle}"
+                               Text="schließt (°)" />
+                        <Entry Grid.Row="1"
+                               Grid.Column="3"
+                               Keyboard="Numeric"
+                               IsEnabled="False"
+                               MinimumWidthRequest="44"
+                               Placeholder=" "
+                               Text="{Binding Mode=OneWay, Path=Einlass_Steuerwinkel_schließen}" />
+                        <Entry Grid.Row="2"
+                               Grid.Column="3"
+                               Keyboard="Numeric"
+                               IsEnabled="False"
+                               MinimumWidthRequest="44"
+                               Placeholder=" "
+                               Text="{Binding Mode=OneWay, Path=Auslass_Steuerwinkel_schließen}" />
+                        <Entry Grid.Row="3"
+                               Grid.Column="3"
+                               Keyboard="Numeric"
+                               IsEnabled="False"
+                               MinimumWidthRequest="44"
+                               Placeholder=" "
+                               Text="{Binding Mode=OneWay, Path=Ueberstroemer_Steuerwinkel_schließen}" />
+                    </Grid>
+
+                    <StackLayout Orientation="Horizontal">
+                        <Label Style="{StaticResource LabelStyle}"
+                               Text="Vorauslasszeit (°)"
+                               VerticalOptions="Center" />
+                        <Entry Keyboard="Numeric"
+                               IsEnabled="False"
+                               Placeholder=" "
+                               Text="{Binding Mode=OneWay, Path=SteuerzeitVorauslass}"
+                               WidthRequest="100" />
+                    </StackLayout>
+                </StackLayout>
+            </Frame>
+
+            <!--  Fahrzeug  -->
+            <Frame Margin="10"
+                   Style="{StaticResource FrameStyle}">
+                <StackLayout>
+                    <Label Style="{StaticResource LabelTitleStyle}"
+                           Text="Fahrzeug Steuerzeiten" />
+
+                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+
+                    <Picker ItemsSource="{Binding HelperVehicles}"
+                            ItemDisplayBinding="{Binding Name}"
+                            Title="Fahrzeug"
+                            SelectedItem="{Binding HelperVehicle}" />
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Row="0"
+                               Grid.Column="0"
+                               Style="{StaticResource LabelStyle}"
+                               Text="Einlass"
+                               VerticalOptions="Center" />
+
+                        <StackLayout Grid.Row="0"
+                                     Grid.Column="1"
+                                     Orientation="Horizontal">
+                            <Entry Margin="10,0,0,0"
+                                   IsEnabled="False"
+                                   Placeholder=" "
+                                   Text="{Binding Mode=OneWay, Path=HelperVehicle.Motor.Einlass.SteuerzeitSZ}"
+                                   WidthRequest="100" />
+
+                            <Label Margin="5,0,0,0"
+                                   Style="{StaticResource LabelStyle}"
+                                   VerticalOptions="Center">
+                                °
+                            </Label>
+                        </StackLayout>
+
+                        <Label Grid.Row="1"
+                               Grid.Column="0"
+                               Style="{StaticResource LabelStyle}"
+                               Text="Auslass"
+                               VerticalOptions="Center" />
+                        <StackLayout Grid.Row="1"
+                                     Grid.Column="1"
+                                     Orientation="Horizontal">
+                            <Entry Margin="10,0,0,0"
+                                   IsEnabled="False"
+                                   Placeholder=" "
+                                   Text="{Binding Mode=OneWay, Path=HelperVehicle.Motor.Auslass.SteuerzeitSZ}"
+                                   WidthRequest="100" />
+
+                            <Label Margin="5,0,0,0"
+                                   Style="{StaticResource LabelStyle}"
+                                   VerticalOptions="Center">
+                                °
+                            </Label>
+                        </StackLayout>
+
+                        <Label Grid.Row="2"
+                               Grid.Column="0"
+                               Style="{StaticResource LabelStyle}"
+                               Text="Überströmer"
+                               VerticalOptions="Center" />
+                        <StackLayout Grid.Row="2"
+                                     Grid.Column="1"
+                                     Orientation="Horizontal">
+                            <Entry Margin="10,0,0,0"
+                                   IsEnabled="False"
+                                   Placeholder=" "
+                                   Text="{Binding Mode=OneWay, Path=HelperVehicle.Motor.Ueberstroemer.SteuerzeitSZ}"
+                                   WidthRequest="100" />
+
+                            <Label Margin="5,0,0,0"
+                                   Style="{StaticResource LabelStyle}"
+                                   VerticalOptions="Center">
+                                °
+                            </Label>
+                        </StackLayout>
+                    </Grid>
+
+                    <Button Command="{Binding InsertVehicleCommand}"
+                            HorizontalOptions="Center"
+                            ImageSource="{StaticResource IconChevronRightMedium}"
+                            Style="{StaticResource ButtonMediumStyle}"
+                            WidthRequest="90" />
+                </StackLayout>
+            </Frame>
+
+            <!--  Tuning Presets  -->
+            <Frame Margin="10"
+                   Style="{StaticResource FrameStyle}">
+                <StackLayout>
+                    <Label Style="{StaticResource LabelTitleStyle}"
+                           Text="Richtwerte Steuerzeiten" />
+
+                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+
+                    <Picker ItemsSource="{Binding MotorSteuerzeiten}"
+                            ItemDisplayBinding="{Binding Name}"
+                            Title="Konfiguration"
+                            SelectedItem="{Binding MotorSteuerzeit}" />
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Row="0"
+                               Grid.Column="0"
+                               Style="{StaticResource LabelStyle}"
+                               Text="Einlass"
+                               VerticalOptions="Center" />
+                        <StackLayout Grid.Row="0"
+                                     Grid.Column="1"
+                                     Orientation="Horizontal">
+                            <Entry Margin="10,0,0,0"
+                                   IsEnabled="False"
+                                   Placeholder=" "
+                                   Text="{Binding Mode=OneWay, Path=MotorSteuerzeit.Einlass.SteuerzeitSZ}"
+                                   WidthRequest="100" />
+
+                            <Label Margin="5,0,0,0"
+                                   Style="{StaticResource LabelStyle}"
+                                   VerticalOptions="Center">
+                                °
+                            </Label>
+                        </StackLayout>
+
+                        <Label Grid.Row="1"
+                               Grid.Column="0"
+                               Style="{StaticResource LabelStyle}"
+                               Text="Auslass"
+                               VerticalOptions="Center" />
+                        <StackLayout Grid.Row="1"
+                                     Grid.Column="1"
+                                     Orientation="Horizontal">
+                            <Entry Margin="10,0,0,0"
+                                   IsEnabled="False"
+                                   Placeholder=" "
+                                   Text="{Binding Mode=OneWay, Path=MotorSteuerzeit.Auslass.SteuerzeitSZ}"
+                                   WidthRequest="100" />
+
+                            <Label Margin="5,0,0,0"
+                                   Style="{StaticResource LabelStyle}"
+                                   VerticalOptions="Center">
+                                °
+                            </Label>
+                        </StackLayout>
+
+                        <Label Grid.Row="2"
+                               Grid.Column="0"
+                               Style="{StaticResource LabelStyle}"
+                               Text="Überströmer"
+                               VerticalOptions="Center" />
+                        <StackLayout Grid.Row="2"
+                                     Grid.Column="1"
+                                     Orientation="Horizontal">
+                            <Entry Margin="10,0,0,0"
+                                   IsEnabled="False"
+                                   Placeholder=" "
+                                   Text="{Binding Mode=OneWay, Path=MotorSteuerzeit.Ueberstroemer.SteuerzeitSZ}"
+                                   WidthRequest="100" />
+
+                            <Label Margin="5,0,0,0"
+                                   Style="{StaticResource LabelStyle}"
+                                   VerticalOptions="Center">
+                                °
+                            </Label>
+                        </StackLayout>
+                    </Grid>
+
+                    <Button Command="{Binding InsertReferenceCommand}"
+                            HorizontalOptions="Center"
+                            ImageSource="{StaticResource IconChevronRightMedium}"
+                            Style="{StaticResource ButtonMediumStyle}"
+                            WidthRequest="90" />
+                </StackLayout>
+            </Frame>
+        </StackLayout>
+    </ScrollView>
+</ContentView>

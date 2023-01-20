@@ -1,98 +1,77 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
+using Microsoft.Extensions.Logging;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
+using Newtonsoft.Json;
+using SimTuning.Core.Helpers;
+using SimTuning.Core.Services;
+using SimTuning.Data.Models;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.IO.Compression;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.Maui.ApplicationModel.DataTransfer;
+using System.Net;
+
 namespace SimTuning.Core.ViewModels.Dyno
 {
-    using Microsoft.Extensions.Logging;
-    using MvvmCross.Commands;
-    using MvvmCross.Navigation;
-    using MvvmCross.Plugin.Messenger;
-    using MvvmCross.ViewModels;
-    using Newtonsoft.Json;
-    using SimTuning.Core.Helpers;
-    using SimTuning.Core.Services;
-    using SimTuning.Data.Models;
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.IO;
-    using System.IO.Compression;
-    using System.Linq;
-    using System.Threading.Tasks;
-
-    /// <summary>
-    /// Dyno-Data-ViewModel.
-    /// </summary>
-    /// <seealso cref="MvvmCross.ViewModels.MvxViewModel" />
-    public class DataViewModel : MvxViewModel
+    public class DataViewModel : ViewModelBase
     {
-        /// <summary> Initializes a new instance of the <see cref="DataViewModel"/> class. </summary> <param name="logger"><inheritdoc cref="ILogger" path="/summary/node()" /></param> <param
-        /// name="navigationService"><inheritdoc cref="IMvxNavigationService" path="/summary/node()" /></param <param name="messenger"><inheritdoc cref="IMvxMessenger" path="/summary/node()"
-        /// /></param>
         public DataViewModel(
             ILogger<DataViewModel> logger,
-            IMvxNavigationService navigationService,
-            IVehicleService vehicleService,
-            IMvxMessenger messenger)
+            INavigationService INavigationService,
+            IVehicleService vehicleService)
         {
             this._logger = logger;
-            this._navigationService = navigationService;
+            this._INavigationService = INavigationService;
             this._vehicleService = vehicleService;
-            this._messenger = messenger;
+
+            this.NewDynoCommand = new RelayCommand(this.NewDyno);
+            this.DeleteDynoCommand = new RelayCommand(this.DeleteDyno);
+            this.SaveDynoCommand = new RelayCommand(this.SaveDyno);
+
+            this.ImportDynoCommand = new AsyncRelayCommand(this.ImportDyno);
+
+            //this.Runtime = new AsyncRelayCommand(async () => await _INavigationService.Navigate<Dyno.RuntimeViewModel>());
+
+            this.ShowSaveButtonCommand = new RelayCommand(() => this.SaveButton = true);
+            this.ExportDynoCommand = new AsyncRelayCommand(this.ExportDynoAsync);
+
+            this.Dynos = new ObservableCollection<DynoModel>(_vehicleService.RetrieveDynos());
+            this.Dyno = _vehicleService.RetrieveOneActive();
         }
 
         #region Methods
 
         /// <summary>
-        /// Initializes this instance.
-        /// </summary>
-        /// <returns>Initilisierung.</returns>
-        public override Task Initialize()
-        {
-            this.ShowSaveButtonCommand = new MvxCommand(() => this.SaveButton = true);
-            this.ExportDynoCommand = new MvxCommand(this.ExportDyno);
-
-            this.Dynos = new ObservableCollection<DynoModel>(_vehicleService.RetrieveDynos());
-            this.Dyno = _vehicleService.RetrieveOneActive();
-
-            return base.Initialize();
-        }
-
-        /// <summary>
-        /// Prepares this instance. called after construction.
-        /// </summary>
-        public override void Prepare()
-        {
-            base.Prepare();
-        }
-
-        /// <summary>
         /// Deletes the dyno.
         /// </summary>
-        protected virtual bool DeleteDyno()
+        protected void DeleteDyno()
         {
             try
             {
                 // in lokale liste aktualisieren
                 Dynos.Remove(this.Dyno);
-                RaisePropertyChanged(() => Dynos);
+                OnPropertyChanged(nameof(Dynos));
 
                 _vehicleService.DeleteOne(this.Dyno);
 
                 // letzten in liste laden.
                 this.Dyno = Dynos.Last();
-
-                return true;
             }
             catch (Exception exc)
             {
                 _logger.LogError(exc, exc.Message, null);
-                return false;
             }
         }
 
         /// <summary>
         /// Exports the dyno.
         /// </summary>
-        protected virtual void ExportDyno()
+        protected async Task ExportDynoAsync()
         {
             try
             {
@@ -117,6 +96,11 @@ namespace SimTuning.Core.ViewModels.Dyno
 
                 // ZIP archiv erstellen
                 Functions.CreateZipFile(GeneralSettings.DataExportArchivePath, list);
+
+                await Share.RequestAsync(new ShareFileRequest
+                {
+                    File = new ShareFile(GeneralSettings.DataExportArchivePath),
+                }).ConfigureAwait(true);
             }
             catch (Exception exc)
             {
@@ -128,9 +112,12 @@ namespace SimTuning.Core.ViewModels.Dyno
         /// Imports the dyno.
         /// </summary>
         /// <param name="fileName">Name of the file.</param>
-        protected virtual async Task ImportDyno(string fileName)
+        protected async Task ImportDyno()
         {
-            // bool status = false;
+            using (var client = new WebClient())
+            {
+                client.DownloadFile("https://simtuning.tuke-productions.de/wp-content/uploads/DataExport.zip", SimTuning.Core.GeneralSettings.DataExportArchivePath);
+            }
 
             // zip extrahieren
             if (File.Exists(SimTuning.Core.GeneralSettings.DataExportFilePath))
@@ -141,7 +128,7 @@ namespace SimTuning.Core.ViewModels.Dyno
             {
                 File.Delete(SimTuning.Core.GeneralSettings.AudioAccelerationFilePath);
             }
-            ZipFile.ExtractToDirectory(fileName, Data.DatabaseSettings.FileDirectory);
+            ZipFile.ExtractToDirectory(SimTuning.Core.GeneralSettings.DataExportArchivePath, Data.DatabaseSettings.FileDirectory);
 
             // wenn Datei ausgewählt using (FileStream sourceStream = File.Open(fileName, FileMode.OpenOrCreate)) { status =
             // SimTuning.Core.Helpers.AudioUtils.AudioCopy(SimTuning.Core.GeneralSettings.AudioFile, sourceStream); }
@@ -159,7 +146,7 @@ namespace SimTuning.Core.ViewModels.Dyno
         /// <summary>
         /// Creates new dyno.
         /// </summary>
-        protected virtual bool NewDyno()
+        protected void NewDyno()
         {
             try
             {
@@ -180,13 +167,10 @@ namespace SimTuning.Core.ViewModels.Dyno
                 this.CreateNewVehicle = true;
 
                 this.SaveButton = true;
-
-                return true;
             }
             catch (Exception exc)
             {
                 _logger.LogError(exc, exc.Message, null);
-                return false;
             }
         }
 
@@ -194,12 +178,11 @@ namespace SimTuning.Core.ViewModels.Dyno
         /// Saves the dyno.
         /// </summary>
         /// <returns>Status.</returns>
-        protected virtual bool SaveDyno()
+        protected void SaveDyno()
         {
             if (this.Dyno == null)
             {
                 this.SaveButton = false;
-                return false;
             }
 
             try
@@ -210,7 +193,7 @@ namespace SimTuning.Core.ViewModels.Dyno
                     // kein Vehicle ausgewählt
                     if (this.Vehicle == null)
                     {
-                        return false;
+                        return;
                     }
 
                     // nur id zuweisen
@@ -230,7 +213,7 @@ namespace SimTuning.Core.ViewModels.Dyno
                     vehicle = _vehicleService.CreateOne(vehicle);
 
                     // Lokaler list auswählen
-                    RaisePropertyChanged(() => Vehicles);
+                    OnPropertyChanged(nameof(Vehicles));
                     this.Vehicle = this.Vehicles.Last();
 
                     // neues Vehicle Dyno zuweisen
@@ -251,22 +234,18 @@ namespace SimTuning.Core.ViewModels.Dyno
                 }
 
                 // wenn bereits geladene seiten mit dyno daten Refresh aller Dyno-Datensätze
-                if (this._messenger.HasSubscriptionsFor<Core.Models.MvxReloaderMessage>())
-                {
-                    var message = new Core.Models.MvxReloaderMessage(this, this.Dyno);
+                //if (this._messenger.HasSubscriptionsFor<Core.Models.MvxReloaderMessage>())
+                //{
+                //    var message = new Core.Models.MvxReloaderMessage(this, this.Dyno);
 
-                    this._messenger.Publish(message);
-                }
+                //    this._messenger.Publish(message);
+                //}
 
                 this.SaveButton = false;
-
-                return true;
             }
             catch (Exception exc)
             {
                 _logger.LogError(exc, exc.Message, null);
-
-                return false;
             }
         }
 
@@ -275,7 +254,7 @@ namespace SimTuning.Core.ViewModels.Dyno
         /// </summary>
         /// <param name="dyno">The dyno.</param>
         /// <returns>aktualisiertes DynoModel.</returns>
-        protected virtual DynoModel SetActiveDyno(DynoModel dyno)
+        protected DynoModel SetActiveDyno(DynoModel dyno)
         {
             try
             {
@@ -297,7 +276,7 @@ namespace SimTuning.Core.ViewModels.Dyno
         /// <summary>
         /// Sets the inactive dyno.
         /// </summary>
-        protected virtual void SetInactiveDyno()
+        protected void SetInactiveDyno()
         {
             try
             {
@@ -329,42 +308,41 @@ namespace SimTuning.Core.ViewModels.Dyno
         /// Gets or sets the delete dyno command.
         /// </summary>
         /// <value>The delete dyno command.</value>
-        public IMvxCommand DeleteDynoCommand { get; set; }
+        public IRelayCommand DeleteDynoCommand { get; set; }
 
         /// <summary>
         /// Gets or sets the export dyno command.
         /// </summary>
         /// <value>The export dyno command.</value>
-        public IMvxCommand ExportDynoCommand { get; set; }
+        public IRelayCommand ExportDynoCommand { get; set; }
 
         /// <summary>
         /// Gets or sets the import dyno command.
         /// </summary>
         /// <value>The import dyno command.</value>
-        public IMvxAsyncCommand ImportDynoCommand { get; set; }
+        public IAsyncRelayCommand ImportDynoCommand { get; set; }
 
         /// <summary>
         /// Creates new dynocommand.
         /// </summary>
         /// <value>The new dyno command.</value>
-        public IMvxCommand NewDynoCommand { get; set; }
+        public IRelayCommand NewDynoCommand { get; set; }
 
         /// <summary>
         /// Gets or sets the save dyno command.
         /// </summary>
         /// <value>The save dyno command.</value>
-        public IMvxCommand SaveDynoCommand { get; set; }
+        public IRelayCommand SaveDynoCommand { get; set; }
 
         /// <summary>
         /// Gets or sets the show save button command.
         /// </summary>
         /// <value>The show save button command.</value>
-        public IMvxCommand ShowSaveButtonCommand { get; set; }
+        public IRelayCommand ShowSaveButtonCommand { get; set; }
 
         #endregion Commands
 
-        protected readonly IMvxMessenger _messenger;
-        protected readonly IMvxNavigationService _navigationService;
+        protected readonly INavigationService _INavigationService;
         private readonly ILogger<DataViewModel> _logger;
         private readonly IVehicleService _vehicleService;
         private bool _createNewVehicle;
@@ -431,8 +409,8 @@ namespace SimTuning.Core.ViewModels.Dyno
 
                 this.SetProperty(ref this._dyno, value);
 
-                this.RaisePropertyChanged(() => this.DynoBeschreibung);
-                this.RaisePropertyChanged(() => this.DynoName);
+                this.OnPropertyChanged(nameof(this.DynoBeschreibung));
+                this.OnPropertyChanged(nameof(this.DynoName));
 
                 // Da werte in UI geändert wurden, wird save-button angezeigt, daher nach dem laden wieder disablen
                 this.SaveButton = false;

@@ -1,7 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFrameworks>net7.0;net7.0-android;net7.0-ios;net7.0-maccatalyst</TargetFrameworks>
+    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net7.0-windows10.0.22621.0</TargetFrameworks>
+    <UseMaui>true</UseMaui>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
@@ -15,7 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SimTuning.Core\SimTuning.Core.csproj" />
-    <ProjectReference Include="..\SimTuning.Forms.UI\SimTuning.Forms.UI.csproj" />
+    <ProjectReference Include="..\SimTuning.Maui.UI\SimTuning.Maui.UI.csproj" />
     <ProjectReference Include="..\SimTuning.WPF.UI\SimTuning.WPF.UI.csproj" />
   </ItemGroup>
 

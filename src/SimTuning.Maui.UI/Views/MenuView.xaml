@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:behaviors="clr-namespace:SimTuning.Maui.UI.Behaviors"
+             xmlns:component="clr-namespace:SimTuning.Maui.UI.Components"
+             xmlns:vm="clr-namespace:SimTuning.Core.ViewModels;assembly=SimTuning.Core"
+             x:Class="SimTuning.Maui.UI.Views.MenuView"
+             x:DataType="vm:MenuViewModel"
+             Style="{StaticResource ContentPageStyle}"
+             Title="Menu">
+    <ContentPage.Resources>
+        <!--CONVERTER-->
+        <behaviors:InvertedBoolConverter x:Key="Inverter" />
+    </ContentPage.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="200" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--USER-->
+        <Grid BackgroundColor="{DynamicResource Primary700}"
+              Grid.Row="0">
+        </Grid>
+
+        <!-- MENÜ Items -->
+        <Grid Grid.Row="1">
+
+            <StackLayout HorizontalOptions="FillAndExpand"
+                         VerticalOptions="StartAndExpand"
+                         Orientation="Vertical">
+
+                <component:MenuOptionView HorizontalOptions="FillAndExpand"
+                                          VerticalOptions="StartAndExpand"
+                                          Text="Home"
+                                          ImageSource="{StaticResource IconDashboardMedium}">
+                    <component:MenuOptionView.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowHomeCommand}" />
+                    </component:MenuOptionView.GestureRecognizers>
+                </component:MenuOptionView>
+
+                <BoxView Style="{StaticResource DividerBoxViewStyle}"
+                         HeightRequest="1"
+                         Margin="5" />
+
+                <component:MenuOptionView HorizontalOptions="FillAndExpand"
+                                          VerticalOptions="StartAndExpand"
+                                          Text="Einlass"
+                                          ImageSource="{StaticResource IconKeyboardArrowRightMedium}">
+                    <component:MenuOptionView.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowEinlassCommand}" />
+                    </component:MenuOptionView.GestureRecognizers>
+                </component:MenuOptionView>
+
+                <component:MenuOptionView HorizontalOptions="FillAndExpand"
+                                          VerticalOptions="StartAndExpand"
+                                          Text="Auslass"
+                                          ImageSource="{StaticResource IconKeyboardArrowLeftMedium}">
+                    <component:MenuOptionView.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowAuslassCommand}" />
+                    </component:MenuOptionView.GestureRecognizers>
+                </component:MenuOptionView>
+
+                <component:MenuOptionView HorizontalOptions="FillAndExpand"
+                                          VerticalOptions="StartAndExpand"
+                                          Text="Motor"
+                                          ImageSource="engine">
+                    <component:MenuOptionView.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowMotorCommand}" />
+                    </component:MenuOptionView.GestureRecognizers>
+                </component:MenuOptionView>
+
+                <BoxView Style="{StaticResource DividerBoxViewStyle}"
+                         HeightRequest="1"
+                         Margin="5" />
+
+                <component:MenuOptionView HorizontalOptions="FillAndExpand"
+                                          VerticalOptions="StartAndExpand"
+                                          Text="Dyno"
+                                          ImageSource="{StaticResource IconShowChartMedium}">
+                    <component:MenuOptionView.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowDynoCommand}" />
+                    </component:MenuOptionView.GestureRecognizers>
+                </component:MenuOptionView>
+
+                <BoxView Style="{StaticResource DividerBoxViewStyle}"
+                         HeightRequest="1"
+                         Margin="5" />
+
+                <component:MenuOptionView HorizontalOptions="FillAndExpand"
+                                          VerticalOptions="StartAndExpand"
+                                          Text="Einstellungen"
+                                          ImageSource="{StaticResource IconSettingsMedium}">
+                    <component:MenuOptionView.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowEinstellungenCommand}" />
+                    </component:MenuOptionView.GestureRecognizers>
+                </component:MenuOptionView>
+            </StackLayout>
+        </Grid>
+    </Grid>
+</ContentPage>
