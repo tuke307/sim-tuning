@@ -61,15 +61,11 @@ namespace SimTuning.Test
 
         void EinstellungenApplicationViewModelTest();
 
-        void EinstellungenAussehenViewModelTest();
-
         void EinstellungenMenuViewModelTest();
 
         void EinstellungenVehiclesViewModelTest();
 
         #endregion Einstellungen
-
-        void DemoMainViewModelTest();
 
         void HomeHomeViewModelViewModelTest();
 

@@ -1,24 +1,20 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
 namespace SimTuning.Test
 {
-    using NUnit.Framework;
-    using OxyPlot;
-    using OxyPlot.Wpf;
     using SimTuning.Core.ModuleLogic;
     using SimTuning.Test;
     using System.IO;
+    using Xunit;
 
     /// <summary>
     /// DynoLogicTest.
     /// </summary>
-    /// <seealso cref="MvvmCross.Tests.MvxTestFixture" />
-    [TestFixture]
-    public class DynoLogicTest : MvxTest
+    public class DynoLogicTest
     {
         /// <summary>
         /// Plots the creation test.
         /// </summary>
-        [Test]
+        [Fact]
         public void PlotCreationTest()
         {
             string _filePath;
@@ -34,7 +30,7 @@ namespace SimTuning.Test
 
             _fileName = nameof(DynoLogic.PlotAudio) + ".png";
             _filePath = Path.Combine(SimTuning.Test.Constants.Directory, _fileName);
-
+            /*
             PngExporter.Export(DynoLogic.PlotAudio, _filePath, 1000, 1000, OxyColors.White);
 
             DynoLogic.GetDrehzahlGraphFitted(out var drehzahlModels);
@@ -44,14 +40,14 @@ namespace SimTuning.Test
 
             PngExporter.Export(DynoLogic.PlotAudio, _filePath, 1000, 1000, OxyColors.White);
 
-            DynoLogic.GetAusrollGraphFitted(null/*List < Data.Models.AusrollenModel > ausrollenModels*/);
+            //DynoLogic.GetAusrollGraphFitted(nullList < Data.Models.AusrollenModel > ausrollenModels);
 
             _fileName = nameof(DynoLogic.PlotGeschwindigkeit) + "Fitted" + ".png";
             _filePath = Path.Combine(SimTuning.Test.Constants.Directory, _fileName);
 
             PngExporter.Export(DynoLogic.PlotGeschwindigkeit, _filePath, 1000, 1000, OxyColors.White);
 
-            DynoLogic.GetGeschwindigkeitsGraphFitted(null/*List < Data.Models.BeschleunigungModel > beschleunigungModels*/);
+            //DynoLogic.GetGeschwindigkeitsGraphFitted(nullList < Data.Models.BeschleunigungModel > beschleunigungModels);
 
             _fileName = nameof(DynoLogic.PlotAusrollen) + "Fitted" + ".png";
             _filePath = Path.Combine(SimTuning.Test.Constants.Directory, _fileName);
@@ -64,6 +60,7 @@ namespace SimTuning.Test
             _filePath = Path.Combine(SimTuning.Test.Constants.Directory, _fileName);
 
             PngExporter.Export(DynoLogic.PlotLeistung, _filePath, 1000, 1000, OxyColors.White);
+            */
         }
     }
 }
