@@ -11,11 +11,6 @@ namespace SimTuning.Core
     public static class GeneralSettings
     {
         /// <summary>
-        /// The user authent.
-        /// </summary>
-        public const string UserAuthent = "UsEr_AuThEnTiCaTiOn_Key_7744";
-
-        /// <summary>
         /// Gets or sets the audio file.
         /// </summary>
         /// <value>The audio file.</value>
