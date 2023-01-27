@@ -1,5 +1,5 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
-using SimTuning.Core.ViewModels.Auslass;
+using SimTuning.Maui.UI.ViewModels.Auslass;
 using CommunityToolkit.Mvvm.DependencyInjection;
 
 namespace SimTuning.Maui.UI.Views.Auslass

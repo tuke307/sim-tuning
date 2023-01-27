@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:tabs="http://sharpnado.com"
              xmlns:local="clr-namespace:SimTuning.Maui.UI.Views.Einlass"
-             xmlns:vm="clr-namespace:SimTuning.Core.ViewModels.Einlass;assembly=SimTuning.Core"
+             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels.Einlass"
              x:DataType="vm:MainViewModel">
     <Grid>
         <Grid.RowDefinitions>
@@ -13,24 +13,26 @@
 
         <!--  swipable views  -->
         <tabs:TabHostView Grid.Row="0"
-                          Style="{StaticResource TabHostViewStyle}"
+                          IsSegmented="True"
+                          HorizontalOptions="Center"
                           SelectedIndex="{Binding Source={x:Reference Switcher}, Path=SelectedIndex, Mode=TwoWay}">
             <tabs:TabHostView.Tabs>
-                <tabs:UnderlinedTabItem Style="{StaticResource SegmentedTabStyle}"
-                                        Label="Kanal" />
-                <tabs:UnderlinedTabItem Style="{StaticResource SegmentedTabStyle}"
-                                        Label="Vergaser" />
+                <tabs:UnderlinedTabItem Label="Kanal" />
+                <tabs:UnderlinedTabItem Label="Vergaser" />
             </tabs:TabHostView.Tabs>
         </tabs:TabHostView>
 
-        <tabs:ViewSwitcher x:Name="Switcher"
-                           Grid.Row="1"
-                           Animate="True"
-                           SelectedIndex="{Binding EinlassTabIndex, Mode=TwoWay}">
-            <!--<customViews:DelayedView x:TypeArguments="local:EinlassKanalView" />
-            <customViews:LazyView x:TypeArguments="local:EinlassVergaserView" />-->
-            <local:EinlassKanalView />
-            <local:EinlassVergaserView />
-        </tabs:ViewSwitcher>
+        <ScrollView Grid.Row="1">
+            <tabs:ViewSwitcher x:Name="Switcher"
+                               Animate="True"
+                               SelectedIndex="{Binding EinlassTabIndex, Mode=TwoWay}">
+                <tabs:DelayedView x:TypeArguments="local:EinlassKanalView"
+                                  Animate="True"
+                                  UseActivityIndicator="True" />
+                <tabs:DelayedView x:TypeArguments="local:EinlassVergaserView"
+                                  Animate="True"
+                                  UseActivityIndicator="True" />
+            </tabs:ViewSwitcher>
+        </ScrollView>
     </Grid>
 </ContentPage>

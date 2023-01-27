@@ -1,16 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage Style="{StaticResource ContentPageStyle}"
-             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:customcomponents="clr-namespace:SimTuning.Maui.UI.Components"
              Title="Datensatz"
              x:Class="SimTuning.Maui.UI.Views.Dyno.DynoDataView"
-             xmlns:vm="clr-namespace:SimTuning.Core.ViewModels.Dyno;assembly=SimTuning.Core"
+             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels.Dyno"
              x:DataType="vm:DataViewModel">
     <ScrollView>
         <StackLayout>
-            <!--<Button Style="{StaticResource ButtonMediumStyle}"  Margin="15"
+            <!--<Button   Margin="15"
                                      VerticalOptions="Center"
                                      HorizontalOptions="Start"
                                      ImageSource="ic_arrow_back_black_18dp.png"
@@ -19,16 +18,14 @@
                                      HeightRequest="60">
             </Button>-->
 
-            <Frame Style="{StaticResource FrameStyle}"
-                   Margin="10"
+            <Frame Margin="10"
                    VerticalOptions="Center">
                 <StackLayout>
-                    <Label Style="{StaticResource LabelStyle}"
-                           Text="Auswahl"
+                    <Label Text="Auswahl"
                            FontSize="Medium"
                            FontAttributes="Bold" />
 
-                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+                    <BoxView />
 
                     <ListView HeightRequest="200"
                               ItemsSource="{Binding Mode=TwoWay, Path=Dynos}"
@@ -38,12 +35,10 @@
                             <DataTemplate>
                                 <customcomponents:CustomViewCell SelectedBackgroundColor="{DynamicResource DesignSelection}">
                                     <StackLayout>
-                                        <Label Style="{StaticResource LabelStyle}"
-                                               Text="{Binding DynoName}"
+                                        <Label Text="{Binding DynoName}"
                                                FontAttributes="Bold"
                                                Margin="0, 0, 0, -5" />
-                                        <Label Style="{StaticResource LabelStyle}"
-                                               Text="{Binding DynoBeschreibung}" />
+                                        <Label Text="{Binding DynoBeschreibung}" />
                                     </StackLayout>
                                 </customcomponents:CustomViewCell>
                             </DataTemplate>
@@ -62,8 +57,7 @@
                                 VerticalOptions="CenterAndExpand"
                                 HorizontalOptions="FillAndExpand"
                                 HeightRequest="50"
-                                Style="{StaticResource ButtonMediumStyle}"
-                                ImageSource="{StaticResource IconAddCircleOutlineMedium}"
+                                ImageSource="{StaticResource IconPlusCircleMultipleOutlineMedium}"
                                 Command="{Binding NewDynoCommand}">
                         </Button>
 
@@ -71,8 +65,7 @@
                                 VerticalOptions="CenterAndExpand"
                                 HorizontalOptions="FillAndExpand"
                                 HeightRequest="50"
-                                Style="{StaticResource ButtonMediumStyle}"
-                                ImageSource="{StaticResource IconRemoveCircleOutlineMedium}"
+                                ImageSource="{StaticResource IconDeleteCircleOutlineMedium}"
                                 Command="{Binding DeleteDynoCommand}">
                         </Button>
                     </Grid>
@@ -131,15 +124,13 @@
                 </StackLayout>
             </Frame>
 
-            <Frame Style="{StaticResource FrameStyle}"
-                   Margin="10">
+            <Frame Margin="10">
                 <StackLayout>
-                    <Label Style="{StaticResource LabelStyle}"
-                           Text="Daten"
+                    <Label Text="Daten"
                            FontSize="Medium"
                            FontAttributes="Bold" />
 
-                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+                    <BoxView />
 
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -166,36 +157,33 @@
                             </Editor>
                         </StackLayout>
 
-                        <Button Style="{StaticResource ButtonMediumStyle}"
-                                Margin="5"
+                        <Button Margin="5"
                                 Grid.Column="1"
                                 Grid.Row="0"
                                 VerticalOptions="Center"
                                 HorizontalOptions="FillAndExpand"
-                                ImageSource="{StaticResource IconSaveMedium}"
+                                ImageSource="{StaticResource IconContentSaveMedium}"
                                 IsEnabled="{Binding Mode=OneWay, Path=SaveButton}"
                                 Command="{Binding SaveDynoCommand}"
                                 HeightRequest="60">
                         </Button>
 
-                        <Button Style="{StaticResource ButtonMediumStyle}"
-                                Margin="5"
+                        <Button Margin="5"
                                 Grid.Column="1"
                                 Grid.Row="1"
                                 VerticalOptions="Center"
                                 HorizontalOptions="FillAndExpand"
-                                ImageSource="{StaticResource IconBackupMedium}"
+                                ImageSource="{StaticResource IconBackupRestoreMedium}"
                                 Command="{Binding ExportDynoCommand}"
                                 HeightRequest="60">
                         </Button>
 
-                        <Button Style="{StaticResource ButtonMediumStyle}"
-                                Margin="5"
+                        <Button Margin="5"
                                 Grid.Column="1"
                                 Grid.Row="2"
                                 VerticalOptions="Center"
                                 HorizontalOptions="FillAndExpand"
-                                ImageSource="{StaticResource IconFindInPageMedium}"
+                                ImageSource="{StaticResource IconFileImportOutlineMedium}"
                                 Command="{Binding ImportDynoCommand}"
                                 HeightRequest="60">
                         </Button>
@@ -204,8 +192,8 @@
                     <!--Audio-->
                     <!--<Expander>
                         <Expander.Header>
-                            <Frame Style="{StaticResource FrameStyle}">
-                                <Label Style="{StaticResource LabelStyle}">
+                            <Frame >
+                                <Label >
                                     Drehzahl
                                 </Label>
                             </Frame>
@@ -230,11 +218,13 @@
                         </HorizontalStackLayout>
                     </Expander>
 
-                    --><!--PS--><!--
+                    -->
+                    <!--PS-->
+                    <!--
                     <Expander>
                         <Expander.Header>
-                            <Frame Style="{StaticResource FrameStyle}">
-                                <Label Style="{StaticResource LabelStyle}">
+                            <Frame >
+                                <Label >
                                     PS
                                 </Label>
                             </Frame>
@@ -262,8 +252,8 @@
                     <!--Nm-->
                     <!--<Expander>
                         <Expander.Header>
-                            <Frame Style="{StaticResource FrameStyle}">
-                                <Label Style="{StaticResource LabelStyle}">
+                            <Frame >
+                                <Label >
                                     Nm
                                 </Label>
                             </Frame>
@@ -296,7 +286,7 @@
                 </StackLayout>
             </Frame>
 
-            <!--<Button Style="{StaticResource ButtonMediumStyle}"
+            <!--<Button 
                     Margin="15"
                     VerticalOptions="Center"
                     HorizontalOptions="End"

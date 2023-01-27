@@ -1,5 +1,5 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
-using SimTuning.Core.ViewModels.Dyno;
+using SimTuning.Maui.UI.ViewModels.Dyno;
 using CommunityToolkit.Mvvm.DependencyInjection;
 
 

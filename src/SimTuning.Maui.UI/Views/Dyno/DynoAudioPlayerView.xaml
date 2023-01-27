@@ -3,9 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:behaviors="clr-namespace:SimTuning.Maui.UI.Behaviors"
              xmlns:converters="clr-namespace:SimTuning.Core.Converters;assembly=SimTuning.Core"
-             Style="{StaticResource ContentViewStyle}"
              x:Class="SimTuning.Maui.UI.Views.Dyno.DynoAudioPlayerView"
-             xmlns:vm="clr-namespace:SimTuning.Core.ViewModels.Dyno;assembly=SimTuning.Core"
+             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels.Dyno"
              x:DataType="vm:AudioPlayerViewModel">
     <ContentView.Resources>
         <!--CONVERTER-->
@@ -44,14 +43,12 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Label Style="{StaticResource LabelStyle}"
-                   Grid.Column="0"
+            <Label Grid.Column="0"
                    Text="{Binding TimeSpanPosition, Converter={StaticResource TimeSpanToString}}"
                    HorizontalOptions="Start"
                    VerticalOptions="Center"
                    TextColor="{DynamicResource PrimaryTextColor}" />
-            <Label Style="{StaticResource LabelStyle}"
-                   Grid.Column="1"
+            <Label Grid.Column="1"
                    Text="{Binding TimeSpanDuration, Converter={StaticResource TimeSpanToString}}"
                    HorizontalOptions="End"
                    VerticalOptions="Center"
@@ -70,8 +67,7 @@
                 <ColumnDefinition Width="1.5*" />
             </Grid.ColumnDefinitions>
 
-            <Button Style="{StaticResource ButtonMediumStyle}"
-                    Grid.Column="1"
+            <Button Grid.Column="1"
                     Command="{Binding SkipBackwardsCommand}"
                     ImageSource="{StaticResource IconFastRewindMedium}"
                     HorizontalOptions="Center"
@@ -79,9 +75,8 @@
                     BackgroundColor="Transparent" />
 
             <!--PLAYPAUSE ANFANG-->
-            <ImageButton Style="{StaticResource IconButtonMediumStyle}"
-                         Grid.Column="2"
-                         Source="{StaticResource IconPlayArrowMedium}"
+            <ImageButton Grid.Column="2"
+                         Source="{StaticResource IconPlayMedium}"
                          Command="{Binding PlayPauseCommand}"
                          IsVisible="{Binding Path=IsPlaying, Mode=OneWay, Converter={StaticResource Inverter}}"
                          HorizontalOptions="Center"
@@ -89,8 +84,7 @@
                          BackgroundColor="Transparent"
                          WidthRequest="75" />
 
-            <Button Style="{StaticResource ButtonMediumStyle}"
-                    Grid.Column="2"
+            <Button Grid.Column="2"
                     ImageSource="{StaticResource IconPauseMedium}"
                     Command="{Binding PlayPauseCommand}"
                     IsVisible="{Binding Path=IsPlaying, Mode=OneWay}"
@@ -100,8 +94,7 @@
                     WidthRequest="75" />
             <!--PLAYPAUSE ENDE-->
 
-            <Button Style="{StaticResource ButtonMediumStyle}"
-                    Grid.Column="3"
+            <Button Grid.Column="3"
                     ImageSource="{StaticResource IconFastForwardMedium}"
                     Command="{Binding SkipForwardCommand}"
                     HorizontalOptions="Center"

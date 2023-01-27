@@ -1,21 +1,19 @@
 ﻿<ContentView x:Class="SimTuning.Maui.UI.Views.Motor.MotorUmrechnungView"
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             Style="{StaticResource ContentPageStyle}"
-             xmlns:vm="clr-namespace:SimTuning.Core.ViewModels.Motor;assembly=SimTuning.Core"
+             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels.Motor"
              x:DataType="vm:UmrechnungViewModel">
 
     <ScrollView>
         <StackLayout>
 
             <!--  GRUNDLEGENDES  -->
-            <Frame Margin="10"
-                   Style="{StaticResource FrameStyle}">
+            <Frame Margin="10">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Grundlegende Daten" />
 
-                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+                    <BoxView />
 
                     <StackLayout Orientation="Horizontal">
                         <Entry Keyboard="Numeric"
@@ -43,7 +41,7 @@
                                 HorizontalOptions="StartAndExpand"
                                 SelectedItem="{Binding Path=VehicleMotorPleulLUnit}"
                                 VerticalOptions="CenterAndExpand" />
-                        <!--<Label Style="{StaticResource LabelStyle}" Margin="5, 0, 0, 0"
+                        <!--<Label  Margin="5, 0, 0, 0"
                                VerticalOptions="Center">
                             mm
                         </Label>-->
@@ -61,7 +59,7 @@
                                 HorizontalOptions="StartAndExpand"
                                 SelectedItem="{Binding Path=VehicleMotorDeachsierungLUnit}"
                                 VerticalOptions="CenterAndExpand" />
-                        <!--<Label Style="{StaticResource LabelStyle}" Margin="5, 0, 0, 0"
+                        <!--<Label  Margin="5, 0, 0, 0"
                                VerticalOptions="Center">
                             mm
                         </Label>-->
@@ -80,7 +78,7 @@
                                 HorizontalOptions="StartAndExpand"
                                 SelectedItem="{Binding Path=VehicleMotorHubRUnit}"
                                 VerticalOptions="CenterAndExpand" />
-                        <!--<Label Style="{StaticResource LabelStyle}" Margin="5, 0, 0, 0"
+                        <!--<Label  Margin="5, 0, 0, 0"
                                VerticalOptions="Center">
                             mm
                         </Label>-->
@@ -89,13 +87,12 @@
             </Frame>
 
             <!--  UMRECHNUNG  -->
-            <Frame Margin="10"
-                   Style="{StaticResource FrameStyle}">
+            <Frame Margin="10">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Umrechnung" />
 
-                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+                    <BoxView />
 
                     <StackLayout Grid.Row="0"
                                  Orientation="Horizontal">
@@ -106,7 +103,6 @@
                                WidthRequest="250" />
 
                         <Label Margin="5,0,0,0"
-                               Style="{StaticResource LabelStyle}"
                                VerticalOptions="Center">
                             °KW
                         </Label>
@@ -126,7 +122,7 @@
                                 HorizontalOptions="StartAndExpand"
                                 SelectedItem="{Binding Path=LengthDifferenceToOTUnit}"
                                 VerticalOptions="CenterAndExpand" />
-                        <!--<Label Style="{StaticResource LabelStyle}" Margin="5, 0, 0, 0"
+                        <!--<Label  Margin="5, 0, 0, 0"
                                VerticalOptions="Center">
                             mm
                         </Label>-->
@@ -135,16 +131,14 @@
             </Frame>
 
             <!--  STEUERZEIT  -->
-            <Frame Margin="10"
-                   Style="{StaticResource FrameStyle}">
+            <Frame Margin="10">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Steuerzeit erhöhen" />
 
-                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+                    <BoxView />
 
-                    <Label Style="{StaticResource LabelStyle}"
-                           Text="Steuerzeit:" />
+                    <Label Text="Steuerzeit:" />
                     <StackLayout Orientation="Horizontal">
                         <Entry Keyboard="Numeric"
                                Placeholder="vorher"
@@ -157,7 +151,6 @@
                     </StackLayout>
 
                     <Label Margin="0,20,0,0"
-                           Style="{StaticResource LabelStyle}"
                            Text="Steuerung über:"
                            VerticalOptions="Center" />
 
@@ -189,7 +182,6 @@
                     </RadioButton>
 
                     <Label Margin="0,20,0,0"
-                           Style="{StaticResource LabelStyle}"
                            Text="Steuerwinkel:" />
 
                     <Grid HorizontalOptions="FillAndExpand">
@@ -199,8 +191,7 @@
                         </Grid.ColumnDefinitions>
 
                         <StackLayout Grid.Column="0">
-                            <Label Style="{StaticResource LabelStyle}"
-                                   Text="öffnet" />
+                            <Label Text="öffnet" />
                             <Entry Grid.Column="0"
                                    Keyboard="Numeric"
                                    IsEnabled="False"
@@ -215,8 +206,7 @@
                         </StackLayout>
 
                         <StackLayout Grid.Column="1">
-                            <Label Style="{StaticResource LabelStyle}"
-                                   Text="schließt" />
+                            <Label Text="schließt" />
 
                             <Entry Grid.Column="1"
                                    Keyboard="Numeric"
@@ -242,7 +232,6 @@
                                WidthRequest="250" />
 
                         <Label Margin="5,0,0,0"
-                               Style="{StaticResource LabelStyle}"
                                VerticalOptions="Center">
                             °KW
                         </Label>
@@ -256,7 +245,6 @@
                                WidthRequest="250" />
 
                         <Label Margin="5,0,0,0"
-                               Style="{StaticResource LabelStyle}"
                                VerticalOptions="Center">
                             mm
                         </Label>
@@ -265,14 +253,13 @@
             </Frame>
 
             <!--  HILFSDATEN  -->
-            <Frame Margin="10"
-                   Style="{StaticResource FrameStyle}">
+            <Frame Margin="10">
 
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Hilfswerte" />
 
-                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+                    <BoxView />
 
                     <Picker ItemsSource="{Binding Mode=OneTime, Path=HelperVehicles}"
                             ItemDisplayBinding="{Binding Name}"
@@ -292,17 +279,14 @@
 
                         <Label Grid.Row="0"
                                Grid.Column="0"
-                               Style="{StaticResource LabelStyle}"
                                Text="Hub"
                                VerticalOptions="Center" />
                         <Label Grid.Row="1"
                                Grid.Column="0"
-                               Style="{StaticResource LabelStyle}"
                                Text="Pleullänge"
                                VerticalOptions="Center" />
                         <Label Grid.Row="2"
                                Grid.Column="0"
-                               Style="{StaticResource LabelStyle}"
                                Text="Deachsierung"
                                VerticalOptions="Center" />
 
@@ -317,7 +301,6 @@
                                    WidthRequest="100" />
 
                             <Label Margin="5,0,0,0"
-                                   Style="{StaticResource LabelStyle}"
                                    VerticalOptions="Center">
                                 mm
                             </Label>
@@ -334,7 +317,6 @@
                                    WidthRequest="100" />
 
                             <Label Margin="5,0,0,0"
-                                   Style="{StaticResource LabelStyle}"
                                    VerticalOptions="Center">
                                 mm
                             </Label>
@@ -351,7 +333,6 @@
                                    WidthRequest="100" />
 
                             <Label Margin="5,0,0,0"
-                                   Style="{StaticResource LabelStyle}"
                                    VerticalOptions="Center">
                                 mm
                             </Label>
@@ -362,7 +343,6 @@
                             Command="{Binding InsertDataCommand}"
                             HorizontalOptions="Center"
                             ImageSource="{StaticResource IconChevronRightMedium}"
-                            Style="{StaticResource ButtonMediumStyle}"
                             WidthRequest="90" />
                 </StackLayout>
             </Frame>

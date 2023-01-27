@@ -3,9 +3,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Hosting;
 using SimTuning.Core.Services;
-using SimTuning.Core.ViewModels;
-using SimTuning.Core.ViewModels.Home;
+using SimTuning.Maui.UI.ViewModels;
 using SimTuning.Data;
+using SimTuning.Maui.UI.Services;
 using SimTuning.Maui.UI.Views;
 
 namespace SimTuning.Maui.App
@@ -33,36 +33,35 @@ namespace SimTuning.Maui.App
 
 
                     .AddTransient<MainPageViewModel>()
-                    .AddTransient<MenuViewModel>()
 
-                    .AddTransient<HomeViewModel>()
+                    .AddTransient<Maui.UI.ViewModels.Home.HomeViewModel>()
 
-                    .AddTransient<Core.ViewModels.Auslass.MainViewModel>()
-                    .AddTransient<Core.ViewModels.Auslass.AnwendungViewModel>()
-                    .AddTransient<Core.ViewModels.Auslass.TheorieViewModel>()
+                    .AddTransient<Maui.UI.ViewModels.Auslass.MainViewModel>()
+                    .AddTransient<Maui.UI.ViewModels.Auslass.AnwendungViewModel>()
+                    .AddTransient<Maui.UI.ViewModels.Auslass.TheorieViewModel>()
 
-                    .AddTransient<Core.ViewModels.Einlass.MainViewModel>()
-                    .AddTransient<Core.ViewModels.Einlass.KanalViewModel>()
-                    .AddTransient<Core.ViewModels.Einlass.VergaserViewModel>()
+                    .AddTransient<Maui.UI.ViewModels.Einlass.MainViewModel>()
+                    .AddTransient<Maui.UI.ViewModels.Einlass.KanalViewModel>()
+                    .AddTransient<Maui.UI.ViewModels.Einlass.VergaserViewModel>()
 
-                    .AddTransient<Core.ViewModels.Motor.MainViewModel>()
-                    .AddTransient<Core.ViewModels.Motor.HubraumViewModel>()
-                    .AddTransient<Core.ViewModels.Motor.SteuerdiagrammViewModel>()
-                    .AddTransient<Core.ViewModels.Motor.UmrechnungViewModel>()
-                    .AddTransient<Core.ViewModels.Motor.VerdichtungViewModel>()
+                    .AddTransient<Maui.UI.ViewModels.Motor.MainViewModel>()
+                    .AddTransient<Maui.UI.ViewModels.Motor.HubraumViewModel>()
+                    .AddTransient<Maui.UI.ViewModels.Motor.SteuerdiagrammViewModel>()
+                    .AddTransient<Maui.UI.ViewModels.Motor.UmrechnungViewModel>()
+                    .AddTransient<Maui.UI.ViewModels.Motor.VerdichtungViewModel>()
 
-                    .AddTransient<Core.ViewModels.Einstellungen.MenuViewModel>()
-                    .AddTransient<Core.ViewModels.Einstellungen.ApplicationViewModel>()
-                    .AddTransient<Core.ViewModels.Einstellungen.VehiclesViewModel>()
+                    .AddTransient<Maui.UI.ViewModels.Einstellungen.MenuViewModel>()
+                    .AddTransient<Maui.UI.ViewModels.Einstellungen.ApplicationViewModel>()
+                    .AddTransient<Maui.UI.ViewModels.Einstellungen.VehiclesViewModel>()
 
-                    .AddTransient<Core.ViewModels.Dyno.MainViewModel>()
-                    .AddTransient<Core.ViewModels.Dyno.AudioPlayerViewModel>()
-                    .AddTransient<Core.ViewModels.Dyno.AusrollenViewModel>()
-                    .AddTransient<Core.ViewModels.Dyno.DataViewModel>()
-                    .AddTransient<Core.ViewModels.Dyno.DiagnosisViewModel>()
-                    .AddTransient<Core.ViewModels.Dyno.GeschwindigkeitViewModel>()
-                    .AddTransient<Core.ViewModels.Dyno.RuntimeViewModel>()
-                    .AddTransient<Core.ViewModels.Dyno.SpectrogramViewModel>()
+                    .AddTransient<Maui.UI.ViewModels.Dyno.MainViewModel>()
+                    .AddTransient<Maui.UI.ViewModels.Dyno.AudioPlayerViewModel>()
+                    .AddTransient<Maui.UI.ViewModels.Dyno.AusrollenViewModel>()
+                    .AddTransient<Maui.UI.ViewModels.Dyno.DataViewModel>()
+                    .AddTransient<Maui.UI.ViewModels.Dyno.DiagnosisViewModel>()
+                    .AddTransient<Maui.UI.ViewModels.Dyno.GeschwindigkeitViewModel>()
+                    .AddTransient<Maui.UI.ViewModels.Dyno.RuntimeViewModel>()
+                    .AddTransient<Maui.UI.ViewModels.Dyno.SpectrogramViewModel>()
 
                     .BuildServiceProvider());
             }

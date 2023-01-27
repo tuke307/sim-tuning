@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Moq;
 using SimTuning.Core.Services;
+using SimTuning.Maui.UI.Services;
 using Xunit;
 
 namespace SimTuning.Test

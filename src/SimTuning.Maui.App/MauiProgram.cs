@@ -19,10 +19,10 @@ namespace SimTuning.Maui.App
             SetupSerilog();
 
             builder
-                .UseSkiaSharp(registerRenderers: true)
-                .UseSharpnadoTabs(loggerEnable: false, debugLogEnable: true)
-                .UseMauiCommunityToolkit()
                 .UseMauiApp<App>()
+                .UseSkiaSharp(registerRenderers: true)
+                .UseSharpnadoTabs(loggerEnable: true, debugLogEnable: true)
+                .UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont(filename: "materialdesignicons-webfont.ttf", alias: "MaterialDesignIcons");

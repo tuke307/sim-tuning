@@ -1,8 +1,7 @@
 ﻿<ContentView x:Class="SimTuning.Maui.UI.Views.Motor.MotorVerdichtungView"
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             Style="{StaticResource ContentPageStyle}"
-             xmlns:vm="clr-namespace:SimTuning.Core.ViewModels.Motor;assembly=SimTuning.Core"
+             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels.Motor"
              x:DataType="vm:VerdichtungViewModel">
 
     <ScrollView>
@@ -10,12 +9,12 @@
 
             <!--  GRUNDLEGENDES  -->
             <Frame Margin="10"
-                   Style="{StaticResource FrameStyle}">
+                   >
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Grundlegendes" />
 
-                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+                    <BoxView  />
 
                     <StackLayout Orientation="Horizontal">
                         <Entry Keyboard="Numeric"
@@ -64,14 +63,14 @@
 
             <!--  VERHÄLTNIS  -->
             <Frame Margin="10"
-                   Style="{StaticResource FrameStyle}">
+                   >
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Verdichtungsverhältnis" />
 
-                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+                    <BoxView  />
 
-                    <Label Style="{StaticResource LabelStyle}"
+                    <Label 
                            Text="derzeitige Verdichtung:" />
 
                     <StackLayout Orientation="Horizontal">
@@ -82,7 +81,7 @@
                                WidthRequest="250" />
 
                         <Label Margin="5,0,0,0"
-                               Style="{StaticResource LabelStyle}"
+                               
                                Text=":1"
                                VerticalOptions="Center" />
                     </StackLayout>
@@ -91,12 +90,12 @@
 
             <!--  ERHÖHEN  -->
             <Frame Margin="10"
-                   Style="{StaticResource FrameStyle}">
+                   >
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Verdichtung erhöhen" />
 
-                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+                    <BoxView  />
 
                     <!--  Verdichtung  -->
                     <StackLayout Orientation="Horizontal">
@@ -105,7 +104,7 @@
                                 SelectedItem="{Binding Zielverdichtung}" />
 
                         <Label Margin="5,0,0,0"
-                               Style="{StaticResource LabelStyle}"
+                               
                                Text=": 1"
                                VerticalOptions="Center" />
                     </StackLayout>
@@ -119,7 +118,7 @@
                         </Grid.ColumnDefinitions>
 
                         <Label Grid.Column="0"
-                               Style="{StaticResource LabelStyle}"
+                               
                                Text="Zylinderkopf abdrehen um:"
                                VerticalOptions="Center" />
 
@@ -137,7 +136,7 @@
                                 HorizontalOptions="StartAndExpand"
                                 SelectedItem="{Binding AbdrehenLengthUnit}"
                                 VerticalOptions="CenterAndExpand" />
-                        <!--<Label Style="{StaticResource LabelStyle}" Grid.Column="2"
+                        <!--<Label  Grid.Column="2"
                                VerticalOptions="Center"
                                Margin="5, 0, 0, 0">
                             mm
@@ -148,12 +147,12 @@
 
             <!--    -->
             <Frame Margin="10"
-                   Style="{StaticResource FrameStyle}">
+                   >
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Hilfswerte" />
 
-                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+                    <BoxView  />
 
                     <Picker ItemsSource="{Binding HelperVehicles}"
                             ItemDisplayBinding="{Binding Name}"
@@ -173,17 +172,17 @@
 
                         <Label Grid.Row="0"
                                Grid.Column="0"
-                               Style="{StaticResource LabelStyle}"
+                               
                                Text="Hubraum"
                                VerticalOptions="Center" />
                         <Label Grid.Row="1"
                                Grid.Column="0"
-                               Style="{StaticResource LabelStyle}"
+                               
                                Text="Ø Bohrung"
                                VerticalOptions="Center" />
                         <Label Grid.Row="2"
                                Grid.Column="0"
-                               Style="{StaticResource LabelStyle}"
+                               
                                Text="Brennraum"
                                VerticalOptions="Center" />
 
@@ -198,7 +197,7 @@
                                    WidthRequest="100" />
 
                             <Label Margin="5,0,0,0"
-                                   Style="{StaticResource LabelStyle}"
+                                   
                                    VerticalOptions="Center">
                                 mm³
                             </Label>
@@ -215,7 +214,7 @@
                                    WidthRequest="100" />
 
                             <Label Margin="5,0,0,0"
-                                   Style="{StaticResource LabelStyle}"
+                                   
                                    VerticalOptions="Center">
                                 mm
                             </Label>
@@ -232,7 +231,7 @@
                                    WidthRequest="100" />
 
                             <Label Margin="5,0,0,0"
-                                   Style="{StaticResource LabelStyle}"
+                                   
                                    VerticalOptions="Center">
                                 mm³
                             </Label>
@@ -242,7 +241,7 @@
                     <Button Command="{Binding InsertDataCommand}"
                             HorizontalOptions="Center"
                             ImageSource="{StaticResource IconChevronRightMedium}"
-                            Style="{StaticResource ButtonMediumStyle}"
+                            
                             WidthRequest="90" />
                 </StackLayout>
             </Frame>

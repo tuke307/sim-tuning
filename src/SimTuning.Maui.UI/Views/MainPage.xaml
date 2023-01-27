@@ -1,8 +1,72 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<FlyoutPage x:Class="SimTuning.Maui.UI.Views.MainPage"
-            xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-            Title="MainPage"
-            xmlns:vm="clr-namespace:SimTuning.Core.ViewModels;assembly=SimTuning.Core"
-            x:DataType="vm:MainPageViewModel">
-</FlyoutPage>
+<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:behaviors="clr-namespace:SimTuning.Maui.UI.Behaviors"
+       xmlns:component="clr-namespace:SimTuning.Maui.UI.Components"
+       xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
+       xmlns:home="clr-namespace:SimTuning.Maui.UI.Views.Home"
+       xmlns:einlass="clr-namespace:SimTuning.Maui.UI.Views.Einlass"
+       xmlns:auslass="clr-namespace:SimTuning.Maui.UI.Views.Auslass"
+       xmlns:motor="clr-namespace:SimTuning.Maui.UI.Views.Motor"
+       xmlns:dyno="clr-namespace:SimTuning.Maui.UI.Views.Dyno"
+       xmlns:einstellungen="clr-namespace:SimTuning.Maui.UI.Views.Einstellungen"
+       x:Class="SimTuning.Maui.UI.Views.MainPage"
+       x:DataType="vm:MainPageViewModel"
+       xmlns:sys="clr-namespace:System;assembly=netstandard"
+       Shell.FlyoutBehavior="Flyout">
+    
+    <Shell.FlyoutHeaderTemplate>
+        <DataTemplate>
+            <Grid BackgroundColor="Black"
+                  HeightRequest="200">
+                <Label Text="Animals"
+                       TextColor="White"
+                       FontAttributes="Bold"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center" />
+            </Grid>
+        </DataTemplate>
+    </Shell.FlyoutHeaderTemplate>
+    
+    <FlyoutItem Title="Home"
+                FlyoutIcon="{StaticResource IconViewDashboardMedium}">
+        <ShellContent ContentTemplate="{DataTemplate home:HomeView}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Einlass"
+                FlyoutIcon="{StaticResource IconArrowRightMedium}">
+        <ShellContent ContentTemplate="{DataTemplate einlass:EinlassMainView}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Auslass"
+                FlyoutIcon="{StaticResource IconArrowLeftMedium}">
+        <ShellContent ContentTemplate="{DataTemplate auslass:AuslassMainView}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Motor"
+                FlyoutIcon="{StaticResource IconEngineMedium}">
+        <ShellContent ContentTemplate="{DataTemplate motor:MotorMainView}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Dyno"
+                FlyoutIcon="{StaticResource IconChartBellCurveMedium}">
+        <ShellContent ContentTemplate="{DataTemplate dyno:DynoDataView}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Einstellungen"
+                FlyoutIcon="{StaticResource IconCogMedium}">
+        <ShellContent ContentTemplate="{DataTemplate einstellungen:EinstellungenMenuView}" />
+    </FlyoutItem>
+
+    <Shell.FlyoutFooter>
+        <StackLayout>
+            <Label Text="SimTuning"
+                   TextColor="GhostWhite"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center" />
+            <Label Text="{Binding Source={x:Static sys:DateTime.Now}, StringFormat='{0:MMMM dd, yyyy}'}"
+                   TextColor="GhostWhite"
+                   HorizontalOptions="Center" />
+        </StackLayout>
+    </Shell.FlyoutFooter>
+</Shell>

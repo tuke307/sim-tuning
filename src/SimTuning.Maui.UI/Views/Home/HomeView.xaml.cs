@@ -1,12 +1,12 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
 using CommunityToolkit.Mvvm.DependencyInjection;
-using SimTuning.Core.ViewModels.Home;
+using SimTuning.Maui.UI.ViewModels.Home;
 
 namespace SimTuning.Maui.UI.Views.Home
 {
-    public partial class HomeMainView : ContentPage
+    public partial class HomeView : ContentPage
     {
-        public HomeMainView()
+        public HomeView()
         {
             InitializeComponent();
             
