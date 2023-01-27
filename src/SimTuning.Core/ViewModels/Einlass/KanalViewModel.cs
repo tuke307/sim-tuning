@@ -16,7 +16,7 @@ namespace SimTuning.Core.ViewModels.Einlass
     {
         public KanalViewModel(
             ILogger<KanalViewModel> logger,
-            INavigationService INavigationService,
+            INavigationService navigationService,
             IVehicleService vehicleService)
         {
             this._logger = logger;

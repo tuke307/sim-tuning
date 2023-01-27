@@ -16,11 +16,11 @@ namespace SimTuning.Core.ViewModels.Einstellungen
     {
         public VehiclesViewModel(
             ILogger<VehiclesViewModel> logger,
-            INavigationService INavigationService,
+            INavigationService navigationService,
             IVehicleService vehicleService)
         {
             this._logger = logger;
-            this._INavigationService = INavigationService;
+            this._navigationService = navigationService ;
             this._vehicleService = vehicleService;
             //this._messenger = messenger;
 
@@ -129,7 +129,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
         #region Values
 
         
-        protected readonly INavigationService _INavigationService;
+        protected readonly INavigationService _navigationService;
         protected readonly IVehicleService _vehicleService;
 
         /// <summary>

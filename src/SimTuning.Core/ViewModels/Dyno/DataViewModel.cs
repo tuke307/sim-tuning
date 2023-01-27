@@ -22,11 +22,11 @@ namespace SimTuning.Core.ViewModels.Dyno
     {
         public DataViewModel(
             ILogger<DataViewModel> logger,
-            INavigationService INavigationService,
+            INavigationService navigationService,
             IVehicleService vehicleService)
         {
             this._logger = logger;
-            this._INavigationService = INavigationService;
+            this._navigationService = navigationService ;
             this._vehicleService = vehicleService;
 
             this.NewDynoCommand = new RelayCommand(this.NewDyno);
@@ -342,7 +342,7 @@ namespace SimTuning.Core.ViewModels.Dyno
 
         #endregion Commands
 
-        protected readonly INavigationService _INavigationService;
+        protected readonly INavigationService _navigationService;
         private readonly ILogger<DataViewModel> _logger;
         private readonly IVehicleService _vehicleService;
         private bool _createNewVehicle;

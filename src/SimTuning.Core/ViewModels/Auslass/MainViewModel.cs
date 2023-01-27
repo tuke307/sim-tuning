@@ -10,16 +10,16 @@ namespace SimTuning.Core.ViewModels.Auslass
     {
         public MainViewModel(
             ILogger<MainViewModel> logger,
-            INavigationService INavigationService)
+            INavigationService navigationService)
         {
             this._logger = logger;
-            this._INavigationService = INavigationService;
+            this._navigationService = navigationService ;
         }
 
 
         #region Values
 
-        protected readonly INavigationService _INavigationService;
+        protected readonly INavigationService _navigationService;
         private readonly ILogger<MainViewModel> _logger;
         private int _auslassTabIndex;
 

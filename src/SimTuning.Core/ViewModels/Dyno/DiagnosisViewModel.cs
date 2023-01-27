@@ -20,7 +20,7 @@ namespace SimTuning.Core.ViewModels.Dyno
     {
         public DiagnosisViewModel(
             ILogger<DiagnosisViewModel> logger,
-            INavigationService INavigationService,
+            INavigationService navigationService,
             IVehicleService vehicleService)
         {
             this._logger = logger;

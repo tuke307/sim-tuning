@@ -16,14 +16,14 @@ namespace SimTuning.Core.ViewModels.Dyno
     {
         public AusrollenViewModel(
             ILogger<AusrollenViewModel> logger,
-            INavigationService INavigationService,
+            INavigationService navigationService,
             IVehicleService vehicleService)
         {
             this._logger = logger;
-            this._INavigationService = INavigationService;
+            this._navigationService = navigationService ;
             this._vehicleService = vehicleService;
 
-            this.ShowDiagnosisCommand = new AsyncRelayCommand(async () => await _INavigationService.Navigate<Dyno.DiagnosisViewModel>());
+            this.ShowDiagnosisCommand = new AsyncRelayCommand(async () => await _navigationService.Navigate<Dyno.DiagnosisViewModel>());
 
             this.RefreshPlotCommand = new AsyncRelayCommand(this.RefreshPlot);
             this.ReloadData();
@@ -31,7 +31,7 @@ namespace SimTuning.Core.ViewModels.Dyno
 
         #region Values
 
-        protected readonly INavigationService _INavigationService;
+        protected readonly INavigationService _navigationService;
         protected readonly IVehicleService _vehicleService;
         private readonly ILogger<AusrollenViewModel> _logger;
         private DynoModel _dyno;

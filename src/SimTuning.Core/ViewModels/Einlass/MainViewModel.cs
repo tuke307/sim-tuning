@@ -10,10 +10,10 @@ namespace SimTuning.Core.ViewModels.Einlass
     {
         public MainViewModel(
             ILogger<MainViewModel> logger,
-            INavigationService INavigationService)
+            INavigationService navigationService)
         {
             this._logger = logger;
-            this._INavigationService = INavigationService;
+            this._navigationService = navigationService ;
         }
 
         #region Methods
@@ -24,7 +24,7 @@ namespace SimTuning.Core.ViewModels.Einlass
 
         #region Values
 
-        protected readonly INavigationService _INavigationService;
+        protected readonly INavigationService _navigationService;
         private readonly ILogger<MainViewModel> _logger;
         private int _einlassTabIndex;
 

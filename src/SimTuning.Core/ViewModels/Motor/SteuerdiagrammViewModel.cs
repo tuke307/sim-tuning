@@ -26,7 +26,7 @@ namespace SimTuning.Core.ViewModels.Motor
         /// <param name="vehicleService"><inheritdoc cref="IVehicleService" path="/summary/node()" /></param>
         public SteuerdiagrammViewModel(
             ILogger<SteuerdiagrammViewModel> logger,
-            INavigationService INavigationService,
+            INavigationService navigationService,
             IVehicleService vehicleService)
         {
             this._logger = logger;

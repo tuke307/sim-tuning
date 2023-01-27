@@ -13,7 +13,7 @@ namespace SimTuning.Core.ViewModels.Dyno
     {
         public AudioPlayerViewModel(
             ILogger<AudioPlayerViewModel> logger,
-            INavigationService INavigationService)
+            INavigationService navigationService)
         {
             this._logger = logger;
             //this._messenger = messenger;

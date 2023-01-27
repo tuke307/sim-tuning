@@ -26,11 +26,11 @@ namespace SimTuning.Core.ViewModels.Auslass
         /// <inheritdoc cref="INavigationService" path="/summary/node()" /> </param
         public TheorieViewModel(
             ILogger<TheorieViewModel> logger,
-            INavigationService INavigationService,
+            INavigationService navigationService,
             IVehicleService vehicleService)
         {
             this._logger = logger;
-            this._INavigationService = INavigationService;
+            this._navigationService = navigationService ;
             this._vehicleService = vehicleService;
 
             this.AreaQuantityUnits = new AreaQuantity();
@@ -162,7 +162,7 @@ namespace SimTuning.Core.ViewModels.Auslass
 
         #endregion Commands
 
-        protected readonly INavigationService _INavigationService;
+        protected readonly INavigationService _navigationService;
         private readonly ILogger<TheorieViewModel> _logger;
         private readonly IVehicleService _vehicleService;
         private VehiclesModel _helperVehicle;

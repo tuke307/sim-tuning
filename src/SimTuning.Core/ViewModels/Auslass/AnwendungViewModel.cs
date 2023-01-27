@@ -32,11 +32,11 @@ namespace SimTuning.Core.ViewModels.Auslass
         /// </param>
         public AnwendungViewModel(
             ILogger<AnwendungViewModel> logger,
-            INavigationService INavigationService,
+            INavigationService navigationService,
             IVehicleService vehicleService)
         {
             this._logger = logger;
-            this._INavigationService = INavigationService;
+            this._navigationService = navigationService ;
             this._vehicleService = vehicleService;
 
             // Vehicle Creation
@@ -127,7 +127,7 @@ namespace SimTuning.Core.ViewModels.Auslass
 
        
 
-        protected readonly INavigationService _INavigationService;
+        protected readonly INavigationService _navigationService;
         private readonly ILogger<AnwendungViewModel> _logger;
         private readonly IVehicleService _vehicleService;
         private VehiclesModel _helperVehicle;

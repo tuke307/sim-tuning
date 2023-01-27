@@ -29,7 +29,7 @@ namespace SimTuning.Core.ViewModels.Motor
         /// cref="INavigationService" path="/summary/node()" /></param
         public VerdichtungViewModel(
             ILogger<VerdichtungViewModel> logger,
-            INavigationService INavigationService,
+            INavigationService navigationService,
             IVehicleService vehicleService)
         {
             this._logger = logger;

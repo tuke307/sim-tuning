@@ -27,7 +27,7 @@ namespace SimTuning.Core.ViewModels.Motor
         /// cref="INavigationService" path="/summary/node()" /></param
         public UmrechnungViewModel(
             ILogger<UmrechnungViewModel> logger,
-            INavigationService INavigationService,
+            INavigationService navigationService,
             IVehicleService vehicleService)
         {
             this._logger = logger;

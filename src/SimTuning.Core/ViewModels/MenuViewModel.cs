@@ -17,18 +17,17 @@ namespace SimTuning.Core.ViewModels
     {
         public MenuViewModel(
             ILogger<MenuViewModel> logger,
-            INavigationService INavigationService)
+            INavigationService navigationService)
         {
             this._logger = logger;
-            this._INavigationService = INavigationService;
-            //this._token = messenger.Subscribe<MvxUserReloadMessage>(this.ReloadUserAsync);
+            this._navigationService = navigationService;
 
-            this.ShowHomeCommand = new AsyncRelayCommand(() => this._INavigationService.Navigate<Home.HomeViewModel>());
-            this.ShowEinlassCommand = new AsyncRelayCommand(() => this._INavigationService.Navigate<Einlass.MainViewModel>());
-            this.ShowAuslassCommand = new AsyncRelayCommand(() => this._INavigationService.Navigate<Auslass.MainViewModel>());
-            this.ShowMotorCommand = new AsyncRelayCommand(() => this._INavigationService.Navigate<Motor.MainViewModel>());
-            this.ShowDynoCommand = new AsyncRelayCommand(() => this._INavigationService.Navigate<Dyno.DataViewModel>());
-            this.ShowEinstellungenCommand = new AsyncRelayCommand(() => this._INavigationService.Navigate<Einstellungen.MenuViewModel>());
+            this.ShowHomeCommand = new AsyncRelayCommand(() => this._navigationService.Navigate<Home.HomeViewModel>());
+            this.ShowEinlassCommand = new AsyncRelayCommand(() => this._navigationService.Navigate<Einlass.MainViewModel>());
+            this.ShowAuslassCommand = new AsyncRelayCommand(() => this._navigationService.Navigate<Auslass.MainViewModel>());
+            this.ShowMotorCommand = new AsyncRelayCommand(() => this._navigationService.Navigate<Motor.MainViewModel>());
+            this.ShowDynoCommand = new AsyncRelayCommand(() => this._navigationService.Navigate<Dyno.DataViewModel>());
+            this.ShowEinstellungenCommand = new AsyncRelayCommand(() => this._navigationService.Navigate<Einstellungen.MenuViewModel>());
             this.InitializeDatabase = new AsyncRelayCommand(this.InitializeDatabaseAsync);
 
             //this.InitializeDatabase.ExecuteAsync();
@@ -95,7 +94,7 @@ namespace SimTuning.Core.ViewModels
 
         #endregion Commands
 
-        protected readonly INavigationService _INavigationService;
+        protected readonly INavigationService _navigationService;
 
         #endregion Values
     }

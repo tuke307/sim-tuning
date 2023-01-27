@@ -10,10 +10,10 @@ namespace SimTuning.Core.ViewModels.Dyno
     {
         public MainViewModel(
             ILogger<MainViewModel> logger,
-            INavigationService INavigationService)
+            INavigationService navigationService)
         {
             this._logger = logger;
-            this._INavigationService = INavigationService;
+            this._navigationService = navigationService ;
         }
 
         #region Methods
@@ -22,7 +22,7 @@ namespace SimTuning.Core.ViewModels.Dyno
 
         #region Values
 
-        protected readonly INavigationService _INavigationService;
+        protected readonly INavigationService _navigationService;
 
         private readonly ILogger<MainViewModel> _logger;
         private int _dynoTabIndex;

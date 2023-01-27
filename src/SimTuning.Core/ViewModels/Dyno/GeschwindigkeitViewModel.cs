@@ -17,14 +17,14 @@ namespace SimTuning.Core.ViewModels.Dyno
     {
         public GeschwindigkeitViewModel(
             ILogger<GeschwindigkeitViewModel> logger,
-            INavigationService INavigationService,
+            INavigationService navigationService,
             IVehicleService vehicleService)
         {
             this._logger = logger;
-            this._INavigationService = INavigationService;
+            this._navigationService = navigationService ;
             this._vehicleService = vehicleService;
 
-            this.ShowAusrollenCommand = new AsyncRelayCommand(async () => await _INavigationService.Navigate<Dyno.AusrollenViewModel>());
+            this.ShowAusrollenCommand = new AsyncRelayCommand(async () => await _navigationService.Navigate<Dyno.AusrollenViewModel>());
 
             this.RefreshPlotCommand = new AsyncRelayCommand(this.RefreshPlot);
 
@@ -33,7 +33,7 @@ namespace SimTuning.Core.ViewModels.Dyno
 
         #region Values
 
-        protected readonly INavigationService _INavigationService;
+        protected readonly INavigationService _navigationService;
         protected readonly IVehicleService _vehicleService;
         private readonly ILogger<GeschwindigkeitViewModel> _logger;
         private DynoModel _dyno;

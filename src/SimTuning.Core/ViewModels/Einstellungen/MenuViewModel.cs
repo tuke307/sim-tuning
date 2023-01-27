@@ -11,13 +11,13 @@ namespace SimTuning.Core.ViewModels.Einstellungen
     {
         public MenuViewModel(
             ILogger<MenuViewModel> logger,
-            INavigationService INavigationService)
+            INavigationService navigationService)
         {
             this._logger = logger;
-            this._INavigationService = INavigationService;
+            this._navigationService = navigationService ;
 
-            this.OpenVehiclesCommand = new AsyncRelayCommand(() => this._INavigationService.Navigate<Einstellungen.VehiclesViewModel>());
-            this.OpenApplicationCommand = new AsyncRelayCommand(() => this._INavigationService.Navigate<Einstellungen.ApplicationViewModel>());
+            this.OpenVehiclesCommand = new AsyncRelayCommand(() => this._navigationService.Navigate<Einstellungen.VehiclesViewModel>());
+            this.OpenApplicationCommand = new AsyncRelayCommand(() => this._navigationService.Navigate<Einstellungen.ApplicationViewModel>());
         }
 
         #region Methods
@@ -28,7 +28,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
 
         #region Values
 
-        protected readonly INavigationService _INavigationService;
+        protected readonly INavigationService _navigationService;
         private readonly ILogger<MenuViewModel> _logger;
 
         public IAsyncRelayCommand OpenApplicationCommand { get; set; }

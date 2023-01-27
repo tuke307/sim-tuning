@@ -21,17 +21,17 @@ namespace SimTuning.Core.ViewModels.Dyno
     {
         public SpectrogramViewModel(
             ILogger<SpectrogramViewModel> logger,
-            INavigationService INavigationService,
+            INavigationService navigationService,
             IVehicleService vehicleService)
         {
             this._logger = logger;
-            this._INavigationService = INavigationService;
+            this._navigationService = navigationService ;
             this._vehicleService = vehicleService;
 
             this.RefreshSpectrogramCommand = new RelayCommand(this.ReloadImageAudioSpectrogram);
             this.SpecificGraphCommand = new RelayCommand(this.SpecificGraph);
 
-            this.ShowBeschleunigungCommand = new AsyncRelayCommand(() => this._INavigationService.Navigate<Dyno.GeschwindigkeitViewModel>());
+            this.ShowBeschleunigungCommand = new AsyncRelayCommand(() => this._navigationService.Navigate<Dyno.GeschwindigkeitViewModel>());
 
             this.Frequenzbeginn = 3000;
             this.Frequenzende = 12000;
@@ -331,7 +331,7 @@ namespace SimTuning.Core.ViewModels.Dyno
 
         //protected readonly IMediaManager _mediaManager;
 
-        protected readonly INavigationService _INavigationService;
+        protected readonly INavigationService _navigationService;
         protected readonly IVehicleService _vehicleService;
         private static readonly List<string> _qualitys = new List<string>() { "schlecht", "mittel", "gut", "sehr gut" };
         private bool _badge_Refresh;

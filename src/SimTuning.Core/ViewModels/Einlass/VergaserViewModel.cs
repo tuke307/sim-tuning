@@ -20,7 +20,7 @@ namespace SimTuning.Core.ViewModels.Einlass
     {
         public VergaserViewModel(
             ILogger<VergaserViewModel> logger,
-            INavigationService INavigationService,
+            INavigationService navigationService,
             IVehicleService vehicleService)
         {
             this._logger = logger;

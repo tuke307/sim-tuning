@@ -11,7 +11,7 @@ namespace SimTuning.Core.ViewModels.Home
     {
         public HomeViewModel(
             ILogger<HomeViewModel> logger,
-            INavigationService INavigationService,
+            INavigationService navigationService,
             IBrowserService browserService)
         {
             this._logger = logger;

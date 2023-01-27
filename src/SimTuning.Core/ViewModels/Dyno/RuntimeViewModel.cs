@@ -23,7 +23,7 @@ namespace SimTuning.Core.ViewModels.Dyno
     {
         public RuntimeViewModel(
             ILogger<RuntimeViewModel> logger,
-            INavigationService INavigationService,
+            INavigationService navigationService,
             ILocationService locationService,
             IVehicleService vehicleService)
         {
@@ -34,10 +34,10 @@ namespace SimTuning.Core.ViewModels.Dyno
             // messenger.SubscribeOnMainThread<MvxLocationMessage>(this.OnLocationUpdated);
 
             this._locationService = locationService;
-            this._INavigationService = INavigationService;
+            this._navigationService = navigationService ;
             this._vehicleService = vehicleService;
 
-            this.ShowSpectrogramCommand = new AsyncRelayCommand(() => _INavigationService.Navigate<Dyno.SpectrogramViewModel>());
+            this.ShowSpectrogramCommand = new AsyncRelayCommand(() => _navigationService.Navigate<Dyno.SpectrogramViewModel>());
 
             // Commands
             this.StartAccelerationCommand = new AsyncRelayCommand(this.StartBeschleunigung);
@@ -503,7 +503,7 @@ namespace SimTuning.Core.ViewModels.Dyno
         protected static System.Drawing.Color stdBg;
         protected static System.Drawing.Color stdSur;
 
-        protected readonly INavigationService _INavigationService;
+        protected readonly INavigationService _navigationService;
         private const string AccelerationState = "Vollgas";
         private const string PostState = "Fertig";
         private const string PreState = "Anfahren";

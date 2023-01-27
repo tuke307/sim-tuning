@@ -14,10 +14,10 @@ namespace SimTuning.Core.ViewModels.Einstellungen
         /// cref="INavigationService" path="/summary/node()" /></param
         public ApplicationViewModel(
             ILogger<ApplicationViewModel> logger,
-            INavigationService INavigationService)
+            INavigationService navigationService)
         {
             this._logger = logger;
-            this._INavigationService = INavigationService;
+            this._navigationService = navigationService ;
         }
 
         #region Methods
@@ -30,7 +30,7 @@ namespace SimTuning.Core.ViewModels.Einstellungen
 
         #region Values
 
-        protected readonly INavigationService _INavigationService;
+        protected readonly INavigationService _navigationService;
 
         /// <summary>
         /// Gets or sets the rounding accuracy.
