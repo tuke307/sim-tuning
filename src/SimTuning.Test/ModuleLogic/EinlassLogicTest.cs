@@ -1,21 +1,19 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
-using NUnit.Framework;
 using SimTuning.Core.ModuleLogic;
 using SimTuning.Test;
+using Xunit;
 
 namespace SimTuning.Test
 {
     /// <summary>
     /// EinlassLogicTest.
     /// </summary>
-    /// <seealso cref="MvvmCross.Tests.MvxTestFixture" />
-    [TestFixture]
-    public class EinlassLogicTest : MvxTest
+    public class EinlassLogicTest 
     {
         /// <summary>
         /// Resonanzs the laenge test.
         /// </summary>
-        [Test]
+        [Fact]
         public void ResonanzLaengeTest()
         {
             double value;
@@ -42,7 +40,7 @@ namespace SimTuning.Test
         /// <summary>
         /// Vergasers the durchmesser test.
         /// </summary>
-        [Test]
+        [Fact]
         public void VergaserDurchmesserTest()
         {
             double value;
@@ -60,7 +58,7 @@ namespace SimTuning.Test
         /// <summary>
         /// Vergasers the hauptduesen durchmesser test.
         /// </summary>
-        [Test]
+        [Fact]
         public void VergaserHauptduesenDurchmesserTest()
         {
             double value;

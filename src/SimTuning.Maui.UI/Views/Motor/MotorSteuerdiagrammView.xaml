@@ -1,21 +1,19 @@
 ﻿<ContentView x:Class="SimTuning.Maui.UI.Views.Motor.MotorSteuerdiagrammView"
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             Style="{StaticResource ContentPageStyle}"
-             xmlns:vm="clr-namespace:SimTuning.Core.ViewModels.Motor;assembly=SimTuning.Core"
+             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels.Motor"
              x:DataType="vm:SteuerdiagrammViewModel">
 
     <ScrollView>
         <StackLayout>
 
             <!--  Steuerzeiten Rad  -->
-            <Frame Margin="10"
-                   Style="{StaticResource FrameStyle}">
+            <Frame Margin="10">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Diagramm" />
 
-                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+                    <BoxView />
 
                     <Image Margin="10"
                            HeightRequest="200"
@@ -37,17 +35,14 @@
 
                         <Label Grid.Row="1"
                                Grid.Column="0"
-                               Style="{StaticResource LabelStyle}"
                                Text="Einlass (°)"
                                VerticalOptions="Center" />
                         <Label Grid.Row="2"
                                Grid.Column="0"
-                               Style="{StaticResource LabelStyle}"
                                Text="Auslass (°)"
                                VerticalOptions="Center" />
                         <Label Grid.Row="3"
                                Grid.Column="0"
-                               Style="{StaticResource LabelStyle}"
                                Text="Überströmer (°)"
                                VerticalOptions="Center" />
                         <Entry Grid.Row="1"
@@ -71,7 +66,6 @@
 
                         <Label Grid.Row="0"
                                Grid.Column="2"
-                               Style="{StaticResource LabelStyle}"
                                Text="öffnet (°)" />
                         <Entry Grid.Row="1"
                                Grid.Column="2"
@@ -97,7 +91,6 @@
 
                         <Label Grid.Row="0"
                                Grid.Column="3"
-                               Style="{StaticResource LabelStyle}"
                                Text="schließt (°)" />
                         <Entry Grid.Row="1"
                                Grid.Column="3"
@@ -123,8 +116,7 @@
                     </Grid>
 
                     <StackLayout Orientation="Horizontal">
-                        <Label Style="{StaticResource LabelStyle}"
-                               Text="Vorauslasszeit (°)"
+                        <Label Text="Vorauslasszeit (°)"
                                VerticalOptions="Center" />
                         <Entry Keyboard="Numeric"
                                IsEnabled="False"
@@ -136,13 +128,12 @@
             </Frame>
 
             <!--  Fahrzeug  -->
-            <Frame Margin="10"
-                   Style="{StaticResource FrameStyle}">
+            <Frame Margin="10">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Fahrzeug Steuerzeiten" />
 
-                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+                    <BoxView />
 
                     <Picker ItemsSource="{Binding HelperVehicles}"
                             ItemDisplayBinding="{Binding Name}"
@@ -162,7 +153,6 @@
 
                         <Label Grid.Row="0"
                                Grid.Column="0"
-                               Style="{StaticResource LabelStyle}"
                                Text="Einlass"
                                VerticalOptions="Center" />
 
@@ -176,7 +166,6 @@
                                    WidthRequest="100" />
 
                             <Label Margin="5,0,0,0"
-                                   Style="{StaticResource LabelStyle}"
                                    VerticalOptions="Center">
                                 °
                             </Label>
@@ -184,7 +173,6 @@
 
                         <Label Grid.Row="1"
                                Grid.Column="0"
-                               Style="{StaticResource LabelStyle}"
                                Text="Auslass"
                                VerticalOptions="Center" />
                         <StackLayout Grid.Row="1"
@@ -197,7 +185,6 @@
                                    WidthRequest="100" />
 
                             <Label Margin="5,0,0,0"
-                                   Style="{StaticResource LabelStyle}"
                                    VerticalOptions="Center">
                                 °
                             </Label>
@@ -205,7 +192,6 @@
 
                         <Label Grid.Row="2"
                                Grid.Column="0"
-                               Style="{StaticResource LabelStyle}"
                                Text="Überströmer"
                                VerticalOptions="Center" />
                         <StackLayout Grid.Row="2"
@@ -218,7 +204,6 @@
                                    WidthRequest="100" />
 
                             <Label Margin="5,0,0,0"
-                                   Style="{StaticResource LabelStyle}"
                                    VerticalOptions="Center">
                                 °
                             </Label>
@@ -228,19 +213,17 @@
                     <Button Command="{Binding InsertVehicleCommand}"
                             HorizontalOptions="Center"
                             ImageSource="{StaticResource IconChevronRightMedium}"
-                            Style="{StaticResource ButtonMediumStyle}"
                             WidthRequest="90" />
                 </StackLayout>
             </Frame>
 
             <!--  Tuning Presets  -->
-            <Frame Margin="10"
-                   Style="{StaticResource FrameStyle}">
+            <Frame Margin="10">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Richtwerte Steuerzeiten" />
 
-                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+                    <BoxView />
 
                     <Picker ItemsSource="{Binding MotorSteuerzeiten}"
                             ItemDisplayBinding="{Binding Name}"
@@ -260,7 +243,6 @@
 
                         <Label Grid.Row="0"
                                Grid.Column="0"
-                               Style="{StaticResource LabelStyle}"
                                Text="Einlass"
                                VerticalOptions="Center" />
                         <StackLayout Grid.Row="0"
@@ -273,7 +255,6 @@
                                    WidthRequest="100" />
 
                             <Label Margin="5,0,0,0"
-                                   Style="{StaticResource LabelStyle}"
                                    VerticalOptions="Center">
                                 °
                             </Label>
@@ -281,7 +262,6 @@
 
                         <Label Grid.Row="1"
                                Grid.Column="0"
-                               Style="{StaticResource LabelStyle}"
                                Text="Auslass"
                                VerticalOptions="Center" />
                         <StackLayout Grid.Row="1"
@@ -294,7 +274,6 @@
                                    WidthRequest="100" />
 
                             <Label Margin="5,0,0,0"
-                                   Style="{StaticResource LabelStyle}"
                                    VerticalOptions="Center">
                                 °
                             </Label>
@@ -302,7 +281,6 @@
 
                         <Label Grid.Row="2"
                                Grid.Column="0"
-                               Style="{StaticResource LabelStyle}"
                                Text="Überströmer"
                                VerticalOptions="Center" />
                         <StackLayout Grid.Row="2"
@@ -315,7 +293,6 @@
                                    WidthRequest="100" />
 
                             <Label Margin="5,0,0,0"
-                                   Style="{StaticResource LabelStyle}"
                                    VerticalOptions="Center">
                                 °
                             </Label>
@@ -325,7 +302,6 @@
                     <Button Command="{Binding InsertReferenceCommand}"
                             HorizontalOptions="Center"
                             ImageSource="{StaticResource IconChevronRightMedium}"
-                            Style="{StaticResource ButtonMediumStyle}"
                             WidthRequest="90" />
                 </StackLayout>
             </Frame>

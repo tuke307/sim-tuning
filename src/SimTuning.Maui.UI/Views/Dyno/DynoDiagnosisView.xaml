@@ -1,19 +1,17 @@
-﻿<ContentPage Style="{StaticResource ContentPageStyle}"
-             x:Class="SimTuning.Maui.UI.Views.Dyno.DynoDiagnosisView"
+﻿<ContentPage x:Class="SimTuning.Maui.UI.Views.Dyno.DynoDiagnosisView"
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
              Title="Ergebnis"
-             xmlns:vm="clr-namespace:SimTuning.Core.ViewModels.Dyno;assembly=SimTuning.Core"
+             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels.Dyno"
              x:DataType="vm:DiagnosisViewModel">
     <ScrollView>
         <StackLayout>
 
             <!--Plot-->
-            <Frame Style="{StaticResource FrameStyle}"
-                   Margin="10">
+            <Frame Margin="10">
                 <StackLayout>
-                    <!--<Label Style="{StaticResource LabelStyle}" Text="Graph"
+                    <!--<Label  Text="Graph"
                                             FontSize="Medium"
                                             FontAttributes="Bold" />
 
@@ -28,15 +26,13 @@
             </Frame>
 
             <!--Einstellungen-->
-            <Frame Style="{StaticResource FrameStyle}"
-                   Margin="10">
+            <Frame Margin="10">
                 <StackLayout>
-                    <Label Style="{StaticResource LabelStyle}"
-                           Text="Einstellungen"
+                    <Label Text="Einstellungen"
                            FontSize="Medium"
                            FontAttributes="Bold" />
 
-                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+                    <BoxView />
 
                     <!--<Entry Placeholder="Gesamtübersetzung"
                                                 Keyboard="Numeric"
@@ -121,8 +117,7 @@
                     </StackLayout>-->
 
                     <!--Refresh-->
-                    <Button Style="{StaticResource ButtonMediumStyle}"
-                            HorizontalOptions="FillAndExpand"
+                    <Button HorizontalOptions="FillAndExpand"
                             ImageSource="{StaticResource IconRefreshMedium}"
                             Command="{Binding RefreshPlotCommand}">
                     </Button>
@@ -130,15 +125,13 @@
             </Frame>
 
             <!--Hilfe-Fahrzeug-->
-            <Frame Style="{StaticResource FrameStyle}"
-                   Margin="10">
+            <Frame Margin="10">
                 <StackLayout>
-                    <Label Style="{StaticResource LabelStyle}"
-                           Text="Hilfe"
+                    <Label Text="Hilfe"
                            FontSize="Medium"
                            FontAttributes="Bold" />
 
-                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+                    <BoxView />
 
                     <Picker Title="Fahrzeug"
                             ItemsSource="{Binding Mode=OneTime, Path=HelperVehicles}"
@@ -159,20 +152,19 @@
                             <RowDefinition Height="auto" />-->
                         </Grid.RowDefinitions>
 
-                        <!--<Label Style="{StaticResource LabelStyle}" Text="Gesamtübersetzung"
+                        <!--<Label  Text="Gesamtübersetzung"
                                                 VerticalOptions="Center"
                                                 Grid.Row="0"
                                                 Grid.Column="0" />-->
-                        <Label Style="{StaticResource LabelStyle}"
-                               Text="Gewicht"
+                        <Label Text="Gewicht"
                                VerticalOptions="Center"
                                Grid.Row="0"
                                Grid.Column="0" />
-                        <!--<Label Style="{StaticResource LabelStyle}" Text="Frontfläche"
+                        <!--<Label  Text="Frontfläche"
                                                 VerticalOptions="Center"
                                                 Grid.Row="2"
                                                 Grid.Column="0" />
-                        <Label Style="{StaticResource LabelStyle}" Text="cw-Wert"
+                        <Label  Text="cw-Wert"
                                                 VerticalOptions="Center"
                                                 Grid.Row="3"
                                                 Grid.Column="0" />-->
@@ -209,22 +201,20 @@
                                                     IsEnabled="False"
                                                     Margin="10, 0, 0, 0" />-->
 
-                        <Label Style="{StaticResource LabelStyle}"
-                               Grid.Row="0"
+                        <Label Grid.Row="0"
                                Grid.Column="2"
                                Margin="10, 0, 0, 0">
                             kg
                         </Label>
 
-                        <!--<Label Style="{StaticResource LabelStyle}" Grid.Row="2"
+                        <!--<Label  Grid.Row="2"
                                                 Grid.Column="2"
                                                 Margin="10, 0, 0, 0">
                             cm²
                         </Label>-->
                     </Grid>
 
-                    <Button Style="{StaticResource ButtonMediumStyle}"
-                            ImageSource="{StaticResource IconChevronRightMedium}"
+                    <Button ImageSource="{StaticResource IconChevronRightMedium}"
                             Command="{Binding InsertVehicleCommand}"
                             WidthRequest="100"
                             HeightRequest="60"
@@ -234,9 +224,9 @@
             </Frame>
 
             <!--Hilfe-Environment-->
-            <!--<Frame Style="{StaticResource FrameStyle}" Margin="10">
+            <!--<Frame  Margin="10">
                 <StackLayout>
-                    <Label Style="{StaticResource LabelStyle}" Text="Hilfe"
+                    <Label  Text="Hilfe"
                                             FontSize="Medium"
                                             FontAttributes="Bold" />
 
@@ -264,11 +254,11 @@
                             <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
 
-                        <Label Style="{StaticResource LabelStyle}" Text="Temperatur"
+                        <Label  Text="Temperatur"
                                                 VerticalOptions="Center"
                                                 Grid.Row="0"
                                                 Grid.Column="0" />
-                        <Label Style="{StaticResource LabelStyle}" Text="Luftdruck"
+                        <Label  Text="Luftdruck"
                                                 VerticalOptions="Center"
                                                 Grid.Row="1"
                                                 Grid.Column="0" />
@@ -288,20 +278,20 @@
                                                     IsEnabled="False"
                                                     WidthRequest="100" />
 
-                        <Label Style="{StaticResource LabelStyle}" Grid.Row="0"
+                        <Label  Grid.Row="0"
                                                 Grid.Column="2"
                                                 Margin="10, 15, 0, 0">
                             mbar
                         </Label>
 
-                        <Label Style="{StaticResource LabelStyle}" Grid.Row="1"
+                        <Label  Grid.Row="1"
                                                 Grid.Column="2"
                                                 Margin="10, 15, 0, 0">
                             °C
                         </Label>
                     </Grid>
 
-                    <Button Style="{StaticResource ButtonMediumStyle}"  ImageSource="{StaticResource IconChevronRightMedium}"
+                    <Button   ImageSource="{StaticResource IconChevronRightMedium}"
                                              Command="{Binding InsertEnvironmentCommand}"
                                              WidthRequest="90" />
                 </StackLayout>

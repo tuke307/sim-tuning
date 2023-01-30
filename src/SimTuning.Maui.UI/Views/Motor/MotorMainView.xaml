@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:tabs="http://sharpnado.com"
              xmlns:local="clr-namespace:SimTuning.Maui.UI.Views.Motor"
-             xmlns:vm="clr-namespace:SimTuning.Core.ViewModels.Motor;assembly=SimTuning.Core"
+             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels.Motor"
              x:DataType="vm:MainViewModel">
     <Grid>
         <Grid.RowDefinitions>
@@ -12,18 +12,13 @@
         </Grid.RowDefinitions>
 
         <!--swipable views-->
-        <tabs:TabHostView Style="{StaticResource TabHostViewStyle}"
-                          SelectedIndex="{Binding Source={x:Reference Switcher}, Path=SelectedIndex, Mode=TwoWay}"
+        <tabs:TabHostView SelectedIndex="{Binding Source={x:Reference Switcher}, Path=SelectedIndex, Mode=TwoWay}"
                           Grid.Row="0">
             <tabs:TabHostView.Tabs>
-                <tabs:UnderlinedTabItem Style="{StaticResource SegmentedTabStyle}"
-                                        Label="Umrechnungen" />
-                <tabs:UnderlinedTabItem Style="{StaticResource SegmentedTabStyle}"
-                                        Label="Steuerdiagramm" />
-                <tabs:UnderlinedTabItem Style="{StaticResource SegmentedTabStyle}"
-                                        Label="Verdichtung" />
-                <tabs:UnderlinedTabItem Style="{StaticResource SegmentedTabStyle}"
-                                        Label="Hubraum" />
+                <tabs:UnderlinedTabItem Label="Umrechnungen" />
+                <tabs:UnderlinedTabItem Label="Steuerdiagramm" />
+                <tabs:UnderlinedTabItem Label="Verdichtung" />
+                <tabs:UnderlinedTabItem Label="Hubraum" />
             </tabs:TabHostView.Tabs>
         </tabs:TabHostView>
 

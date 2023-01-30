@@ -1,10 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage Style="{StaticResource ContentPageStyle}"
-             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              Title="Allgemein"
              x:Class="SimTuning.Maui.UI.Views.Einstellungen.EinstellungenApplicationView"
-             xmlns:vm="clr-namespace:SimTuning.Core.ViewModels.Einstellungen;assembly=SimTuning.Core"
+             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels.Einstellungen"
              x:DataType="vm:ApplicationViewModel">
     <Grid Margin="20">
         <Grid.ColumnDefinitions>
@@ -20,7 +19,6 @@
                Text="Runden beim Einheiten Wechsel" />
 
         <CheckBox Grid.Column="1"
-                  Style="{StaticResource CheckBoxStyle}"
                   VerticalOptions="Center"
                   Margin="10"
                   IsChecked="{Binding Path=RoundOnUnitChange, Mode=TwoWay}" />

@@ -1,20 +1,18 @@
 ﻿<ContentView x:Class="SimTuning.Maui.UI.Views.Motor.MotorHubraumView"
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             Style="{StaticResource ContentPageStyle}"
-             xmlns:vm="clr-namespace:SimTuning.Core.ViewModels.Motor;assembly=SimTuning.Core"
+             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels.Motor"
              x:DataType="vm:HubraumViewModel">
     <ScrollView>
         <StackLayout>
 
             <!--  GRUNDLEGENDES  -->
-            <Frame Margin="10"
-                   Style="{StaticResource FrameStyle}">
+            <Frame Margin="10">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Grundlegende Daten" />
 
-                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+                    <BoxView />
 
                     <StackLayout Orientation="Horizontal">
                         <Entry Keyboard="Numeric"
@@ -42,7 +40,7 @@
                                 HorizontalOptions="StartAndExpand"
                                 SelectedItem="{Binding UnitHubraumV}"
                                 VerticalOptions="CenterAndExpand" />
-                        <!--<Label Style="{StaticResource LabelStyle}" Margin="5, 0, 0, 0"
+                        <!--<Label  Margin="5, 0, 0, 0"
                                VerticalOptions="Center">
                             cm³
                         </Label>-->
@@ -51,13 +49,12 @@
             </Frame>
 
             <!--  BOHRUNG  -->
-            <Frame Margin="10"
-                   Style="{StaticResource FrameStyle}">
+            <Frame Margin="10">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Bohrung" />
 
-                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+                    <BoxView />
 
                     <StackLayout Orientation="Horizontal">
                         <Entry Keyboard="Numeric"
@@ -72,7 +69,7 @@
                                 HorizontalOptions="StartAndExpand"
                                 SelectedItem="{Binding UnitBohrungD}"
                                 VerticalOptions="CenterAndExpand" />
-                        <!--<Label Style="{StaticResource LabelStyle}" Margin="5, 0, 0, 0"
+                        <!--<Label  Margin="5, 0, 0, 0"
                                VerticalOptions="Center">
                             cm
                         </Label>-->
@@ -81,13 +78,12 @@
             </Frame>
 
             <!--  KOLBEN  -->
-            <Frame Margin="10"
-                   Style="{StaticResource FrameStyle}">
+            <Frame Margin="10">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Kolben" />
 
-                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+                    <BoxView />
 
                     <StackLayout Orientation="Horizontal">
                         <!--<Picker ItemsSource="{Binding Einbauspiele}"
@@ -117,7 +113,7 @@
                                 HorizontalOptions="StartAndExpand"
                                 SelectedItem="{Binding UnitKolbenD}"
                                 VerticalOptions="CenterAndExpand" />
-                        <!--<Label Style="{StaticResource LabelStyle}" Margin="5, 0, 0, 0"
+                        <!--<Label  Margin="5, 0, 0, 0"
                                VerticalOptions="Center">
                             cm
                         </Label>-->
@@ -126,13 +122,12 @@
             </Frame>
 
             <!--  HILFE  -->
-            <Frame Margin="10"
-                   Style="{StaticResource FrameStyle}">
+            <Frame Margin="10">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Hilfswerte" />
 
-                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+                    <BoxView />
 
                     <Picker ItemsSource="{Binding HelperVehicles}"
                             ItemDisplayBinding="{Binding Name}"
@@ -154,27 +149,22 @@
 
                         <Label Grid.Row="0"
                                Grid.Column="0"
-                               Style="{StaticResource LabelStyle}"
                                Text="Bohrung"
                                VerticalOptions="Center" />
                         <Label Grid.Row="1"
                                Grid.Column="0"
-                               Style="{StaticResource LabelStyle}"
                                Text="1. Schleifmaß"
                                VerticalOptions="Center" />
                         <Label Grid.Row="2"
                                Grid.Column="0"
-                               Style="{StaticResource LabelStyle}"
                                Text="2. Schleifmaß"
                                VerticalOptions="Center" />
                         <Label Grid.Row="3"
                                Grid.Column="0"
-                               Style="{StaticResource LabelStyle}"
                                Text="3. Schleifmaß"
                                VerticalOptions="Center" />
                         <Label Grid.Row="4"
                                Grid.Column="0"
-                               Style="{StaticResource LabelStyle}"
                                Text="4. Schleifmaß"
                                VerticalOptions="Center" />
 
@@ -189,7 +179,6 @@
                                    WidthRequest="100" />
 
                             <Label Margin="5,0,0,0"
-                                   Style="{StaticResource LabelStyle}"
                                    VerticalOptions="Center">
                                 mm
                             </Label>
@@ -206,7 +195,6 @@
                                    WidthRequest="100" />
 
                             <Label Margin="5,0,0,0"
-                                   Style="{StaticResource LabelStyle}"
                                    VerticalOptions="Center">
                                 mm
                             </Label>
@@ -223,7 +211,6 @@
                                    WidthRequest="100" />
 
                             <Label Margin="5,0,0,0"
-                                   Style="{StaticResource LabelStyle}"
                                    VerticalOptions="Center">
                                 mm
                             </Label>
@@ -240,7 +227,6 @@
                                    WidthRequest="100" />
 
                             <Label Margin="5,0,0,0"
-                                   Style="{StaticResource LabelStyle}"
                                    VerticalOptions="Center">
                                 mm
                             </Label>
@@ -257,7 +243,6 @@
                                    WidthRequest="100" />
 
                             <Label Margin="5,0,0,0"
-                                   Style="{StaticResource LabelStyle}"
                                    VerticalOptions="Center">
                                 mm
                             </Label>

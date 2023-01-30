@@ -4,9 +4,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:tabs="http://sharpnado.com"
              xmlns:local="clr-namespace:SimTuning.Maui.UI.Views.Auslass"
-             xmlns:vm="clr-namespace:SimTuning.Core.ViewModels.Auslass;assembly=SimTuning.Core"
-             x:DataType="vm:MainViewModel"
-             Style="{StaticResource ContentPageStyle}">
+             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels.Auslass"
+             x:DataType="vm:MainViewModel">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -15,7 +14,6 @@
 
         <!--  swipable views  -->
         <tabs:TabHostView Grid.Row="0"
-                          Style="{StaticResource TabHostViewStyle}"
                           SelectedIndex="{Binding Source={x:Reference Switcher}, Path=SelectedIndex, Mode=TwoWay}">
             <tabs:TabHostView.Tabs>
                 <tabs:UnderlinedTabItem Style="{StaticResource SegmentedTabStyle}"

@@ -3,9 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SimTuning.Maui.UI.Views.Dyno.DynoRuntimeView"
              Title="Messung"
-             Style="{StaticResource ContentPageStyle}"
              BackgroundColor="{Binding Path=PageBackColor, Mode=OneWay}"
-             xmlns:vm="clr-namespace:SimTuning.Core.ViewModels.Dyno;assembly=SimTuning.Core"
+             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels.Dyno"
              x:DataType="vm:RuntimeViewModel">
     <Grid>
         <Grid.RowDefinitions>
@@ -16,7 +15,7 @@
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
-        <!--<ImageButton Style="{StaticResource ImageButtonMediumStyle}" Button Style="{StaticResource IconButtonMediumStyle}"  Grid.Row="0"
+        <!--<ImageButton    Grid.Row="0"
                                      WidthRequest="100"
                                      HeightRequest="60"
                                      Margin="15"
@@ -38,11 +37,9 @@
                              HorizontalOptions="Center"
                              VerticalOptions="Center">
 
-                    <Label Style="{StaticResource LabelStyle}"
-                           Text="{Binding Path=Speed, Mode=OneWay}" />
+                    <Label Text="{Binding Path=Speed, Mode=OneWay}" />
 
-                    <Label Style="{StaticResource LabelStyle}"
-                           Text="km/h"
+                    <Label Text="km/h"
                            Margin="0, 40, 0, 0"
                            VerticalOptions="Center" />
                 </StackLayout>
@@ -50,18 +47,15 @@
         </Frame>
 
         <StackLayout Grid.Row="2">
-            <Label Style="{StaticResource LabelStyle}"
-                   HorizontalOptions="Center"
+            <Label HorizontalOptions="Center"
                    Text="{Binding Path=CurrentState, Mode=OneWay}" />
 
             <StackLayout Orientation="Horizontal"
                          HorizontalOptions="Center"
                          IsVisible="{Binding Path=CountdownVis ,Mode=OneWay}">
-                <Label Style="{StaticResource LabelStyle}"
-                       Text="Start in: " />
+                <Label Text="Start in: " />
 
-                <Label Style="{StaticResource LabelStyle}"
-                       Text="{Binding Path=Countdown, Mode=OneWay}" />
+                <Label Text="{Binding Path=Countdown, Mode=OneWay}" />
             </StackLayout>
         </StackLayout>
 
@@ -69,11 +63,10 @@
                      HorizontalOptions="Center"
                      Orientation="Horizontal"
                      IsVisible="{Binding Path=StopwatchVis, Mode=OneWay}">
-            <Label Style="{StaticResource LabelStyle}"
-                   Text="{Binding Path=Stopwatch, Mode=OneWay}"
+            <Label Text="{Binding Path=Stopwatch, Mode=OneWay}"
                    VerticalOptions="End" />
 
-            <!--<Label Style="{StaticResource LabelStyle}" Text="ms"
+            <!--<Label  Text="ms"
                                     TypeScale="H4"
                                     VerticalOptions="End" />-->
         </StackLayout>
@@ -81,8 +74,7 @@
         <StackLayout  Grid.Row="4"
                       Orientation="Horizontal"
                       HorizontalOptions="Center">
-            <Button Style="{StaticResource ButtonMediumStyle}"
-                    Text="Start"
+            <Button Text="Start"
                     IsVisible="{Binding StartAccelerationButtonVis}"
                     VerticalOptions="Center"
                     WidthRequest="125"
@@ -90,7 +82,7 @@
                     BackgroundColor="{StaticResource Primary700}"
                     Command="{Binding StartAccelerationCommand}" />
 
-            <!--<Button Style="{StaticResource ButtonMediumStyle}"  Text="Stop"
+            <!--<Button   Text="Stop"
                                      IsVisible="{Binding StopAccelerationButtonVis}"
                                      
                                      VerticalOptions="Center"
@@ -99,16 +91,14 @@
                                      Command="{Binding StopAccelerationCommand}" />-->
         </StackLayout>
 
-        <ImageButton Style="{StaticResource IconButtonMediumStyle}"
-                     Grid.Row="5"
+        <ImageButton Grid.Row="5"
                      Margin="15"
                      VerticalOptions="End"
                      HorizontalOptions="Start"
                      Source="{StaticResource IconRefreshMedium}"
                      Command="{Binding ResetAccelerationCommand}" />
 
-        <ImageButton Style="{StaticResource IconButtonMediumStyle}"
-                     Grid.Row="5"
+        <ImageButton Grid.Row="5"
                      WidthRequest="100"
                      HeightRequest="60"
                      Margin="15"

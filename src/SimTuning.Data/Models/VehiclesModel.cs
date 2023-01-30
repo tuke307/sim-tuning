@@ -131,12 +131,6 @@ namespace SimTuning.Data.Models
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the tuning.
-        /// </summary>
-        /// <value>The tuning.</value>
-        public virtual TuningModel Tuning { get; set; }
-
-        /// <summary>
         /// Gets or sets the uebersetzung.
         /// </summary>
         /// <value>The uebersetzung.</value>

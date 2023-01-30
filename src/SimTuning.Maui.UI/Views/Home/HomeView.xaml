@@ -1,0 +1,99 @@
+﻿<ContentPage x:Class="SimTuning.Maui.UI.Views.Home.HomeView"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels.Home"
+             x:DataType="vm:HomeViewModel">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <!--  GRID ROW 0  -->
+        <Frame Grid.Row="0"
+               Margin="5"
+               CornerRadius="2"
+               VerticalOptions="CenterAndExpand">
+            <StackLayout>
+                <Label FontSize="Title">Bleib auf dem Laufenden</Label>
+
+                <BoxView />
+
+                <Label LineBreakMode="CharacterWrap">
+                    Schreib eine Nachricht, verfolge Updates oder stöber etwas herum, hier findest du alles:
+                </Label>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="0"
+                            Command="{Binding OpenWebsiteCommand}"
+                            CornerRadius="5"
+                            HeightRequest="50"
+                            HorizontalOptions="FillAndExpand"
+                            ImageSource="{StaticResource IconWebMedium}"
+                            Text="Website" />
+
+                    <Button Grid.Column="1"
+                            Command="{Binding OpenTwitterCommand}"
+                            CornerRadius="5"
+                            HeightRequest="50"
+                            HorizontalOptions="FillAndExpand"
+                            ImageSource="{StaticResource IconTwitterMedium}"
+                            Text="Twitter" />
+                </Grid>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="0"
+                            Command="{Binding OpenInstagramCommand}"
+                            CornerRadius="5"
+                            HeightRequest="50"
+                            HorizontalOptions="FillAndExpand"
+                            ImageSource="{StaticResource IconInstagramMedium}"
+                            Text="Instagram" />
+
+                    <Button Grid.Column="1"
+                            Command="{Binding OpenEmailCommand}"
+                            CornerRadius="5"
+                            HeightRequest="50"
+                            HorizontalOptions="FillAndExpand"
+                            ImageSource="{StaticResource IconEmailMedium}"
+                            Text="Email" />
+                </Grid>
+            </StackLayout>
+        </Frame>
+
+        <!--  GRID ROW 1  -->
+        <Frame Grid.Row="1"
+               Margin="5"
+               CornerRadius="2"
+               VerticalOptions="CenterAndExpand">
+            <StackLayout>
+                <Label FontSize="Title">
+                    Das Projekt
+                </Label>
+
+                <BoxView />
+
+                <Label LineBreakMode="CharacterWrap">
+                    Dieses Projekt wurde von mir allein ins Leben gerufen. Ich hatte keinen Sponsor oder ähnliches. Ich würde mich sehr über eine kleine Spende freuen
+                </Label>
+
+                <Button Command="{Binding OpenDonateCommand}"
+                        CornerRadius="5"
+                        HeightRequest="70"
+                        ImageSource="{StaticResource IconWalletGiftcardMedium}"
+                        Text="Unterstützen"
+                        WidthRequest="125" />
+            </StackLayout>
+        </Frame>
+    </Grid>
+</ContentPage>

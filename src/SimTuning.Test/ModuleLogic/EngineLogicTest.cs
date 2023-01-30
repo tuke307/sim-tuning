@@ -1,24 +1,21 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
 namespace SimTuning.Test
 {
-    using NUnit.Framework;
     using SimTuning.Core.Models;
     using SimTuning.Core.ModuleLogic;
-    using SimTuning.Test;
     using SkiaSharp;
     using System.IO;
+    using Xunit;
 
     /// <summary>
     /// EngineLogicTest.
     /// </summary>
-    /// <seealso cref="MvvmCross.Tests.MvxTestFixture" />
-    [TestFixture]
-    public class EngineLogicTest : MvxTest
+    public class EngineLogicTest
     {
         /// <summary>
         /// Compressions the test.
         /// </summary>
-        [Test]
+        [Fact]
         public void CompressionTest()
         {
             double value;
@@ -39,7 +36,7 @@ namespace SimTuning.Test
         /// <summary>
         /// Cylinders the hole diameter test.
         /// </summary>
-        [Test]
+        [Fact]
         public void CylinderHoleDiameterTest()
         {
             double value;
@@ -55,7 +52,7 @@ namespace SimTuning.Test
         /// <summary>
         /// Displacements the test.
         /// </summary>
-        [Test]
+        [Fact]
         public void DisplacementTest()
         {
             double value;
@@ -71,7 +68,7 @@ namespace SimTuning.Test
         /// <summary>
         /// Distances to ot test.
         /// </summary>
-        [Test]
+        [Fact]
         public void DistanceToOTTest()
         {
             double value;
@@ -91,7 +88,7 @@ namespace SimTuning.Test
         /// <summary>
         /// Grindings the diameters test.
         /// </summary>
-        [Test]
+        [Fact]
         public void GrindingDiametersTest()
         {
             GrindingDiametersModel value;
@@ -105,7 +102,7 @@ namespace SimTuning.Test
         /// <summary>
         /// Hubs the radius test.
         /// </summary>
-        [Test]
+        [Fact]
         public void HubRadiusTest()
         {
             double value;
@@ -123,7 +120,7 @@ namespace SimTuning.Test
         /// <summary>
         /// Kolbens the durchmesser test.
         /// </summary>
-        [Test]
+        [Fact]
         public void KolbenDurchmesserTest()
         {
             double value;
@@ -139,7 +136,7 @@ namespace SimTuning.Test
         /// <summary>
         /// Kolbens the geschwindigkeit test.
         /// </summary>
-        [Test]
+        [Fact]
         public void KolbenGeschwindigkeitTest()
         {
             double value;
@@ -155,7 +152,7 @@ namespace SimTuning.Test
         /// <summary>
         /// Steuerdiagramms the test.
         /// </summary>
-        [Test]
+        [Fact]
         public void SteuerdiagrammTest()
         {
             SKBitmap value;
@@ -187,7 +184,7 @@ namespace SimTuning.Test
         /// <summary>
         /// Steuerwinkels the test.
         /// </summary>
-        [Test]
+        [Fact]
         public void SteuerwinkelTest()
         {
             double value;
@@ -209,7 +206,7 @@ namespace SimTuning.Test
         /// <summary>
         /// Converts to decreasinglengthtest.
         /// </summary>
-        [Test]
+        [Fact]
         public void ToDecreasingLengthTest()
         {
             double value;
@@ -229,7 +226,7 @@ namespace SimTuning.Test
         /// <summary>
         /// Vorauslasses the test.
         /// </summary>
-        [Test]
+        [Fact]
         public void VorauslassTest()
         {
             double value;

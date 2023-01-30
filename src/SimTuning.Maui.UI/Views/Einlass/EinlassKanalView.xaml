@@ -1,20 +1,18 @@
 ﻿<ContentView x:Class="SimTuning.Maui.UI.Views.Einlass.EinlassKanalView"
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             Style="{StaticResource ContentPageStyle}"
-             xmlns:vm="clr-namespace:SimTuning.Core.ViewModels.Einlass;assembly=SimTuning.Core"
+             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels.Einlass"
              x:DataType="vm:KanalViewModel">
     <ScrollView>
         <StackLayout>
 
             <!--  Einlass Resonanzlänge  -->
-            <Frame Margin="10"
-                   Style="{StaticResource FrameStyle}">
+            <Frame Margin="10">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Einlass-Resonanzlänge" />
 
-                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+                    <BoxView />
 
                     <StackLayout>
 
@@ -39,7 +37,6 @@
                                    WidthRequest="250" />
 
                             <Label Margin="5,0,0,0"
-                                   Style="{StaticResource LabelStyle}"
                                    VerticalOptions="Center">
                                 °KW
                             </Label>
@@ -52,7 +49,6 @@
                                    WidthRequest="250" />
 
                             <Label Margin="5,0,0,0"
-                                   Style="{StaticResource LabelStyle}"
                                    VerticalOptions="Center">
                                 1/min
                             </Label>
@@ -70,7 +66,7 @@
                                     HorizontalOptions="StartAndExpand"
                                     SelectedItem="{Binding VehicleMotorKurbelgehaeuseVUnit}"
                                     VerticalOptions="CenterAndExpand" />
-                            <!--<Label Style="{StaticResource LabelStyle}" Margin="5, 0, 0, 0"
+                            <!--<Label  Margin="5, 0, 0, 0"
                                    VerticalOptions="Center">
                                 cm³
                             </Label>-->
@@ -88,7 +84,7 @@
                                     HorizontalOptions="StartAndExpand"
                                     SelectedItem="{Binding VehicleMotorEinlassDurchmesserDUnit}"
                                     VerticalOptions="CenterAndExpand" />
-                            <!--<Label Style="{StaticResource LabelStyle}" Margin="5, 0, 0, 0"
+                            <!--<Label  Margin="5, 0, 0, 0"
                                    VerticalOptions="Center">
                                 cm
                             </Label>-->
@@ -108,7 +104,7 @@
                                     HorizontalOptions="StartAndExpand"
                                     SelectedItem="{Binding UnitResonanzlaenge}"
                                     VerticalOptions="CenterAndExpand" />
-                            <!--<Label Style="{StaticResource LabelStyle}" Margin="5, 0, 0, 0"
+                            <!--<Label  Margin="5, 0, 0, 0"
                                    VerticalOptions="Center">
                                 cm
                             </Label>-->
@@ -118,13 +114,12 @@
             </Frame>
 
             <!--  Hilfe  -->
-            <Frame Margin="10"
-                   Style="{StaticResource FrameStyle}">
+            <Frame Margin="10">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Hilfe" />
 
-                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+                    <BoxView />
 
                     <Picker ItemsSource="{Binding HelperVehicles, Mode=OneTime}"
                             ItemDisplayBinding="{Binding Name}"
@@ -145,27 +140,22 @@
 
                         <Label Grid.Row="0"
                                Grid.Column="0"
-                               Style="{StaticResource LabelStyle}"
                                Text="Einlass-Fläche"
                                VerticalOptions="Center" />
                         <Label Grid.Row="1"
                                Grid.Column="0"
-                               Style="{StaticResource LabelStyle}"
                                Text="Einlass Steuerwinkel"
                                VerticalOptions="Center" />
                         <Label Grid.Row="2"
                                Grid.Column="0"
-                               Style="{StaticResource LabelStyle}"
                                Text="Resonanzdrehzahl"
                                VerticalOptions="Center" />
                         <Label Grid.Row="3"
                                Grid.Column="0"
-                               Style="{StaticResource LabelStyle}"
                                Text="Volumen Kurbelgehäuse"
                                VerticalOptions="Center" />
                         <Label Grid.Row="4"
                                Grid.Column="0"
-                               Style="{StaticResource LabelStyle}"
                                Text="Ansaugleitungslänge"
                                VerticalOptions="Center" />
 
@@ -180,7 +170,6 @@
                                    WidthRequest="100" />
 
                             <Label Margin="5,0,0,0"
-                                   Style="{StaticResource LabelStyle}"
                                    VerticalOptions="Center">
                                 mm²
                             </Label>
@@ -197,7 +186,6 @@
                                    WidthRequest="100" />
 
                             <Label Margin="5,0,0,0"
-                                   Style="{StaticResource LabelStyle}"
                                    VerticalOptions="Center">
                                 °KW
                             </Label>
@@ -215,7 +203,6 @@
                                    WidthRequest="100" />
 
                             <Label Margin="5,0,0,0"
-                                   Style="{StaticResource LabelStyle}"
                                    VerticalOptions="Center">
                                 1/min
                             </Label>
@@ -233,7 +220,6 @@
                                    WidthRequest="100" />
 
                             <Label Margin="5,0,0,0"
-                                   Style="{StaticResource LabelStyle}"
                                    VerticalOptions="Center">
                                 mm³
                             </Label>
@@ -251,7 +237,6 @@
                                    WidthRequest="100" />
 
                             <Label Margin="5,0,0,0"
-                                   Style="{StaticResource LabelStyle}"
                                    VerticalOptions="Center">
                                 mm
                             </Label>
@@ -263,7 +248,6 @@
                             HeightRequest="70"
                             HorizontalOptions="Center"
                             ImageSource="{StaticResource IconChevronRightMedium}"
-                            Style="{StaticResource ButtonMediumStyle}"
                             WidthRequest="100" />
                 </StackLayout>
             </Frame>

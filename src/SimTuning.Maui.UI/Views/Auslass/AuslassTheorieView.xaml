@@ -2,21 +2,19 @@
 <ContentView x:Class="SimTuning.Maui.UI.Views.Auslass.AuslassTheorieView"
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:vm="clr-namespace:SimTuning.Core.ViewModels.Auslass;assembly=SimTuning.Core"
-             x:DataType="vm:TheorieViewModel"
-             Style="{StaticResource ContentViewStyle}">
+             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels.Auslass"
+             x:DataType="vm:TheorieViewModel">
     <ScrollView>
         <StackLayout>
 
             <!--  LÄNGE  -->
-            <Frame Margin="10"
-                   Style="{StaticResource FrameStyle}">
+            <Frame Margin="10">
                 <StackLayout>
 
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Krümmer-Länge" />
 
-                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+                    <BoxView />
 
                     <StackLayout>
 
@@ -36,7 +34,6 @@
                         </StackLayout>
 
                         <Label Margin="0,10,0,0"
-                               Style="{StaticResource LabelStyle}"
                                Text="Drehmoment(Krümmer)- Faktor" />
 
                         <Grid HorizontalOptions="FillAndExpand">
@@ -49,13 +46,11 @@
                             <Label Grid.Column="0"
                                    Margin="5,0,0,0"
                                    HorizontalTextAlignment="Start"
-                                   Style="{StaticResource LabelStyle}"
                                    Text="spitz" />
 
                             <Label Grid.Column="2"
                                    Margin="0,0,0,5"
                                    HorizontalTextAlignment="End"
-                                   Style="{StaticResource LabelStyle}"
                                    Text="flach" />
                         </Grid>
 
@@ -78,7 +73,7 @@
                                     HorizontalOptions="StartAndExpand"
                                     SelectedItem="{Binding Path=VehicleMotorAuslassAuspuffKruemmerLUnit}"
                                     VerticalOptions="CenterAndExpand" />
-                            <!--<Label Style="{StaticResource LabelStyle}" Margin="5, 0, 0, 0"
+                            <!--<Label  Margin="5, 0, 0, 0"
                                    VerticalOptions="Center">
                                 cm
                             </Label>-->
@@ -88,14 +83,13 @@
             </Frame>
 
             <!--  DURCHMESSER  -->
-            <Frame Margin="10"
-                   Style="{StaticResource FrameStyle}">
+            <Frame Margin="10">
                 <StackLayout>
 
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Krümmer-Durchmesser" />
 
-                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+                    <BoxView />
 
                     <StackLayout Orientation="Horizontal">
 
@@ -110,7 +104,7 @@
                                 HorizontalOptions="StartAndExpand"
                                 SelectedItem="{Binding VehicleMotorAuslassFlaecheAUnit}"
                                 VerticalOptions="CenterAndExpand" />
-                        <!--<Label Style="{StaticResource LabelStyle}" Margin="5, 0, 0, 0"
+                        <!--<Label  Margin="5, 0, 0, 0"
                                VerticalOptions="Center">
                             cm²
                         </Label>-->
@@ -124,7 +118,6 @@
                                WidthRequest="250" />
 
                         <Label Margin="5,0,0,0"
-                               Style="{StaticResource LabelStyle}"
                                VerticalOptions="Center">
                             mm
                         </Label>
@@ -132,14 +125,13 @@
                 </StackLayout>
             </Frame>
 
-            <Frame Margin="10"
-                   Style="{StaticResource FrameStyle}">
+            <Frame Margin="10">
                 <StackLayout>
 
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Abgastemperatur" />
 
-                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+                    <BoxView />
 
                     <StackLayout Orientation="Horizontal">
 
@@ -148,7 +140,7 @@
                                Text="{Binding Path=ModAuspuffAbgasT, Mode=TwoWay}"
                                WidthRequest="250" />
 
-                        <!--<Label Style="{StaticResource LabelStyle}" Margin="5, 0, 0, 0"
+                        <!--<Label  Margin="5, 0, 0, 0"
                                                 VerticalOptions="Center">
                             °C
                         </Label>-->
@@ -175,7 +167,7 @@
                                 HorizontalOptions="StartAndExpand"
                                 SelectedItem="{Binding ModAuspuffAbgasVUnit}"
                                 VerticalOptions="CenterAndExpand" />
-                        <!--<Label Style="{StaticResource LabelStyle}" Margin="5, 0, 0, 0"
+                        <!--<Label  Margin="5, 0, 0, 0"
                                VerticalOptions="Center">
                             m/s
                         </Label>-->
@@ -183,14 +175,13 @@
                 </StackLayout>
             </Frame>
 
-            <Frame Margin="10"
-                   Style="{StaticResource FrameStyle}">
+            <Frame Margin="10">
                 <StackLayout>
 
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Resonanzlänge" />
 
-                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+                    <BoxView />
 
                     <StackLayout Orientation="Horizontal">
                         <Entry Keyboard="Numeric"
@@ -199,7 +190,6 @@
                                WidthRequest="250" />
 
                         <Label Margin="5,0,0,0"
-                               Style="{StaticResource LabelStyle}"
                                VerticalOptions="Center">
                             °KW
                         </Label>
@@ -228,7 +218,6 @@
                                WidthRequest="250" />
 
                         <Label Margin="5,0,0,0"
-                               Style="{StaticResource LabelStyle}"
                                VerticalOptions="Center">
                             1/min
                         </Label>
@@ -247,7 +236,7 @@
                                 HorizontalOptions="StartAndExpand"
                                 SelectedItem="{Binding Path=VehicleMotorAuslassAuspuffResonanzLUnit}"
                                 VerticalOptions="CenterAndExpand" />
-                        <!--<Label Style="{StaticResource LabelStyle}" Margin="5, 0, 0, 0"
+                        <!--<Label  Margin="5, 0, 0, 0"
                                VerticalOptions="Center">
                             cm
                         </Label>-->
@@ -255,13 +244,12 @@
                 </StackLayout>
             </Frame>
 
-            <Frame Margin="10"
-                   Style="{StaticResource FrameStyle}">
+            <Frame Margin="10">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Hilfe" />
 
-                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+                    <BoxView />
 
                     <Picker ItemsSource="{Binding HelperVehicles}"
                             ItemDisplayBinding="{Binding Name}"
@@ -281,17 +269,14 @@
 
                         <Label Grid.Row="0"
                                Grid.Column="0"
-                               Style="{StaticResource LabelStyle}"
                                Text="Auslass-Fläche"
                                VerticalOptions="Center" />
                         <Label Grid.Row="1"
                                Grid.Column="0"
-                               Style="{StaticResource LabelStyle}"
                                Text="Auslass-Steuerwinkel"
                                VerticalOptions="Center" />
                         <Label Grid.Row="2"
                                Grid.Column="0"
-                               Style="{StaticResource LabelStyle}"
                                Text="Resonanzdrehzahl"
                                VerticalOptions="Center" />
 
@@ -306,7 +291,6 @@
                                    WidthRequest="100" />
 
                             <Label Margin="5,0,0,0"
-                                   Style="{StaticResource LabelStyle}"
                                    VerticalOptions="Center">
                                 mm²
                             </Label>
@@ -323,7 +307,6 @@
                                    WidthRequest="100" />
 
                             <Label Margin="5,0,0,0"
-                                   Style="{StaticResource LabelStyle}"
                                    VerticalOptions="Center">
                                 °KW
                             </Label>
@@ -341,7 +324,6 @@
                                    WidthRequest="100" />
 
                             <Label Margin="5,0,0,0"
-                                   Style="{StaticResource LabelStyle}"
                                    VerticalOptions="Center">
                                 1/min
                             </Label>
@@ -353,7 +335,6 @@
                             HeightRequest="70"
                             HorizontalOptions="Center"
                             ImageSource="{StaticResource IconChevronRightMedium}"
-                            Style="{StaticResource ButtonMediumStyle}"
                             WidthRequest="100" />
                 </StackLayout>
             </Frame>

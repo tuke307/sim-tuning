@@ -1,24 +1,22 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
 namespace SimTuning.Test
 {
-    using NUnit.Framework;
     using SimTuning.Core.ModuleLogic;
     using SimTuning.Data.Models;
     using SimTuning.Test;
     using SkiaSharp;
     using System.IO;
+    using Xunit;
 
     /// <summary>
     /// AuslassLogicTest.
     /// </summary>
-    /// <seealso cref="MvvmCross.Tests.MvxTestFixture" />
-    [TestFixture]
-    public class AuslassLogicTest : MvxTest
+    public class AuslassLogicTest
     {
         /// <summary>
         /// Auspuffs the test.
         /// </summary>
-        [Test]
+        [Fact]
         public void AuspuffTest()
         {
             SKBitmap auspuff;
@@ -85,7 +83,7 @@ namespace SimTuning.Test
         /// <summary>
         /// Gases the velocity test.
         /// </summary>
-        [Test]
+        [Fact]
         public void GasVelocityTest()
         {
             double value;
@@ -99,7 +97,7 @@ namespace SimTuning.Test
         /// <summary>
         /// Manifolds the diameter test.
         /// </summary>
-        [Test]
+        [Fact]
         public void ManifoldDiameterTest()
         {
             double value;
@@ -115,7 +113,7 @@ namespace SimTuning.Test
         /// <summary>
         /// Manifolds the length test.
         /// </summary>
-        [Test]
+        [Fact]
         public void ManifoldLengthTest()
         {
             double value;
@@ -133,7 +131,7 @@ namespace SimTuning.Test
         /// <summary>
         /// Resonances the length test.
         /// </summary>
-        [Test]
+        [Fact]
         public void ResonanceLengthTest()
         {
             double value;
@@ -151,7 +149,7 @@ namespace SimTuning.Test
         /// <summary>
         /// Vehicles the port duration test.
         /// </summary>
-        [Test]
+        [Fact]
         public void VehiclePortDurationTest()
         {
             double value;

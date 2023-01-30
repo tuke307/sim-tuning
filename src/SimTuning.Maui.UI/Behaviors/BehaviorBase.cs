@@ -9,7 +9,6 @@ namespace SimTuning.Maui.UI.Behaviors
     /// BehaviorBase.
     /// </summary>
     /// <typeparam name="T">object.</typeparam>
-    /// <seealso cref="Xamarin.Forms.Behavior{T}" />
     public class BehaviorBase<T> : Behavior<T> where T : BindableObject
     {
         public T AssociatedObject { get; private set; }

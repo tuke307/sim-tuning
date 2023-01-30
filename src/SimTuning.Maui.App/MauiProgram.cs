@@ -1,7 +1,9 @@
-﻿using Android.Util;
-using CommunityToolkit.Maui;
+﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
+using Serilog;
+using Serilog.Events;
 using Sharpnado.Tabs;
+using SimTuning.Core;
 using SimTuning.Core.Services;
 using SimTuning.Data;
 using SkiaSharp.Views.Maui.Controls.Hosting;
@@ -17,62 +19,22 @@ namespace SimTuning.Maui.App
             SetupSerilog();
 
             builder
-                .UseSkiaSharp(true)
-                .UseSharpnadoTabs(loggerEnable: false)
-                .UseMauiCommunityToolkit()
                 .UseMauiApp<App>()
+                .UseSkiaSharp(registerRenderers: true)
+                .UseSharpnadoTabs(loggerEnable: true, debugLogEnable: true)
+                .UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts =>
                 {
-                    fonts.AddFont(filename: "MaterialIcons-Regular.ttf", alias: "MaterialDesignIcons");
+                    fonts.AddFont(filename: "materialdesignicons-webfont.ttf", alias: "MaterialDesignIcons");
                     fonts.AddFont(filename: "Roboto-Regular.ttf", alias: "Roboto-Regular");
                     fonts.AddFont(filename: "Roboto-Medium.ttf", alias: "Roboto-Medium");
                 })
-                .Services
 
-                // Singleton => static registration => same instance
-                .AddSingleton<DatabaseContext, DatabaseContext>()
-                .AddSingleton<IVehicleService, VehicleService>()
-
-                // Transient => created every time
-                // ViewModels
-                .AddTransient<Core.ViewModels.MainPageViewModel>()
-                .AddTransient<Core.ViewModels.MenuViewModel>()
-
-                .AddTransient<Core.ViewModels.Home.HomeViewModel>()
-
-                .AddTransient<Core.ViewModels.Auslass.MainViewModel>()
-                .AddTransient<Core.ViewModels.Auslass.AnwendungViewModel>()
-                .AddTransient<Core.ViewModels.Auslass.TheorieViewModel>()
-
-                .AddTransient<Core.ViewModels.Einlass.MainViewModel>()
-                .AddTransient<Core.ViewModels.Einlass.KanalViewModel>()
-                .AddTransient<Core.ViewModels.Einlass.VergaserViewModel>()
-
-                .AddTransient<Core.ViewModels.Motor.MainViewModel>()
-                .AddTransient<Core.ViewModels.Motor.HubraumViewModel>()
-                .AddTransient<Core.ViewModels.Motor.SteuerdiagrammViewModel>()
-                .AddTransient<Core.ViewModels.Motor.UmrechnungViewModel>()
-                .AddTransient<Core.ViewModels.Motor.VerdichtungViewModel>()
-
-                .AddTransient<Core.ViewModels.Einstellungen.MenuViewModel>()
-                .AddTransient<Core.ViewModels.Einstellungen.ApplicationViewModel>()
-                .AddTransient<Core.ViewModels.Einstellungen.VehiclesViewModel>()
-
-                .AddTransient<Core.ViewModels.Dyno.MainViewModel>()
-                .AddTransient<Core.ViewModels.Dyno.AudioPlayerViewModel>()
-                .AddTransient<Core.ViewModels.Dyno.AusrollenViewModel>()
-                .AddTransient<Core.ViewModels.Dyno.DataViewModel>()
-                .AddTransient<Core.ViewModels.Dyno.DiagnosisViewModel>()
-                .AddTransient<Core.ViewModels.Dyno.GeschwindigkeitViewModel>()
-                .AddTransient<Core.ViewModels.Dyno.RuntimeViewModel>()
-                .AddTransient<Core.ViewModels.Dyno.SpectrogramViewModel>()
+                //.RegisterAppServices()
+                //.RegisterViewModels()
 
                 // logger
-                .Logging.AddSerilog(dispose: true);
-
-#if DEBUG
-            builder.Logging.AddDebug();
-#endif
+                .Logging.AddSerilog();
 
             return builder.Build();
         }
@@ -80,9 +42,9 @@ namespace SimTuning.Maui.App
         private static void SetupSerilog()
         {
             var flushInterval = new TimeSpan(0, 0, 1);
-            var file = Path.Combine(FileSystem.AppDataDirectory, "MyApp.log");
+            var file = GeneralSettings.LogFilePath;
 
-            Log.Logger = new LoggerConfiguration()
+            Serilog.Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Verbose()
             .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
             .Enrich.FromLogContext()

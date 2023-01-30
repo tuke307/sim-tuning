@@ -2,8 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SimTuning.Maui.UI.Views.Einstellungen.EinstellungenMenuView"
-             Style="{StaticResource ContentPageStyle}"
-             xmlns:vm="clr-namespace:SimTuning.Core.ViewModels.Einstellungen;assembly=SimTuning.Core"
+             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels.Einstellungen"
              x:DataType="vm:MenuViewModel">
     <Grid>
         <Grid.RowDefinitions>
@@ -14,8 +13,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Frame Style="{StaticResource FrameStyle}"
-               Grid.Row="1"
+        <Frame Grid.Row="1"
                CornerRadius="2"
                HeightRequest="70"
                Margin="20, 10, 20, 10"
@@ -24,17 +22,16 @@
                ClickCommand="{Binding OpenApplicationCommand}"-->
             <StackLayout>
 
-                <Label Style="{StaticResource LabelStyle}">
+                <Label>
                     Allgemein
                 </Label>
-                <Label Style="{StaticResource LabelStyle}">
+                <Label>
                     Einheiten, Runden, Sprache
                 </Label>
             </StackLayout>
         </Frame>
 
-        <Frame Style="{StaticResource FrameStyle}"
-               Grid.Row="2"
+        <Frame Grid.Row="2"
                CornerRadius="2"
                HeightRequest="70"
                Margin="20, 10, 20, 10"
@@ -42,10 +39,10 @@
             <!--IsClickable="true"
                ClickCommand="{Binding OpenVehiclesCommand}"-->
             <StackLayout>
-                <Label Style="{StaticResource LabelStyle}">
+                <Label>
                     Fahrzeuge
                 </Label>
-                <Label Style="{StaticResource LabelStyle}">
+                <Label>
                     Datensätze, Modelle, Dyno, Motor
                 </Label>
             </StackLayout>

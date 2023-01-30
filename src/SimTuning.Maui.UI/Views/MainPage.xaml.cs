@@ -1,10 +1,10 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
 using CommunityToolkit.Mvvm.DependencyInjection;
-using SimTuning.Core.ViewModels;
+using SimTuning.Maui.UI.ViewModels;
 
 namespace SimTuning.Maui.UI.Views;
 
-public partial class MainPage : FlyoutPage
+public partial class MainPage : Shell
 {
     public MainPage()
     {
