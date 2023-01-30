@@ -213,8 +213,6 @@ namespace SimTuning.Core.Services
                             .ThenInclude(dyno => dyno.Geschwindigkeit)
                          .Include(vehicle => vehicle.Dyno)
                             .ThenInclude(dyno => dyno.DynoPS)
-                    // Tuning
-                        .Include(vehicle => vehicle.Tuning)
                     // Motor
                         .Include(vehicle => vehicle.Motor)
                             .ThenInclude(motor => motor.Auslass)
