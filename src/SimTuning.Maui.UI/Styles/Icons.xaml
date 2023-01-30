@@ -12,7 +12,18 @@
     <x:Double x:Key="SizeMediumIcon">30</x:Double>
     <x:Double x:Key="SizeLargeIcon">90</x:Double>
 
-
+    <FontImageSource x:Key="IconPencilMedium"
+                     FontFamily="MaterialDesignIcons"
+                     Glyph="{x:Static styles:MaterialDesignIcons.Pencil}"
+                     Size="{StaticResource SizeMediumIcon}"
+                     Color="{AppThemeBinding Light={StaticResource DesignBodyLight}, Dark={StaticResource DesignBodyDark}}" />
+    
+    <FontImageSource x:Key="IconAtvMedium"
+                     FontFamily="MaterialDesignIcons"
+                     Glyph="{x:Static styles:MaterialDesignIcons.Atv}"
+                     Size="{StaticResource SizeMediumIcon}"
+                     Color="{AppThemeBinding Light={StaticResource DesignBodyLight}, Dark={StaticResource DesignBodyDark}}" />
+    
     <FontImageSource x:Key="IconInstagramMedium"
                      FontFamily="MaterialDesignIcons"
                      Glyph="{x:Static styles:MaterialDesignIcons.Instagram}"
