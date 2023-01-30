@@ -4,6 +4,7 @@ namespace SimTuning.Data
     using Microsoft.EntityFrameworkCore;
     using SimTuning.Data.Models;
     using System;
+    using System.IO;
     using System.Linq;
 
     /// <summary>
@@ -88,18 +89,6 @@ namespace SimTuning.Data
         public DbSet<UeberstroemerModel> MotorUeberstroemer { get; set; }
 
         /// <summary>
-        /// Gets or sets the tuning.
-        /// </summary>
-        /// <value>The tuning.</value>
-        public DbSet<TuningModel> Tuning { get; set; }
-
-        /// <summary>
-        /// Gets or sets the tuning ps.
-        /// </summary>
-        /// <value>The tuning ps.</value>
-        public DbSet<TuningPSModel> TuningPs { get; set; }
-
-        /// <summary>
         /// Gets or sets the vehicles.
         /// </summary>
         /// <value>The vehicles.</value>
@@ -118,6 +107,15 @@ namespace SimTuning.Data
         /// </summary>
         public DatabaseContext()
         {
+            // since android 10, database has to be created at the first time
+            if (!File.Exists(Data.DatabaseSettings.DatabasePath))
+            {
+                var fs = File.Create(Data.DatabaseSettings.DatabasePath);
+                fs.Dispose();
+            }
+
+            Database.Migrate();
+            Database.EnsureCreated();
         }
 
         /// <summary>
