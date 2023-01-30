@@ -326,7 +326,7 @@
                 Value="{StaticResource Primary700}" />
     </Style>-->
 
-    <Style TargetType="tabs:SegmentedTabItem">
+    <!--<Style TargetType="tabs:SegmentedTabItem">
         <Setter Property="SelectedTabColor"
                 Value="{StaticResource Primary700}" />
         <Setter Property="LabelSize"
@@ -350,17 +350,13 @@
                 Value="14" />
         <Setter Property="IconSize"
                 Value="28" />
-    </Style>
+    </Style>-->
 
     <!--Shades können nicht global gestyled werden!-->
     <Style TargetType="tabs:TabHostView">
-        <Setter Property="TabType"
-                Value="Fixed" />
-        <Setter Property="IsSegmented"
-                Value="True" />
         <Setter Property="CornerRadius"
                 Value="5" />
-        <Setter Property="HeightRequest"
+        <Setter Property="MinimumHeightRequest"
                 Value="50" />
         <Setter Property="Margin"
                 Value="10" />
