@@ -10,8 +10,10 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        
+
+        <!--  swipable views  -->
         <tabs:TabHostView Grid.Row="0"
+                          IsSegmented="True"
                           HorizontalOptions="Center"
                           SelectedIndex="{Binding Source={x:Reference Switcher}, Path=SelectedIndex, Mode=TwoWay}">
             <tabs:TabHostView.Tabs>
@@ -21,7 +23,6 @@
         </tabs:TabHostView>
 
         <ScrollView Grid.Row="1">
-            <!--  swipable views  -->
             <tabs:ViewSwitcher x:Name="Switcher"
                                Animate="True"
                                SelectedIndex="{Binding EinlassTabIndex, Mode=TwoWay}">
