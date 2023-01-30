@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk" ToolsVersion="Current">
   <PropertyGroup>
-    <TargetFrameworks>net7.0</TargetFrameworks>
+    <TargetFrameworks>net6.0</TargetFrameworks>
     <UseMaui>true</UseMaui>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
