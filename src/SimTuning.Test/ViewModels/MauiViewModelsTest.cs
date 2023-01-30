@@ -22,8 +22,8 @@ namespace SimTuning.Test
         public void AuslassAnwendungViewModelTest()
         {
             // Arrange
-            var logger = new Mock<ILogger<Core.ViewModels.Auslass.AnwendungViewModel>>();
-            var vm = new Core.ViewModels.Auslass.AnwendungViewModel(
+            var logger = new Mock<ILogger<Maui.UI.ViewModels.Auslass.AnwendungViewModel>>();
+            var vm = new Maui.UI.ViewModels.Auslass.AnwendungViewModel(
                 logger.Object,
                 navigationServiceMock.Object,
                 vehicleServiceMock.Object);
