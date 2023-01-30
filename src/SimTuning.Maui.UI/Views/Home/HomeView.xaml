@@ -57,7 +57,7 @@
                             CornerRadius="5"
                             HeightRequest="50"
                             HorizontalOptions="FillAndExpand"
-                            ImageSource="instagram"
+                            ImageSource="{StaticResource IconInstagramMedium}"
                             Text="Instagram" />
 
                     <Button Grid.Column="1"

@@ -14,10 +14,12 @@ namespace SimTuning.Maui.UI.Services
             {
                 INavigation? navigation = Application.Current?.MainPage?.Navigation;
                 if (navigation is not null)
+                {
                     return navigation;
+                }
                 else
                 {
-                    //This is not good!
+                    // This is not good!
                     if (Debugger.IsAttached)
                         Debugger.Break();
                     throw new Exception();
@@ -41,30 +43,32 @@ namespace SimTuning.Maui.UI.Services
 
             if (toPage is not null)
             {
-                //Subscribe to the toPage's NavigatedTo event
+                // Subscribe to the toPage's NavigatedTo event
                 toPage.NavigatedTo += Page_NavigatedTo;
 
-                //Get VM of the toPage
+                // Get VM of the toPage
                 var toViewModel = GetPageViewModelBase(toPage);
 
-                //Call navigatingTo on VM, passing in the paramter
+                // Call navigatingTo on VM, passing in the paramter
                 if (toViewModel is not null)
                     await toViewModel.OnNavigatingTo(parameter);
 
-                //Navigate to requested page
+                // Navigate to requested page
                 await Navigation.PushAsync(toPage, true);
 
-                //Subscribe to the toPage's NavigatedFrom event
+                // Subscribe to the toPage's NavigatedFrom event
                 toPage.NavigatedFrom += Page_NavigatedFrom;
             }
             else
+            {
                 throw new InvalidOperationException($"Unable to resolve type {typeof(T).FullName}");
+            }
         }
 
         private async void Page_NavigatedFrom(object? sender, NavigatedFromEventArgs e)
         {
-            //To determine forward navigation, we look at the 2nd to last item on the NavigationStack
-            //If that entry equals the sender, it means we navigated forward from the sender to another page
+            // To determine forward navigation, we look at the 2nd to last item on the NavigationStack
+            // If that entry equals the sender, it means we navigated forward from the sender to another page
             bool isForwardNavigation = Navigation.NavigationStack.Count > 1
                 && Navigation.NavigationStack[^2] == sender;
 

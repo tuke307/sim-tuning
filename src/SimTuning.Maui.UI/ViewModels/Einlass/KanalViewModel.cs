@@ -4,7 +4,8 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using SimTuning.Core.Models;
 using SimTuning.Core.ModuleLogic;
-using SimTuning.Core.Services;using SimTuning.Maui.UI.Services;
+using SimTuning.Core.Services;
+using SimTuning.Maui.UI.Services;
 using SimTuning.Data.Models;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -40,7 +41,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einlass
         }
 
         #region Methods
-
 
         /// <summary>
         /// Inserts the data.

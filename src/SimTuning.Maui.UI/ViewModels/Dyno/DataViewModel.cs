@@ -4,7 +4,8 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 using SimTuning.Core.Helpers;
-using SimTuning.Core.Services;using SimTuning.Maui.UI.Services;
+using SimTuning.Core.Services;
+using SimTuning.Maui.UI.Services;
 using SimTuning.Data.Models;
 using System;
 using System.Collections.Generic;
@@ -112,12 +113,12 @@ namespace SimTuning.Maui.UI.ViewModels.Dyno
         /// <summary>
         /// Imports the dyno.
         /// </summary>
-        /// <param name="fileName">Name of the file.</param>
         protected async Task ImportDyno()
         {
-            using (var client = new WebClient())
+            using (var client = new HttpClient())
             {
-                client.DownloadFile("https://simtuning.tuke-productions.de/wp-content/uploads/DataExport.zip", SimTuning.Core.GeneralSettings.DataExportArchivePath);
+                
+                // TODO: client.DownloadFile("https://simtuning.tuke-productions.de/wp-content/uploads/DataExport.zip", SimTuning.Core.GeneralSettings.DataExportArchivePath);
             }
 
             // zip extrahieren
@@ -293,7 +294,7 @@ namespace SimTuning.Maui.UI.ViewModels.Dyno
             }
             catch (Exception exc)
             {
-                _logger.LogError(exc, exc.Message, null);
+                _logger.LogError(exc, exc.Message);
 
                 // z.B. keine Werte in Dynos z.B. kein Dyno aktiv z.B. nicht in datenbank
             }

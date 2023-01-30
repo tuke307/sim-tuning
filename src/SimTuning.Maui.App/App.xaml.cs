@@ -31,7 +31,6 @@ namespace SimTuning.Maui.App
                     .AddSingleton<IBrowserService, BrowserService>()
                     .AddSingleton<INavigationService, NavigationService>()
 
-
                     .AddTransient<MainPageViewModel>()
 
                     .AddTransient<Maui.UI.ViewModels.Home.HomeViewModel>()

@@ -34,7 +34,7 @@ namespace SimTuning.Maui.App
                 //.RegisterViewModels()
 
                 // logger
-                .Logging.AddSerilog(dispose: true);
+                .Logging.AddSerilog();
 
             return builder.Build();
         }

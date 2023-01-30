@@ -4,7 +4,8 @@ using Microsoft.Extensions.Logging;
 using CommunityToolkit.Mvvm.ComponentModel;
 using SimTuning.Core.Models;
 using SimTuning.Core.ModuleLogic;
-using SimTuning.Core.Services;using SimTuning.Maui.UI.Services;
+using SimTuning.Core.Services;
+using SimTuning.Maui.UI.Services;
 using SimTuning.Data;
 using SimTuning.Data.Models;
 using System.Collections.Generic;
@@ -18,10 +19,6 @@ namespace SimTuning.Maui.UI.ViewModels.Motor
 {
     public class HubraumViewModel : ViewModelBase
     {
-        /// <summary> Initializes a new instance of the <see cref="HubraumViewModel"/>
-        /// class. </summary> <param name="logger"><inheritdoc cref="ILogger"
-        /// path="/summary/node()" /></param> <param name="INavigationService"><inheritdoc
-        /// cref="INavigationService" path="/summary/node()" /></param
         public HubraumViewModel(
             ILogger<HubraumViewModel> logger,
             INavigationService navigationService,

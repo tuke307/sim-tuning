@@ -1,37 +1,27 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
-using Microsoft.Extensions.Logging;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.Extensions.Logging;
+using SimTuning.Core;
 using SimTuning.Core.Models;
 using SimTuning.Core.Models.Quantity;
 using SimTuning.Core.ModuleLogic;
-using SimTuning.Core.Services;using SimTuning.Maui.UI.Services;
+using SimTuning.Core.Services;
 using SimTuning.Data.Models;
+using SimTuning.Maui.UI.Services;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
 using UnitsNet.Units;
-using SimTuning.Core;
 
 namespace SimTuning.Maui.UI.ViewModels.Auslass
 {
-    /// <summary>
-    /// Einlass-Theorie-ViewModel.
-    /// </summary>
-
     public class TheorieViewModel : ViewModelBase
     {
-        /// <summary> Initializes a new instance of the <see cref="TheorieViewModel" />
-        /// class. </summary> <param name="logger"> <inheritdoc cref="ILogger"
-        /// path="/summary/node()" /> </param> <param name="INavigationService">
-        /// <inheritdoc cref="INavigationService" path="/summary/node()" /> </param
         public TheorieViewModel(
             ILogger<TheorieViewModel> logger,
             INavigationService navigationService,
             IVehicleService vehicleService)
         {
             this._logger = logger;
-            this._navigationService = navigationService ;
+            this._navigationService = navigationService;
             this._vehicleService = vehicleService;
 
             this.AreaQuantityUnits = new AreaQuantity();
