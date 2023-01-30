@@ -29,7 +29,7 @@
                     -->
                 <!--EINSTELLUNGEN-->
                 <!--
-                    <Frame  Margin="10"
+                    <Border  Margin="10"
                                            Grid.Row="0">
 
                         <StackLayout>
@@ -111,9 +111,9 @@
                                 </StackLayout>
                             </Grid>
                         </StackLayout>
-                    </Frame>
+                    </Border>
                 </Grid>-->
-                <Frame Margin="10">
+                <Border Margin="10">
                     <StackLayout>
                         <Label Text="Spectrogram"
                                FontSize="Medium"
@@ -128,10 +128,10 @@
                                HorizontalOptions="FillAndExpand">
                         </Image>
                     </StackLayout>
-                </Frame>
+                </Border>
 
                 <!--EINSTELLUNGEN-->
-                <Frame Margin="10">
+                <Border Margin="10">
                     <StackLayout>
                         <Label Text="Spectrogram-Einstellungen"
                                FontSize="Medium"
@@ -198,10 +198,10 @@
                                 CommandParameter="false">
                         </Button>
                     </StackLayout>
-                </Frame>
+                </Border>
 
                 <!--1. Group box Plot-->
-                <Frame Margin="10">
+                <Border Margin="10">
                     <StackLayout>
                         <Label Text="Graph"
                                FontSize="Medium"
@@ -212,10 +212,10 @@
                         <lvc:CartesianChart Series="{Binding Mode=OneWay, Path=PlotAudio}"
                                             HeightRequest="400" />
                     </StackLayout>
-                </Frame>
+                </Border>
 
                 <!--Graph-Einstellungen-->
-                <Frame Margin="10">
+                <Border Margin="10">
                     <StackLayout>
                         <Label Text="Graph-Einstellungen"
                                FontSize="Medium"
@@ -257,7 +257,7 @@
                         </Entry.Behaviors>-->
                         </Picker>
                     </StackLayout>
-                </Frame>
+                </Border>
 
                 <ImageButton WidthRequest="100"
                              HeightRequest="60"

@@ -28,9 +28,6 @@
     <MauiXaml Update="Styles\Icons.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
-    <MauiXaml Update="Styles\Sizes.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </MauiXaml>
     <MauiXaml Update="Styles\Text.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>

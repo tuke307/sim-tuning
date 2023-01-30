@@ -12,7 +12,16 @@ namespace SimTuning.Maui.UI.Views.Einstellungen
 
             BindingContext = Ioc.Default.GetRequiredService<MenuViewModel>();
         }
-
         public MenuViewModel ViewModel => (MenuViewModel)BindingContext;
+
+        private async void OnButtonApplicationClicked(object sender, EventArgs args)
+        {
+            await Navigation.PushAsync(new EinstellungenApplicationView());
+        }
+
+        private async void OnButtonVehiclesClicked(object sender, EventArgs args)
+        {
+            await Navigation.PushAsync(new EinstellungenVehiclesView());
+        }
     }
 }

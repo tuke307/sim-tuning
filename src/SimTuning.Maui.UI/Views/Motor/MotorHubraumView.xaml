@@ -7,7 +7,7 @@
         <StackLayout>
 
             <!--  GRUNDLEGENDES  -->
-            <Frame Margin="10">
+            <Border Margin="10">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Grundlegende Daten" />
@@ -46,10 +46,10 @@
                         </Label>-->
                     </StackLayout>
                 </StackLayout>
-            </Frame>
+            </Border>
 
             <!--  BOHRUNG  -->
-            <Frame Margin="10">
+            <Border Margin="10">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Bohrung" />
@@ -75,10 +75,10 @@
                         </Label>-->
                     </StackLayout>
                 </StackLayout>
-            </Frame>
+            </Border>
 
             <!--  KOLBEN  -->
-            <Frame Margin="10">
+            <Border Margin="10">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Kolben" />
@@ -119,10 +119,10 @@
                         </Label>-->
                     </StackLayout>
                 </StackLayout>
-            </Frame>
+            </Border>
 
             <!--  HILFE  -->
-            <Frame Margin="10">
+            <Border Margin="10">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Hilfswerte" />
@@ -249,7 +249,7 @@
                         </StackLayout>
                     </Grid>
                 </StackLayout>
-            </Frame>
+            </Border>
         </StackLayout>
     </ScrollView>
 </ContentView>

@@ -14,7 +14,7 @@
         <StackLayout>
 
             <!--  DATEN  -->
-            <Frame Margin="10">
+            <Border Margin="10">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Daten" />
@@ -108,10 +108,10 @@
                         </Label>-->
                     </StackLayout>
                 </StackLayout>
-            </Frame>
+            </Border>
 
             <!--  Krümmer  -->
-            <Frame Margin="10">
+            <Border Margin="10">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Krümmer" />
@@ -156,10 +156,10 @@
                         </Label>
                     </StackLayout>
                 </StackLayout>
-            </Frame>
+            </Border>
 
             <!--  Mittelteil  -->
-            <Frame Margin="10">
+            <Border Margin="10">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Mittelteil" />
@@ -192,10 +192,10 @@
                             Minimum="6"
                             Value="{Binding Mode=TwoWay, Path=VehicleMotorAuslassAuspuffMittelteilF}" />
                 </StackLayout>
-            </Frame>
+            </Border>
 
             <!--  Gegenkonus  -->
-            <Frame Margin="10">
+            <Border Margin="10">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Gegenkonus" />
@@ -215,10 +215,10 @@
                         </Label>
                     </StackLayout>
                 </StackLayout>
-            </Frame>
+            </Border>
 
             <!--  Endrohr  -->
-            <Frame Margin="10">
+            <Border Margin="10">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Winkel" />
@@ -263,10 +263,10 @@
                         </Label>-->
                     </StackLayout>
                 </StackLayout>
-            </Frame>
+            </Border>
 
             <!--  DIFFUSOR  -->
-            <Frame Margin="10">
+            <Border Margin="10">
                 <StackLayout>
 
                     <Label Style="{StaticResource LabelTitleStyle}"
@@ -500,10 +500,10 @@
                         </StackLayout>
                     </Grid>
                 </StackLayout>
-            </Frame>
+            </Border>
 
             <!--  ERGEBNIS  -->
-            <Frame Margin="10">
+            <Border Margin="10">
                 <StackLayout>
 
                     <Label Style="{StaticResource LabelTitleStyle}"
@@ -673,9 +673,9 @@
                         </Label>
                     </StackLayout>
                 </StackLayout>
-            </Frame>
+            </Border>
 
-            <Frame Margin="10">
+            <Border Margin="10">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Hilfe" />
@@ -768,7 +768,7 @@
                             ImageSource="{StaticResource IconChevronRightMedium}"
                             WidthRequest="100" />
                 </StackLayout>
-            </Frame>
+            </Border>
         </StackLayout>
     </ScrollView>
 </ContentView>

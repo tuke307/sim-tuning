@@ -8,7 +8,7 @@
         <StackLayout>
 
             <!--  Steuerzeiten Rad  -->
-            <Frame Margin="10">
+            <Border Margin="10">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Diagramm" />
@@ -125,10 +125,10 @@
                                WidthRequest="100" />
                     </StackLayout>
                 </StackLayout>
-            </Frame>
+            </Border>
 
             <!--  Fahrzeug  -->
-            <Frame Margin="10">
+            <Border Margin="10">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Fahrzeug Steuerzeiten" />
@@ -215,10 +215,10 @@
                             ImageSource="{StaticResource IconChevronRightMedium}"
                             WidthRequest="90" />
                 </StackLayout>
-            </Frame>
+            </Border>
 
             <!--  Tuning Presets  -->
-            <Frame Margin="10">
+            <Border Margin="10">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Richtwerte Steuerzeiten" />
@@ -304,7 +304,7 @@
                             ImageSource="{StaticResource IconChevronRightMedium}"
                             WidthRequest="90" />
                 </StackLayout>
-            </Frame>
+            </Border>
         </StackLayout>
     </ScrollView>
 </ContentView>

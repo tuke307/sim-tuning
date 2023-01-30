@@ -8,7 +8,7 @@
         <StackLayout>
 
             <!--  GRUNDLEGENDES  -->
-            <Frame Margin="10"
+            <Border Margin="10"
                    >
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
@@ -59,10 +59,10 @@
                                 WidthRequest="100" />
                     </StackLayout>
                 </StackLayout>
-            </Frame>
+            </Border>
 
             <!--  VERHÄLTNIS  -->
-            <Frame Margin="10"
+            <Border Margin="10"
                    >
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
@@ -86,10 +86,10 @@
                                VerticalOptions="Center" />
                     </StackLayout>
                 </StackLayout>
-            </Frame>
+            </Border>
 
             <!--  ERHÖHEN  -->
-            <Frame Margin="10"
+            <Border Margin="10"
                    >
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
@@ -143,10 +143,10 @@
                         </Label>-->
                     </Grid>
                 </StackLayout>
-            </Frame>
+            </Border>
 
             <!--    -->
-            <Frame Margin="10"
+            <Border Margin="10"
                    >
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
@@ -244,7 +244,7 @@
                             
                             WidthRequest="90" />
                 </StackLayout>
-            </Frame>
+            </Border>
         </StackLayout>
     </ScrollView>
 </ContentView>

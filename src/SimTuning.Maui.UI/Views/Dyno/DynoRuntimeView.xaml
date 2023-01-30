@@ -25,7 +25,7 @@
                                      Image="ic_arrow_back_black_18dp.png"
                                      Command="{Binding CloseCommand}" />-->
 
-        <Frame Grid.Row="1"
+        <Border Grid.Row="1"
                HorizontalOptions="FillAndExpand"
                VerticalOptions="Center"
                HeightRequest="200"
@@ -44,7 +44,7 @@
                            VerticalOptions="Center" />
                 </StackLayout>
             </Grid>
-        </Frame>
+        </Border>
 
         <StackLayout Grid.Row="2">
             <Label HorizontalOptions="Center"

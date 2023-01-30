@@ -7,7 +7,7 @@
         <StackLayout>
 
             <!--  Einlass Resonanzlänge  -->
-            <Frame Margin="10">
+            <Border Margin="10">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Einlass-Resonanzlänge" />
@@ -111,10 +111,10 @@
                         </StackLayout>
                     </StackLayout>
                 </StackLayout>
-            </Frame>
+            </Border>
 
             <!--  Hilfe  -->
-            <Frame Margin="10">
+            <Border Margin="10">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Hilfe" />
@@ -250,7 +250,7 @@
                             ImageSource="{StaticResource IconChevronRightMedium}"
                             WidthRequest="100" />
                 </StackLayout>
-            </Frame>
+            </Border>
         </StackLayout>
     </ScrollView>
 </ContentView>

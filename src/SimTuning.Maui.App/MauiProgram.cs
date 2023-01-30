@@ -27,7 +27,7 @@ namespace SimTuning.Maui.App
                 {
                     fonts.AddFont(filename: "materialdesignicons-webfont.ttf", alias: "MaterialDesignIcons");
                     fonts.AddFont(filename: "Roboto-Regular.ttf", alias: "Roboto-Regular");
-                    fonts.AddFont(filename: "Roboto-Medium.ttf", alias: "Roboto-Medium");
+                    fonts.AddFont(filename: "Roboto-Bold.ttf", alias: "Roboto-Bold");
                 })
 
                 //.RegisterAppServices()

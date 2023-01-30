@@ -9,7 +9,7 @@
     <ScrollView>
         <StackLayout>
 
-            <Frame Margin="10"
+            <Border Margin="10"
                    VerticalOptions="CenterAndExpand">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
@@ -60,9 +60,9 @@
                         </Button>
                     </Grid>
                 </StackLayout>
-            </Frame>
+            </Border>
 
-            <Frame Margin="10">
+            <Border Margin="10">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Daten" />
@@ -105,11 +105,11 @@
                     <!--#region Allgemein-->
                     <!--<Expander>
                         <Expander.Header>
-                            <Frame >
+                            <Border >
                                 <Label >
                                     Allgemein
                                 </Label>
-                            </Frame>
+                            </Border>
                         </Expander.Header>
                         <HorizontalStackLayout>
                             <DataTemplate>
@@ -144,11 +144,11 @@
                     <!--#region Motor-->
                     <!--<Expander>
                         <Expander.Header>
-                            <Frame >
+                            <Border >
                                 <Label >
                                     Motor
                                 </Label>
-                            </Frame>
+                            </Border>
                         </Expander.Header>
                         <HorizontalStackLayout>
                             <DataTemplate>
@@ -174,11 +174,11 @@
                     <!--
                                     <Expander Grid.ColumnSpan="2">
                                         <Expander.Header>
-                                            <Frame >
+                                            <Border >
                                                 <Label >
                                                     Daten
                                                 </Label>
-                                            </Frame>
+                                            </Border>
                                         </Expander.Header>
                                         <HorizontalStackLayout>
                                             <DataTemplate>
@@ -438,11 +438,11 @@
                     <!--
                                     <Expander>
                                         <Expander.Header>
-                                            <Frame >
+                                            <Border >
                                                 <Label >
                                                     Einlass
                                                 </Label>
-                                            </Frame>
+                                            </Border>
                                         </Expander.Header>
                                         <HorizontalStackLayout>
                                             <DataTemplate>
@@ -591,11 +591,11 @@
                     <!--
                                                     <Expander>
                                                         <Expander.Header>
-                                                            <Frame >
+                                                            <Border >
                                                                 <Label >
                                                                     Vergaser
                                                                 </Label>
-                                                            </Frame>
+                                                            </Border>
                                                         </Expander.Header>
                                                         <HorizontalStackLayout>
                                                             <DataTemplate>
@@ -657,11 +657,11 @@
                     <!--
                                     <Expander>
                                         <Expander.Header>
-                                            <Frame >
+                                            <Border >
                                                 <Label >
                                                     Auslass
                                                 </Label>
-                                            </Frame>
+                                            </Border>
                                         </Expander.Header>
                                         <HorizontalStackLayout>
                                             <DataTemplate>
@@ -786,11 +786,11 @@
                     <!--
                                                     <Expander>
                                                         <Expander.Header>
-                                                            <Frame >
+                                                            <Border >
                                                                 <Label >
                                                                     Auspuff
                                                                 </Label>
-                                                            </Frame>
+                                                            </Border>
                                                         </Expander.Header>
                                                         <HorizontalStackLayout>
                                                             <DataTemplate>
@@ -813,11 +813,11 @@
                     <!--
                                     <Expander>
                                         <Expander.Header>
-                                            <Frame >
+                                            <Border >
                                                 <Label >
                                                     Ueberströmer
                                                 </Label>
-                                            </Frame>
+                                            </Border>
                                         </Expander.Header>
                                         <HorizontalStackLayout>
                                             <DataTemplate>
@@ -931,11 +931,11 @@
                     <!--Dyno-->
                     <!--<Expander>
                         <Expander.Header>
-                            <Frame >
+                            <Border >
                                 <Label >
                                     Dyno
                                 </Label>
-                            </Frame>
+                            </Border>
                         </Expander.Header>
                         <HorizontalStackLayout>
                             <DataTemplate>
@@ -962,11 +962,11 @@
                     <!--
                                     <Expander>
                                         <Expander.Header>
-                                            <Frame >
+                                            <Border >
                                                 <Label >
                                                     Audio
                                                 </Label>
-                                            </Frame>
+                                            </Border>
                                         </Expander.Header>
                                         <HorizontalStackLayout>
                                             <DataTemplate>
@@ -991,11 +991,11 @@
                     <!--
                                     <Expander>
                                         <Expander.Header>
-                                            <Frame >
+                                            <Border >
                                                 <Label >
                                                     PS
                                                 </Label>
-                                            </Frame>
+                                            </Border>
                                         </Expander.Header>
                                         <HorizontalStackLayout>
                                             <DataTemplate>
@@ -1020,11 +1020,11 @@
                     <!--
                                     <Expander>
                                         <Expander.Header>
-                                            <Frame >
+                                            <Border >
                                                 <Label >
                                                     Nm
                                                 </Label>
-                                            </Frame>
+                                            </Border>
                                         </Expander.Header>
                                         <HorizontalStackLayout>
                                             <DataTemplate>
@@ -1048,7 +1048,7 @@
                         </HorizontalStackLayout>
                     </Expander>-->
                 </StackLayout>
-            </Frame>
+            </Border>
         </StackLayout>
     </ScrollView>
 </ContentPage>

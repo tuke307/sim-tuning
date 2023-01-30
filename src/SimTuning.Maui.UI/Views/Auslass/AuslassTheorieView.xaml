@@ -8,7 +8,7 @@
         <StackLayout>
 
             <!--  LÄNGE  -->
-            <Frame Margin="10">
+            <Border Margin="10">
                 <StackLayout>
 
                     <Label Style="{StaticResource LabelTitleStyle}"
@@ -80,10 +80,10 @@
                         </StackLayout>
                     </StackLayout>
                 </StackLayout>
-            </Frame>
+            </Border>
 
             <!--  DURCHMESSER  -->
-            <Frame Margin="10">
+            <Border Margin="10">
                 <StackLayout>
 
                     <Label Style="{StaticResource LabelTitleStyle}"
@@ -123,9 +123,9 @@
                         </Label>
                     </StackLayout>
                 </StackLayout>
-            </Frame>
+            </Border>
 
-            <Frame Margin="10">
+            <Border Margin="10">
                 <StackLayout>
 
                     <Label Style="{StaticResource LabelTitleStyle}"
@@ -173,9 +173,9 @@
                         </Label>-->
                     </StackLayout>
                 </StackLayout>
-            </Frame>
+            </Border>
 
-            <Frame Margin="10">
+            <Border Margin="10">
                 <StackLayout>
 
                     <Label Style="{StaticResource LabelTitleStyle}"
@@ -242,9 +242,9 @@
                         </Label>-->
                     </StackLayout>
                 </StackLayout>
-            </Frame>
+            </Border>
 
-            <Frame Margin="10">
+            <Border Margin="10">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Hilfe" />
@@ -337,7 +337,7 @@
                             ImageSource="{StaticResource IconChevronRightMedium}"
                             WidthRequest="100" />
                 </StackLayout>
-            </Frame>
+            </Border>
         </StackLayout>
     </ScrollView>
 </ContentView>

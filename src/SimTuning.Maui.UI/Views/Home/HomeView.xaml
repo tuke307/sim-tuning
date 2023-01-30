@@ -10,12 +10,13 @@
         </Grid.RowDefinitions>
 
         <!--  GRID ROW 0  -->
-        <Frame Grid.Row="0"
-               Margin="5"
-               CornerRadius="2"
-               VerticalOptions="CenterAndExpand">
+        <Border Grid.Row="0"
+                Margin="5"
+                VerticalOptions="CenterAndExpand">
             <StackLayout>
-                <Label FontSize="Title">Bleib auf dem Laufenden</Label>
+                <Label Style="{StaticResource LabelTitleStyle}">
+                    Bleib auf dem Laufenden
+                </Label>
 
                 <BoxView />
 
@@ -69,15 +70,14 @@
                             Text="Email" />
                 </Grid>
             </StackLayout>
-        </Frame>
+        </Border>
 
         <!--  GRID ROW 1  -->
-        <Frame Grid.Row="1"
-               Margin="5"
-               CornerRadius="2"
-               VerticalOptions="CenterAndExpand">
+        <Border Grid.Row="1"
+                Margin="5"
+                VerticalOptions="CenterAndExpand">
             <StackLayout>
-                <Label FontSize="Title">
+                <Label Style="{StaticResource LabelTitleStyle}">
                     Das Projekt
                 </Label>
 
@@ -94,6 +94,6 @@
                         Text="Unterstützen"
                         WidthRequest="125" />
             </StackLayout>
-        </Frame>
+        </Border>
     </Grid>
 </ContentPage>

@@ -8,7 +8,7 @@
         <StackLayout>
 
             <!--  GRUNDLEGENDES  -->
-            <Frame Margin="10">
+            <Border Margin="10">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Grundlegende Daten" />
@@ -84,10 +84,10 @@
                         </Label>-->
                     </StackLayout>
                 </StackLayout>
-            </Frame>
+            </Border>
 
             <!--  UMRECHNUNG  -->
-            <Frame Margin="10">
+            <Border Margin="10">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Umrechnung" />
@@ -128,10 +128,10 @@
                         </Label>-->
                     </StackLayout>
                 </StackLayout>
-            </Frame>
+            </Border>
 
             <!--  STEUERZEIT  -->
-            <Frame Margin="10">
+            <Border Margin="10">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Steuerzeit erhöhen" />
@@ -250,10 +250,10 @@
                         </Label>
                     </StackLayout>
                 </StackLayout>
-            </Frame>
+            </Border>
 
             <!--  HILFSDATEN  -->
-            <Frame Margin="10">
+            <Border Margin="10">
 
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
@@ -345,7 +345,7 @@
                             ImageSource="{StaticResource IconChevronRightMedium}"
                             WidthRequest="90" />
                 </StackLayout>
-            </Frame>
+            </Border>
         </StackLayout>
     </ScrollView>
 </ContentView>

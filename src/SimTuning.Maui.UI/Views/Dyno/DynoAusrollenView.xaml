@@ -13,7 +13,7 @@
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
-        <Frame Margin="10"
+        <Border Margin="10"
                Grid.Row="0">
             <StackLayout>
                 <ImageButton Margin="5"
@@ -22,9 +22,9 @@
                              Source="{StaticResource IconRefreshMedium}"
                              Command="{Binding RefreshPlotCommand}" />
             </StackLayout>
-        </Frame>
+        </Border>
 
-        <Frame Margin="10"
+        <Border Margin="10"
                Grid.Row="1"
                VerticalOptions="FillAndExpand">
             <StackLayout>
@@ -40,7 +40,7 @@
                 <lvc:CartesianChart Series="{Binding Mode=OneWay, Path=PlotAusrollen}"
                                     HeightRequest="400" />
             </StackLayout>
-        </Frame>
+        </Border>
 
         <Button WidthRequest="100"
                 HeightRequest="60"

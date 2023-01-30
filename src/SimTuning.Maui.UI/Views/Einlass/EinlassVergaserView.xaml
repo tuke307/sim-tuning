@@ -7,7 +7,7 @@
         <StackLayout>
 
             <!--  Vergasergröße  -->
-            <Frame Margin="10">
+            <Border Margin="10">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Vergasergröße" />
@@ -59,10 +59,10 @@
                         </Label>-->
                     </StackLayout>
                 </StackLayout>
-            </Frame>
+            </Border>
 
             <!--  Hauptdüsendurchmesser  -->
-            <Frame Margin="10">
+            <Border Margin="10">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Hauptdüsendurchmesser" />
@@ -106,10 +106,10 @@
                         </Label>-->
                     </StackLayout>
                 </StackLayout>
-            </Frame>
+            </Border>
 
             <!--  Hilfe  -->
-            <Frame Margin="10,10,10,10">
+            <Border Margin="10,10,10,10">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Hilfe" />
@@ -180,7 +180,7 @@
                             ImageSource="{StaticResource IconChevronRightMedium}"
                             WidthRequest="100" />
                 </StackLayout>
-            </Frame>
+            </Border>
         </StackLayout>
     </ScrollView>
 </ContentView>

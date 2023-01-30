@@ -18,7 +18,7 @@
                                      HeightRequest="60">
             </Button>-->
 
-            <Frame Margin="10"
+            <Border Margin="10"
                    VerticalOptions="Center">
                 <StackLayout>
                     <Label Text="Auswahl"
@@ -122,9 +122,9 @@
                         </Picker>
                     </Grid>
                 </StackLayout>
-            </Frame>
+            </Border>
 
-            <Frame Margin="10">
+            <Border Margin="10">
                 <StackLayout>
                     <Label Text="Daten"
                            FontSize="Medium"
@@ -192,11 +192,11 @@
                     <!--Audio-->
                     <!--<Expander>
                         <Expander.Header>
-                            <Frame >
+                            <Border >
                                 <Label >
                                     Drehzahl
                                 </Label>
-                            </Frame>
+                            </Border>
                         </Expander.Header>
                         <HorizontalStackLayout>
                             <DataTemplate>
@@ -223,11 +223,11 @@
                     <!--
                     <Expander>
                         <Expander.Header>
-                            <Frame >
+                            <Border >
                                 <Label >
                                     PS
                                 </Label>
-                            </Frame>
+                            </Border>
                         </Expander.Header>
                         <HorizontalStackLayout>
                             <DataTemplate>
@@ -252,11 +252,11 @@
                     <!--Nm-->
                     <!--<Expander>
                         <Expander.Header>
-                            <Frame >
+                            <Border >
                                 <Label >
                                     Nm
                                 </Label>
-                            </Frame>
+                            </Border>
                         </Expander.Header>
                         <HorizontalStackLayout>
                             <DataTemplate>
@@ -284,7 +284,7 @@
                         </HorizontalStackLayout>
                     </Expander>-->
                 </StackLayout>
-            </Frame>
+            </Border>
 
             <!--<Button 
                     Margin="15"

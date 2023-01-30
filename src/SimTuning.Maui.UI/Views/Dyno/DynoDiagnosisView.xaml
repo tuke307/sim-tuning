@@ -9,7 +9,7 @@
         <StackLayout>
 
             <!--Plot-->
-            <Frame Margin="10">
+            <Border Margin="10">
                 <StackLayout>
                     <!--<Label  Text="Graph"
                                             FontSize="Medium"
@@ -23,10 +23,10 @@
                     <lvc:CartesianChart Series="{Binding PlotStrength}"
                                         HeightRequest="400" />
                 </StackLayout>
-            </Frame>
+            </Border>
 
             <!--Einstellungen-->
-            <Frame Margin="10">
+            <Border Margin="10">
                 <StackLayout>
                     <Label Text="Einstellungen"
                            FontSize="Medium"
@@ -122,10 +122,10 @@
                             Command="{Binding RefreshPlotCommand}">
                     </Button>
                 </StackLayout>
-            </Frame>
+            </Border>
 
             <!--Hilfe-Fahrzeug-->
-            <Frame Margin="10">
+            <Border Margin="10">
                 <StackLayout>
                     <Label Text="Hilfe"
                            FontSize="Medium"
@@ -221,10 +221,10 @@
                             Margin="15"
                             HorizontalOptions="Center" />
                 </StackLayout>
-            </Frame>
+            </Border>
 
             <!--Hilfe-Environment-->
-            <!--<Frame  Margin="10">
+            <!--<Border  Margin="10">
                 <StackLayout>
                     <Label  Text="Hilfe"
                                             FontSize="Medium"
@@ -295,7 +295,7 @@
                                              Command="{Binding InsertEnvironmentCommand}"
                                              WidthRequest="90" />
                 </StackLayout>
-            </Frame>-->
+            </Border>-->
         </StackLayout>
     </ScrollView>
 </ContentPage>
