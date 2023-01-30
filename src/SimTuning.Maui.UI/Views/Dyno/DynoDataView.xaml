@@ -80,10 +80,10 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
-                        <!--<RadioButton x:Name="RB1"
+                        <RadioButton x:Name="RB1"
                                      Grid.Column="0"
                                      Grid.Row="0"
-                                     Text="neues Fahrzeug erstellen"
+                                     Content="neues Fahrzeug erstellen"
                                      IsChecked="{Binding Mode=TwoWay, Path=CreateNewVehicle}">
                             <RadioButton.Triggers>
                                 <DataTrigger TargetType="RadioButton"
@@ -99,7 +99,7 @@
                                      Grid.Column="0"
                                      Grid.Row="1"
                                      VerticalOptions="CenterAndExpand"
-                                     Text="vorhandenes Fahrzeug verknüpfen"
+                                     Content="vorhandenes Fahrzeug verknüpfen"
                                      IsChecked="{Binding Mode=TwoWay, Path=TakeExistingVehicle}">
                             <RadioButton.Triggers>
                                 <DataTrigger TargetType="RadioButton"
@@ -109,7 +109,7 @@
                                             Value="false" />
                                 </DataTrigger>
                             </RadioButton.Triggers>
-                        </RadioButton>-->
+                        </RadioButton>
 
                         <Picker  Grid.Column="1"
                                  Grid.Row="1"
