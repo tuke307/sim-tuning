@@ -10,90 +10,91 @@
         </Grid.RowDefinitions>
 
         <!--  GRID ROW 0  -->
-        <Border Grid.Row="0"
-                Margin="5"
-                VerticalOptions="CenterAndExpand">
-            <StackLayout>
-                <Label Style="{StaticResource LabelTitleStyle}">
+        <Border Grid.Row="0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Row="0"
+                       Grid.ColumnSpan="2"
+                       Style="{StaticResource LabelTitleStyle}">
                     Bleib auf dem Laufenden
                 </Label>
 
-                <BoxView />
+                <BoxView Grid.Row="1"
+                         Grid.ColumnSpan="2"
+                         Style="{StaticResource DividerBoxViewStyle}" />
 
-                <Label LineBreakMode="CharacterWrap">
+                <Label Grid.Row="2"
+                       Grid.ColumnSpan="2"
+                       LineBreakMode="CharacterWrap">
                     Schreib eine Nachricht, verfolge Updates oder stöber etwas herum, hier findest du alles:
                 </Label>
 
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
+                <Button Grid.Row="3"
+                        Grid.Column="0"
+                        Text="Website"
+                        Command="{Binding OpenWebsiteCommand}"
+                        ImageSource="{StaticResource IconWebMedium}" />
 
-                    <Button Grid.Column="0"
-                            Command="{Binding OpenWebsiteCommand}"
-                            CornerRadius="5"
-                            HeightRequest="50"
-                            HorizontalOptions="FillAndExpand"
-                            ImageSource="{StaticResource IconWebMedium}"
-                            Text="Website" />
+                <Button Grid.Row="3"
+                        Grid.Column="1"
+                        Text="Twitter"
+                        Command="{Binding OpenTwitterCommand}"
+                        ImageSource="{StaticResource IconTwitterMedium}" />
 
-                    <Button Grid.Column="1"
-                            Command="{Binding OpenTwitterCommand}"
-                            CornerRadius="5"
-                            HeightRequest="50"
-                            HorizontalOptions="FillAndExpand"
-                            ImageSource="{StaticResource IconTwitterMedium}"
-                            Text="Twitter" />
-                </Grid>
+                <Button Grid.Row="4"
+                        Grid.Column="0"
+                        Command="{Binding OpenInstagramCommand}"
+                        ImageSource="{StaticResource IconInstagramMedium}"
+                        Text="Instagram" />
 
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
+                <Button Grid.Row="4"
+                        Grid.Column="1"
+                        Text="Email"
+                        Command="{Binding OpenEmailCommand}"
+                        ImageSource="{StaticResource IconEmailMedium}" />
 
-                    <Button Grid.Column="0"
-                            Command="{Binding OpenInstagramCommand}"
-                            CornerRadius="5"
-                            HeightRequest="50"
-                            HorizontalOptions="FillAndExpand"
-                            ImageSource="{StaticResource IconInstagramMedium}"
-                            Text="Instagram" />
-
-                    <Button Grid.Column="1"
-                            Command="{Binding OpenEmailCommand}"
-                            CornerRadius="5"
-                            HeightRequest="50"
-                            HorizontalOptions="FillAndExpand"
-                            ImageSource="{StaticResource IconEmailMedium}"
-                            Text="Email" />
-                </Grid>
-            </StackLayout>
+            </Grid>
         </Border>
 
         <!--  GRID ROW 1  -->
-        <Border Grid.Row="1"
-                Margin="5"
-                VerticalOptions="CenterAndExpand">
-            <StackLayout>
-                <Label Style="{StaticResource LabelTitleStyle}">
+        <Border Grid.Row="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0"
+                       Style="{StaticResource LabelTitleStyle}">
                     Das Projekt
                 </Label>
 
-                <BoxView />
+                <BoxView Grid.Row="1"
+                         Style="{StaticResource DividerBoxViewStyle}" />
 
-                <Label LineBreakMode="CharacterWrap">
+                <Label Grid.Row="2"
+                       LineBreakMode="CharacterWrap">
                     Dieses Projekt wurde von mir allein ins Leben gerufen. Ich hatte keinen Sponsor oder ähnliches. Ich würde mich sehr über eine kleine Spende freuen
                 </Label>
 
-                <Button Command="{Binding OpenDonateCommand}"
-                        CornerRadius="5"
-                        HeightRequest="70"
-                        ImageSource="{StaticResource IconWalletGiftcardMedium}"
+                <Button Grid.Row="3"
                         Text="Unterstützen"
-                        WidthRequest="125" />
-            </StackLayout>
+                        Command="{Binding OpenDonateCommand}"
+                        ImageSource="{StaticResource IconWalletGiftcardMedium}" />
+            </Grid>
         </Border>
     </Grid>
 </ContentPage>

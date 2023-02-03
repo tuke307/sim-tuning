@@ -5,16 +5,23 @@
              xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels.Auslass"
              x:DataType="vm:TheorieViewModel">
     <ScrollView>
-        <StackLayout>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
 
             <!--  LÄNGE  -->
-            <Border Margin="10">
+            <Border Grid.Row="0">
                 <StackLayout>
 
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Krümmer-Länge" />
 
-                    <BoxView />
+                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
                     <StackLayout>
 
@@ -83,16 +90,15 @@
             </Border>
 
             <!--  DURCHMESSER  -->
-            <Border Margin="10">
+            <Border Grid.Row="1">
                 <StackLayout>
 
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Krümmer-Durchmesser" />
 
-                    <BoxView />
+                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
                     <StackLayout Orientation="Horizontal">
-
                         <Entry Keyboard="Numeric"
                                Placeholder="Auslassfläche"
                                Text="{Binding Path=VehicleMotorAuslassFlaecheA, Mode=TwoWay}"
@@ -104,10 +110,6 @@
                                 HorizontalOptions="StartAndExpand"
                                 SelectedItem="{Binding VehicleMotorAuslassFlaecheAUnit}"
                                 VerticalOptions="CenterAndExpand" />
-                        <!--<Label  Margin="5, 0, 0, 0"
-                               VerticalOptions="Center">
-                            cm²
-                        </Label>-->
                     </StackLayout>
 
                     <StackLayout Orientation="Horizontal">
@@ -125,25 +127,19 @@
                 </StackLayout>
             </Border>
 
-            <Border Margin="10">
+            <Border Grid.Row="2">
                 <StackLayout>
 
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Abgastemperatur" />
 
-                    <BoxView />
+                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
                     <StackLayout Orientation="Horizontal">
-
                         <Entry Keyboard="Numeric"
                                Placeholder="Temperatur"
                                Text="{Binding Path=ModAuspuffAbgasT, Mode=TwoWay}"
                                WidthRequest="250" />
-
-                        <!--<Label  Margin="5, 0, 0, 0"
-                                                VerticalOptions="Center">
-                            °C
-                        </Label>-->
 
                         <Picker Margin="5,0,0,0"
                                 ItemsSource="{Binding Path=TemperatureQuantityUnits, Mode=OneTime}"
@@ -154,7 +150,6 @@
                     </StackLayout>
 
                     <StackLayout Orientation="Horizontal">
-
                         <Entry Keyboard="Numeric"
                                IsEnabled="False"
                                Placeholder="Geschwindigkeit"
@@ -167,21 +162,17 @@
                                 HorizontalOptions="StartAndExpand"
                                 SelectedItem="{Binding ModAuspuffAbgasVUnit}"
                                 VerticalOptions="CenterAndExpand" />
-                        <!--<Label  Margin="5, 0, 0, 0"
-                               VerticalOptions="Center">
-                            m/s
-                        </Label>-->
                     </StackLayout>
                 </StackLayout>
             </Border>
 
-            <Border Margin="10">
+            <Border Grid.Row="3">
                 <StackLayout>
 
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Resonanzlänge" />
 
-                    <BoxView />
+                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
                     <StackLayout Orientation="Horizontal">
                         <Entry Keyboard="Numeric"
@@ -196,7 +187,6 @@
                     </StackLayout>
 
                     <StackLayout Orientation="Horizontal">
-
                         <Entry Keyboard="Numeric"
                                Placeholder="Abgastemperatur"
                                Text="{Binding Path=VehicleMotorAuslassAuspuffAbgasT, Mode=TwoWay}"
@@ -211,7 +201,6 @@
                     </StackLayout>
 
                     <StackLayout Orientation="Horizontal">
-
                         <Entry Keyboard="Numeric"
                                Placeholder="Resonanzdrehzahl"
                                Text="{Binding Path=VehicleMotorResonanzU, Mode=TwoWay}"
@@ -236,20 +225,16 @@
                                 HorizontalOptions="StartAndExpand"
                                 SelectedItem="{Binding Path=VehicleMotorAuslassAuspuffResonanzLUnit}"
                                 VerticalOptions="CenterAndExpand" />
-                        <!--<Label  Margin="5, 0, 0, 0"
-                               VerticalOptions="Center">
-                            cm
-                        </Label>-->
                     </StackLayout>
                 </StackLayout>
             </Border>
 
-            <Border Margin="10">
+            <Border Grid.Row="4">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Hilfe" />
 
-                    <BoxView />
+                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
                     <Picker ItemsSource="{Binding HelperVehicles}"
                             ItemDisplayBinding="{Binding Name}"
@@ -338,6 +323,6 @@
                             WidthRequest="100" />
                 </StackLayout>
             </Border>
-        </StackLayout>
+        </Grid>
     </ScrollView>
 </ContentView>

@@ -15,8 +15,10 @@
                           HorizontalOptions="Center"
                           SelectedIndex="{Binding Source={x:Reference Switcher}, Path=SelectedIndex, Mode=TwoWay}">
             <tabs:TabHostView.Tabs>
-                <tabs:UnderlinedTabItem Label="Kanal" />
-                <tabs:UnderlinedTabItem Label="Vergaser" />
+                <tabs:UnderlinedTabItem Label="Kanal"
+                                        Style="{StaticResource UnderlinedTabItemStyle}" />
+                <tabs:UnderlinedTabItem Label="Vergaser"
+                                        Style="{StaticResource UnderlinedTabItemStyle}" />
             </tabs:TabHostView.Tabs>
         </tabs:TabHostView>
 
@@ -25,12 +27,16 @@
             <tabs:ViewSwitcher x:Name="Switcher"
                                Animate="True"
                                SelectedIndex="{Binding EinlassTabIndex, Mode=TwoWay}">
-                <tabs:DelayedView x:TypeArguments="local:EinlassKanalView"
+                <local:EinlassKanalView />
+                <local:EinlassVergaserView />
+                <!--<tabs:DelayedView x:TypeArguments="local:EinlassKanalView"
+                                  BindingContext="{Binding KanalViewModel}"
                                   Animate="True"
                                   UseActivityIndicator="True" />
                 <tabs:DelayedView x:TypeArguments="local:EinlassVergaserView"
+                                  BindingContext="{Binding VergaserViewModel}"
                                   Animate="True"
-                                  UseActivityIndicator="True" />
+                                  UseActivityIndicator="True" />-->
             </tabs:ViewSwitcher>
         </ScrollView>
     </Grid>

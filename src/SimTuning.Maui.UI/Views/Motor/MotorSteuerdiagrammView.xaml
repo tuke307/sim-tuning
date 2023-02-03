@@ -5,15 +5,20 @@
              x:DataType="vm:SteuerdiagrammViewModel">
 
     <ScrollView>
-        <StackLayout>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
 
             <!--  Steuerzeiten Rad  -->
-            <Border Margin="10">
+            <Border Grid.Row="0">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Diagramm" />
 
-                    <BoxView />
+                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
                     <Image Margin="10"
                            HeightRequest="200"
@@ -128,12 +133,12 @@
             </Border>
 
             <!--  Fahrzeug  -->
-            <Border Margin="10">
+            <Border Grid.Row="1">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Fahrzeug Steuerzeiten" />
 
-                    <BoxView />
+                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
                     <Picker ItemsSource="{Binding HelperVehicles}"
                             ItemDisplayBinding="{Binding Name}"
@@ -218,12 +223,12 @@
             </Border>
 
             <!--  Tuning Presets  -->
-            <Border Margin="10">
+            <Border Grid.Row="2">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Richtwerte Steuerzeiten" />
 
-                    <BoxView />
+                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
                     <Picker ItemsSource="{Binding MotorSteuerzeiten}"
                             ItemDisplayBinding="{Binding Name}"
@@ -305,6 +310,6 @@
                             WidthRequest="90" />
                 </StackLayout>
             </Border>
-        </StackLayout>
+        </Grid>
     </ScrollView>
 </ContentView>

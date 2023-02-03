@@ -32,7 +32,7 @@
                            FontSize="Medium"
                            FontAttributes="Bold" />
 
-                    <BoxView />
+                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
                     <!--<Entry Placeholder="Gesamtübersetzung"
                                                 Keyboard="Numeric"
@@ -131,7 +131,7 @@
                            FontSize="Medium"
                            FontAttributes="Bold" />
 
-                    <BoxView />
+                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
                     <Picker Title="Fahrzeug"
                             ItemsSource="{Binding Mode=OneTime, Path=HelperVehicles}"

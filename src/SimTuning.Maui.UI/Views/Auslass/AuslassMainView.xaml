@@ -16,9 +16,9 @@
         <tabs:TabHostView Grid.Row="0"
                           SelectedIndex="{Binding Source={x:Reference Switcher}, Path=SelectedIndex, Mode=TwoWay}">
             <tabs:TabHostView.Tabs>
-                <tabs:UnderlinedTabItem Style="{StaticResource SegmentedTabStyle}"
+                <tabs:UnderlinedTabItem Style="{StaticResource UnderlinedTabItemStyle}"
                                         Label="Anwendung" />
-                <tabs:UnderlinedTabItem Style="{StaticResource SegmentedTabStyle}"
+                <tabs:UnderlinedTabItem Style="{StaticResource UnderlinedTabItemStyle}"
                                         Label="Theorie" />
             </tabs:TabHostView.Tabs>
         </tabs:TabHostView>

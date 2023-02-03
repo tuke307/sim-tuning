@@ -5,16 +5,21 @@
              x:DataType="vm:VerdichtungViewModel">
 
     <ScrollView>
-        <StackLayout>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
 
             <!--  GRUNDLEGENDES  -->
-            <Border Margin="10"
-                   >
+            <Border Grid.Row="0">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Grundlegendes" />
 
-                    <BoxView  />
+                    <BoxView />
 
                     <StackLayout Orientation="Horizontal">
                         <Entry Keyboard="Numeric"
@@ -62,16 +67,14 @@
             </Border>
 
             <!--  VERHÄLTNIS  -->
-            <Border Margin="10"
-                   >
+            <Border Grid.Row="1">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Verdichtungsverhältnis" />
 
-                    <BoxView  />
+                    <BoxView />
 
-                    <Label 
-                           Text="derzeitige Verdichtung:" />
+                    <Label Text="derzeitige Verdichtung:" />
 
                     <StackLayout Orientation="Horizontal">
                         <Entry Keyboard="Numeric"
@@ -81,7 +84,6 @@
                                WidthRequest="250" />
 
                         <Label Margin="5,0,0,0"
-                               
                                Text=":1"
                                VerticalOptions="Center" />
                     </StackLayout>
@@ -89,13 +91,12 @@
             </Border>
 
             <!--  ERHÖHEN  -->
-            <Border Margin="10"
-                   >
+            <Border Grid.Row="2">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Verdichtung erhöhen" />
 
-                    <BoxView  />
+                    <BoxView />
 
                     <!--  Verdichtung  -->
                     <StackLayout Orientation="Horizontal">
@@ -104,7 +105,6 @@
                                 SelectedItem="{Binding Zielverdichtung}" />
 
                         <Label Margin="5,0,0,0"
-                               
                                Text=": 1"
                                VerticalOptions="Center" />
                     </StackLayout>
@@ -118,7 +118,6 @@
                         </Grid.ColumnDefinitions>
 
                         <Label Grid.Column="0"
-                               
                                Text="Zylinderkopf abdrehen um:"
                                VerticalOptions="Center" />
 
@@ -145,14 +144,13 @@
                 </StackLayout>
             </Border>
 
-            <!--    -->
-            <Border Margin="10"
-                   >
+            <!--  Hilfe  -->
+            <Border Grid.Row="1">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Hilfswerte" />
 
-                    <BoxView  />
+                    <BoxView />
 
                     <Picker ItemsSource="{Binding HelperVehicles}"
                             ItemDisplayBinding="{Binding Name}"
@@ -172,17 +170,14 @@
 
                         <Label Grid.Row="0"
                                Grid.Column="0"
-                               
                                Text="Hubraum"
                                VerticalOptions="Center" />
                         <Label Grid.Row="1"
                                Grid.Column="0"
-                               
                                Text="Ø Bohrung"
                                VerticalOptions="Center" />
                         <Label Grid.Row="2"
                                Grid.Column="0"
-                               
                                Text="Brennraum"
                                VerticalOptions="Center" />
 
@@ -197,7 +192,6 @@
                                    WidthRequest="100" />
 
                             <Label Margin="5,0,0,0"
-                                   
                                    VerticalOptions="Center">
                                 mm³
                             </Label>
@@ -214,7 +208,6 @@
                                    WidthRequest="100" />
 
                             <Label Margin="5,0,0,0"
-                                   
                                    VerticalOptions="Center">
                                 mm
                             </Label>
@@ -231,7 +224,6 @@
                                    WidthRequest="100" />
 
                             <Label Margin="5,0,0,0"
-                                   
                                    VerticalOptions="Center">
                                 mm³
                             </Label>
@@ -241,10 +233,9 @@
                     <Button Command="{Binding InsertDataCommand}"
                             HorizontalOptions="Center"
                             ImageSource="{StaticResource IconChevronRightMedium}"
-                            
                             WidthRequest="90" />
                 </StackLayout>
             </Border>
-        </StackLayout>
+        </Grid>
     </ScrollView>
 </ContentView>

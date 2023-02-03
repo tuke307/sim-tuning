@@ -2,7 +2,6 @@
 <Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
        xmlns:behaviors="clr-namespace:SimTuning.Maui.UI.Behaviors"
-       xmlns:component="clr-namespace:SimTuning.Maui.UI.Components"
        xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
        xmlns:home="clr-namespace:SimTuning.Maui.UI.Views.Home"
        xmlns:einlass="clr-namespace:SimTuning.Maui.UI.Views.Einlass"
@@ -14,20 +13,12 @@
        x:DataType="vm:MainPageViewModel"
        xmlns:sys="clr-namespace:System;assembly=netstandard"
        Shell.FlyoutBehavior="Flyout">
-    
-    <Shell.FlyoutHeaderTemplate>
-        <DataTemplate>
-            <Grid BackgroundColor="Black"
-                  HeightRequest="200">
-                <Label Text="Animals"
-                       TextColor="White"
-                       FontAttributes="Bold"
-                       HorizontalTextAlignment="Center"
-                       VerticalTextAlignment="Center" />
-            </Grid>
-        </DataTemplate>
-    </Shell.FlyoutHeaderTemplate>
-    
+
+    <Shell.FlyoutHeader>
+        <Grid BackgroundColor="{StaticResource Primary800}"
+              HeightRequest="200" />
+    </Shell.FlyoutHeader>
+
     <FlyoutItem Title="Home"
                 FlyoutIcon="{StaticResource IconViewDashboardMedium}">
         <ShellContent ContentTemplate="{DataTemplate home:HomeView}" />
@@ -57,16 +48,4 @@
                 FlyoutIcon="{StaticResource IconCogMedium}">
         <ShellContent ContentTemplate="{DataTemplate einstellungen:EinstellungenMenuView}" />
     </FlyoutItem>
-
-    <Shell.FlyoutFooter>
-        <StackLayout>
-            <Label Text="SimTuning"
-                   TextColor="GhostWhite"
-                   FontAttributes="Bold"
-                   HorizontalOptions="Center" />
-            <Label Text="{Binding Source={x:Static sys:DateTime.Now}, StringFormat='{0:MMMM dd, yyyy}'}"
-                   TextColor="GhostWhite"
-                   HorizontalOptions="Center" />
-        </StackLayout>
-    </Shell.FlyoutFooter>
 </Shell>

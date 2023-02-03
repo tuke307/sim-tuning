@@ -5,15 +5,21 @@
              x:DataType="vm:UmrechnungViewModel">
 
     <ScrollView>
-        <StackLayout>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
 
             <!--  GRUNDLEGENDES  -->
-            <Border Margin="10">
+            <Border Grid.Row="0">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Grundlegende Daten" />
 
-                    <BoxView />
+                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
                     <StackLayout Orientation="Horizontal">
                         <Entry Keyboard="Numeric"
@@ -87,12 +93,12 @@
             </Border>
 
             <!--  UMRECHNUNG  -->
-            <Border Margin="10">
+            <Border Grid.Row="1">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Umrechnung" />
 
-                    <BoxView />
+                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
                     <StackLayout Grid.Row="0"
                                  Orientation="Horizontal">
@@ -131,12 +137,12 @@
             </Border>
 
             <!--  STEUERZEIT  -->
-            <Border Margin="10">
+            <Border Grid.Row="2">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Steuerzeit erhöhen" />
 
-                    <BoxView />
+                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
                     <Label Text="Steuerzeit:" />
                     <StackLayout Orientation="Horizontal">
@@ -253,13 +259,12 @@
             </Border>
 
             <!--  HILFSDATEN  -->
-            <Border Margin="10">
-
+            <Border Grid.Row="3">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Hilfswerte" />
 
-                    <BoxView />
+                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
                     <Picker ItemsSource="{Binding Mode=OneTime, Path=HelperVehicles}"
                             ItemDisplayBinding="{Binding Name}"
@@ -346,6 +351,6 @@
                             WidthRequest="90" />
                 </StackLayout>
             </Border>
-        </StackLayout>
+        </Grid>
     </ScrollView>
 </ContentView>

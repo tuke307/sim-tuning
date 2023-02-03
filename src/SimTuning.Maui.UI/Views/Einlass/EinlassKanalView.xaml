@@ -4,122 +4,135 @@
              xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels.Einlass"
              x:DataType="vm:KanalViewModel">
     <ScrollView>
-        <StackLayout>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
 
             <!--  Einlass Resonanzlänge  -->
-            <Border Margin="10">
-                <StackLayout>
-                    <Label Style="{StaticResource LabelTitleStyle}"
+            <Border Grid.Row="0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Row="0"
+                           Grid.ColumnSpan="2"
+                           Style="{StaticResource LabelTitleStyle}"
                            Text="Einlass-Resonanzlänge" />
 
-                    <BoxView />
+                    <BoxView Grid.Row="1"
+                             Grid.ColumnSpan="2"
+                             Style="{StaticResource DividerBoxViewStyle}" />
 
-                    <StackLayout>
+                    <!--Einlass-Fläche-->
+                    <Entry Grid.Row="2"
+                           Grid.Column="0"
+                           Keyboard="Numeric"
+                           Placeholder="Einlass-Fläche"
+                           Text="{Binding Mode=TwoWay, Path=VehicleMotorEinlassFlaecheA}"
+                           WidthRequest="250" />
 
-                        <StackLayout Orientation="Horizontal">
-                            <Entry Keyboard="Numeric"
-                                   Placeholder="Einlass-Fläche"
-                                   Text="{Binding Mode=TwoWay, Path=VehicleMotorEinlassFlaecheA}"
-                                   WidthRequest="250" />
+                    <Picker Grid.Row="2"
+                            Grid.Column="1"
+                            ItemsSource="{Binding Path=AreaQuantityUnits, Mode=OneTime}"
+                            ItemDisplayBinding="{Binding Abbreviation}"
+                            SelectedItem="{Binding VehicleMotorEinlassFlaecheAUnit}" />
 
-                            <Picker Margin="5,0,0,0"
-                                    ItemsSource="{Binding Path=AreaQuantityUnits, Mode=OneTime}"
-                                    ItemDisplayBinding="{Binding Abbreviation}"
-                                    HorizontalOptions="StartAndExpand"
-                                    SelectedItem="{Binding VehicleMotorEinlassFlaecheAUnit}"
-                                    VerticalOptions="CenterAndExpand" />
-                        </StackLayout>
+                    <!--Einlass-Steuerwinkel-->
+                    <Entry Grid.Row="3"
+                           Grid.Column="0"
+                           Keyboard="Numeric"
+                           Placeholder="Einlass-Steuerwinkel"
+                           Text="{Binding Mode=TwoWay, Path=Einlasssteuerwinkel}"
+                           WidthRequest="250" />
 
-                        <StackLayout Orientation="Horizontal">
-                            <Entry Keyboard="Numeric"
-                                   Placeholder="Einlass-Steuerwinkel"
-                                   Text="{Binding Mode=TwoWay, Path=Einlasssteuerwinkel}"
-                                   WidthRequest="250" />
+                    <Label Grid.Row="3"
+                           Grid.Column="1"
+                           VerticalOptions="Center">
+                        °KW
+                    </Label>
 
-                            <Label Margin="5,0,0,0"
-                                   VerticalOptions="Center">
-                                °KW
-                            </Label>
-                        </StackLayout>
+                    <!--Resonanzdrehzahl-->
+                    <Entry Grid.Row="4"
+                           Grid.Column="0"
+                           Keyboard="Numeric"
+                           Placeholder="Resonanzdrehzahl"
+                           Text="{Binding Mode=TwoWay, Path=VehicleMotorResonanzU}"
+                           WidthRequest="250" />
 
-                        <StackLayout Orientation="Horizontal">
-                            <Entry Keyboard="Numeric"
-                                   Placeholder="Resonanzdrehzahl"
-                                   Text="{Binding Mode=TwoWay, Path=VehicleMotorResonanzU}"
-                                   WidthRequest="250" />
+                    <Label Grid.Row="4"
+                           Grid.Column="1"
+                           Margin="5,0,0,0"
+                           VerticalOptions="Center">
+                        1/min
+                    </Label>
 
-                            <Label Margin="5,0,0,0"
-                                   VerticalOptions="Center">
-                                1/min
-                            </Label>
-                        </StackLayout>
+                    <!--Kurbelgehäusevolumen-->
+                    <Entry Grid.Row="5"
+                           Grid.Column="0"
+                           Keyboard="Numeric"
+                           Placeholder="Kurbelgehäusevolumen"
+                           Text="{Binding Mode=TwoWay, Path=VehicleMotorKurbelgehaeuseV}"
+                           WidthRequest="250" />
 
-                        <StackLayout Orientation="Horizontal">
-                            <Entry Keyboard="Numeric"
-                                   Placeholder="Kurbelgehäusevolumen"
-                                   Text="{Binding Mode=TwoWay, Path=VehicleMotorKurbelgehaeuseV}"
-                                   WidthRequest="250" />
+                    <Picker Grid.Row="5"
+                            Grid.Column="1"
+                            ItemsSource="{Binding Path=VolumeQuantityUnits, Mode=OneTime}"
+                            ItemDisplayBinding="{Binding Abbreviation}"
+                            SelectedItem="{Binding VehicleMotorKurbelgehaeuseVUnit}" />
 
-                            <Picker Margin="5,0,0,0"
-                                    ItemsSource="{Binding Path=VolumeQuantityUnits, Mode=OneTime}"
-                                    ItemDisplayBinding="{Binding Abbreviation}"
-                                    HorizontalOptions="StartAndExpand"
-                                    SelectedItem="{Binding VehicleMotorKurbelgehaeuseVUnit}"
-                                    VerticalOptions="CenterAndExpand" />
-                            <!--<Label  Margin="5, 0, 0, 0"
-                                   VerticalOptions="Center">
-                                cm³
-                            </Label>-->
-                        </StackLayout>
 
-                        <StackLayout Orientation="Horizontal">
-                            <Entry Keyboard="Numeric"
-                                   Placeholder="Ø Ansaugleitung"
-                                   Text="{Binding Mode=TwoWay, Path=VehicleMotorEinlassDurchmesserD}"
-                                   WidthRequest="250" />
+                    <!--Ansaugleitung-->
+                    <Entry Grid.Row="6"
+                           Grid.Column="0"
+                           Keyboard="Numeric"
+                           Placeholder="Ø Ansaugleitung"
+                           Text="{Binding Mode=TwoWay, Path=VehicleMotorEinlassDurchmesserD}"
+                           WidthRequest="250" />
 
-                            <Picker Margin="5,0,0,0"
-                                    ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
-                                    ItemDisplayBinding="{Binding Abbreviation}"
-                                    HorizontalOptions="StartAndExpand"
-                                    SelectedItem="{Binding VehicleMotorEinlassDurchmesserDUnit}"
-                                    VerticalOptions="CenterAndExpand" />
-                            <!--<Label  Margin="5, 0, 0, 0"
-                                   VerticalOptions="Center">
-                                cm
-                            </Label>-->
-                        </StackLayout>
+                    <Picker Grid.Row="6"
+                            Grid.Column="1"
+                            ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+                            ItemDisplayBinding="{Binding Abbreviation}"
+                            SelectedItem="{Binding VehicleMotorEinlassDurchmesserDUnit}" />
 
-                        <StackLayout Margin="0,10,0,10"
-                                     Orientation="Horizontal">
-                            <Entry Keyboard="Numeric"
-                                   IsEnabled="False"
-                                   Placeholder="Einlass-Resonanzlänge"
-                                   Text="{Binding Mode=TwoWay, Path=Resonanzlaenge}"
-                                   WidthRequest="250" />
+                    <!--Einlass-Resonanzlänge-->
+                    <Entry Grid.Row="7"
+                           Grid.Column="0"
+                           Keyboard="Numeric"
+                           IsEnabled="False"
+                           Placeholder="Einlass-Resonanzlänge"
+                           Text="{Binding Mode=TwoWay, Path=Resonanzlaenge}"
+                           WidthRequest="250" />
 
-                            <Picker Margin="5,0,0,0"
-                                    ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
-                                    ItemDisplayBinding="{Binding Abbreviation}"
-                                    HorizontalOptions="StartAndExpand"
-                                    SelectedItem="{Binding UnitResonanzlaenge}"
-                                    VerticalOptions="CenterAndExpand" />
-                            <!--<Label  Margin="5, 0, 0, 0"
-                                   VerticalOptions="Center">
-                                cm
-                            </Label>-->
-                        </StackLayout>
-                    </StackLayout>
-                </StackLayout>
+                    <Picker Grid.Row="7"
+                            Grid.Column="1"
+                            ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+                            ItemDisplayBinding="{Binding Abbreviation}"
+                            SelectedItem="{Binding ResonanzlaengeUnit}" />
+                </Grid>
             </Border>
 
             <!--  Hilfe  -->
-            <Border Margin="10">
+            <Border Grid.Row="1">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Hilfe" />
 
-                    <BoxView />
+                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
                     <Picker ItemsSource="{Binding HelperVehicles, Mode=OneTime}"
                             ItemDisplayBinding="{Binding Name}"
@@ -132,6 +145,7 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
@@ -251,6 +265,6 @@
                             WidthRequest="100" />
                 </StackLayout>
             </Border>
-        </StackLayout>
+        </Grid>
     </ScrollView>
 </ContentView>

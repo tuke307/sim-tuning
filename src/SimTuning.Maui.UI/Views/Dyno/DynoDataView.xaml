@@ -2,72 +2,57 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:customcomponents="clr-namespace:SimTuning.Maui.UI.Components"
              Title="Datensatz"
              x:Class="SimTuning.Maui.UI.Views.Dyno.DynoDataView"
              xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels.Dyno"
+             xmlns:models="clr-namespace:SimTuning.Data.Models;assembly=SimTuning.Data"
              x:DataType="vm:DataViewModel">
     <ScrollView>
-        <StackLayout>
-            <!--<Button   Margin="15"
-                                     VerticalOptions="Center"
-                                     HorizontalOptions="Start"
-                                     ImageSource="ic_arrow_back_black_18dp.png"
-                                     Command="{Binding CloseCommand}"
-                                     WidthRequest="100"
-                                     HeightRequest="60">
-            </Button>-->
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-            <Border Margin="10"
-                   VerticalOptions="Center">
+            <Border Grid.Row="0">
                 <StackLayout>
                     <Label Text="Auswahl"
                            FontSize="Medium"
                            FontAttributes="Bold" />
 
-                    <BoxView />
+                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
                     <ListView HeightRequest="200"
                               ItemsSource="{Binding Mode=TwoWay, Path=Dynos}"
-                              SelectedItem="{Binding Mode=TwoWay, Path=Dyno}"
-                              RowHeight="50">
+                              SelectedItem="{Binding Mode=TwoWay, Path=Dyno}">
                         <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <customcomponents:CustomViewCell SelectedBackgroundColor="{DynamicResource DesignSelection}">
-                                    <StackLayout>
-                                        <Label Text="{Binding DynoName}"
-                                               FontAttributes="Bold"
-                                               Margin="0, 0, 0, -5" />
-                                        <Label Text="{Binding DynoBeschreibung}" />
-                                    </StackLayout>
-                                </customcomponents:CustomViewCell>
+                            <DataTemplate x:DataType="models:DynoModel">
+                                <TextCell Text="{Binding Name}"
+                                          Detail="{Binding Beschreibung}" />
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
 
                     <Grid Margin="5, 0, 0, 0">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="auto" />
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
 
-                        <Button Grid.Column="1"
-                                VerticalOptions="CenterAndExpand"
-                                HorizontalOptions="FillAndExpand"
-                                HeightRequest="50"
-                                ImageSource="{StaticResource IconPlusCircleMultipleOutlineMedium}"
-                                Command="{Binding NewDynoCommand}">
-                        </Button>
+                        <ImageButton Grid.Column="0"
+                                     MinimumWidthRequest="50"
+                                     Source="{StaticResource IconPlusCircleMultipleOutlineMedium}"
+                                     Command="{Binding NewDynoCommand}">
+                        </ImageButton>
 
-                        <Button Grid.Column="2"
-                                VerticalOptions="CenterAndExpand"
-                                HorizontalOptions="FillAndExpand"
-                                HeightRequest="50"
-                                ImageSource="{StaticResource IconDeleteCircleOutlineMedium}"
-                                Command="{Binding DeleteDynoCommand}">
-                        </Button>
+                        <ImageButton Grid.Column="2"
+                                     MinimumWidthRequest="50"
+                                     Opacity="0.7"
+                                     BackgroundColor="{AppThemeBinding Light={StaticResource Primary600}, Dark={StaticResource Primary600}}"
+                                     Source="{StaticResource IconDeleteCircleOutlineMedium}"
+                                     Command="{Binding DeleteDynoCommand}">
+                        </ImageButton>
                     </Grid>
 
                     <Grid Margin="0, 20, 0, 0">
@@ -124,13 +109,13 @@
                 </StackLayout>
             </Border>
 
-            <Border Margin="10">
+            <Border Grid.Row="1">
                 <StackLayout>
                     <Label Text="Daten"
                            FontSize="Medium"
                            FontAttributes="Bold" />
 
-                    <BoxView />
+                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -295,6 +280,6 @@
                     WidthRequest="100"
                     HeightRequest="60">
             </Button>-->
-        </StackLayout>
+        </Grid>
     </ScrollView>
 </ContentPage>
