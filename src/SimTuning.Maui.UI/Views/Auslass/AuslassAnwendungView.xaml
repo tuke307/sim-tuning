@@ -11,15 +11,25 @@
     </ContentView.Resources>
 
     <ScrollView>
-        <StackLayout>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
 
             <!--  DATEN  -->
-            <Border Margin="10">
+            <Border Grid.Row="0">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Daten" />
 
-                    <BoxView />
+                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
                     <StackLayout Orientation="Horizontal">
                         <Entry Keyboard="Numeric"
@@ -72,10 +82,6 @@
                                 HorizontalOptions="StartAndExpand"
                                 SelectedItem="{Binding VehicleMotorAuslassLaengeLUnit}"
                                 VerticalOptions="CenterAndExpand" />
-                        <!--<Label  VerticalOptions="Center"
-                               Margin="5, 0, 0, 0">
-                            mm
-                        </Label>-->
                     </StackLayout>
 
                     <StackLayout Orientation="Horizontal">
@@ -102,21 +108,17 @@
                                 HorizontalOptions="StartAndExpand"
                                 SelectedItem="{Binding VehicleMotorAuslassFlaecheAUnit}"
                                 VerticalOptions="CenterAndExpand" />
-                        <!--<Label  VerticalOptions="Center"
-                               Margin="5, 0, 0, 0">
-                            mm²
-                        </Label>-->
                     </StackLayout>
                 </StackLayout>
             </Border>
 
             <!--  Krümmer  -->
-            <Border Margin="10">
+            <Border Grid.Row="1">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Krümmer" />
 
-                    <BoxView />
+                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
                     <Label Margin="0,10,0,0"
                            Text="Drehmoment(Krümmer)- Faktor" />
@@ -138,6 +140,7 @@
                                HorizontalTextAlignment="End"
                                Text="flach" />
                     </Grid>
+                    
                     <Slider Margin="0,-10,0,10"
                             HorizontalOptions="FillAndExpand"
                             Maximum="12"
@@ -159,12 +162,12 @@
             </Border>
 
             <!--  Mittelteil  -->
-            <Border Margin="10">
+            <Border Grid.Row="2">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Mittelteil" />
 
-                    <BoxView />
+                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
                     <Label Margin="0,10,0,0"
                            Text="Drehmoment(Mitelteil)- Faktor" />
@@ -195,12 +198,12 @@
             </Border>
 
             <!--  Gegenkonus  -->
-            <Border Margin="10">
+            <Border Grid.Row="3">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Gegenkonus" />
 
-                    <BoxView />
+                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
                     <StackLayout Orientation="Horizontal">
 
@@ -218,12 +221,12 @@
             </Border>
 
             <!--  Endrohr  -->
-            <Border Margin="10">
+            <Border Grid.Row="4">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Winkel" />
 
-                    <BoxView />
+                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
                     <StackLayout Orientation="Horizontal">
 
@@ -238,10 +241,6 @@
                                 HorizontalOptions="StartAndExpand"
                                 SelectedItem="{Binding VehicleMotorAuslassAuspuffEndrohrDUnit}"
                                 VerticalOptions="CenterAndExpand" />
-                        <!--<Label  Margin="5, 0, 0, 0"
-                               VerticalOptions="Center">
-                            mm
-                        </Label>-->
                     </StackLayout>
 
                     <StackLayout Orientation="Horizontal">
@@ -257,22 +256,18 @@
                                 HorizontalOptions="StartAndExpand"
                                 SelectedItem="{Binding VehicleMotorAuslassAuspuffEndrohrLUnit}"
                                 VerticalOptions="CenterAndExpand" />
-                        <!--<Label  Margin="5, 0, 0, 0"
-                               VerticalOptions="Center">
-                            mm
-                        </Label>-->
                     </StackLayout>
                 </StackLayout>
             </Border>
 
             <!--  DIFFUSOR  -->
-            <Border Margin="10">
+            <Border Grid.Row="5">
                 <StackLayout>
 
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Diffusor" />
 
-                    <BoxView />
+                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
                     <!--<RadioButtonGroup x:Name="radioButtonGroup"
                                       ItemsSource="{Binding DiffStages}"
@@ -503,13 +498,13 @@
             </Border>
 
             <!--  ERGEBNIS  -->
-            <Border Margin="10">
+            <Border Grid.Row="6">
                 <StackLayout>
 
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Ergebnis" />
 
-                    <BoxView />
+                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
                     <Button Margin="10"
                             Command="{Binding CalculateCommand}"
@@ -674,13 +669,14 @@
                     </StackLayout>
                 </StackLayout>
             </Border>
-
-            <Border Margin="10">
+            
+            <!--  hilfe  -->
+            <Border Grid.Row="7">
                 <StackLayout>
                     <Label Style="{StaticResource LabelTitleStyle}"
                            Text="Hilfe" />
 
-                    <BoxView />
+                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
                     <Picker ItemsSource="{Binding Mode=OneTime, Path=HelperVehicles}"
                             ItemDisplayBinding="{Binding Name}"
@@ -769,6 +765,6 @@
                             WidthRequest="100" />
                 </StackLayout>
             </Border>
-        </StackLayout>
+        </Grid>
     </ScrollView>
 </ContentView>

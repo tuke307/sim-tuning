@@ -11,9 +11,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Border Grid.Row="0"
-                Margin="20, 10, 20, 10"
-                HorizontalOptions="FillAndExpand">
+        <Border Grid.Row="0">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
@@ -26,6 +24,7 @@
 
                 <Image Grid.RowSpan="2"
                        Grid.Column="0"
+                       Margin="0,0,20,0"
                        Source="{StaticResource IconPencilMedium}" />
 
                 <Label Grid.Column="1"
@@ -48,9 +47,7 @@
             </Grid>
         </Border>
 
-        <Border Grid.Row="1"
-                Margin="20, 10, 20, 10"
-                HorizontalOptions="FillAndExpand">
+        <Border Grid.Row="1">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
@@ -63,6 +60,7 @@
 
                 <Image Grid.RowSpan="2"
                        Grid.Column="0"
+                       Margin="0,0,20,0"
                        Source="{StaticResource IconAtvMedium}" />
 
                 <Label Grid.Column="1"
@@ -84,6 +82,5 @@
                         Clicked="OnButtonVehiclesClicked" />
             </Grid>
         </Border>
-
     </Grid>
 </ContentPage>

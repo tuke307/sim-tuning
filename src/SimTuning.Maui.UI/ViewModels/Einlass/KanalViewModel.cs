@@ -1,16 +1,13 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
-using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
+using SimTuning.Core;
 using SimTuning.Core.Models;
 using SimTuning.Core.ModuleLogic;
 using SimTuning.Core.Services;
-using SimTuning.Maui.UI.Services;
 using SimTuning.Data.Models;
 using System.Collections.ObjectModel;
-using System.Linq;
 using UnitsNet.Units;
-using SimTuning.Core;
 
 namespace SimTuning.Maui.UI.ViewModels.Einlass
 {
@@ -18,7 +15,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einlass
     {
         public KanalViewModel(
             ILogger<KanalViewModel> logger,
-            INavigationService navigationService,
             IVehicleService vehicleService)
         {
             this._logger = logger;
@@ -33,7 +29,7 @@ namespace SimTuning.Maui.UI.ViewModels.Einlass
             this.Vehicle.Motor = new MotorModel();
             this.Vehicle.Motor.Einlass = new EinlassModel();
 
-            this.UnitResonanzlaenge = this.LengthQuantityUnits.Where(x => x.UnitEnumValue.Equals(LengthUnit.Millimeter)).First();
+            this.ResonanzlaengeUnit = this.LengthQuantityUnits.Where(x => x.UnitEnumValue.Equals(LengthUnit.Millimeter)).First();
 
             this.HelperVehicles = new ObservableCollection<VehiclesModel>(_vehicleService.RetrieveVehicles());
 
@@ -105,7 +101,7 @@ namespace SimTuning.Maui.UI.ViewModels.Einlass
 
         private double? _resonanzlaenge;
 
-        private UnitListItem _unitResonanzlaenge;
+        private UnitListItem _resonanzlaengeUnit;
 
         private VehiclesModel _vehicle;
 
@@ -155,14 +151,14 @@ namespace SimTuning.Maui.UI.ViewModels.Einlass
             set { SetProperty(ref _resonanzlaenge, value); }
         }
 
-        public UnitListItem UnitResonanzlaenge
+        public UnitListItem ResonanzlaengeUnit
         {
-            get => _unitResonanzlaenge;
+            get => _resonanzlaengeUnit;
             set
             {
-                Resonanzlaenge = Core.Helpers.Functions.UpdateValue(Resonanzlaenge, _unitResonanzlaenge, value);
+                Resonanzlaenge = Core.Helpers.Functions.UpdateValue(Resonanzlaenge, _resonanzlaengeUnit, value);
 
-                SetProperty(ref _unitResonanzlaenge, value);
+                SetProperty(ref _resonanzlaengeUnit, value);
             }
         }
 
@@ -201,7 +197,7 @@ namespace SimTuning.Maui.UI.ViewModels.Einlass
                     return;
                 }
 
-                this.Vehicle.Motor.Einlass.DurchmesserDUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
+                this.Vehicle.Motor.Einlass.DurchmesserDUnit = (UnitsNet.Units.LengthUnit?)value?.UnitEnumValue;
                 this.OnPropertyChanged(nameof(this.VehicleMotorEinlassDurchmesserD));
             }
         }
@@ -231,7 +227,7 @@ namespace SimTuning.Maui.UI.ViewModels.Einlass
                     return;
                 }
 
-                this.Vehicle.Motor.Einlass.FlaecheAUnit = (UnitsNet.Units.AreaUnit)value?.UnitEnumValue;
+                this.Vehicle.Motor.Einlass.FlaecheAUnit = (UnitsNet.Units.AreaUnit?)value?.UnitEnumValue;
                 this.OnPropertyChanged(nameof(this.VehicleMotorEinlassFlaecheA));
             }
         }
@@ -261,7 +257,7 @@ namespace SimTuning.Maui.UI.ViewModels.Einlass
                     return;
                 }
 
-                this.Vehicle.Motor.KurbelgehaeuseVUnit = (UnitsNet.Units.VolumeUnit)value?.UnitEnumValue;
+                this.Vehicle.Motor.KurbelgehaeuseVUnit = (UnitsNet.Units.VolumeUnit?)value?.UnitEnumValue;
                 this.OnPropertyChanged(nameof(this.VehicleMotorKurbelgehaeuseV));
             }
         }

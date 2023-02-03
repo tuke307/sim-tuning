@@ -1,22 +1,14 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
-using Microsoft.Extensions.Logging;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using SimTuning.Core;
 using SimTuning.Core.Helpers;
 using SimTuning.Core.Services;
-using SimTuning.Maui.UI.Services;
 using SimTuning.Data.Models;
-using System;
-using System.Collections.Generic;
+using SimTuning.Maui.UI.Services;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.IO.Compression;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Maui.ApplicationModel.DataTransfer;
-using System.Net;
-using SimTuning.Core;
 
 namespace SimTuning.Maui.UI.ViewModels.Dyno
 {
@@ -28,7 +20,7 @@ namespace SimTuning.Maui.UI.ViewModels.Dyno
             IVehicleService vehicleService)
         {
             this._logger = logger;
-            this._navigationService = navigationService ;
+            this._navigationService = navigationService;
             this._vehicleService = vehicleService;
 
             this.NewDynoCommand = new RelayCommand(this.NewDyno);
@@ -117,7 +109,7 @@ namespace SimTuning.Maui.UI.ViewModels.Dyno
         {
             using (var client = new HttpClient())
             {
-                
+
                 // TODO: client.DownloadFile("https://simtuning.tuke-productions.de/wp-content/uploads/DataExport.zip", SimTuning.Core.GeneralSettings.DataExportArchivePath);
             }
 

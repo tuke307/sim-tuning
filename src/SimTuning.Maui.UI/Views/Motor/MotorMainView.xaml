@@ -15,10 +15,14 @@
         <tabs:TabHostView SelectedIndex="{Binding Source={x:Reference Switcher}, Path=SelectedIndex, Mode=TwoWay}"
                           Grid.Row="0">
             <tabs:TabHostView.Tabs>
-                <tabs:UnderlinedTabItem Label="Umrechnungen" />
-                <tabs:UnderlinedTabItem Label="Steuerdiagramm" />
-                <tabs:UnderlinedTabItem Label="Verdichtung" />
-                <tabs:UnderlinedTabItem Label="Hubraum" />
+                <tabs:UnderlinedTabItem Label="Umrechnungen"
+                                        Style="{StaticResource UnderlinedTabItemStyle}" />
+                <tabs:UnderlinedTabItem Label="Steuerdiagramm"
+                                        Style="{StaticResource UnderlinedTabItemStyle}" />
+                <tabs:UnderlinedTabItem Label="Verdichtung"
+                                        Style="{StaticResource UnderlinedTabItemStyle}" />
+                <tabs:UnderlinedTabItem Label="Hubraum"
+                                        Style="{StaticResource UnderlinedTabItemStyle}" />
             </tabs:TabHostView.Tabs>
         </tabs:TabHostView>
 

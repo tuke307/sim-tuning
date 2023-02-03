@@ -11,27 +11,13 @@ using System.Collections.ObjectModel;
 
 namespace SimTuning.Maui.UI.ViewModels.Auslass
 {
-    /// <summary>
-    /// Auslass-Anwendung-ViewModel.
-    /// </summary>
     public class AnwendungViewModel : ViewModelBase
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AnwendungViewModel" /> class.
-        /// </summary>
-        /// <param name="logger">
-        /// <inheritdoc cref="ILogger" path="/summary/node()" />
-        /// </param>
-        /// <param name="INavigationService">
-        /// <inheritdoc cref="INavigationService" path="/summary/node()" />
-        /// </param>
         public AnwendungViewModel(
             ILogger<AnwendungViewModel> logger,
-            INavigationService navigationService,
             IVehicleService vehicleService)
         {
             this._logger = logger;
-            this._navigationService = navigationService;
             this._vehicleService = vehicleService;
 
             // Vehicle Creation
@@ -120,7 +106,6 @@ namespace SimTuning.Maui.UI.ViewModels.Auslass
 
         #region Values
 
-        protected readonly INavigationService _navigationService;
         private readonly ILogger<AnwendungViewModel> _logger;
         private readonly IVehicleService _vehicleService;
         private VehiclesModel _helperVehicle;

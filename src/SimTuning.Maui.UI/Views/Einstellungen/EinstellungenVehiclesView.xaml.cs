@@ -12,7 +12,6 @@ namespace SimTuning.Maui.UI.Views.Einstellungen
             
             BindingContext = Ioc.Default.GetRequiredService<VehiclesViewModel>();
         }
-
         public VehiclesViewModel ViewModel => (VehiclesViewModel)BindingContext;
     }
 }

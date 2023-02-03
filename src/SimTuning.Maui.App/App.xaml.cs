@@ -1,12 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Maui.Hosting;
 using SimTuning.Core.Services;
-using SimTuning.Maui.UI.ViewModels;
 using SimTuning.Data;
 using SimTuning.Maui.UI.Services;
-using SimTuning.Maui.UI.Views;
+using SimTuning.Maui.UI.ViewModels;
 
 namespace SimTuning.Maui.App
 {
