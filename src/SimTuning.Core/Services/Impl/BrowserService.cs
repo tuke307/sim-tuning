@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Devices;
+using Microsoft.Maui.Graphics;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -26,21 +27,16 @@ namespace SimTuning.Core.Services
         {
             try
             {
-                // mobile
-                if (DeviceInfo.Platform != DevicePlatform.Unknown)
+                Uri uri = new Uri(url);
+                BrowserLaunchOptions options = new BrowserLaunchOptions()
                 {
-                    await Browser.OpenAsync(url, BrowserLaunchMode.SystemPreferred);
-                }
-                // Windows
-                else
-                {
-                    var psi = new ProcessStartInfo
-                    {
-                        FileName = url,
-                        UseShellExecute = true,
-                    };
-                    Process.Start(psi);
-                }
+                    LaunchMode = BrowserLaunchMode.SystemPreferred,
+                    TitleMode = BrowserTitleMode.Show,
+                    //PreferredToolbarColor = Colors.Violet,
+                    //PreferredControlColor = Colors.SandyBrown
+                };
+                
+                await Browser.Default.OpenAsync(uri, options);
             }
             catch (Exception ex)
             {
