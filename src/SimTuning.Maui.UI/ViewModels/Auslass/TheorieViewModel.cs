@@ -17,11 +17,9 @@ namespace SimTuning.Maui.UI.ViewModels.Auslass
     {
         public TheorieViewModel(
             ILogger<TheorieViewModel> logger,
-            INavigationService navigationService,
             IVehicleService vehicleService)
         {
             this._logger = logger;
-            this._navigationService = navigationService;
             this._vehicleService = vehicleService;
 
             this.AreaQuantityUnits = new AreaQuantity();
@@ -153,7 +151,6 @@ namespace SimTuning.Maui.UI.ViewModels.Auslass
 
         #endregion Commands
 
-        protected readonly INavigationService _navigationService;
         private readonly ILogger<TheorieViewModel> _logger;
         private readonly IVehicleService _vehicleService;
         private VehiclesModel _helperVehicle;

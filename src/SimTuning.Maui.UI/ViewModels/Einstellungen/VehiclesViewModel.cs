@@ -1,15 +1,11 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
-using SimTuning.Core.Models;
-using SimTuning.Core.Services;using SimTuning.Maui.UI.Services;
-using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using SimTuning.Core;
+using SimTuning.Core.Models;
+using SimTuning.Core.Services;
+using SimTuning.Maui.UI.Services;
+using System.Collections.ObjectModel;
 
 namespace SimTuning.Maui.UI.ViewModels.Einstellungen
 {
@@ -21,7 +17,7 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
             IVehicleService vehicleService)
         {
             this._logger = logger;
-            this._navigationService = navigationService ;
+            this._navigationService = navigationService;
             this._vehicleService = vehicleService;
             //this._messenger = messenger;
 
@@ -129,7 +125,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
 
         #region Values
 
-        
         protected readonly INavigationService _navigationService;
         protected readonly IVehicleService _vehicleService;
 
@@ -262,7 +257,9 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                 // Motor refreshen
                 this.Engine = null;
 
-                //this.RaiseAllPropertiesChanged();
+                // TODO: this.RaiseAllPropertiesChanged();
+                OnPropertyChanged(nameof(VehicleName));
+                OnPropertyChanged(nameof(VehicleBeschreibung));
             }
         }
 

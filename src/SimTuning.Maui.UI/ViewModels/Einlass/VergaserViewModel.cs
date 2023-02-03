@@ -1,20 +1,13 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.Extensions.Logging;
+using SimTuning.Core;
 using SimTuning.Core.Models;
 using SimTuning.Core.ModuleLogic;
 using SimTuning.Core.Services;
-using SimTuning.Maui.UI.Services;
-using SimTuning.Data;
 using SimTuning.Data.Models;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
 using UnitsNet.Units;
-using SimTuning.Core;
 
 namespace SimTuning.Maui.UI.ViewModels.Einlass
 {
@@ -22,7 +15,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einlass
     {
         public VergaserViewModel(
             ILogger<VergaserViewModel> logger,
-            INavigationService navigationService,
             IVehicleService vehicleService)
         {
             this._logger = logger;
