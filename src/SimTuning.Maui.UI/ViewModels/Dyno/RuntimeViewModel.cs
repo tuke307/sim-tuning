@@ -26,7 +26,7 @@ namespace SimTuning.Maui.UI.ViewModels.Dyno
         public RuntimeViewModel(
             ILogger<RuntimeViewModel> logger,
             INavigationService navigationService,
-            ILocationService locationService,
+            //ILocationService locationService,
             IVehicleService vehicleService)
         {
             this._logger = logger;
@@ -35,7 +35,7 @@ namespace SimTuning.Maui.UI.ViewModels.Dyno
             // this._token =
             // messenger.SubscribeOnMainThread<MvxLocationMessage>(this.OnLocationUpdated);
 
-            this._locationService = locationService;
+            //this._locationService = locationService;
             this._navigationService = navigationService;
             this._vehicleService = vehicleService;
 

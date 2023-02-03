@@ -7,13 +7,28 @@ using Xunit;
 
 namespace SimTuning.Test
 {
-    public class MauiViewModelsTest //: IViewModelTest
+    public class MauiViewModelsTest : IViewModelTest
     {
         private readonly Mock<INavigationService> navigationServiceMock =
             new Mock<INavigationService>();
 
         private readonly Mock<IVehicleService> vehicleServiceMock =
             new Mock<IVehicleService>();
+        
+        private readonly Mock<IBrowserService> browserServiceMock =
+            new Mock<IBrowserService>();
+
+        /// <summary>
+        /// AuslassMainViewModelTest.
+        /// </summary>
+        [Fact]
+        public void AuslassMainViewModelTest()
+        {
+            // Arrange
+            var logger = new Mock<ILogger<Maui.UI.ViewModels.Auslass.MainViewModel>>();
+            var vm = new Maui.UI.ViewModels.Auslass.MainViewModel(
+                logger.Object);
+        }
 
         /// <summary>
         /// AuslassAnwendungViewModelTest.
@@ -25,22 +40,12 @@ namespace SimTuning.Test
             var logger = new Mock<ILogger<Maui.UI.ViewModels.Auslass.AnwendungViewModel>>();
             var vm = new Maui.UI.ViewModels.Auslass.AnwendungViewModel(
                 logger.Object,
-                navigationServiceMock.Object,
                 vehicleServiceMock.Object);
 
             // Act
             vm.CalculateCommand.Execute(null);
             vm.DiffusorStageCommand.Execute(null);
             vm.InsertDataCommand.Execute(null);
-        }
-        /*
-        /// <summary>
-        /// AuslassMainViewModelTest.
-        /// </summary>
-        [Fact]
-        public void AuslassMainViewModelTest()
-        {
-            var vm = new Mock<Core.ViewModels.Auslass.MainViewModel>();
         }
 
         /// <summary>
@@ -49,7 +54,12 @@ namespace SimTuning.Test
         [Fact]
         public void AuslassTheorieViewModelTest()
         {
-            var vm = new Mock<Core.ViewModels.Auslass.TheorieViewModel>();
+            // Arrange
+            var logger = new Mock<ILogger<Maui.UI.ViewModels.Auslass.TheorieViewModel>>();
+            var vm = new Maui.UI.ViewModels.Auslass.TheorieViewModel(
+                logger.Object,
+                vehicleServiceMock.Object);
+
             vm.InsertDataCommand.Execute(null);
         }
 
@@ -59,7 +69,12 @@ namespace SimTuning.Test
         [Fact]
         public void DynoAudioPlayerViewModelTest()
         {
-            var vm = new Mock<Core.ViewModels.Dyno.AudioPlayerViewModel>();
+            // Arrange
+            var logger = new Mock<ILogger<Maui.UI.ViewModels.Dyno.AudioPlayerViewModel>>();
+            var vm = new Maui.UI.ViewModels.Dyno.AudioPlayerViewModel(
+                logger.Object,
+                navigationServiceMock.Object);
+
             vm.CutBeginnCommand.Execute(null);
             vm.CutEndCommand.Execute(null);
             vm.DragCompletedCommand.Execute(null);
@@ -75,7 +90,13 @@ namespace SimTuning.Test
         [Fact]
         public void DynoAusrollenViewModelTest()
         {
-            var vm = new Mock<Core.ViewModels.Dyno.AusrollenViewModel>();
+            // Arrange
+            var logger = new Mock<ILogger<Maui.UI.ViewModels.Dyno.AusrollenViewModel>>();
+            var vm = new Maui.UI.ViewModels.Dyno.AusrollenViewModel(
+                logger.Object,
+                navigationServiceMock.Object,
+                vehicleServiceMock.Object);
+
             vm.RefreshPlotCommand.Execute(null);
             vm.ShowDiagnosisCommand.Execute(null);
         }
@@ -86,7 +107,13 @@ namespace SimTuning.Test
         [Fact]
         public void DynoBeschleunigungViewModelTest()
         {
-            var vm = new Mock<Core.ViewModels.Dyno.GeschwindigkeitViewModel>();
+            // Arrange
+            var logger = new Mock<ILogger<Maui.UI.ViewModels.Dyno.GeschwindigkeitViewModel>>();
+            var vm = new Maui.UI.ViewModels.Dyno.GeschwindigkeitViewModel(
+                logger.Object,
+                navigationServiceMock.Object,
+                vehicleServiceMock.Object);
+
             vm.RefreshPlotCommand.Execute(null);
             vm.ShowAusrollenCommand.Execute(null);
         }
@@ -97,7 +124,13 @@ namespace SimTuning.Test
         [Fact]
         public void DynoDataViewModelTest()
         {
-            var vm = new Mock<Core.ViewModels.Dyno.DataViewModel>();
+            // Arrange
+            var logger = new Mock<ILogger<Maui.UI.ViewModels.Dyno.DataViewModel>>();
+            var vm = new Maui.UI.ViewModels.Dyno.DataViewModel(
+                logger.Object,
+                navigationServiceMock.Object,
+                vehicleServiceMock.Object);
+
             vm.DeleteDynoCommand.Execute(null);
             vm.ExportDynoCommand.Execute(null);
             vm.NewDynoCommand.Execute(null);
@@ -111,7 +144,13 @@ namespace SimTuning.Test
         [Fact]
         public void DynoDiagnosisViewModelTest()
         {
-            var vm = new Mock<Core.ViewModels.Dyno.DiagnosisViewModel>();
+            // Arrange
+            var logger = new Mock<ILogger<Maui.UI.ViewModels.Dyno.DiagnosisViewModel>>();
+            var vm = new Maui.UI.ViewModels.Dyno.DiagnosisViewModel(
+                logger.Object,
+                navigationServiceMock.Object,
+                vehicleServiceMock.Object);
+
             vm.InsertVehicleCommand.Execute(null);
             vm.RefreshPlotCommand.Execute(null);
             vm.ShowSaveCommand.Execute(null);
@@ -123,7 +162,11 @@ namespace SimTuning.Test
         [Fact]
         public void DynoMainViewModelTest()
         {
-            // gibt es bei Maui nicht
+            // Arrange
+            var logger = new Mock<ILogger<Maui.UI.ViewModels.Dyno.MainViewModel>>();
+            var vm = new Maui.UI.ViewModels.Dyno.MainViewModel(
+                logger.Object,
+                navigationServiceMock.Object);
         }
 
         /// <summary>
@@ -132,7 +175,13 @@ namespace SimTuning.Test
         [Fact]
         public void DynoRuntimeViewModelTest()
         {
-            var vm = new Mock<Core.ViewModels.Dyno.RuntimeViewModel>();
+            // Arrange
+            var logger = new Mock<ILogger<Maui.UI.ViewModels.Dyno.RuntimeViewModel>>();
+            var vm = new Maui.UI.ViewModels.Dyno.RuntimeViewModel(
+                logger.Object,
+                navigationServiceMock.Object,
+                vehicleServiceMock.Object);
+
             vm.ResetAccelerationCommand.Execute(null);
             vm.ShowSpectrogramCommand.Execute(null);
             vm.StartAccelerationCommand.Execute(null);
@@ -145,7 +194,13 @@ namespace SimTuning.Test
         [Fact]
         public void DynoSpectrogramViewModelTest()
         {
-            var vm = new Mock<Core.ViewModels.Dyno.SpectrogramViewModel>();
+            // Arrange
+            var logger = new Mock<ILogger<Maui.UI.ViewModels.Dyno.SpectrogramViewModel>>();
+            var vm = new Maui.UI.ViewModels.Dyno.SpectrogramViewModel(
+                logger.Object,
+                navigationServiceMock.Object,
+                vehicleServiceMock.Object);
+
             vm.FilterPlotCommand.Execute(null);
             vm.RefreshAudioFileCommand.Execute(null);
             vm.RefreshPlotCommand.Execute(null);
@@ -159,7 +214,12 @@ namespace SimTuning.Test
         [Fact]
         public void EinlassKanalViewModelTest()
         {
-            var vm = new Mock<Core.ViewModels.Einlass.KanalViewModel>();
+            // Arrange
+            var logger = new Mock<ILogger<Maui.UI.ViewModels.Einlass.KanalViewModel>>();
+            var vm = new Maui.UI.ViewModels.Einlass.KanalViewModel(
+                logger.Object,
+                vehicleServiceMock.Object);
+
             vm.InsertDataCommand.Execute(null);
         }
 
@@ -169,7 +229,10 @@ namespace SimTuning.Test
         [Fact]
         public void EinlassMainViewModelTest()
         {
-            var vm = new Mock<Core.ViewModels.Einlass.MainViewModel>();
+            // Arrange
+            var logger = new Mock<ILogger<Maui.UI.ViewModels.Einlass.MainViewModel>>();
+            var vm = new Maui.UI.ViewModels.Einlass.MainViewModel(
+                logger.Object);
         }
 
         /// <summary>
@@ -178,7 +241,12 @@ namespace SimTuning.Test
         [Fact]
         public void EinlassVergaserViewModelTest()
         {
-            var vm = new Mock<Core.ViewModels.Einlass.VergaserViewModel>();
+            // Arrange
+            var logger = new Mock<ILogger<Maui.UI.ViewModels.Einlass.VergaserViewModel>>();
+            var vm = new Maui.UI.ViewModels.Einlass.VergaserViewModel(
+                logger.Object,
+                vehicleServiceMock.Object);
+
             vm.InsertDataCommand.Execute(null);
         }
 
@@ -188,7 +256,11 @@ namespace SimTuning.Test
         [Fact]
         public void EinstellungenApplicationViewModelTest()
         {
-            var vm = new Mock<Core.ViewModels.Einstellungen.ApplicationViewModel>();
+            // Arrange
+            var logger = new Mock<ILogger<Maui.UI.ViewModels.Einstellungen.ApplicationViewModel>>();
+            var vm = new Maui.UI.ViewModels.Einstellungen.ApplicationViewModel(
+                logger.Object,
+                navigationServiceMock.Object);
         }
 
 
@@ -198,7 +270,11 @@ namespace SimTuning.Test
         [Fact]
         public void EinstellungenMenuViewModelTest()
         {
-            var vm = new Mock<Core.ViewModels.Einstellungen.MenuViewModel>();
+            // Arrange
+            var logger = new Mock<ILogger<Maui.UI.ViewModels.Einstellungen.MenuViewModel>>();
+            var vm = new Maui.UI.ViewModels.Einstellungen.MenuViewModel(
+                logger.Object,
+                navigationServiceMock.Object);
         }
 
         /// <summary>
@@ -207,7 +283,13 @@ namespace SimTuning.Test
         [Fact]
         public void EinstellungenVehiclesViewModelTest()
         {
-            var vm = new Mock<Core.ViewModels.Einstellungen.VehiclesViewModel>();
+            // Arrange
+            var logger = new Mock<ILogger<Maui.UI.ViewModels.Einstellungen.VehiclesViewModel>>();
+            var vm = new Maui.UI.ViewModels.Einstellungen.VehiclesViewModel(
+                logger.Object,
+                navigationServiceMock.Object,
+                vehicleServiceMock.Object);
+
             vm.DeleteVehicleCommand.Execute(null);
             vm.NewVehicleCommand.Execute(null);
             vm.SaveVehicleCommand.Execute(null);
@@ -217,9 +299,15 @@ namespace SimTuning.Test
         /// Homes the home view model view model test.
         /// </summary>
         [Fact]
-        public void HomeHomeViewModelViewModelTest()
+        public void HomeViewModelViewModelTest()
         {
-            var vm = new Mock<Core.ViewModels.Home.HomeViewModel>();
+            // Arrange
+            var logger = new Mock<ILogger<Maui.UI.ViewModels.Home.HomeViewModel>>();
+            var vm = new Maui.UI.ViewModels.Home.HomeViewModel(
+                logger.Object,
+                navigationServiceMock.Object,
+                browserServiceMock.Object);
+
             vm.OpenDonateCommand.Execute(null);
             vm.OpenEmailCommand.Execute(null);
             vm.OpenInstagramCommand.Execute(null);
@@ -234,20 +322,11 @@ namespace SimTuning.Test
         [Fact]
         public void MainPageViewModelTest()
         {
-            var vm = new Mock<Core.ViewModels.MainPageViewModel>();
-            vm.ShowHomeViewModelCommand.Execute(null);
-            vm.ShowMenuViewModelCommand.Execute(null);
-        }
-
-        /// <summary>
-        /// Menus the view model test.
-        /// </summary>
-        [Fact]
-        public void MenuViewModelTest()
-        {
-            var vm = new Mock<Core.ViewModels.MenuViewModel>();
-            vm.ButtonCloseMenu.Execute(null);
-            vm.ButtonOpenMenu.Execute(null);
+            // Arrange
+            var logger = new Mock<ILogger<Maui.UI.ViewModels.MainPageViewModel>>();
+            var vm = new Maui.UI.ViewModels.MainPageViewModel(
+                logger.Object,
+                navigationServiceMock.Object);
         }
 
         /// <summary>
@@ -256,7 +335,12 @@ namespace SimTuning.Test
         [Fact]
         public void MotorHubraumViewModelTest()
         {
-            var vm = new Mock<Core.ViewModels.Motor.HubraumViewModel>();
+            // Arrange
+            var logger = new Mock<ILogger<Maui.UI.ViewModels.Motor.HubraumViewModel>>();
+            var vm = new Maui.UI.ViewModels.Motor.HubraumViewModel(
+                logger.Object,
+                navigationServiceMock.Object,
+                vehicleServiceMock.Object);
         }
 
         /// <summary>
@@ -265,7 +349,11 @@ namespace SimTuning.Test
         [Fact]
         public void MotorMainViewModelTest()
         {
-            var vm = new Mock<Core.ViewModels.Motor.MainViewModel>();
+            // Arrange
+            var logger = new Mock<ILogger<Maui.UI.ViewModels.Motor.MainViewModel>>();
+            var vm = new Maui.UI.ViewModels.Motor.MainViewModel(
+                logger.Object,
+                navigationServiceMock.Object);
         }
 
         /// <summary>
@@ -274,7 +362,13 @@ namespace SimTuning.Test
         [Fact]
         public void MotorSteuerdiagrammViewModelTest()
         {
-            var vm = new Mock<Core.ViewModels.Motor.SteuerdiagrammViewModel>();
+            // Arrange
+            var logger = new Mock<ILogger<Maui.UI.ViewModels.Motor.SteuerdiagrammViewModel>>();
+            var vm = new Maui.UI.ViewModels.Motor.SteuerdiagrammViewModel(
+                logger.Object,
+                navigationServiceMock.Object,
+                vehicleServiceMock.Object);
+
             vm.InsertReferenceCommand.Execute(null);
             vm.InsertVehicleCommand.Execute(null);
         }
@@ -285,7 +379,13 @@ namespace SimTuning.Test
         [Fact]
         public void MotorUmrechnungViewModelTest()
         {
-            var vm = new Mock<Core.ViewModels.Motor.UmrechnungenViewModel>();
+            // Arrange
+            var logger = new Mock<ILogger<Maui.UI.ViewModels.Motor.UmrechnungViewModel>>();
+            var vm = new Maui.UI.ViewModels.Motor.UmrechnungViewModel(
+                logger.Object,
+                navigationServiceMock.Object,
+                vehicleServiceMock.Object);
+
             vm.InsertDataCommand.Execute(null);
         }
 
@@ -295,9 +395,14 @@ namespace SimTuning.Test
         [Fact]
         public void MotorVerdichtungViewModelTest()
         {
-            var vm = new Mock<Core.ViewModels.Motor.VerdichtungViewModel>();
+            // Arrange
+            var logger = new Mock<ILogger<Maui.UI.ViewModels.Motor.VerdichtungViewModel>>();
+            var vm = new Maui.UI.ViewModels.Motor.VerdichtungViewModel(
+                logger.Object,
+                navigationServiceMock.Object,
+                vehicleServiceMock.Object);
+
             vm.InsertDataCommand.Execute(null);
         }
-        */
     }
 }

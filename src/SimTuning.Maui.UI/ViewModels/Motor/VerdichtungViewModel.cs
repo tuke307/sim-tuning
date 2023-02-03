@@ -1,33 +1,21 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
 namespace SimTuning.Maui.UI.ViewModels.Motor
 {
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.Logging;
     using CommunityToolkit.Mvvm.Input;
-
-    using CommunityToolkit.Mvvm.ComponentModel;
+    using Microsoft.Extensions.Logging;
+    using SimTuning.Core;
     using SimTuning.Core.Models;
     using SimTuning.Core.ModuleLogic;
-    using SimTuning.Core.Services;using SimTuning.Maui.UI.Services;
-    using SimTuning.Data;
+    using SimTuning.Core.Services;
     using SimTuning.Data.Models;
+    using SimTuning.Maui.UI.Services;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
-    using System.Threading.Tasks;
     using UnitsNet.Units;
-    using SimTuning.Core;
-
-    /// <summary>
-    /// VerdichtungViewModel.
-    /// </summary>
 
     public class VerdichtungViewModel : ViewModelBase
     {
-        /// <summary> Initializes a new instance of the <see cref="VerdichtungViewModel"/>
-        /// class. </summary> <param name="logger"><inheritdoc cref="ILogger"
-        /// path="/summary/node()" /></param> <param name="INavigationService"><inheritdoc
-        /// cref="INavigationService" path="/summary/node()" /></param
         public VerdichtungViewModel(
             ILogger<VerdichtungViewModel> logger,
             INavigationService navigationService,

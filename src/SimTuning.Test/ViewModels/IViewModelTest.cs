@@ -67,10 +67,8 @@ namespace SimTuning.Test
 
         #endregion Einstellungen
 
-        void HomeHomeViewModelViewModelTest();
+        void HomeViewModelViewModelTest();
 
         void MainPageViewModelTest();
-
-        void MenuViewModelTest();
     }
 }
