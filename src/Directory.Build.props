@@ -45,8 +45,8 @@
   <!-- Nuget configuration -->
   <ItemGroup>
     <!-- Nugets -->
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
-    <PackageReference Include="UnitsNet" Version="4.150.0" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
+    <PackageReference Include="UnitsNet" Version="5.0.0" />
     <PackageReference Include="CommunityToolkit.Maui" Version="2.0.0" />
     <PackageReference Include="Sharpnado.Maui.TaskLoaderView" Version="2.5.1" />
     <PackageReference Include="Sharpnado.Tabs.Maui" Version="3.0.1" />
