@@ -8,7 +8,6 @@
             <ResourceDictionary.MergedDictionaries>
                 <styles:Colors />
                 <styles:Global />
-                <styles:Text />
                 <styles:Icons />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
