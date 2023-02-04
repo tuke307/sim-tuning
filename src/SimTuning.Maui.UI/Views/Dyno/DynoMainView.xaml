@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SimTuning.Maui.UI.Views.Dyno.DynoMainView"
+             xmlns:tabs="http://sharpnado.com"
+             xmlns:local="clr-namespace:SimTuning.Maui.UI.Views.Dyno"
+             Title="Dyno">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--  swipable views  -->
+        <tabs:TabHostView Grid.Row="0"
+                          SelectedIndex="{Binding Source={x:Reference Switcher}, Path=SelectedIndex, Mode=TwoWay}">
+            <tabs:TabHostView.Tabs>
+                <tabs:UnderlinedTabItem Style="{StaticResource UnderlinedTabItemStyle}"
+                                        Label="Datensatz" />
+                <tabs:UnderlinedTabItem Style="{StaticResource UnderlinedTabItemStyle}"
+                                        Label="Spectrogram" />
+                <tabs:UnderlinedTabItem Style="{StaticResource UnderlinedTabItemStyle}"
+                                        Label="Diagnose" />
+            </tabs:TabHostView.Tabs>
+        </tabs:TabHostView>
+
+        <tabs:ViewSwitcher x:Name="Switcher"
+                           Grid.Row="1"
+                           Animate="True">
+            <local:DynoDataView />
+            <local:DynoSpectrogramView />
+            <local:DynoDiagnosisView />
+        </tabs:ViewSwitcher>
+    </Grid>
+</ContentPage>
