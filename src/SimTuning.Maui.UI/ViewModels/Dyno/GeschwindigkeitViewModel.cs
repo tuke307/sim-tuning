@@ -1,15 +1,16 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
-using Microsoft.Extensions.Logging;
-using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using LiveChartsCore;
+using Microsoft.Extensions.Logging;
 using SimTuning.Core.ModuleLogic;
-using SimTuning.Core.Services;using SimTuning.Maui.UI.Services;
+using SimTuning.Core.Services;
 using SimTuning.Data;
 using SimTuning.Data.Models;
+using SimTuning.Maui.UI.Services;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using LiveChartsCore;
 
 namespace SimTuning.Maui.UI.ViewModels.Dyno
 {
@@ -21,7 +22,7 @@ namespace SimTuning.Maui.UI.ViewModels.Dyno
             IVehicleService vehicleService)
         {
             this._logger = logger;
-            this._navigationService = navigationService ;
+            this._navigationService = navigationService;
             this._vehicleService = vehicleService;
 
             this.ShowAusrollenCommand = new AsyncRelayCommand(async () => await _navigationService.Navigate<SimTuning.Maui.UI.Views.Dyno.DynoAusrollenView>(null));
@@ -50,7 +51,7 @@ namespace SimTuning.Maui.UI.ViewModels.Dyno
 
         public ISeries PlotGeschwindigkeit
         {
-            get => DynoLogic.PlotGeschwindigkeit;
+            get => null;//DynoLogic.PlotGeschwindigkeit;
         }
 
         public IAsyncRelayCommand RefreshPlotCommand { get; set; }
@@ -77,6 +78,33 @@ namespace SimTuning.Maui.UI.ViewModels.Dyno
         }
 
         /// <summary>
+        /// Aktualisiert den Beschleunigungs-Graphen.
+        /// </summary>
+        /// <returns></returns>
+        protected async Task RefreshPlot()
+        {
+            if (!this.CheckDynoData())
+            {
+                return;
+            }
+
+            try
+            {
+                //var loadingDialog = await DisplayAlert(message: SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "MES_LOAD")).ConfigureAwait(false);
+
+                //DynoLogic.GetGeschwindigkeitsGraphFitted(this.Dyno?.Geschwindigkeit.ToList());
+
+                this.OnPropertyChanged(nameof(PlotGeschwindigkeit));
+
+                //await loadingDialog.DismissAsync().ConfigureAwait(false);
+            }
+            catch (Exception exc)
+            {
+                _logger.LogError("Fehler bei RefreshPlot: ", exc);
+            }
+        }
+
+        /// <summary>
         /// Überprüft ob wichtige Dyno-Audio-Daten vorhanden sind.
         /// </summary>
         private bool CheckDynoData()
@@ -96,33 +124,6 @@ namespace SimTuning.Maui.UI.ViewModels.Dyno
             }
 
             return true;
-        }
-
-        /// <summary>
-        /// Aktualisiert den Beschleunigungs-Graphen.
-        /// </summary>
-        /// <returns></returns>
-        protected async Task RefreshPlot()
-        {
-            if (!this.CheckDynoData())
-            {
-                return;
-            }
-
-            try
-            {
-                //var loadingDialog = await DisplayAlert(message: SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "MES_LOAD")).ConfigureAwait(false);
-
-                DynoLogic.GetGeschwindigkeitsGraphFitted(this.Dyno?.Geschwindigkeit.ToList());
-
-                this.OnPropertyChanged(nameof(PlotGeschwindigkeit));
-
-                //await loadingDialog.DismissAsync().ConfigureAwait(false);
-            }
-            catch (Exception exc)
-            {
-                _logger.LogError("Fehler bei RefreshPlot: ", exc);
-            }
         }
 
         #endregion Methods

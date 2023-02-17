@@ -50,7 +50,7 @@ namespace SimTuning.Maui.App
                     .AddTransient<Maui.UI.ViewModels.Einstellungen.VehiclesViewModel>()
 
                     .AddTransient<Maui.UI.ViewModels.Dyno.MainViewModel>()
-                    .AddTransient<Maui.UI.ViewModels.Dyno.AudioPlayerViewModel>()
+                    //.AddTransient<Maui.UI.ViewModels.Dyno.AudioPlayerViewModel>()
                     .AddTransient<Maui.UI.ViewModels.Dyno.AusrollenViewModel>()
                     .AddTransient<Maui.UI.ViewModels.Dyno.DataViewModel>()
                     .AddTransient<Maui.UI.ViewModels.Dyno.DiagnosisViewModel>()

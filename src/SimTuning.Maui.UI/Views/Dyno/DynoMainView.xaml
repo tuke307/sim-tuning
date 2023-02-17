@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<ContentPage x:Class="SimTuning.Maui.UI.Views.Dyno.DynoMainView"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SimTuning.Maui.UI.Views.Dyno.DynoMainView"
              xmlns:tabs="http://sharpnado.com"
              xmlns:local="clr-namespace:SimTuning.Maui.UI.Views.Dyno"
+             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels.Dyno"
+             x:DataType="vm:MainViewModel"
              Title="Dyno">
     <Grid>
         <Grid.RowDefinitions>
@@ -26,6 +28,7 @@
 
         <tabs:ViewSwitcher x:Name="Switcher"
                            Grid.Row="1"
+                           SelectedIndex="{Binding DynoTabIndex, Mode=TwoWay}"
                            Animate="True">
             <local:DynoDataView />
             <local:DynoSpectrogramView />

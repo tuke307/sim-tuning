@@ -1,7 +1,11 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
+using CommunityToolkit.Maui.Alerts;
+using Microsoft.Maui.ApplicationModel;
+using Microsoft.Maui.Devices;
 using SimTuning.Core.Converters;
 using SkiaSharp;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -13,9 +17,6 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using static Microsoft.Maui.ApplicationModel.Permissions;
-using CommunityToolkit.Maui.Alerts;
-using Microsoft.Maui.ApplicationModel;
-using System.Collections;
 
 namespace SimTuning.Core.Helpers
 {
@@ -24,68 +25,6 @@ namespace SimTuning.Core.Helpers
     /// </summary>
     public static class Functions
     {
-        /// <summary>
-        /// Gets the permission.
-        /// </summary>
-        /// <typeparam name="TPermission">The type of the permission.</typeparam>
-        /// <returns></returns>
-        public static async Task<bool> GetPermission<TPermission>()
-            where TPermission : BasePermission, new()
-        {
-            var hasPermission = await CheckStatusAsync<TPermission>().ConfigureAwait(true);
-
-            if (hasPermission == PermissionStatus.Granted)
-            {
-                return true;
-            }
-            else if (hasPermission == PermissionStatus.Disabled)
-            {
-                return false;
-            }
-
-            var result = await RequestAsync<TPermission>().ConfigureAwait(true);
-            if (result != PermissionStatus.Granted)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// Shows the snackbar dialog.
-        /// </summary>
-        /// <param name="content">The content.</param>
-        public static async void ShowSnackbarDialog(object content)
-        {
-            if (content == null)
-            {
-                return;
-            }
-
-            if (content.GetType().IsGenericType && content is IEnumerable)
-            {
-                List<string> messages = (List<string>)content;
-
-                foreach (var message in messages)
-                {
-                    await Snackbar
-                        .Make(
-                        message: message,
-                        duration: TimeSpan.FromSeconds(3))
-                        .Show();
-                }
-            }
-            else
-            {
-                await Snackbar
-                    .Make(
-                    message: content.ToString(),
-                    duration: TimeSpan.FromSeconds(3))
-                    .Show();
-            }
-        }
-
         /// <summary>
         /// Create a ZIP file of the files provided.
         /// </summary>
@@ -128,6 +67,60 @@ namespace SimTuning.Core.Helpers
         }
 
         /// <summary>
+        /// Gets the permission.
+        /// </summary>
+        /// <typeparam name="TPermission">The type of the permission.</typeparam>
+        /// <returns></returns>
+        public static async Task<PermissionStatus> GetPermission<TPermission>()
+            where TPermission : BasePermission, new()
+        {
+            PermissionStatus status = await CheckStatusAsync<TPermission>();
+
+            if (status == PermissionStatus.Granted)
+            {
+                return status;
+            }
+
+            if (status == PermissionStatus.Denied && DeviceInfo.Platform == DevicePlatform.iOS)
+            {
+                // Prompt the user to turn on in settings On iOS once a permission has been denied it may not be requested again from the application
+                if (typeof(TPermission) is Permissions.StorageRead)
+                    Functions.ShowSnackbarDialog(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_STORAGEREAD"));
+
+                if (typeof(TPermission) is Permissions.StorageWrite)
+                    Functions.ShowSnackbarDialog(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_STORAGEWRITE"));
+
+                if (typeof(TPermission) is Permissions.LocationWhenInUse)
+                    Functions.ShowSnackbarDialog(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_LOCATION"));
+
+                if (typeof(TPermission) is Permissions.Microphone)
+                    Functions.ShowSnackbarDialog(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_MICROPHONE"));
+
+                return status;
+            }
+
+            if (Permissions.ShouldShowRationale<TPermission>())
+            {
+                // Prompt the user with additional information as to why the permission is needed
+                if (typeof(TPermission) is Permissions.StorageRead)
+                    Functions.ShowSnackbarDialog(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_STORAGEREAD"));
+
+                if (typeof(TPermission) is Permissions.StorageWrite)
+                    Functions.ShowSnackbarDialog(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_STORAGEWRITE"));
+
+                if (typeof(TPermission) is Permissions.LocationWhenInUse)
+                    Functions.ShowSnackbarDialog(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_LOCATION"));
+
+                if (typeof(TPermission) is Permissions.Microphone)
+                    Functions.ShowSnackbarDialog(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_MICROPHONE"));
+            }
+
+            var result = await RequestAsync<Permissions.StorageWrite>();
+
+            return status;
+        }
+
+        /// <summary>
         /// Berechnet den Punkt auf einem beliebigen Kreis.
         /// </summary>
         /// <param name="angle">The angle.</param>
@@ -153,6 +146,18 @@ namespace SimTuning.Core.Helpers
             return coordinates;
         }
 
+        public static List<int> GetPowersOf2(int startN, int maxN)
+        {
+            List<int> ints = new List<int>();
+
+            for (int i = startN; i < maxN; i++)
+            {
+                ints.Add((int)Math.Pow(2, i));
+            }
+
+            return ints;
+        }
+
         /// <summary>
         /// Rotiert die SKBitmap.
         /// </summary>
@@ -171,6 +176,40 @@ namespace SimTuning.Core.Helpers
             surface.DrawBitmap(bitmap, 0, 0);
 
             return rotated;
+        }
+
+        /// <summary>
+        /// Shows the snackbar dialog.
+        /// </summary>
+        /// <param name="content">The content.</param>
+        public static async void ShowSnackbarDialog(object content)
+        {
+            if (content == null)
+            {
+                return;
+            }
+
+            if (content.GetType().IsGenericType && content is IEnumerable)
+            {
+                List<string> messages = (List<string>)content;
+
+                foreach (var message in messages)
+                {
+                    await Snackbar
+                        .Make(
+                        message: message,
+                        duration: TimeSpan.FromSeconds(3))
+                        .Show();
+                }
+            }
+            else
+            {
+                await Snackbar
+                    .Make(
+                    message: content.ToString(),
+                    duration: TimeSpan.FromSeconds(3))
+                    .Show();
+            }
         }
 
         /// <summary>

@@ -1,184 +1,183 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             Title="Datensatz"
              x:Class="SimTuning.Maui.UI.Views.Dyno.DynoDataView"
              xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels.Dyno"
              xmlns:models="clr-namespace:SimTuning.Data.Models;assembly=SimTuning.Data"
              x:DataType="vm:DataViewModel">
-    <ScrollView>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
 
-            <Border Grid.Row="0">
-                <StackLayout>
-                    <Label Text="Auswahl"
-                           FontSize="Medium"
-                           FontAttributes="Bold" />
+        <Border Grid.Row="0">
+            <StackLayout>
+                <Label Text="Auswahl"
+                       FontSize="Medium"
+                       FontAttributes="Bold" />
 
-                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+                <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
-                    <ListView HeightRequest="200"
-                              ItemsSource="{Binding Mode=TwoWay, Path=Dynos}"
-                              SelectedItem="{Binding Mode=TwoWay, Path=Dyno}">
-                        <ListView.ItemTemplate>
-                            <DataTemplate x:DataType="models:DynoModel">
-                                <TextCell Text="{Binding Name}"
-                                          Detail="{Binding Beschreibung}" />
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
+                <ListView HeightRequest="200"
+                          ItemsSource="{Binding Mode=TwoWay, Path=Dynos}"
+                          SelectedItem="{Binding Mode=TwoWay, Path=Dyno}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="models:DynoModel">
+                            <TextCell Text="{Binding Name}"
+                                      Detail="{Binding Beschreibung}" />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
 
-                    <Grid Margin="5, 0, 0, 0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="auto" />
-                        </Grid.ColumnDefinitions>
+                <Grid Margin="5, 0, 0, 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
 
-                        <ImageButton Grid.Column="0"
-                                     MinimumWidthRequest="50"
-                                     Source="{StaticResource IconPlusCircleMultipleOutlineMedium}"
-                                     Command="{Binding NewDynoCommand}">
-                        </ImageButton>
+                    <ImageButton Grid.Column="0"
+                                 MinimumWidthRequest="50"
+                                 Source="{StaticResource IconPlusCircleMultipleOutlineMedium}"
+                                 Command="{Binding NewDynoCommand}">
+                    </ImageButton>
 
-                        <ImageButton Grid.Column="2"
-                                     MinimumWidthRequest="50"
-                                     Opacity="0.7"
-                                     BackgroundColor="{AppThemeBinding Light={StaticResource Primary600}, Dark={StaticResource Primary600}}"
-                                     Source="{StaticResource IconDeleteCircleOutlineMedium}"
-                                     Command="{Binding DeleteDynoCommand}">
-                        </ImageButton>
-                    </Grid>
+                    <ImageButton Grid.Column="2"
+                                 MinimumWidthRequest="50"
+                                 Opacity="0.7"
+                                 BackgroundColor="{AppThemeBinding Light={StaticResource Primary600}, Dark={StaticResource Primary600}}"
+                                 Source="{StaticResource IconDeleteCircleOutlineMedium}"
+                                 Command="{Binding DeleteDynoCommand}">
+                    </ImageButton>
+                </Grid>
 
-                    <Grid Margin="0, 20, 0, 0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1.5*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
+                <Grid Margin="0, 20, 0, 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1.5*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
 
-                        <RadioButton x:Name="RB1"
-                                     Grid.Column="0"
-                                     Grid.Row="0"
-                                     Content="neues Fahrzeug erstellen"
-                                     IsChecked="{Binding Mode=TwoWay, Path=CreateNewVehicle}">
-                            <RadioButton.Triggers>
-                                <DataTrigger TargetType="RadioButton"
-                                             Binding="{Binding Source={x:Reference RB2},Path=IsChecked}"
-                                             Value="true">
-                                    <Setter Property="IsChecked"
-                                            Value="false" />
-                                </DataTrigger>
-                            </RadioButton.Triggers>
-                        </RadioButton>
+                    <RadioButton x:Name="RB1"
+                                 Grid.Column="0"
+                                 Grid.Row="0"
+                                 Content="neues Fahrzeug erstellen"
+                                 IsChecked="{Binding Mode=TwoWay, Path=CreateNewVehicle}">
+                        <RadioButton.Triggers>
+                            <DataTrigger TargetType="RadioButton"
+                                         Binding="{Binding Source={x:Reference RB2},Path=IsChecked}"
+                                         Value="true">
+                                <Setter Property="IsChecked"
+                                        Value="false" />
+                            </DataTrigger>
+                        </RadioButton.Triggers>
+                    </RadioButton>
 
-                        <RadioButton x:Name="RB2"
-                                     Grid.Column="0"
-                                     Grid.Row="1"
-                                     VerticalOptions="CenterAndExpand"
-                                     Content="vorhandenes Fahrzeug verknüpfen"
-                                     IsChecked="{Binding Mode=TwoWay, Path=TakeExistingVehicle}">
-                            <RadioButton.Triggers>
-                                <DataTrigger TargetType="RadioButton"
-                                             Binding="{Binding Source={x:Reference RB1},Path=IsChecked}"
-                                             Value="true">
-                                    <Setter Property="IsChecked"
-                                            Value="false" />
-                                </DataTrigger>
-                            </RadioButton.Triggers>
-                        </RadioButton>
-
-                        <Picker  Grid.Column="1"
+                    <RadioButton x:Name="RB2"
+                                 Grid.Column="0"
                                  Grid.Row="1"
                                  VerticalOptions="CenterAndExpand"
-                                 Title="Fahrzeug"
-                                 IsEnabled="{Binding Source={x:Reference Name=RB2}, Path=IsChecked}"
-                                 ItemsSource="{Binding Mode=TwoWay, Path=Vehicles}"
-                                 SelectedItem="{Binding Mode=TwoWay, Path=Vehicle}"
-                                 ItemDisplayBinding="{Binding Name}">
-                        </Picker>
-                    </Grid>
-                </StackLayout>
-            </Border>
+                                 Content="vorhandenes Fahrzeug verknüpfen"
+                                 IsChecked="{Binding Mode=TwoWay, Path=TakeExistingVehicle}">
+                        <RadioButton.Triggers>
+                            <DataTrigger TargetType="RadioButton"
+                                         Binding="{Binding Source={x:Reference RB1},Path=IsChecked}"
+                                         Value="true">
+                                <Setter Property="IsChecked"
+                                        Value="false" />
+                            </DataTrigger>
+                        </RadioButton.Triggers>
+                    </RadioButton>
 
-            <Border Grid.Row="1">
-                <StackLayout>
-                    <Label Text="Daten"
-                           FontSize="Medium"
-                           FontAttributes="Bold" />
+                    <Picker  Grid.Column="1"
+                             Grid.Row="1"
+                             VerticalOptions="CenterAndExpand"
+                             Title="Fahrzeug"
+                             IsEnabled="{Binding Source={x:Reference Name=RB2}, Path=IsChecked}"
+                             ItemsSource="{Binding Mode=TwoWay, Path=Vehicles}"
+                             SelectedItem="{Binding Mode=TwoWay, Path=Vehicle}"
+                             ItemDisplayBinding="{Binding Name}">
+                    </Picker>
+                </Grid>
+            </StackLayout>
+        </Border>
 
-                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+        <Border Grid.Row="1">
+            <StackLayout>
+                <Label Text="Daten"
+                       FontSize="Medium"
+                       FontAttributes="Bold" />
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
+                <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
-                        <StackLayout Grid.Column="0"
-                                     Grid.RowSpan="3">
-                            <Entry Placeholder="Name"
-                                   Text="{Binding Mode=TwoWay, Path=DynoName}"
-                                   Margin="5">
-                            </Entry>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
 
-                            <Editor Placeholder="Beschreibung"
-                                    Text="{Binding Mode=TwoWay, Path=DynoBeschreibung}"
-                                    HeightRequest="150"
-                                    Margin="5">
-                            </Editor>
-                        </StackLayout>
+                    <StackLayout Grid.Column="0"
+                                 Grid.RowSpan="3">
+                        <Entry Placeholder="Name"
+                               Text="{Binding Mode=TwoWay, Path=DynoName}"
+                               Margin="5">
+                        </Entry>
 
-                        <Button Margin="5"
-                                Grid.Column="1"
-                                Grid.Row="0"
-                                VerticalOptions="Center"
-                                HorizontalOptions="FillAndExpand"
-                                ImageSource="{StaticResource IconContentSaveMedium}"
-                                IsEnabled="{Binding Mode=OneWay, Path=SaveButton}"
-                                Command="{Binding SaveDynoCommand}"
-                                HeightRequest="60">
-                        </Button>
+                        <Editor Placeholder="Beschreibung"
+                                Text="{Binding Mode=TwoWay, Path=DynoBeschreibung}"
+                                HeightRequest="150"
+                                Margin="5">
+                        </Editor>
+                    </StackLayout>
 
-                        <Button Margin="5"
-                                Grid.Column="1"
-                                Grid.Row="1"
-                                VerticalOptions="Center"
-                                HorizontalOptions="FillAndExpand"
-                                ImageSource="{StaticResource IconBackupRestoreMedium}"
-                                Command="{Binding ExportDynoCommand}"
-                                HeightRequest="60">
-                        </Button>
+                    <Button Margin="5"
+                            Grid.Column="1"
+                            Grid.Row="0"
+                            VerticalOptions="Center"
+                            HorizontalOptions="FillAndExpand"
+                            ImageSource="{StaticResource IconContentSaveMedium}"
+                            IsEnabled="{Binding Mode=OneWay, Path=SaveButton}"
+                            Command="{Binding SaveDynoCommand}"
+                            HeightRequest="60">
+                    </Button>
 
-                        <Button Margin="5"
-                                Grid.Column="1"
-                                Grid.Row="2"
-                                VerticalOptions="Center"
-                                HorizontalOptions="FillAndExpand"
-                                ImageSource="{StaticResource IconFileImportOutlineMedium}"
-                                Command="{Binding ImportDynoCommand}"
-                                HeightRequest="60">
-                        </Button>
-                    </Grid>
+                    <Button Margin="5"
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            VerticalOptions="Center"
+                            HorizontalOptions="FillAndExpand"
+                            ImageSource="{StaticResource IconBackupRestoreMedium}"
+                            Command="{Binding ExportDynoCommand}"
+                            HeightRequest="60">
+                    </Button>
 
-                    <!--Audio-->
-                    <!--<Expander>
+                    <Button Margin="5"
+                            Grid.Column="1"
+                            Grid.Row="2"
+                            VerticalOptions="Center"
+                            HorizontalOptions="FillAndExpand"
+                            ImageSource="{StaticResource IconFileImportOutlineMedium}"
+                            Command="{Binding ImportDynoCommand}"
+                            HeightRequest="60">
+                    </Button>
+                </Grid>
+
+                <!--Audio-->
+                <!--<Expander>
                         <Expander.Header>
-                            <Border >
-                                <Label >
+                            <Border>
+                                <Label>
                                     Drehzahl
                                 </Label>
                             </Border>
@@ -204,12 +203,12 @@
                     </Expander>
 
                     -->
-                    <!--PS-->
-                    <!--
+                <!--PS-->
+                <!--
                     <Expander>
                         <Expander.Header>
-                            <Border >
-                                <Label >
+                            <Border>
+                                <Label>
                                     PS
                                 </Label>
                             </Border>
@@ -234,11 +233,11 @@
                         </HorizontalStackLayout>
                     </Expander>-->
 
-                    <!--Nm-->
-                    <!--<Expander>
+                <!--Nm-->
+                <!--<Expander>
                         <Expander.Header>
-                            <Border >
-                                <Label >
+                            <Border>
+                                <Label>
                                     Nm
                                 </Label>
                             </Border>
@@ -248,8 +247,7 @@
                                 <StackLayout Orientation="Horizontal"
                                              Margin="20, 0, 0, 0">
                                     <Entry Keyboard="Choice"
-                                                                
-                                                                
+
                                                                 Placeholder="X"
                                                                 WidthRequest="100"
                                                                 ItemsSource="{Binding Dyno.DynoNm}"
@@ -257,8 +255,7 @@
                                     </Entry>
 
                                     <Entry Keyboard="Choice"
-                                                                
-                                                                
+
                                                                 Placeholder="Y"
                                                                 WidthRequest="100"
                                                                 ItemsSource="{Binding Dyno.DynoNm}"
@@ -268,18 +265,13 @@
                             </DataTemplate>
                         </HorizontalStackLayout>
                     </Expander>-->
-                </StackLayout>
-            </Border>
+            </StackLayout>
+        </Border>
 
-            <!--<Button 
-                    Margin="15"
-                    VerticalOptions="Center"
-                    HorizontalOptions="End"
-                    ImageSource="{StaticResource IconChevronRightMedium}"
-                    Command="{Binding ShowSettingsCommand}"
-                    WidthRequest="100"
-                    HeightRequest="60">
-            </Button>-->
-        </Grid>
-    </ScrollView>
-</ContentPage>
+        <Button Margin="5"
+                Grid.Row="2"
+                ImageSource="{StaticResource IconChevronRightMedium}"
+                Clicked="Button_Clicked">
+        </Button>
+    </Grid>
+</ContentView>

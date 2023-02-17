@@ -129,13 +129,16 @@
   <data name="ERR_NODATA" xml:space="preserve">
     <value>Please select a record to continue!</value>
   </data>
-  <data name="ERR_NOSUPPORT" xml:space="preserve">
-    <value>This platform is not supported!</value>
+  <data name="ERR_ONLYMOBILE" xml:space="preserve">
+    <value>This is feature is only for mobile devices (Android, iOS).</value>
   </data>
   <data name="MES_LOAD" xml:space="preserve">
     <value>Loading</value>
   </data>
-  <data name="MES_PRO" xml:space="preserve">
-    <value>Buy the Pro version to change presets</value>
+  <data name="ERR_STORAGEREAD" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="ERR_STORAGEWRITE" xml:space="preserve">
+    <value>1</value>
   </data>
 </root>
