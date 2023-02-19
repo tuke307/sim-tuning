@@ -1,5 +1,5 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
-namespace SimTuning.Maui.UI.ViewModels.Motor
+namespace SimTuning.Maui.UI.ViewModels
 {
     using CommunityToolkit.Mvvm.Input;
     using Microsoft.Extensions.Logging;
@@ -14,10 +14,10 @@ namespace SimTuning.Maui.UI.ViewModels.Motor
     using System.Linq;
     using UnitsNet.Units;
 
-    public class VerdichtungViewModel : ViewModelBase
+    public class MotorVerdichtungViewModel : ViewModelBase
     {
-        public VerdichtungViewModel(
-            ILogger<VerdichtungViewModel> logger,
+        public MotorVerdichtungViewModel(
+            ILogger<MotorVerdichtungViewModel> logger,
             INavigationService navigationService,
             IVehicleService vehicleService)
         {
@@ -115,7 +115,7 @@ namespace SimTuning.Maui.UI.ViewModels.Motor
 
         #region Values
 
-        private readonly ILogger<VerdichtungViewModel> _logger;
+        private readonly ILogger<MotorVerdichtungViewModel> _logger;
         private readonly IVehicleService _vehicleService;
         private double? _abdrehenLength;
         private UnitListItem _abdrehenLengthUnit;

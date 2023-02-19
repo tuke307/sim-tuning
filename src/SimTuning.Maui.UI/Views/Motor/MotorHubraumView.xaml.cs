@@ -1,5 +1,5 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
-using SimTuning.Maui.UI.ViewModels.Motor;
+using SimTuning.Maui.UI.ViewModels;
 using CommunityToolkit.Mvvm.DependencyInjection;
 
 namespace SimTuning.Maui.UI.Views.Motor
@@ -10,9 +10,9 @@ namespace SimTuning.Maui.UI.Views.Motor
         {
             InitializeComponent();
             
-            BindingContext = Ioc.Default.GetRequiredService<HubraumViewModel>();
+            BindingContext = Ioc.Default.GetRequiredService<MotorHubraumViewModel>();
         }
 
-        public HubraumViewModel ViewModel => (HubraumViewModel)BindingContext;
+        public MotorHubraumViewModel ViewModel => (MotorHubraumViewModel)BindingContext;
     }
 }

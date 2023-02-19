@@ -2,8 +2,8 @@
 <ContentView x:Class="SimTuning.Maui.UI.Views.Auslass.AuslassTheorieView"
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels.Auslass"
-             x:DataType="vm:TheorieViewModel">
+             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
+             x:DataType="vm:AuslassTheorieViewModel">
     <ScrollView>
         <Grid>
             <Grid.RowDefinitions>

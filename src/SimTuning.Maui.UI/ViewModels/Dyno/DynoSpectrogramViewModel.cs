@@ -15,12 +15,12 @@ using Microsoft.Maui.Controls;
 using SimTuning.Core.Helpers;
 using LiveChartsCore;
 
-namespace SimTuning.Maui.UI.ViewModels.Dyno
+namespace SimTuning.Maui.UI.ViewModels
 {
-    public class SpectrogramViewModel : ViewModelBase
+    public class DynoSpectrogramViewModel : ViewModelBase
     {
-        public SpectrogramViewModel(
-            ILogger<SpectrogramViewModel> logger,
+        public DynoSpectrogramViewModel(
+            ILogger<DynoSpectrogramViewModel> logger,
             INavigationService navigationService,
             IVehicleService vehicleService)
         {
@@ -281,7 +281,7 @@ namespace SimTuning.Maui.UI.ViewModels.Dyno
 
         #region Commands
 
-        private readonly ILogger<SpectrogramViewModel> _logger;
+        private readonly ILogger<DynoSpectrogramViewModel> _logger;
 
         /// <summary>
         /// Gets or sets the filter plot command.

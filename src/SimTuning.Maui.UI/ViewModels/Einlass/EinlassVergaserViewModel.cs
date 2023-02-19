@@ -9,12 +9,12 @@ using SimTuning.Data.Models;
 using System.Collections.ObjectModel;
 using UnitsNet.Units;
 
-namespace SimTuning.Maui.UI.ViewModels.Einlass
+namespace SimTuning.Maui.UI.ViewModels
 {
-    public class VergaserViewModel : ViewModelBase
+    public class EinlassVergaserViewModel : ViewModelBase
     {
-        public VergaserViewModel(
-            ILogger<VergaserViewModel> logger,
+        public EinlassVergaserViewModel(
+            ILogger<EinlassVergaserViewModel> logger,
             IVehicleService vehicleService)
         {
             this._logger = logger;
@@ -75,7 +75,7 @@ namespace SimTuning.Maui.UI.ViewModels.Einlass
 
         #region Values
 
-        private readonly ILogger<VergaserViewModel> _logger;
+        private readonly ILogger<EinlassVergaserViewModel> _logger;
         private readonly IVehicleService _vehicleService;
         private double? _hauptdueseD;
 

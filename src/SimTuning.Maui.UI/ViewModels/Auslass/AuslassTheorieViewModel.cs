@@ -11,12 +11,12 @@ using SimTuning.Maui.UI.Services;
 using System.Collections.ObjectModel;
 using UnitsNet.Units;
 
-namespace SimTuning.Maui.UI.ViewModels.Auslass
+namespace SimTuning.Maui.UI.ViewModels
 {
-    public class TheorieViewModel : ViewModelBase
+    public class AuslassTheorieViewModel : ViewModelBase
     {
-        public TheorieViewModel(
-            ILogger<TheorieViewModel> logger,
+        public AuslassTheorieViewModel(
+            ILogger<AuslassTheorieViewModel> logger,
             IVehicleService vehicleService)
         {
             this._logger = logger;
@@ -151,7 +151,7 @@ namespace SimTuning.Maui.UI.ViewModels.Auslass
 
         #endregion Commands
 
-        private readonly ILogger<TheorieViewModel> _logger;
+        private readonly ILogger<AuslassTheorieViewModel> _logger;
         private readonly IVehicleService _vehicleService;
         private VehiclesModel _helperVehicle;
         private ObservableCollection<VehiclesModel> _helperVehicles;

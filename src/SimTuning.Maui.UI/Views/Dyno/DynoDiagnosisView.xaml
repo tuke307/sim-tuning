@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
              Title="Ergebnis"
-             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels.Dyno"
-             x:DataType="vm:DiagnosisViewModel">
+             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
+             x:DataType="vm:DynoDiagnosisViewModel">
     <ScrollView>
         <StackLayout>
 
@@ -65,11 +65,11 @@
 
                         <Entry Keyboard="Choice"
                                                     VerticalOptions="Center"
-                                                    
+
                                                     Margin="5, 0, 0, 0"
                                                     ItemsSource="{Binding Path=AreaQuantityUnits, Mode=OneTime}" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand"
                                                     SelectedItem="{Binding Mode=TwoWay, Path=DynoVehicleFrontAUnit}"
-                                                    
+
                                                     ItemDisplayBinding="{Binding Abbreviation}">
                         </Entry>
                     </StackLayout>
@@ -89,11 +89,11 @@
 
                         <Entry Keyboard="Choice"
                                                     VerticalOptions="Center"
-                                                    
+
                                                     Margin="5, 0, 0, 0"
                                                     ItemsSource="{Binding Path=TemperatureQuantityUnits, Mode=OneTime}"
                                                     SelectedItem="{Binding Mode=TwoWay, Path=DynoEnvironmentTemperaturTUnit}"
-                                                    
+
                                                     ItemDisplayBinding="{Binding Abbreviation}">
                         </Entry>
                     </StackLayout>
@@ -107,11 +107,11 @@
 
                         <Entry Keyboard="Choice"
                                                     VerticalOptions="Center"
-                                                    
+
                                                     Margin="5, 0, 0, 0"
                                                     ItemsSource="{Binding Path=PressureQuantityUnits, Mode=OneTime}"
                                                     SelectedItem="{Binding Mode=TwoWay, Path=DynoEnvironmentLuftdruckPUnit}"
-                                                    
+
                                                     ItemDisplayBinding="{Binding Abbreviation}">
                         </Entry>
                     </StackLayout>-->
@@ -174,7 +174,7 @@
                                                     Grid.Column="1"
                                                     Placeholder=" "
                                                     IsEnabled="False"
-                                                    
+
                                                     WidthRequest="100"
                                                     Margin="10, 0, 0, 0" />-->
                         <Entry Text="{Binding Mode=OneWay, Path=HelperVehicle.Gewicht}"
@@ -188,14 +188,14 @@
                                                     Grid.Row="2"
                                                     Placeholder=" "
                                                     IsEnabled="False"
-                                                    
+
                                                     WidthRequest="100"
                                                     Grid.Column="1"
                                                     Margin="10, 0, 0, 0" />
                         <Entry Text="{Binding Mode=OneWay, Path=HelperVehicle.Cw}"
                                                     Grid.Row="3"
                                                     Placeholder=" "
-                                                    
+
                                                     WidthRequest="100"
                                                     Grid.Column="1"
                                                     IsEnabled="False"
@@ -237,7 +237,7 @@
 
                     <Entry Keyboard="Choice"
                                                 Placeholder="Umwelt"
-                                                
+
                                                 ItemsSource="{Binding Mode=OneTime, Path=HelperEnvironments}"
                                                 SelectedItem="{Binding  Mode=TwoWay, Path=HelperEnvironment}"
                                                 ItemDisplayBinding="{Binding Name}">
@@ -265,14 +265,14 @@
 
                         <Entry Text="{Binding Mode=OneWay, Path= HelperEnvironment.TemperaturT}"
                                                     Placeholder=" "
-                                                    
+
                                                     Grid.Row="0"
                                                     Grid.Column="1"
                                                     IsEnabled="False"
                                                     WidthRequest="100" />
                         <Entry Text="{Binding Mode=OneWay, Path= HelperEnvironment.LuftdruckP}"
                                                     Placeholder=" "
-                                                    
+
                                                     Grid.Row="1"
                                                     Grid.Column="1"
                                                     IsEnabled="False"

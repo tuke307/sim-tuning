@@ -1,6 +1,6 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
 using CommunityToolkit.Mvvm.DependencyInjection;
-using SimTuning.Maui.UI.ViewModels.Dyno;
+using SimTuning.Maui.UI.ViewModels;
 
 namespace SimTuning.Maui.UI.Views.Dyno
 {
@@ -10,9 +10,9 @@ namespace SimTuning.Maui.UI.Views.Dyno
         {
             InitializeComponent();
             
-            BindingContext = Ioc.Default.GetRequiredService<AusrollenViewModel>();
+            BindingContext = Ioc.Default.GetRequiredService<DynoAusrollenViewModel>();
         }
 
-        public AusrollenViewModel ViewModel => (AusrollenViewModel)BindingContext;
+        public DynoAusrollenViewModel ViewModel => (DynoAusrollenViewModel)BindingContext;
     }
 }

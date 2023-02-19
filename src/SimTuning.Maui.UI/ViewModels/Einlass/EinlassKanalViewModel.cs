@@ -9,12 +9,12 @@ using SimTuning.Data.Models;
 using System.Collections.ObjectModel;
 using UnitsNet.Units;
 
-namespace SimTuning.Maui.UI.ViewModels.Einlass
+namespace SimTuning.Maui.UI.ViewModels
 {
-    public class KanalViewModel : ViewModelBase
+    public class EinlassKanalViewModel : ViewModelBase
     {
-        public KanalViewModel(
-            ILogger<KanalViewModel> logger,
+        public EinlassKanalViewModel(
+            ILogger<EinlassKanalViewModel> logger,
             IVehicleService vehicleService)
         {
             this._logger = logger;
@@ -91,7 +91,7 @@ namespace SimTuning.Maui.UI.ViewModels.Einlass
 
         #region Values
 
-        private readonly ILogger<KanalViewModel> _logger;
+        private readonly ILogger<EinlassKanalViewModel> _logger;
         private readonly IVehicleService _vehicleService;
         private double? _einlasssteuerwinkel;
 

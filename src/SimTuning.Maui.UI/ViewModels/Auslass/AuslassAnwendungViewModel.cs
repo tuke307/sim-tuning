@@ -9,12 +9,12 @@ using SimTuning.Data.Models;
 using SimTuning.Maui.UI.Services;
 using System.Collections.ObjectModel;
 
-namespace SimTuning.Maui.UI.ViewModels.Auslass
+namespace SimTuning.Maui.UI.ViewModels
 {
-    public class AnwendungViewModel : ViewModelBase
+    public class AuslassAnwendungViewModel : ViewModelBase
     {
-        public AnwendungViewModel(
-            ILogger<AnwendungViewModel> logger,
+        public AuslassAnwendungViewModel(
+            ILogger<AuslassAnwendungViewModel> logger,
             IVehicleService vehicleService)
         {
             this._logger = logger;
@@ -76,7 +76,6 @@ namespace SimTuning.Maui.UI.ViewModels.Auslass
             this.OnPropertyChanged(nameof(this.VehicleMotorAuslassSteuerzeitSZ));
         }
 
-
         /// <summary>
         /// Berechnet den Auspuff.
         /// </summary>
@@ -106,26 +105,26 @@ namespace SimTuning.Maui.UI.ViewModels.Auslass
 
         #region Values
 
-        private readonly ILogger<AnwendungViewModel> _logger;
+        private readonly ILogger<AuslassAnwendungViewModel> _logger;
         private readonly IVehicleService _vehicleService;
+        private ImageSource _auspuff;
         private VehiclesModel _helperVehicle;
 
         private ObservableCollection<VehiclesModel> _helperVehicles;
 
         private VehiclesModel _vehicle;
-        private ImageSource _auspuff;
-
-        public ImageSource Auspuff
-        {
-            get => _auspuff;
-            private set => SetProperty(ref _auspuff, value);
-        }
 
         /// <summary>
         /// Gets or sets the area quantity units.
         /// </summary>
         /// <value>The area quantity units.</value>
         public ObservableCollection<UnitListItem> AreaQuantityUnits { get; protected set; }
+
+        public ImageSource Auspuff
+        {
+            get => _auspuff;
+            private set => SetProperty(ref _auspuff, value);
+        }
 
         /// <summary>
         /// Gets or sets the calculate command.

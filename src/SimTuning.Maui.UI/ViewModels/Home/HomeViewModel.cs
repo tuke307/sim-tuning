@@ -1,11 +1,12 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
-using Microsoft.Extensions.Logging;
-using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
-using SimTuning.Core.Services;using SimTuning.Maui.UI.Services;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
+using SimTuning.Core.Services;
+using SimTuning.Maui.UI.Services;
 using System.Threading.Tasks;
 
-namespace SimTuning.Maui.UI.ViewModels.Home
+namespace SimTuning.Maui.UI.ViewModels
 {
     public class HomeViewModel : ViewModelBase
     {
@@ -25,10 +26,7 @@ namespace SimTuning.Maui.UI.ViewModels.Home
             this.OpenTutorialCommand = new RelayCommand(() => _browserService.OpenBrowser(SimTuning.Core.WebsiteConstants.TutorialWebsite));
         }
 
-        #region Commands
 
-
-        #endregion Commands
 
         #region Values
 

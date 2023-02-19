@@ -7,12 +7,12 @@ using SimTuning.Core.Services;
 using SimTuning.Maui.UI.Services;
 using System.Collections.ObjectModel;
 
-namespace SimTuning.Maui.UI.ViewModels.Einstellungen
+namespace SimTuning.Maui.UI.ViewModels
 {
-    public class VehiclesViewModel : ViewModelBase
+    public class EinstellungenVehiclesViewModel : ViewModelBase
     {
-        public VehiclesViewModel(
-            ILogger<VehiclesViewModel> logger,
+        public EinstellungenVehiclesViewModel(
+            ILogger<EinstellungenVehiclesViewModel> logger,
             INavigationService navigationService,
             IVehicleService vehicleService)
         {
@@ -134,7 +134,7 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
         /// <value><c>true</c> if [save button]; otherwise, <c>false</c>.</value>
         protected bool _saveButton;
 
-        private readonly ILogger<VehiclesViewModel> _logger;
+        private readonly ILogger<EinstellungenVehiclesViewModel> _logger;
         private Data.Models.MotorModel _engine;
 
         private ObservableCollection<Data.Models.MotorModel> _engines;
@@ -250,16 +250,7 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                 // Einfügen
                 this.SetProperty(ref this._vehicle, value);
 
-                // nix mehr zu speichern
-                this._saveButton = false;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
-
-                // Motor refreshen
-                this.Engine = null;
-
-                // TODO: this.RaiseAllPropertiesChanged();
-                OnPropertyChanged(nameof(VehicleName));
-                OnPropertyChanged(nameof(VehicleBeschreibung));
+                loadNewVehicle();
             }
         }
 
@@ -282,16 +273,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                 SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
-
-        /// <summary>
-        /// Gets or sets the vehicle cw.
-        /// </summary>
-        /// <value>The vehicle cw.</value>
-        // public double? VehicleCw { get => this.Vehicle?.Cw; set { if (this.Vehicle ==
-        // null) { return; }
-
-        // this.Vehicle.Cw = value; this._saveButton = true;
-        // SaveVehicleCommand.NotifyCanExecuteChanged(); } }
 
         /// <summary>
         /// Gets the vehicle dyno audio.
@@ -323,15 +304,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
         }
 
         /// <summary>
-        /// Gets the vehicle dyno dyno nm.
-        /// </summary>
-        /// <value>The vehicle dyno dyno nm.</value>
-        // public ObservableCollection<Data.Models.DynoNmModel> VehicleDynoDynoNm { get =>
-        // this.Vehicle?.Dyno?.DynoNm == null ? new
-        // ObservableCollection<Data.Models.DynoNmModel>() : new
-        // ObservableCollection<Data.Models.DynoNmModel>(this.Vehicle?.Dyno?.DynoNm); }
-
-        /// <summary>
         /// Gets the vehicle dyno dyno ps.
         /// </summary>
         /// <value>The vehicle dyno dyno ps.</value>
@@ -340,6 +312,12 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
             get => this.Vehicle?.Dyno?.DynoPS == null ? new ObservableCollection<Data.Models.DynoPsModel>() : new ObservableCollection<Data.Models.DynoPsModel>(this.Vehicle?.Dyno?.DynoPS);
         }
 
+        /// <summary>
+        /// Gets the vehicle dyno dyno nm.
+        /// </summary>
+        /// <value>The vehicle dyno dyno nm.</value>
+        // public ObservableCollection<Data.Models.DynoNmModel> VehicleDynoDynoNm { get => this.Vehicle?.Dyno?.DynoNm == null ? new ObservableCollection<Data.Models.DynoNmModel>() : new
+        // ObservableCollection<Data.Models.DynoNmModel>(this.Vehicle?.Dyno?.DynoNm); }
         /// <summary>
         /// Gets or sets the name of the vehicle dyno.
         /// </summary>
@@ -358,27 +336,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                 SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
-
-        /// <summary>
-        /// Gets or sets the vehicle front a.
-        /// </summary>
-        /// <value>The vehicle front a.</value>
-        // public double? VehicleFrontA { get => this.Vehicle?.FrontA; set { if
-        // (this.Vehicle == null) { return; } this.Vehicle.FrontA = value;
-        // this._saveButton
-        // = true; } }
-
-        /// <summary>
-        /// Gets or sets the vehicle front a unit.
-        /// </summary>
-        /// <value>The vehicle front a unit.</value>
-        // public UnitListItem VehicleFrontAUnit { get =>
-        // this.AreaQuantityUnits.SingleOrDefault(x =>
-        // x.UnitEnumValue.Equals(this.Vehicle?.FrontAUnit)); set { if (this.Vehicle ==
-        // null) { return; }
-
-        // this.Vehicle.FrontAUnit = (UnitsNet.Units.AreaUnit)value?.UnitEnumValue;
-        // this.OnPropertyChanged(nameof(VehicleFrontA); } }
 
         /// <summary>
         /// Gets or sets the vehicle gewicht.
@@ -400,6 +357,7 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
             }
         }
 
+        // this.Vehicle.FrontAUnit = (UnitsNet.Units.AreaUnit)value?.UnitEnumValue; this.OnPropertyChanged(nameof(VehicleFrontA); } }
         /// <summary>
         /// Gets or sets the vehicle gewicht unit.
         /// </summary>
@@ -420,6 +378,12 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
         }
 
         /// <summary>
+        /// Gets or sets the vehicle front a unit.
+        /// </summary>
+        /// <value>The vehicle front a unit.</value>
+        // public UnitListItem VehicleFrontAUnit { get => this.AreaQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(this.Vehicle?.FrontAUnit)); set { if (this.Vehicle ==
+        // null) { return; }
+        /// <summary>
         /// Gets or sets the vehicle motor auslass breite b.
         /// </summary>
         /// <value>The vehicle motor auslass breite b.</value>
@@ -438,6 +402,12 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
             }
         }
 
+        /// <summary>
+        /// Gets or sets the vehicle front a.
+        /// </summary>
+        /// <value>The vehicle front a.</value>
+        // public double? VehicleFrontA { get => this.Vehicle?.FrontA; set { if (this.Vehicle == null) { return; } this.Vehicle.FrontA = value; this._saveButton
+        // = true; } }
         /// <summary>
         /// Gets or sets the vehicle motor auslass breite b unit.
         /// </summary>
@@ -1451,6 +1421,28 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
         }
 
         /// <summary>
+        /// Gets the volume quantity units.
+        /// </summary>
+        /// <value>The volume quantity units.</value>
+        public ObservableCollection<UnitListItem> VolumeQuantityUnits { get; }
+
+        private void loadNewVehicle()
+        {
+            // nix mehr zu speichern
+            this._saveButton = false;
+            SaveVehicleCommand.NotifyCanExecuteChanged();
+
+            // Motor refreshen
+            this.Engine = null;
+
+            // TODO: this.RaiseAllPropertiesChanged();
+            OnPropertyChanged(nameof(VehicleName));
+            OnPropertyChanged(nameof(VehicleBeschreibung));
+            OnPropertyChanged(nameof(VehicleGewicht));
+            OnPropertyChanged(nameof(VehicleGewicht));
+        }
+
+        /// <summary>
         /// Gets or sets the vehicle uebersetzung.
         /// </summary>
         /// <value>The vehicle uebersetzung.</value>
@@ -1458,12 +1450,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
         // (this.Vehicle == null) { return; } this.Vehicle.Uebersetzung = value;
         // this._saveButton = true;
         //SaveVehicleCommand.NotifyCanExecuteChanged(); } }
-
-        /// <summary>
-        /// Gets the volume quantity units.
-        /// </summary>
-        /// <value>The volume quantity units.</value>
-        public ObservableCollection<UnitListItem> VolumeQuantityUnits { get; }
 
         #endregion Values
     }

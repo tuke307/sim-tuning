@@ -10,12 +10,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using LiveChartsCore;
 
-namespace SimTuning.Maui.UI.ViewModels.Dyno
+namespace SimTuning.Maui.UI.ViewModels
 {
-    public class AusrollenViewModel : ViewModelBase
+    public class DynoAusrollenViewModel : ViewModelBase
     {
-        public AusrollenViewModel(
-            ILogger<AusrollenViewModel> logger,
+        public DynoAusrollenViewModel(
+            ILogger<DynoAusrollenViewModel> logger,
             INavigationService navigationService,
             IVehicleService vehicleService)
         {
@@ -33,7 +33,7 @@ namespace SimTuning.Maui.UI.ViewModels.Dyno
 
         protected readonly INavigationService _navigationService;
         protected readonly IVehicleService _vehicleService;
-        private readonly ILogger<AusrollenViewModel> _logger;
+        private readonly ILogger<DynoAusrollenViewModel> _logger;
         private DynoModel _dyno;
 
         /// <summary>

@@ -19,12 +19,12 @@ using Microsoft.Maui.ApplicationModel;
 using SimTuning.Core.Helpers;
 using SimTuning.Core;
 
-namespace SimTuning.Maui.UI.ViewModels.Dyno
+namespace SimTuning.Maui.UI.ViewModels
 {
-    public class RuntimeViewModel : ViewModelBase
+    public class DynoRuntimeViewModel : ViewModelBase
     {
-        public RuntimeViewModel(
-            ILogger<RuntimeViewModel> logger,
+        public DynoRuntimeViewModel(
+            ILogger<DynoRuntimeViewModel> logger,
             INavigationService navigationService,
             //ILocationService locationService,
             IVehicleService vehicleService)
@@ -516,7 +516,7 @@ namespace SimTuning.Maui.UI.ViewModels.Dyno
         private static System.Drawing.Color skyBlue = System.Drawing.Color.SkyBlue;
 
         private readonly ILocationService _locationService;
-        private readonly ILogger<RuntimeViewModel> _logger;
+        private readonly ILogger<DynoRuntimeViewModel> _logger;
         private readonly IVehicleService _vehicleService;
         private bool _countdownVis;
         private string _currentState;

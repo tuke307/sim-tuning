@@ -1,5 +1,5 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
-namespace SimTuning.Maui.UI.ViewModels.Motor
+namespace SimTuning.Maui.UI.ViewModels
 {
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
@@ -20,14 +20,14 @@ namespace SimTuning.Maui.UI.ViewModels.Motor
     /// <summary>
     /// UmrechnungViewModel.
     /// </summary>
-    public class UmrechnungViewModel : ViewModelBase
+    public class MotorUmrechnungViewModel : ViewModelBase
     {
-        /// <summary> Initializes a new instance of the <see cref="UmrechnungViewModel"/>
+        /// <summary> Initializes a new instance of the <see cref="MotorUmrechnungViewModel"/>
         /// class. </summary> <param name="logger"><inheritdoc cref="ILogger"
         /// path="/summary/node()" /></param> <param name="INavigationService"><inheritdoc
         /// cref="INavigationService" path="/summary/node()" /></param
-        public UmrechnungViewModel(
-            ILogger<UmrechnungViewModel> logger,
+        public MotorUmrechnungViewModel(
+            ILogger<MotorUmrechnungViewModel> logger,
             INavigationService navigationService,
             IVehicleService vehicleService)
         {
@@ -189,7 +189,7 @@ namespace SimTuning.Maui.UI.ViewModels.Motor
 
         #endregion private
 
-        private readonly ILogger<UmrechnungViewModel> _logger;
+        private readonly ILogger<MotorUmrechnungViewModel> _logger;
 
         private readonly IVehicleService _vehicleService;
 

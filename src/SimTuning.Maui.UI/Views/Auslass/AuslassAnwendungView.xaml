@@ -3,8 +3,8 @@
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:behaviors="clr-namespace:SimTuning.Maui.UI.Behaviors"
-             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels.Auslass"
-             x:DataType="vm:AnwendungViewModel">
+             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
+             x:DataType="vm:AuslassAnwendungViewModel">
 
     <ContentView.Resources>
         <behaviors:InvertedBoolConverter x:Key="Inverter" />
@@ -140,7 +140,7 @@
                                HorizontalTextAlignment="End"
                                Text="flach" />
                     </Grid>
-                    
+
                     <Slider Margin="0,-10,0,10"
                             HorizontalOptions="FillAndExpand"
                             Maximum="12"
@@ -669,7 +669,7 @@
                     </StackLayout>
                 </StackLayout>
             </Border>
-            
+
             <!--  hilfe  -->
             <Border Grid.Row="7">
                 <StackLayout>

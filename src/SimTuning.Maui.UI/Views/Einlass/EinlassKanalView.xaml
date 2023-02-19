@@ -1,8 +1,8 @@
 ﻿<ContentView x:Class="SimTuning.Maui.UI.Views.Einlass.EinlassKanalView"
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels.Einlass"
-             x:DataType="vm:KanalViewModel">
+             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
+             x:DataType="vm:EinlassKanalViewModel">
     <ScrollView>
         <Grid>
             <Grid.RowDefinitions>
@@ -28,10 +28,24 @@
                         <ColumnDefinition Width="auto" />
                     </Grid.ColumnDefinitions>
 
-                    <Label Grid.Row="0"
-                           Grid.ColumnSpan="2"
-                           Style="{StaticResource LabelTitleStyle}"
-                           Text="Einlass-Resonanzlänge" />
+                    <Grid Grid.Row="0"
+                          Grid.ColumnSpan="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Column="0"
+                               Style="{StaticResource LabelTitleStyle}"
+                               Text="Einlass-Resonanzlänge" />
+
+                        <Button Grid.Column="1"
+                                Margin="10"
+                                Clicked="Button_Clicked"
+                                HeightRequest="70"
+                                HorizontalOptions="Center"
+                                ImageSource="{StaticResource IconHelpCircleOutlineMedium}" />
+                    </Grid>
 
                     <BoxView Grid.Row="1"
                              Grid.ColumnSpan="2"
@@ -93,7 +107,6 @@
                             ItemsSource="{Binding Path=VolumeQuantityUnits, Mode=OneTime}"
                             ItemDisplayBinding="{Binding Abbreviation}"
                             SelectedItem="{Binding VehicleMotorKurbelgehaeuseVUnit}" />
-
 
                     <!--Ansaugleitung-->
                     <Entry Grid.Row="6"

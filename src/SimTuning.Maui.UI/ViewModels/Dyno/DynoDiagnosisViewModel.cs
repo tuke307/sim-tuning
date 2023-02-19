@@ -15,12 +15,12 @@ using SimTuning.Core.Helpers;
 using LiveChartsCore;
 using SimTuning.Core;
 
-namespace SimTuning.Maui.UI.ViewModels.Dyno
+namespace SimTuning.Maui.UI.ViewModels
 {
-    public class DiagnosisViewModel : ViewModelBase
+    public class DynoDiagnosisViewModel : ViewModelBase
     {
-        public DiagnosisViewModel(
-            ILogger<DiagnosisViewModel> logger,
+        public DynoDiagnosisViewModel(
+            ILogger<DynoDiagnosisViewModel> logger,
             INavigationService navigationService,
             IVehicleService vehicleService)
         {
@@ -151,7 +151,7 @@ namespace SimTuning.Maui.UI.ViewModels.Dyno
         #region Values
 
         protected readonly IVehicleService _vehicleService;
-        private readonly ILogger<DiagnosisViewModel> _logger;
+        private readonly ILogger<DynoDiagnosisViewModel> _logger;
         private DynoModel _dyno;
 
         // public ObservableCollection<UnitListItem> AreaQuantityUnits { get; }

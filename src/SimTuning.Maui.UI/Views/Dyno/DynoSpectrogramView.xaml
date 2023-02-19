@@ -5,8 +5,8 @@
              xmlns:views1="clr-namespace:SimTuning.Maui.UI.Views.Dyno"
              xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
              Title="Auswertung-Beschleunigung"
-             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels.Dyno"
-             x:DataType="vm:SpectrogramViewModel">
+             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
+             x:DataType="vm:DynoSpectrogramViewModel">
     <ContentPage.Resources>
         <behavior:InvertedBoolConverter x:Key="inverter" />
     </ContentPage.Resources>

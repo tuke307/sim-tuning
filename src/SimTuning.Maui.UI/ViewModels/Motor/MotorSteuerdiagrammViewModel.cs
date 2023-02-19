@@ -1,5 +1,5 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
-namespace SimTuning.Maui.UI.ViewModels.Motor
+namespace SimTuning.Maui.UI.ViewModels
 {
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
@@ -16,16 +16,16 @@ namespace SimTuning.Maui.UI.ViewModels.Motor
     using System.Threading.Tasks;
     using Microsoft.Maui.Controls;
 
-    public class SteuerdiagrammViewModel : ViewModelBase
+    public class MotorSteuerdiagrammViewModel : ViewModelBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SteuerdiagrammViewModel" /> class.
+        /// Initializes a new instance of the <see cref="MotorSteuerdiagrammViewModel" /> class.
         /// </summary>
         /// <param name="logger"><inheritdoc cref="ILogger" path="/summary/node()" /></param>
         /// <param name="INavigationService"><inheritdoc cref="INavigationService" path="/summary/node()" /></param>
         /// <param name="vehicleService"><inheritdoc cref="IVehicleService" path="/summary/node()" /></param>
-        public SteuerdiagrammViewModel(
-            ILogger<SteuerdiagrammViewModel> logger,
+        public MotorSteuerdiagrammViewModel(
+            ILogger<MotorSteuerdiagrammViewModel> logger,
             INavigationService navigationService,
             IVehicleService vehicleService)
         {
@@ -174,7 +174,7 @@ namespace SimTuning.Maui.UI.ViewModels.Motor
             private set => SetProperty(ref _portTimingCircle, value);
         }
 
-        private readonly ILogger<SteuerdiagrammViewModel> _logger;
+        private readonly ILogger<MotorSteuerdiagrammViewModel> _logger;
 
         private readonly IVehicleService _vehicleService;
 

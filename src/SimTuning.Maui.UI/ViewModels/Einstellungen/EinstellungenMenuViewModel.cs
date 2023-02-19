@@ -2,12 +2,12 @@
 using Microsoft.Extensions.Logging;
 using SimTuning.Maui.UI.Services;
 
-namespace SimTuning.Maui.UI.ViewModels.Einstellungen
+namespace SimTuning.Maui.UI.ViewModels
 {
-    public class MenuViewModel : ViewModelBase
+    public class EinstellungenMenuViewModel : ViewModelBase
     {
-        public MenuViewModel(
-            ILogger<MenuViewModel> logger,
+        public EinstellungenMenuViewModel(
+            ILogger<EinstellungenMenuViewModel> logger,
             INavigationService navigationService)
         {
             this._logger = logger;
@@ -17,7 +17,7 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
         #region Values
 
         protected readonly INavigationService _navigationService;
-        private readonly ILogger<MenuViewModel> _logger;
+        private readonly ILogger<EinstellungenMenuViewModel> _logger;
 
         #endregion Values
     }

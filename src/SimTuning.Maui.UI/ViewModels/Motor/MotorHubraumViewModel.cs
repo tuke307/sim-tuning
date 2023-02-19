@@ -1,26 +1,26 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
+using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using CommunityToolkit.Mvvm.ComponentModel;
+using SimTuning.Core;
 using SimTuning.Core.Models;
 using SimTuning.Core.ModuleLogic;
 using SimTuning.Core.Services;
-using SimTuning.Maui.UI.Services;
 using SimTuning.Data;
 using SimTuning.Data.Models;
+using SimTuning.Maui.UI.Services;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using UnitsNet.Units;
-using SimTuning.Core;
 
-namespace SimTuning.Maui.UI.ViewModels.Motor
+namespace SimTuning.Maui.UI.ViewModels
 {
-    public class HubraumViewModel : ViewModelBase
+    public class MotorHubraumViewModel : ViewModelBase
     {
-        public HubraumViewModel(
-            ILogger<HubraumViewModel> logger,
+        public MotorHubraumViewModel(
+            ILogger<MotorHubraumViewModel> logger,
             INavigationService navigationService,
             IVehicleService vehicleService)
         {
@@ -76,7 +76,7 @@ namespace SimTuning.Maui.UI.ViewModels.Motor
 
         #region Values
 
-        private readonly ILogger<HubraumViewModel> _logger;
+        private readonly ILogger<MotorHubraumViewModel> _logger;
 
         private readonly IVehicleService _vehicleService;
 

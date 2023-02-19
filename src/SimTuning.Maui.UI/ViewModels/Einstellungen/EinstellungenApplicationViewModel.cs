@@ -1,30 +1,27 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
-using Microsoft.Extensions.Logging;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.Extensions.Logging;
+using SimTuning.Core.Services;
+using SimTuning.Maui.UI.Services;
 using System.Threading.Tasks;
-using SimTuning.Core.Services;using SimTuning.Maui.UI.Services;
 
-namespace SimTuning.Maui.UI.ViewModels.Einstellungen
+namespace SimTuning.Maui.UI.ViewModels
 {
-    public class ApplicationViewModel : ViewModelBase
+    public class EinstellungenApplicationViewModel : ViewModelBase
     {
-        /// <summary> Initializes a new instance of the <see cref="ApplicationViewModel"/>
-        /// class. </summary> <param name="logger"><inheritdoc cref="ILogger"
-        /// path="/summary/node()" /></param> <param name="INavigationService"><inheritdoc
-        /// cref="INavigationService" path="/summary/node()" /></param
-        public ApplicationViewModel(
-            ILogger<ApplicationViewModel> logger,
+        /// <summary> Initializes a new instance of the <see cref="EinstellungenApplicationViewModel"/> class. </summary> <param name="logger"><inheritdoc cref="ILogger" path="/summary/node()"
+        /// /></param> <param name="INavigationService"><inheritdoc cref="INavigationService" path="/summary/node()" /></param
+        public EinstellungenApplicationViewModel(
+            ILogger<EinstellungenApplicationViewModel> logger,
             INavigationService navigationService)
         {
             this._logger = logger;
-            this._navigationService = navigationService ;
+            this._navigationService = navigationService;
         }
 
         #region Methods
 
-        private readonly ILogger<ApplicationViewModel> _logger;
-
-
+        private readonly ILogger<EinstellungenApplicationViewModel> _logger;
 
         #endregion Methods
 
