@@ -35,11 +35,18 @@ namespace SimTuning.Maui.UI.ViewModels
             UnitHubraumV = VolumeQuantityUnits.Where(x => x.UnitEnumValue.Equals(VolumeUnit.CubicCentimeter)).First();
             UnitKolbenD = LengthQuantityUnits.Where(x => x.UnitEnumValue.Equals(LengthUnit.Centimeter)).First();
             UnitBohrungD = LengthQuantityUnits.Where(x => x.UnitEnumValue.Equals(LengthUnit.Centimeter)).First();
-
-            HelperVehicles = new ObservableCollection<VehiclesModel>(_vehicleService.RetrieveVehicles());
         }
 
         #region Commands
+
+        public void InsertHelperVehicle(VehiclesModel helperVehicle)
+        {
+            if (helperVehicle.Motor.BohrungD.HasValue)
+            {
+                this.Hub = helperVehicle.Motor.HubL;
+                //GrindingDiameters = EngineLogic.GetGrindingDiameters(helperVehicle.Motor.BohrungD.Value);
+            }
+        }
 
         private void Refresh_all()
         {
@@ -86,10 +93,6 @@ namespace SimTuning.Maui.UI.ViewModels
 
         private GrindingDiametersModel _grindingDiameters;
 
-        private VehiclesModel _helperVehicle;
-
-        private ObservableCollection<VehiclesModel> _helperVehicles;
-
         private double? _hub;
 
         private double? _hubraumV;
@@ -126,24 +129,6 @@ namespace SimTuning.Maui.UI.ViewModels
         {
             get => _grindingDiameters;
             set { SetProperty(ref _grindingDiameters, value); }
-        }
-
-        public VehiclesModel HelperVehicle
-        {
-            get => _helperVehicle;
-            set
-            {
-                SetProperty(ref _helperVehicle, value);
-
-                if (value.Motor.BohrungD.HasValue)
-                    GrindingDiameters = EngineLogic.GetGrindingDiameters(value.Motor.BohrungD.Value);
-            }
-        }
-
-        public ObservableCollection<VehiclesModel> HelperVehicles
-        {
-            get => _helperVehicles;
-            set { SetProperty(ref _helperVehicles, value); }
         }
 
         public double? Hub

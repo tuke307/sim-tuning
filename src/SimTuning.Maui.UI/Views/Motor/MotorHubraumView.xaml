@@ -15,8 +15,20 @@
             <!--  GRUNDLEGENDES  -->
             <Border Grid.Row="0">
                 <StackLayout>
-                    <Label Style="{StaticResource LabelTitleStyle}"
-                           Text="Grundlegende Daten" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Column="0"
+                               Style="{StaticResource LabelTitleStyle}"
+                               Text="Grundlegende Daten" />
+
+                        <ImageButton Grid.Column="1"
+                                     Clicked="HelperVehiclesButton_Clicked"
+                                     Source="{StaticResource IconHelpCircleOutlineMedium}" />
+                    </Grid>
 
                     <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
@@ -124,136 +136,6 @@
                             cm
                         </Label>-->
                     </StackLayout>
-                </StackLayout>
-            </Border>
-
-            <!--  HILFE  -->
-            <Border Grid.Row="3">
-                <StackLayout>
-                    <Label Style="{StaticResource LabelTitleStyle}"
-                           Text="Hilfswerte" />
-
-                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
-
-                    <Picker ItemsSource="{Binding HelperVehicles}"
-                            ItemDisplayBinding="{Binding Name}"
-                            Title="Fahrzeug"
-                            SelectedItem="{Binding HelperVehicle}" />
-
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-
-                        <Label Grid.Row="0"
-                               Grid.Column="0"
-                               Text="Bohrung"
-                               VerticalOptions="Center" />
-                        <Label Grid.Row="1"
-                               Grid.Column="0"
-                               Text="1. Schleifmaß"
-                               VerticalOptions="Center" />
-                        <Label Grid.Row="2"
-                               Grid.Column="0"
-                               Text="2. Schleifmaß"
-                               VerticalOptions="Center" />
-                        <Label Grid.Row="3"
-                               Grid.Column="0"
-                               Text="3. Schleifmaß"
-                               VerticalOptions="Center" />
-                        <Label Grid.Row="4"
-                               Grid.Column="0"
-                               Text="4. Schleifmaß"
-                               VerticalOptions="Center" />
-
-                        <StackLayout Grid.Row="0"
-                                     Grid.Column="1"
-                                     Orientation="Horizontal">
-                            <Entry Margin="10,0,0,0"
-                                   Keyboard="Numeric"
-                                   IsEnabled="False"
-                                   Placeholder=" "
-                                   Text="{Binding Mode=OneWay, Path=HelperVehicle.Motor.BohrungD}"
-                                   WidthRequest="100" />
-
-                            <Label Margin="5,0,0,0"
-                                   VerticalOptions="Center">
-                                mm
-                            </Label>
-                        </StackLayout>
-
-                        <StackLayout Grid.Row="1"
-                                     Grid.Column="1"
-                                     Orientation="Horizontal">
-                            <Entry Margin="10,0,0,0"
-                                   Keyboard="Numeric"
-                                   IsEnabled="False"
-                                   Placeholder=" "
-                                   Text="{Binding Mode=OneWay, Path=GrindingDiameters.Diameter1}"
-                                   WidthRequest="100" />
-
-                            <Label Margin="5,0,0,0"
-                                   VerticalOptions="Center">
-                                mm
-                            </Label>
-                        </StackLayout>
-
-                        <StackLayout Grid.Row="2"
-                                     Grid.Column="1"
-                                     Orientation="Horizontal">
-                            <Entry Margin="10,0,0,0"
-                                   Keyboard="Numeric"
-                                   IsEnabled="False"
-                                   Placeholder=" "
-                                   Text="{Binding Mode=OneWay, Path=GrindingDiameters.Diameter2}"
-                                   WidthRequest="100" />
-
-                            <Label Margin="5,0,0,0"
-                                   VerticalOptions="Center">
-                                mm
-                            </Label>
-                        </StackLayout>
-
-                        <StackLayout Grid.Row="3"
-                                     Grid.Column="1"
-                                     Orientation="Horizontal">
-                            <Entry Margin="10,0,0,0"
-                                   Keyboard="Numeric"
-                                   IsEnabled="False"
-                                   Placeholder=" "
-                                   Text="{Binding Mode=OneWay, Path=GrindingDiameters.Diameter3}"
-                                   WidthRequest="100" />
-
-                            <Label Margin="5,0,0,0"
-                                   VerticalOptions="Center">
-                                mm
-                            </Label>
-                        </StackLayout>
-
-                        <StackLayout Grid.Row="4"
-                                     Grid.Column="1"
-                                     Orientation="Horizontal">
-                            <Entry Margin="10,0,0,0"
-                                   Keyboard="Numeric"
-                                   IsEnabled="False"
-                                   Placeholder=" "
-                                   Text="{Binding Mode=OneWay, Path=GrindingDiameters.Diameter4}"
-                                   WidthRequest="100" />
-
-                            <Label Margin="5,0,0,0"
-                                   VerticalOptions="Center">
-                                mm
-                            </Label>
-                        </StackLayout>
-                    </Grid>
                 </StackLayout>
             </Border>
         </Grid>

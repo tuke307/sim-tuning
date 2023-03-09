@@ -34,7 +34,6 @@ namespace SimTuning.Test
             // Act
             vm.CalculateCommand.Execute(null);
             vm.DiffusorStageCommand.Execute(null);
-            vm.InsertDataCommand.Execute(null);
         }
 
         /// <summary>
@@ -60,8 +59,6 @@ namespace SimTuning.Test
             var vm = new AuslassTheorieViewModel(
                 logger.Object,
                 vehicleServiceMock.Object);
-
-            vm.InsertDataCommand.Execute(null);
         }
 
         /// <summary>
@@ -220,8 +217,6 @@ namespace SimTuning.Test
             var vm = new EinlassKanalViewModel(
                 logger.Object,
                 vehicleServiceMock.Object);
-
-            vm.InsertDataCommand.Execute(null);
         }
 
         /// <summary>
@@ -247,8 +242,6 @@ namespace SimTuning.Test
             var vm = new EinlassVergaserViewModel(
                 logger.Object,
                 vehicleServiceMock.Object);
-
-            vm.InsertDataCommand.Execute(null);
         }
 
         /// <summary>
@@ -385,8 +378,6 @@ namespace SimTuning.Test
                 logger.Object,
                 navigationServiceMock.Object,
                 vehicleServiceMock.Object);
-
-            vm.InsertDataCommand.Execute(null);
         }
 
         /// <summary>

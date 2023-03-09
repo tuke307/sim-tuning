@@ -28,8 +28,9 @@ namespace SimTuning.Maui.App
                     .AddSingleton<INavigationService, NavigationService>()
 
                     .AddTransient<MainPageViewModel>()
-
+                    .AddTransient<VehiclesViewModel>()
                     .AddTransient<HomeViewModel>()
+                    .AddTransient<PortTimingViewModel>()
 
                     .AddTransient<AuslassMainViewModel>()
                     .AddTransient<AuslassAnwendungViewModel>()

@@ -17,10 +17,4 @@
   <ItemGroup>
     <ProjectReference Include="..\SimTuning.Core\SimTuning.Core.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <MauiXaml Update="Views\VehicleView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </MauiXaml>
-  </ItemGroup>
 </Project>

@@ -1,20 +1,21 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
 namespace SimTuning.Maui.UI.ViewModels
 {
+    using CommunityToolkit.Mvvm.ComponentModel;
+    using CommunityToolkit.Mvvm.Input;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
-    using CommunityToolkit.Mvvm.Input;
-    using CommunityToolkit.Mvvm.ComponentModel;
+    using Microsoft.Maui.Controls;
     using SimTuning.Core.ModuleLogic;
-    using SimTuning.Core.Services;using SimTuning.Maui.UI.Services;
+    using SimTuning.Core.Services;
     using SimTuning.Data;
     using SimTuning.Data.Models;
+    using SimTuning.Maui.UI.Services;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
-    using Microsoft.Maui.Controls;
 
     public class MotorSteuerdiagrammViewModel : ViewModelBase
     {
@@ -31,56 +32,51 @@ namespace SimTuning.Maui.UI.ViewModels
         {
             this._logger = logger;
             this._vehicleService = vehicleService;
-
-            // lokale liste kreieren
-            this.MotorSteuerzeiten = new ObservableCollection<MotorModel>()
-            {
-                new MotorModel()
-                {
-                    Name = "sehr kurz",
-                    Einlass = new EinlassModel() { SteuerzeitSZ = 100 },
-                    Auslass = new AuslassModel() { SteuerzeitSZ = 125 },
-                    Ueberstroemer = new UeberstroemerModel() { SteuerzeitSZ = 100 },
-                },
-                new MotorModel()
-                {
-                    Name = "kurz",
-                    Einlass = new EinlassModel() { SteuerzeitSZ = 120 },
-                    Auslass = new AuslassModel() { SteuerzeitSZ = 145 },
-                    Ueberstroemer = new UeberstroemerModel() { SteuerzeitSZ = 110 },
-                },
-                new MotorModel()
-                {
-                    Name = "mittel",
-                    Einlass = new EinlassModel() { SteuerzeitSZ = 140 },
-                    Auslass = new AuslassModel() { SteuerzeitSZ = 165 },
-                    Ueberstroemer = new UeberstroemerModel() { SteuerzeitSZ = 120 },
-                },
-                new MotorModel()
-                {
-                    Name = "lang",
-                    Einlass = new EinlassModel() { SteuerzeitSZ = 160 },
-                    Auslass = new AuslassModel() { SteuerzeitSZ = 185 },
-                    Ueberstroemer = new UeberstroemerModel() { SteuerzeitSZ = 130 },
-                },
-                new MotorModel()
-                {
-                    Name = "sehr lang",
-                    Einlass = new EinlassModel() { SteuerzeitSZ = 180 },
-                    Auslass = new AuslassModel() { SteuerzeitSZ = 205 },
-                    Ueberstroemer = new UeberstroemerModel() { SteuerzeitSZ = 140 },
-                },
-            };
-
-            this.HelperVehicles = new ObservableCollection<VehiclesModel>(_vehicleService.RetrieveVehicles());
-
-            this.InsertReferenceCommand = new RelayCommand(this.InsertReference);
-            this.InsertVehicleCommand = new RelayCommand(this.InsertVehicle);
         }
 
         #region Methods
 
+        /// <summary>
+        /// Inserts the reference.
+        /// </summary>
+        public void InsertHelperEngines(MotorModel helperEngine)
+        {
+            if (helperEngine.Einlass.SteuerzeitSZ.HasValue)
+            {
+                this.SteuerzeitEinlass = helperEngine.Einlass.SteuerzeitSZ.Value;
+            }
 
+            if (helperEngine.Auslass.SteuerzeitSZ.HasValue)
+            {
+                this.SteuerzeitAuslass = helperEngine.Auslass.SteuerzeitSZ.Value;
+            }
+
+            if (helperEngine.Ueberstroemer.SteuerzeitSZ.HasValue)
+            {
+                this.SteuerzeitUeberstroemer = helperEngine.Ueberstroemer.SteuerzeitSZ.Value;
+            }
+        }
+
+        /// <summary>
+        /// Inserts the vehicle.
+        /// </summary>
+        public void InsertHelperVehicle(VehiclesModel helperVehicle)
+        {
+            if (helperVehicle.Motor.Einlass.SteuerzeitSZ.HasValue)
+            {
+                this.SteuerzeitEinlass = helperVehicle.Motor.Einlass.SteuerzeitSZ;
+            }
+
+            if (helperVehicle.Motor.Auslass.SteuerzeitSZ.HasValue)
+            {
+                this.SteuerzeitAuslass = helperVehicle.Motor.Auslass.SteuerzeitSZ;
+            }
+
+            if (helperVehicle.Motor.Ueberstroemer.SteuerzeitSZ.HasValue)
+            {
+                this.SteuerzeitUeberstroemer = helperVehicle.Motor.Ueberstroemer.SteuerzeitSZ;
+            }
+        }
 
         /// <summary>
         /// Refreshes the steuerzeit.
@@ -121,78 +117,18 @@ namespace SimTuning.Maui.UI.ViewModels
             }
         }
 
-        /// <summary>
-        /// Inserts the reference.
-        /// </summary>
-        private void InsertReference()
-        {
-            if (this.MotorSteuerzeit.Einlass.SteuerzeitSZ.HasValue)
-            {
-                this.SteuerzeitEinlass = this.MotorSteuerzeit.Einlass.SteuerzeitSZ.Value;
-            }
-
-            if (this.MotorSteuerzeit.Auslass.SteuerzeitSZ.HasValue)
-            {
-                this.SteuerzeitAuslass = this.MotorSteuerzeit.Auslass.SteuerzeitSZ.Value;
-            }
-
-            if (this.MotorSteuerzeit.Ueberstroemer.SteuerzeitSZ.HasValue)
-            {
-                this.SteuerzeitUeberstroemer = this.MotorSteuerzeit.Ueberstroemer.SteuerzeitSZ.Value;
-            }
-        }
-
-        /// <summary>
-        /// Inserts the vehicle.
-        /// </summary>
-        private void InsertVehicle()
-        {
-            if (this.HelperVehicle.Motor.Einlass.SteuerzeitSZ.HasValue)
-            {
-                this.SteuerzeitEinlass = this.HelperVehicle.Motor.Einlass.SteuerzeitSZ;
-            }
-
-            if (this.HelperVehicle.Motor.Auslass.SteuerzeitSZ.HasValue)
-            {
-                this.SteuerzeitAuslass = this.HelperVehicle.Motor.Auslass.SteuerzeitSZ;
-            }
-
-            if (this.HelperVehicle.Motor.Ueberstroemer.SteuerzeitSZ.HasValue)
-            {
-                this.SteuerzeitUeberstroemer = this.HelperVehicle.Motor.Ueberstroemer.SteuerzeitSZ;
-            }
-        }
-
         #endregion Methods
 
         #region Values
-        private ImageSource _portTimingCircle;
-
-        public ImageSource PortTimingCircle
-        {
-            get => _portTimingCircle;
-            private set => SetProperty(ref _portTimingCircle, value);
-        }
 
         private readonly ILogger<MotorSteuerdiagrammViewModel> _logger;
-
         private readonly IVehicleService _vehicleService;
-
         private double? _auslass_Steuerwinkel_oeffnen;
-
         private double? _auslass_Steuerwinkel_schließen;
-
         private double? _einlass_Steuerwinkel_oeffnen;
-
         private double? _einlass_Steuerwinkel_schließen;
 
-        private VehiclesModel _helperVehicle;
-
-        private ObservableCollection<VehiclesModel> _helperVehicles;
-
-        private Data.Models.MotorModel _motorSteuerzeit;
-
-        private ObservableCollection<Data.Models.MotorModel> _motorSteuerzeiten;
+        private ImageSource _portTimingCircle;
 
         private double? _steuerzeitAuslass;
 
@@ -230,40 +166,10 @@ namespace SimTuning.Maui.UI.ViewModels
             set => this.SetProperty(ref this._einlass_Steuerwinkel_schließen, value);
         }
 
-        public VehiclesModel HelperVehicle
+        public ImageSource PortTimingCircle
         {
-            get => this._helperVehicle;
-            set => this.SetProperty(ref this._helperVehicle, value);
-        }
-
-        public ObservableCollection<VehiclesModel> HelperVehicles
-        {
-            get => this._helperVehicles;
-            set => this.SetProperty(ref this._helperVehicles, value);
-        }
-
-        /// <summary>
-        /// Gets or sets the insert reference command.
-        /// </summary>
-        /// <value>The insert reference command.</value>
-        public IRelayCommand InsertReferenceCommand { get; set; }
-
-        /// <summary>
-        /// Gets or sets the insert vehicle command.
-        /// </summary>
-        /// <value>The insert vehicle command.</value>
-        public IRelayCommand InsertVehicleCommand { get; set; }
-
-        public Data.Models.MotorModel MotorSteuerzeit
-        {
-            get => this._motorSteuerzeit;
-            set => this.SetProperty(ref this._motorSteuerzeit, value);
-        }
-
-        public ObservableCollection<Data.Models.MotorModel> MotorSteuerzeiten
-        {
-            get => this._motorSteuerzeiten;
-            set => this.SetProperty(ref this._motorSteuerzeiten, value);
+            get => _portTimingCircle;
+            private set => SetProperty(ref _portTimingCircle, value);
         }
 
         /// <summary>

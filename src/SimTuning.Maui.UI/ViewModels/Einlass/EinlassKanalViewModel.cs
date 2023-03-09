@@ -30,10 +30,6 @@ namespace SimTuning.Maui.UI.ViewModels
             this.Vehicle.Motor.Einlass = new EinlassModel();
 
             this.ResonanzlaengeUnit = this.LengthQuantityUnits.Where(x => x.UnitEnumValue.Equals(LengthUnit.Millimeter)).First();
-
-            this.HelperVehicles = new ObservableCollection<VehiclesModel>(_vehicleService.RetrieveVehicles());
-
-            this.InsertDataCommand = new RelayCommand(this.InsertData);
         }
 
         #region Methods
@@ -41,36 +37,31 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <summary>
         /// Inserts the data.
         /// </summary>
-        private void InsertData()
+        public void InsertHelperVehicle(VehiclesModel helperVehicle)
         {
-            if (this.HelperVehicle.Motor.Einlass.FlaecheA.HasValue)
+            if (helperVehicle.Motor.Einlass.FlaecheA.HasValue)
             {
-                this.VehicleMotorEinlassFlaecheA = this.HelperVehicle.Motor.Einlass.FlaecheA;
-                this.OnPropertyChanged(nameof(this.VehicleMotorEinlassFlaecheA));
+                this.VehicleMotorEinlassFlaecheA = helperVehicle.Motor.Einlass.FlaecheA;
             }
 
-            if (this.HelperVehicle.Motor.Einlass.SteuerzeitSZ.HasValue)
+            if (helperVehicle.Motor.Einlass.SteuerzeitSZ.HasValue)
             {
-                this.Einlasssteuerwinkel = this.HelperVehicle.Motor.Einlass.SteuerzeitSZ;
-                this.OnPropertyChanged(nameof(this.Einlasssteuerwinkel));
+                this.Einlasssteuerwinkel = helperVehicle.Motor.Einlass.SteuerzeitSZ;
             }
 
-            if (this.HelperVehicle.Motor.ResonanzU.HasValue)
+            if (helperVehicle.Motor.ResonanzU.HasValue)
             {
-                this.VehicleMotorResonanzU = this.HelperVehicle.Motor.ResonanzU;
-                this.OnPropertyChanged(nameof(this.VehicleMotorResonanzU));
+                this.VehicleMotorResonanzU = helperVehicle.Motor.ResonanzU;
             }
 
-            if (this.HelperVehicle.Motor.KurbelgehaeuseV.HasValue)
+            if (helperVehicle.Motor.KurbelgehaeuseV.HasValue)
             {
-                this.VehicleMotorKurbelgehaeuseV = this.HelperVehicle.Motor.KurbelgehaeuseV;
-                this.OnPropertyChanged(nameof(this.VehicleMotorKurbelgehaeuseV));
+                this.VehicleMotorKurbelgehaeuseV = helperVehicle.Motor.KurbelgehaeuseV;
             }
 
-            if (this.HelperVehicle.Motor.Einlass.DurchmesserD.HasValue)
+            if (helperVehicle.Motor.Einlass.DurchmesserD.HasValue)
             {
-                this.VehicleMotorEinlassDurchmesserD = this.HelperVehicle.Motor.Einlass.DurchmesserD;
-                this.OnPropertyChanged(nameof(this.VehicleMotorEinlassDurchmesserD));
+                this.VehicleMotorEinlassDurchmesserD = helperVehicle.Motor.Einlass.DurchmesserD;
             }
         }
 
@@ -95,10 +86,6 @@ namespace SimTuning.Maui.UI.ViewModels
         private readonly IVehicleService _vehicleService;
         private double? _einlasssteuerwinkel;
 
-        private VehiclesModel _helperVehicle;
-
-        private ObservableCollection<VehiclesModel> _helperVehicles;
-
         private double? _resonanzlaenge;
 
         private UnitListItem _resonanzlaengeUnit;
@@ -117,27 +104,10 @@ namespace SimTuning.Maui.UI.ViewModels
             set
             {
                 SetProperty(ref _einlasssteuerwinkel, value);
+                this.OnPropertyChanged(nameof(this.Einlasssteuerwinkel));
                 RefreshResonanzlaenge();
             }
         }
-
-        public VehiclesModel HelperVehicle
-        {
-            get => _helperVehicle;
-            set { SetProperty(ref _helperVehicle, value); }
-        }
-
-        public ObservableCollection<VehiclesModel> HelperVehicles
-        {
-            get => _helperVehicles;
-            set { SetProperty(ref _helperVehicles, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets the insert data command.
-        /// </summary>
-        /// <value>The insert data command.</value>
-        public IRelayCommand InsertDataCommand { get; set; }
 
         /// <summary>
         /// Gets the length quantity units.
@@ -183,6 +153,7 @@ namespace SimTuning.Maui.UI.ViewModels
                 }
 
                 this.Vehicle.Motor.Einlass.DurchmesserD = value;
+                this.OnPropertyChanged(nameof(this.VehicleMotorEinlassDurchmesserD));
                 RefreshResonanzlaenge();
             }
         }
@@ -213,6 +184,7 @@ namespace SimTuning.Maui.UI.ViewModels
                 }
 
                 this.Vehicle.Motor.Einlass.FlaecheA = value;
+                this.OnPropertyChanged(nameof(this.VehicleMotorEinlassFlaecheA));
                 RefreshResonanzlaenge();
             }
         }
@@ -243,6 +215,7 @@ namespace SimTuning.Maui.UI.ViewModels
                 }
 
                 this.Vehicle.Motor.KurbelgehaeuseV = value;
+                this.OnPropertyChanged(nameof(this.VehicleMotorKurbelgehaeuseV));
                 RefreshResonanzlaenge();
             }
         }
@@ -273,6 +246,7 @@ namespace SimTuning.Maui.UI.ViewModels
                 }
 
                 this.Vehicle.Motor.ResonanzU = value;
+                this.OnPropertyChanged(nameof(this.VehicleMotorResonanzU));
                 RefreshResonanzlaenge();
             }
         }
