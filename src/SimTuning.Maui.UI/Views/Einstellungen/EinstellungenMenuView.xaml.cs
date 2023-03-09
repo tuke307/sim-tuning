@@ -1,5 +1,5 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
-using SimTuning.Maui.UI.ViewModels.Einstellungen;
+using SimTuning.Maui.UI.ViewModels;
 using CommunityToolkit.Mvvm.DependencyInjection;
 
 namespace SimTuning.Maui.UI.Views.Einstellungen
@@ -10,9 +10,9 @@ namespace SimTuning.Maui.UI.Views.Einstellungen
         {
             InitializeComponent();
 
-            BindingContext = Ioc.Default.GetRequiredService<MenuViewModel>();
+            BindingContext = Ioc.Default.GetRequiredService<EinstellungenMenuViewModel>();
         }
-        public MenuViewModel ViewModel => (MenuViewModel)BindingContext;
+        public EinstellungenMenuViewModel ViewModel => (EinstellungenMenuViewModel)BindingContext;
 
         private async void OnButtonApplicationClicked(object sender, EventArgs args)
         {

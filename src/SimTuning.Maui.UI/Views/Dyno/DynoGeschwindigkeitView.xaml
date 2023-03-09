@@ -4,8 +4,8 @@
              Title="Auswertung-Geschwindigkeit"
              xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
              x:Class="SimTuning.Maui.UI.Views.Dyno.DynoGeschwindigkeitView"
-             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels.Dyno"
-             x:DataType="vm:GeschwindigkeitViewModel">
+             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
+             x:DataType="vm:DynoGeschwindigkeitViewModel">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -14,7 +14,7 @@
         </Grid.RowDefinitions>
 
         <Border Margin="10"
-               Grid.Row="0">
+                Grid.Row="0">
             <StackLayout>
                 <ImageButton Margin="5"
                              HorizontalOptions="FillAndExpand"
@@ -25,8 +25,8 @@
         </Border>
 
         <Border Margin="10"
-               Grid.Row="1"
-               VerticalOptions="FillAndExpand">
+                Grid.Row="1"
+                VerticalOptions="FillAndExpand">
             <StackLayout>
                 <!--<Label  Text="Beschleunigungs-Experiment"
                                         FontSize="Medium"

@@ -2,9 +2,9 @@
 using Microsoft.Extensions.Logging;
 using SimTuning.Maui.UI.Services;
 
-namespace SimTuning.Maui.UI.ViewModels.Einstellungen
+namespace SimTuning.Maui.UI.ViewModels
 {
-    public class ApplicationViewModel : ViewModelBase
+    public class EinstellungenApplicationViewModel : ViewModelBase
     {
         public ApplicationViewModel(
             ILogger<ApplicationViewModel> logger,
@@ -16,9 +16,7 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
 
         #region Methods
 
-        private readonly ILogger<ApplicationViewModel> _logger;
-
-
+        private readonly ILogger<EinstellungenApplicationViewModel> _logger;
 
         #endregion Methods
 

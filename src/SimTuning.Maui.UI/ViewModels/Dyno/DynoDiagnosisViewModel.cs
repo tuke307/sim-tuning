@@ -12,12 +12,12 @@ using SimTuning.Data.Models;
 using SimTuning.Maui.UI.Services;
 using System.Collections.ObjectModel;
 
-namespace SimTuning.Maui.UI.ViewModels.Dyno
+namespace SimTuning.Maui.UI.ViewModels
 {
-    public class DiagnosisViewModel : ViewModelBase
+    public class DynoDiagnosisViewModel : ViewModelBase
     {
-        public DiagnosisViewModel(
-            ILogger<DiagnosisViewModel> logger,
+        public DynoDiagnosisViewModel(
+            ILogger<DynoDiagnosisViewModel> logger,
             INavigationService navigationService,
             IVehicleService vehicleService)
         {
@@ -122,16 +122,13 @@ namespace SimTuning.Maui.UI.ViewModels.Dyno
             }
         }
 
-        /// <summary>
-        /// Inserts the vehicle.
-        /// </summary>
         private void InsertVehicle()
         {
-            if (this.HelperVehicle?.Gewicht != null)
-            {
-                this.DynoVehicleGewicht = this.HelperVehicle.Gewicht;
-                this.OnPropertyChanged(nameof(this.DynoVehicleGewicht));
-            }
+            //if (this.HelperVehicle?.Gewicht != null)
+            //{
+            //    this.DynoVehicleGewicht = this.HelperVehicle.Gewicht;
+            //    this.OnPropertyChanged(nameof(this.DynoVehicleGewicht));
+            //}
 
             //if (this.HelperVehicle.Dyno.Environment..HasValue)
             //{
@@ -167,7 +164,7 @@ namespace SimTuning.Maui.UI.ViewModels.Dyno
         #region Values
 
         protected readonly IVehicleService _vehicleService;
-        private readonly ILogger<DiagnosisViewModel> _logger;
+        private readonly ILogger<DynoDiagnosisViewModel> _logger;
         private DynoModel _dyno;
 
         public ObservableCollection<UnitListItem> AreaQuantityUnits { get; }
@@ -351,17 +348,6 @@ namespace SimTuning.Maui.UI.ViewModels.Dyno
         public ObservableCollection<Data.Models.EnvironmentModel> HelperEnvironments
         {
             get => new ObservableCollection<EnvironmentModel>(_vehicleService.RetrieveEnvironments());
-        }
-
-        public Data.Models.VehiclesModel HelperVehicle
-        {
-            get => _helperVehicle;
-            set => SetProperty(ref _helperVehicle, value);
-        }
-
-        public ObservableCollection<Data.Models.VehiclesModel> HelperVehicles
-        {
-            get => new ObservableCollection<VehiclesModel>(_vehicleService.RetrieveVehicles());
         }
 
         #endregion Hilfs-Daten

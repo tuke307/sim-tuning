@@ -12,12 +12,12 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SimTuning.Maui.UI.ViewModels.Dyno
+namespace SimTuning.Maui.UI.ViewModels
 {
-    public class GeschwindigkeitViewModel : ViewModelBase
+    public class DynoGeschwindigkeitViewModel : ViewModelBase
     {
-        public GeschwindigkeitViewModel(
-            ILogger<GeschwindigkeitViewModel> logger,
+        public DynoGeschwindigkeitViewModel(
+            ILogger<DynoGeschwindigkeitViewModel> logger,
             INavigationService navigationService,
             IVehicleService vehicleService)
         {
@@ -36,7 +36,7 @@ namespace SimTuning.Maui.UI.ViewModels.Dyno
 
         protected readonly INavigationService _navigationService;
         protected readonly IVehicleService _vehicleService;
-        private readonly ILogger<GeschwindigkeitViewModel> _logger;
+        private readonly ILogger<DynoGeschwindigkeitViewModel> _logger;
         private DynoModel _dyno;
 
         /// <summary>

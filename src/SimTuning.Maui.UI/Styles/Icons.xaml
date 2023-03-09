@@ -12,30 +12,36 @@
     <x:Double x:Key="SizeMediumIcon">30</x:Double>
     <x:Double x:Key="SizeLargeIcon">90</x:Double>
 
+    <FontImageSource x:Key="IconHelpCircleOutlineMedium"
+                     FontFamily="MaterialDesignIcons"
+                     Glyph="{x:Static styles:MaterialDesignIcons.HelpCircleOutline}"
+                     Size="{StaticResource SizeMediumIcon}"
+                     Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
+
     <FontImageSource x:Key="IconPencilMedium"
                      FontFamily="MaterialDesignIcons"
                      Glyph="{x:Static styles:MaterialDesignIcons.Pencil}"
                      Size="{StaticResource SizeMediumIcon}"
                      Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
-    
+
     <FontImageSource x:Key="IconAtvMedium"
                      FontFamily="MaterialDesignIcons"
                      Glyph="{x:Static styles:MaterialDesignIcons.Atv}"
                      Size="{StaticResource SizeMediumIcon}"
                      Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
-    
+
     <FontImageSource x:Key="IconInstagramMedium"
                      FontFamily="MaterialDesignIcons"
                      Glyph="{x:Static styles:MaterialDesignIcons.Instagram}"
                      Size="{StaticResource SizeMediumIcon}"
                      Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
-    
+
     <FontImageSource x:Key="IconTwitterMedium"
                      FontFamily="MaterialDesignIcons"
                      Glyph="{x:Static styles:MaterialDesignIcons.Twitter}"
                      Size="{StaticResource SizeMediumIcon}"
                      Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
-    
+
     <FontImageSource x:Key="IconEngineMedium"
                      FontFamily="MaterialDesignIcons"
                      Glyph="{x:Static styles:MaterialDesignIcons.Engine}"
@@ -161,7 +167,7 @@
                      Glyph="{x:Static styles:MaterialDesignIcons.BackupRestore}"
                      Size="{StaticResource SizeMediumIcon}"
                      Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
-    
+
     <FontImageSource x:Key="IconArrowLeftMedium"
                      FontFamily="MaterialDesignIcons"
                      Glyph="{x:Static styles:MaterialDesignIcons.ArrowLeft}"

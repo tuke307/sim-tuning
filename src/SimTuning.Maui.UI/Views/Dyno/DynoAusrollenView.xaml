@@ -4,8 +4,8 @@
              Title="Auswertung-Ausrollen"
              xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
              x:Class="SimTuning.Maui.UI.Views.Dyno.DynoAusrollenView"
-             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels.Dyno"
-             x:DataType="vm:AusrollenViewModel">
+             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
+             x:DataType="vm:DynoAusrollenViewModel">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />

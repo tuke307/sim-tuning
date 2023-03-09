@@ -28,26 +28,27 @@ namespace SimTuning.Maui.App
                     .AddSingleton<INavigationService, NavigationService>()
 
                     .AddTransient<MainPageViewModel>()
+                    .AddTransient<VehiclesViewModel>()
+                    .AddTransient<HomeViewModel>()
+                    .AddTransient<PortTimingViewModel>()
 
-                    .AddTransient<Maui.UI.ViewModels.Home.HomeViewModel>()
+                    .AddTransient<AuslassMainViewModel>()
+                    .AddTransient<AuslassAnwendungViewModel>()
+                    .AddTransient<AuslassTheorieViewModel>()
 
-                    .AddTransient<Maui.UI.ViewModels.Auslass.MainViewModel>()
-                    .AddTransient<Maui.UI.ViewModels.Auslass.AnwendungViewModel>()
-                    .AddTransient<Maui.UI.ViewModels.Auslass.TheorieViewModel>()
+                    .AddTransient<EinlassMainViewModel>()
+                    .AddTransient<EinlassKanalViewModel>()
+                    .AddTransient<EinlassVergaserViewModel>()
 
-                    .AddTransient<Maui.UI.ViewModels.Einlass.MainViewModel>()
-                    .AddTransient<Maui.UI.ViewModels.Einlass.KanalViewModel>()
-                    .AddTransient<Maui.UI.ViewModels.Einlass.VergaserViewModel>()
+                    .AddTransient<MotorMainViewModel>()
+                    .AddTransient<MotorHubraumViewModel>()
+                    .AddTransient<MotorSteuerdiagrammViewModel>()
+                    .AddTransient<MotorUmrechnungViewModel>()
+                    .AddTransient<MotorVerdichtungViewModel>()
 
-                    .AddTransient<Maui.UI.ViewModels.Motor.MainViewModel>()
-                    .AddTransient<Maui.UI.ViewModels.Motor.HubraumViewModel>()
-                    .AddTransient<Maui.UI.ViewModels.Motor.SteuerdiagrammViewModel>()
-                    .AddTransient<Maui.UI.ViewModels.Motor.UmrechnungViewModel>()
-                    .AddTransient<Maui.UI.ViewModels.Motor.VerdichtungViewModel>()
-
-                    .AddTransient<Maui.UI.ViewModels.Einstellungen.MenuViewModel>()
-                    .AddTransient<Maui.UI.ViewModels.Einstellungen.ApplicationViewModel>()
-                    .AddTransient<Maui.UI.ViewModels.Einstellungen.VehiclesViewModel>()
+                    .AddTransient<EinstellungenMenuViewModel>()
+                    .AddTransient<EinstellungenApplicationViewModel>()
+                    .AddTransient<EinstellungenVehiclesViewModel>()
 
                     .AddTransient<Maui.UI.ViewModels.Dyno.MainViewModel>()
                     //.AddTransient<Maui.UI.ViewModels.Dyno.AudioPlayerViewModel>()

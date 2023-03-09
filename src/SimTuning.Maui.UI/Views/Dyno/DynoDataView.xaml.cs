@@ -13,7 +13,7 @@ namespace SimTuning.Maui.UI.Views.Dyno
         {
             this.InitializeComponent();
 
-            BindingContext = Ioc.Default.GetRequiredService<DataViewModel>();
+            BindingContext = Ioc.Default.GetRequiredService<DynoDataViewModel>();
         }
 
         private void Button_Clicked(object sender, EventArgs e)

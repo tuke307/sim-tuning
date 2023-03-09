@@ -16,12 +16,12 @@ using SimTuning.Maui.UI.Services;
 using SkiaSharp;
 using System.Collections.ObjectModel;
 
-namespace SimTuning.Maui.UI.ViewModels.Dyno
+namespace SimTuning.Maui.UI.ViewModels
 {
-    public class SpectrogramViewModel : ViewModelBase
+    public class DynoSpectrogramViewModel : ViewModelBase
     {
-        public SpectrogramViewModel(
-            ILogger<SpectrogramViewModel> logger,
+        public DynoSpectrogramViewModel(
+            ILogger<DynoSpectrogramViewModel> logger,
             INavigationService navigationService,
             IVehicleService vehicleService)
         {

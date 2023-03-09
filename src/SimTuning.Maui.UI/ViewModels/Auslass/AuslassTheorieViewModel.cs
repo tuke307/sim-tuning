@@ -11,12 +11,12 @@ using SimTuning.Maui.UI.Services;
 using System.Collections.ObjectModel;
 using UnitsNet.Units;
 
-namespace SimTuning.Maui.UI.ViewModels.Auslass
+namespace SimTuning.Maui.UI.ViewModels
 {
-    public class TheorieViewModel : ViewModelBase
+    public class AuslassTheorieViewModel : ViewModelBase
     {
-        public TheorieViewModel(
-            ILogger<TheorieViewModel> logger,
+        public AuslassTheorieViewModel(
+            ILogger<AuslassTheorieViewModel> logger,
             IVehicleService vehicleService)
         {
             this._logger = logger;
@@ -35,42 +35,30 @@ namespace SimTuning.Maui.UI.ViewModels.Auslass
 
             this.ModAuspuff = new AuspuffModel();
 
-            this.HelperVehicles = new ObservableCollection<VehiclesModel>(_vehicleService.RetrieveVehicles());
-
-            // Commands
-            this.InsertDataCommand = new RelayCommand(this.InsertData);
-
             // andere unit vorbelegen
             VehicleMotorAuslassFlaecheAUnit = this.AreaQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(AreaUnit.SquareCentimeter));
-
         }
 
         #region Methods
 
-
-
-
         /// <summary>
         /// Inserts the data.
         /// </summary>
-        protected void InsertData()
+        public void InsertHelperVehicle(VehiclesModel helperVehicle)
         {
-            if (this.HelperVehicle.Motor.Auslass.FlaecheA.HasValue)
+            if (helperVehicle.Motor.Auslass.FlaecheA.HasValue)
             {
-                this.VehicleMotorAuslassFlaecheA = this.HelperVehicle.Motor.Auslass.FlaecheA;
-                this.OnPropertyChanged(nameof(this.VehicleMotorAuslassFlaecheA));
+                this.VehicleMotorAuslassFlaecheA = helperVehicle.Motor.Auslass.FlaecheA;
             }
 
-            if (this.HelperVehicle.Motor.ResonanzU.HasValue)
+            if (helperVehicle.Motor.ResonanzU.HasValue)
             {
-                this.VehicleMotorResonanzU = this.HelperVehicle.Motor.ResonanzU;
-                this.OnPropertyChanged(nameof(this.VehicleMotorResonanzU));
+                this.VehicleMotorResonanzU = helperVehicle.Motor.ResonanzU;
             }
 
-            if (this.HelperVehicle.Motor.Auslass.SteuerzeitSZ.HasValue)
+            if (helperVehicle.Motor.Auslass.SteuerzeitSZ.HasValue)
             {
-                this.VehicleMotorAuslassSteuerzeitSZ = this.HelperVehicle.Motor.Auslass.SteuerzeitSZ;
-                this.OnPropertyChanged(nameof(this.VehicleMotorAuslassSteuerzeitSZ));
+                this.VehicleMotorAuslassSteuerzeitSZ = helperVehicle.Motor.Auslass.SteuerzeitSZ;
             }
         }
 
@@ -145,16 +133,8 @@ namespace SimTuning.Maui.UI.ViewModels.Auslass
 
         #region Values
 
-        #region Commands
-
-        public IRelayCommand InsertDataCommand { get; set; }
-
-        #endregion Commands
-
-        private readonly ILogger<TheorieViewModel> _logger;
+        private readonly ILogger<AuslassTheorieViewModel> _logger;
         private readonly IVehicleService _vehicleService;
-        private VehiclesModel _helperVehicle;
-        private ObservableCollection<VehiclesModel> _helperVehicles;
 
         private string _kruemmerSpannneD;
 
@@ -166,26 +146,6 @@ namespace SimTuning.Maui.UI.ViewModels.Auslass
         /// </summary>
         /// <value>The area quantity units.</value>
         public ObservableCollection<UnitListItem> AreaQuantityUnits { get; }
-
-        /// <summary>
-        /// Gets or sets the helper vehicle.
-        /// </summary>
-        /// <value>The helper vehicle.</value>
-        public VehiclesModel HelperVehicle
-        {
-            get => _helperVehicle;
-            set => SetProperty(ref _helperVehicle, value);
-        }
-
-        /// <summary>
-        /// Gets or sets the helper vehicles.
-        /// </summary>
-        /// <value>The helper vehicles.</value>
-        public ObservableCollection<VehiclesModel> HelperVehicles
-        {
-            get => _helperVehicles;
-            set => SetProperty(ref _helperVehicles, value);
-        }
 
         /// <summary>
         /// Gets or sets the kruemmer spannne d.
@@ -495,6 +455,7 @@ namespace SimTuning.Maui.UI.ViewModels.Auslass
 
                 this.Refresh_KruemmerD();
                 this.Vehicle.Motor.Auslass.FlaecheA = value;
+                this.OnPropertyChanged(nameof(this.VehicleMotorAuslassFlaecheA));
             }
         }
 
@@ -533,6 +494,7 @@ namespace SimTuning.Maui.UI.ViewModels.Auslass
 
                 this.Refresh_Resonanzlaenge();
                 this.Vehicle.Motor.Auslass.SteuerzeitSZ = value;
+                this.OnPropertyChanged(nameof(this.VehicleMotorAuslassSteuerzeitSZ));
             }
         }
 
@@ -552,6 +514,7 @@ namespace SimTuning.Maui.UI.ViewModels.Auslass
 
                 this.Refresh_Resonanzlaenge();
                 this.Vehicle.Motor.ResonanzU = value;
+                this.OnPropertyChanged(nameof(this.VehicleMotorResonanzU));
             }
         }
 

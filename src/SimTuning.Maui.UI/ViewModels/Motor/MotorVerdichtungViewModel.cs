@@ -1,5 +1,5 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
-namespace SimTuning.Maui.UI.ViewModels.Motor
+namespace SimTuning.Maui.UI.ViewModels
 {
     using CommunityToolkit.Mvvm.Input;
     using Microsoft.Extensions.Logging;
@@ -14,10 +14,10 @@ namespace SimTuning.Maui.UI.ViewModels.Motor
     using System.Linq;
     using UnitsNet.Units;
 
-    public class VerdichtungViewModel : ViewModelBase
+    public class MotorVerdichtungViewModel : ViewModelBase
     {
-        public VerdichtungViewModel(
-            ILogger<VerdichtungViewModel> logger,
+        public MotorVerdichtungViewModel(
+            ILogger<MotorVerdichtungViewModel> logger,
             INavigationService navigationService,
             IVehicleService vehicleService)
         {
@@ -29,10 +29,6 @@ namespace SimTuning.Maui.UI.ViewModels.Motor
 
             this.Vehicle = new VehiclesModel();
             this.Vehicle.Motor = new MotorModel();
-
-            this.HelperVehicles = new ObservableCollection<VehiclesModel>(_vehicleService.RetrieveVehicles());
-
-            this.InsertDataCommand = new RelayCommand(this.InsertData);
         }
 
         #region Methods
@@ -43,23 +39,23 @@ namespace SimTuning.Maui.UI.ViewModels.Motor
         /// <summary>
         /// Inserts the data.
         /// </summary>
-        private void InsertData()
+        public void InsertHelperVehicle(VehiclesModel helperVehicle)
         {
-            if (this.HelperVehicle.Motor.HubraumV.HasValue)
+            if (helperVehicle.Motor.HubraumV.HasValue)
             {
-                this.VehicleMotorHubraumV = this.HelperVehicle.Motor.HubraumV;
+                this.VehicleMotorHubraumV = helperVehicle.Motor.HubraumV;
                 this.OnPropertyChanged(nameof(this.VehicleMotorHubraumV));
             }
 
-            if (this.HelperVehicle.Motor.BrennraumV.HasValue)
+            if (helperVehicle.Motor.BrennraumV.HasValue)
             {
-                this.VehicleMotorBrennraumV = this.HelperVehicle.Motor.BrennraumV;
+                this.VehicleMotorBrennraumV = helperVehicle.Motor.BrennraumV;
                 this.OnPropertyChanged(nameof(this.VehicleMotorBrennraumV));
             }
 
-            if (this.HelperVehicle.Motor.BohrungD.HasValue)
+            if (helperVehicle.Motor.BohrungD.HasValue)
             {
-                this.VehicleMotorBohrungD = this.HelperVehicle.Motor.BohrungD;
+                this.VehicleMotorBohrungD = helperVehicle.Motor.BohrungD;
                 this.OnPropertyChanged(nameof(this.VehicleMotorBohrungD));
             }
         }
@@ -115,13 +111,11 @@ namespace SimTuning.Maui.UI.ViewModels.Motor
 
         #region Values
 
-        private readonly ILogger<VerdichtungViewModel> _logger;
+        private readonly ILogger<MotorVerdichtungViewModel> _logger;
         private readonly IVehicleService _vehicleService;
         private double? _abdrehenLength;
         private UnitListItem _abdrehenLengthUnit;
         private double? _derzeitigeVerdichtung;
-        private VehiclesModel _helperVehicle;
-        private ObservableCollection<VehiclesModel> _helperVehicles;
         private VehiclesModel _vehicle;
         private double? _zielverdichtung;
 
@@ -165,32 +159,6 @@ namespace SimTuning.Maui.UI.ViewModels.Motor
             get => this._derzeitigeVerdichtung;
             set => this.SetProperty(ref this._derzeitigeVerdichtung, value);
         }
-
-        /// <summary>
-        /// Gets or sets the helper vehicle.
-        /// </summary>
-        /// <value>The helper vehicle.</value>
-        public VehiclesModel HelperVehicle
-        {
-            get => this._helperVehicle;
-            set => this.SetProperty(ref this._helperVehicle, value);
-        }
-
-        /// <summary>
-        /// Gets or sets the helper vehicles.
-        /// </summary>
-        /// <value>The helper vehicles.</value>
-        public ObservableCollection<VehiclesModel> HelperVehicles
-        {
-            get => this._helperVehicles;
-            set => this.SetProperty(ref this._helperVehicles, value);
-        }
-
-        /// <summary>
-        /// Gets or sets the insert data command.
-        /// </summary>
-        /// <value>The insert data command.</value>
-        public IRelayCommand InsertDataCommand { get; set; }
 
         /// <summary>
         /// Gets the length quantity units.

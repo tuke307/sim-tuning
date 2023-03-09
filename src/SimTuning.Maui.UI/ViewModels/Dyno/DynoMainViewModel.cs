@@ -2,12 +2,12 @@
 using Microsoft.Extensions.Logging;
 using SimTuning.Maui.UI.Services;
 
-namespace SimTuning.Maui.UI.ViewModels.Dyno
+namespace SimTuning.Maui.UI.ViewModels
 {
-    public class MainViewModel : ViewModelBase
+    public class DynoMainViewModel : ViewModelBase
     {
-        public MainViewModel(
-            ILogger<MainViewModel> logger,
+        public DynoMainViewModel(
+            ILogger<DynoMainViewModel> logger,
             INavigationService navigationService)
         {
             this._logger = logger;
@@ -22,7 +22,7 @@ namespace SimTuning.Maui.UI.ViewModels.Dyno
 
         protected readonly INavigationService _navigationService;
 
-        private readonly ILogger<MainViewModel> _logger;
+        private readonly ILogger<DynoMainViewModel> _logger;
         private int _dynoTabIndex;
 
         public int DynoTabIndex

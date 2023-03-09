@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              Title="Allgemein"
              x:Class="SimTuning.Maui.UI.Views.Einstellungen.EinstellungenApplicationView"
-             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels.Einstellungen"
-             x:DataType="vm:ApplicationViewModel">
+             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
+             x:DataType="vm:EinstellungenApplicationViewModel">
     <Grid Margin="20">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.25*" />

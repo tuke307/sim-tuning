@@ -1,12 +1,12 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
 using Microsoft.Extensions.Logging;
 
-namespace SimTuning.Maui.UI.ViewModels.Auslass
+namespace SimTuning.Maui.UI.ViewModels
 {
-    public class MainViewModel : ViewModelBase
+    public class AuslassMainViewModel : ViewModelBase
     {
-        public MainViewModel(
-            ILogger<MainViewModel> logger)
+        public AuslassMainViewModel(
+            ILogger<AuslassMainViewModel> logger)
         {
             this._logger = logger;
         }
@@ -14,7 +14,7 @@ namespace SimTuning.Maui.UI.ViewModels.Auslass
 
         #region Values
 
-        private readonly ILogger<MainViewModel> _logger;
+        private readonly ILogger<AuslassMainViewModel> _logger;
         private int _auslassTabIndex;
 
         public int AuslassTabIndex

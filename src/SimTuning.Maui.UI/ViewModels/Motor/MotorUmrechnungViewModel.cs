@@ -1,33 +1,25 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
-namespace SimTuning.Maui.UI.ViewModels.Motor
+namespace SimTuning.Maui.UI.ViewModels
 {
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.Logging;
     using CommunityToolkit.Mvvm.Input;
-    using CommunityToolkit.Mvvm.ComponentModel;
+    using Microsoft.Extensions.Logging;
+    using SimTuning.Core;
     using SimTuning.Core.Models;
     using SimTuning.Core.ModuleLogic;
-    using SimTuning.Core.Services;using SimTuning.Maui.UI.Services;
-    using SimTuning.Data;
+    using SimTuning.Core.Services;
     using SimTuning.Data.Models;
-    using System.Collections.Generic;
+    using SimTuning.Maui.UI.Services;
     using System.Collections.ObjectModel;
     using System.Linq;
-    using System.Threading.Tasks;
     using UnitsNet.Units;
-    using SimTuning.Core;
 
     /// <summary>
     /// UmrechnungViewModel.
     /// </summary>
-    public class UmrechnungViewModel : ViewModelBase
+    public class MotorUmrechnungViewModel : ViewModelBase
     {
-        /// <summary> Initializes a new instance of the <see cref="UmrechnungViewModel"/>
-        /// class. </summary> <param name="logger"><inheritdoc cref="ILogger"
-        /// path="/summary/node()" /></param> <param name="INavigationService"><inheritdoc
-        /// cref="INavigationService" path="/summary/node()" /></param
-        public UmrechnungViewModel(
-            ILogger<UmrechnungViewModel> logger,
+        public MotorUmrechnungViewModel(
+            ILogger<MotorUmrechnungViewModel> logger,
             INavigationService navigationService,
             IVehicleService vehicleService)
         {
@@ -38,16 +30,10 @@ namespace SimTuning.Maui.UI.ViewModels.Motor
             this.LengthQuantityUnits = new LengthQuantity();
 
             // vordefinieren der nicht model werte
-            // TODO: den rest der unmodelt.units definieren! this.UnitAbstandOTlength =
-            // this.LengthQuantityUnits.Where(x =>
-            // x.UnitEnumValue.Equals(LengthUnit.Millimeter)).First();
+            // TODO: den rest der unmodelt.units definieren! this.UnitAbstandOTlength = this.LengthQuantityUnits.Where(x => x.UnitEnumValue.Equals(LengthUnit.Millimeter)).First();
             this.DifferenceLengthUnit = this.LengthQuantityUnits.Where(x => x.UnitEnumValue.Equals(LengthUnit.Millimeter)).First();
             this.VehicleMotorHubRUnit = this.LengthQuantityUnits.Where(x => x.UnitEnumValue.Equals(LengthUnit.Millimeter)).First();
             this.LengthDifferenceToOTUnit = this.LengthQuantityUnits.Where(x => x.UnitEnumValue.Equals(LengthUnit.Millimeter)).First();
-
-            this.HelperVehicles = new ObservableCollection<VehiclesModel>(_vehicleService.RetrieveVehicles());
-
-            this.InsertDataCommand = new RelayCommand(this.InsertData);
 
             // Vehicle Creation
             this.Vehicle = new VehiclesModel();
@@ -56,27 +42,26 @@ namespace SimTuning.Maui.UI.ViewModels.Motor
 
         #region Methods
 
-
         /// <summary>
         /// Inserts the data.
         /// </summary>
-        protected void InsertData()
+        public void InsertHelperVehicle(VehiclesModel helperVehicle)
         {
-            if (this.HelperVehicle.Motor.HubL.HasValue)
+            if (helperVehicle.Motor.HubL.HasValue)
             {
-                this.VehicleMotorHubL = this.HelperVehicle.Motor.HubL;
+                this.VehicleMotorHubL = helperVehicle.Motor.HubL;
                 this.OnPropertyChanged(nameof(this.VehicleMotorHubL));
             }
 
-            if (this.HelperVehicle.Motor.PleulL.HasValue)
+            if (helperVehicle.Motor.PleulL.HasValue)
             {
-                this.VehicleMotorPleulL = this.HelperVehicle.Motor.PleulL;
+                this.VehicleMotorPleulL = helperVehicle.Motor.PleulL;
                 this.OnPropertyChanged(nameof(this.VehicleMotorPleulL));
             }
 
-            if (this.HelperVehicle.Motor.DeachsierungL.HasValue)
+            if (helperVehicle.Motor.DeachsierungL.HasValue)
             {
-                this.VehicleMotorDeachsierungL = this.HelperVehicle.Motor.DeachsierungL;
+                this.VehicleMotorDeachsierungL = helperVehicle.Motor.DeachsierungL;
                 this.OnPropertyChanged(nameof(this.VehicleMotorDeachsierungL));
             }
         }
@@ -170,8 +155,6 @@ namespace SimTuning.Maui.UI.ViewModels.Motor
         private double? _differenceDegree;
         private double? _differenceLength;
         private UnitListItem _differenceLengthUnit;
-        private VehiclesModel _helperVehicle;
-        private ObservableCollection<VehiclesModel> _helperVehicles;
         private bool _kolbenoberkanteChecked;
         private bool _kolbenunterkanteChecked;
         private double? _lengthDifferenceToOT;
@@ -189,7 +172,7 @@ namespace SimTuning.Maui.UI.ViewModels.Motor
 
         #endregion private
 
-        private readonly ILogger<UmrechnungViewModel> _logger;
+        private readonly ILogger<MotorUmrechnungViewModel> _logger;
 
         private readonly IVehicleService _vehicleService;
 
@@ -243,37 +226,9 @@ namespace SimTuning.Maui.UI.ViewModels.Motor
         }
 
         /// <summary>
-        /// Gets or sets the helper vehicle.
-        /// </summary>
-        /// <value>The helper vehicle.</value>
-        public VehiclesModel HelperVehicle
-        {
-            get => this._helperVehicle;
-            set => SetProperty(ref _helperVehicle, value);
-        }
-
-        /// <summary>
-        /// Gets or sets the helper vehicles.
-        /// </summary>
-        /// <value>The helper vehicles.</value>
-        public ObservableCollection<VehiclesModel> HelperVehicles
-        {
-            get => _helperVehicles;
-            set { SetProperty(ref _helperVehicles, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets the insert data command.
-        /// </summary>
-        /// <value>The insert data command.</value>
-        public IRelayCommand InsertDataCommand { get; set; }
-
-        /// <summary>
         /// Gets or sets a value indicating whether [kolbenoberkante checked].
         /// </summary>
-        /// <value>
-        /// <c>true</c> if [kolbenoberkante checked]; otherwise, <c>false</c>.
-        /// </value>
+        /// <value><c>true</c> if [kolbenoberkante checked]; otherwise, <c>false</c>.</value>
         public bool KolbenoberkanteChecked
         {
             get => this._kolbenoberkanteChecked;
@@ -287,9 +242,7 @@ namespace SimTuning.Maui.UI.ViewModels.Motor
         /// <summary>
         /// Gets or sets a value indicating whether [kolbenunterkante checked].
         /// </summary>
-        /// <value>
-        /// <c>true</c> if [kolbenunterkante checked]; otherwise, <c>false</c>.
-        /// </value>
+        /// <value><c>true</c> if [kolbenunterkante checked]; otherwise, <c>false</c>.</value>
         public bool KolbenunterkanteChecked
         {
             get => this._kolbenunterkanteChecked;
