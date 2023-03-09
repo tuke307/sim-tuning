@@ -6,8 +6,8 @@ namespace SimTuning.Maui.UI.ViewModels
 {
     public class EinstellungenApplicationViewModel : ViewModelBase
     {
-        public ApplicationViewModel(
-            ILogger<ApplicationViewModel> logger,
+        public EinstellungenApplicationViewModel(
+            ILogger<EinstellungenApplicationViewModel> logger,
             INavigationService navigationService)
         {
             this._logger = logger;

@@ -5,8 +5,8 @@
              xmlns:views="clr-namespace:SimTuning.Maui.UI.Views.Dyno"
              xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels.Dyno"
-             x:DataType="vm:SpectrogramViewModel">
+             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
+             x:DataType="vm:DynoSpectrogramViewModel">
     <ContentView.Resources>
         <behavior:InvertedBoolConverter x:Key="inverter" />
     </ContentView.Resources>

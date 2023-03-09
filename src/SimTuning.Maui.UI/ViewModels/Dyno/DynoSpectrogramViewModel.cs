@@ -302,7 +302,7 @@ namespace SimTuning.Maui.UI.ViewModels
 
         protected readonly INavigationService _navigationService;
         protected readonly IVehicleService _vehicleService;
-        private readonly ILogger<SpectrogramViewModel> _logger;
+        private readonly ILogger<DynoSpectrogramViewModel> _logger;
         private readonly List<int> fftSizes;
         private DynoModel _dyno;
         private int _fftSizeIndex;

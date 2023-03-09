@@ -31,13 +31,67 @@ namespace SimTuning.Maui.UI.ViewModels
             this.MassQuantityUnits = new MassQuantity();
 
             this.RefreshPlotCommand = new RelayCommand(this.RefreshPlot);
-
-            this.InsertVehicleCommand = new RelayCommand(this.InsertVehicle);
-            this.InsertEnvironmentCommand = new RelayCommand(this.InsertEnvironment);
             //this.ReloadData();
         }
 
         #region Methods
+
+        /// <summary>
+        /// Inserts the environment.
+        /// </summary>
+        public void InsertEnvironment(EnvironmentModel helperEnvironment)
+        {
+            if (this.HelperEnvironment.LuftdruckP.HasValue)
+            {
+                this.DynoEnvironmentLuftdruckP =
+                this.HelperEnvironment.LuftdruckP;
+                this.OnPropertyChanged(nameof(this.DynoEnvironmentLuftdruckP));
+            }
+
+            if (this.HelperEnvironment.TemperaturT.HasValue)
+            {
+                this.DynoEnvironmentTemperaturT = this.HelperEnvironment.TemperaturT;
+                this.OnPropertyChanged(nameof(this.DynoEnvironmentTemperaturT));
+            }
+        }
+
+        /// <summary>
+        /// Reloads the data.
+        /// </summary>
+        /// <param name="mvxReloaderMessage">The MVX reloader message.</param>
+        //protected void ReloadData(Models.MvxReloaderMessage mvxReloaderMessage = null)
+        //{
+        //    try
+        //    {
+        //        OnPropertyChanged(nameof(HelperVehicles));
+        //        OnPropertyChanged(nameof(HelperEnvironments));
+        //        this.Dyno = _vehicleService.RetrieveOneActive();
+        //    }
+        //    catch (Exception exc)
+        //    {
+        //        _logger.LogError("Fehler bei ReloadData: ", exc);
+        //    }
+        //}
+        public void InsertVehicle(VehiclesModel helperVehicle)
+        {
+            //if (this.HelperVehicle?.Gewicht != null)
+            //{
+            //    this.DynoVehicleGewicht = this.HelperVehicle.Gewicht;
+            //    this.OnPropertyChanged(nameof(this.DynoVehicleGewicht));
+            //}
+
+            //if (this.HelperVehicle.Dyno.Environment..HasValue)
+            //{
+            //    this.DynoVehicleCw =
+            //this.HelperVehicle.Cw; this.OnPropertyChanged(nameof(this.DynoVehicleCw);
+            //}
+
+            //if (this.HelperVehicle.FrontA.HasValue)
+            //{
+            //    this.DynoVehicleFrontA =
+            //this.HelperVehicle.FrontA; this.OnPropertyChanged(() =>
+            //this.DynoVehicleFrontA);
+        }
 
         /// <summary>
         /// Refreshes the plot.
@@ -83,64 +137,6 @@ namespace SimTuning.Maui.UI.ViewModels
             {
                 return true;
             }
-        }
-
-        /// <summary>
-        /// Reloads the data.
-        /// </summary>
-        /// <param name="mvxReloaderMessage">The MVX reloader message.</param>
-        //protected void ReloadData(Models.MvxReloaderMessage mvxReloaderMessage = null)
-        //{
-        //    try
-        //    {
-        //        OnPropertyChanged(nameof(HelperVehicles));
-        //        OnPropertyChanged(nameof(HelperEnvironments));
-        //        this.Dyno = _vehicleService.RetrieveOneActive();
-        //    }
-        //    catch (Exception exc)
-        //    {
-        //        _logger.LogError("Fehler bei ReloadData: ", exc);
-        //    }
-        //}
-
-        /// <summary>
-        /// Inserts the environment.
-        /// </summary>
-        private void InsertEnvironment()
-        {
-            if (this.HelperEnvironment.LuftdruckP.HasValue)
-            {
-                this.DynoEnvironmentLuftdruckP =
-                this.HelperEnvironment.LuftdruckP;
-                this.OnPropertyChanged(nameof(this.DynoEnvironmentLuftdruckP));
-            }
-
-            if (this.HelperEnvironment.TemperaturT.HasValue)
-            {
-                this.DynoEnvironmentTemperaturT = this.HelperEnvironment.TemperaturT;
-                this.OnPropertyChanged(nameof(this.DynoEnvironmentTemperaturT));
-            }
-        }
-
-        private void InsertVehicle()
-        {
-            //if (this.HelperVehicle?.Gewicht != null)
-            //{
-            //    this.DynoVehicleGewicht = this.HelperVehicle.Gewicht;
-            //    this.OnPropertyChanged(nameof(this.DynoVehicleGewicht));
-            //}
-
-            //if (this.HelperVehicle.Dyno.Environment..HasValue)
-            //{
-            //    this.DynoVehicleCw =
-            //this.HelperVehicle.Cw; this.OnPropertyChanged(nameof(this.DynoVehicleCw);
-            //}
-
-            //if (this.HelperVehicle.FrontA.HasValue)
-            //{
-            //    this.DynoVehicleFrontA =
-            //this.HelperVehicle.FrontA; this.OnPropertyChanged(() =>
-            //this.DynoVehicleFrontA);
         }
 
         /// <summary>

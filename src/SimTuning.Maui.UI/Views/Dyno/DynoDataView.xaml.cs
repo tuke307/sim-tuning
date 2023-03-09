@@ -1,13 +1,13 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
 using CommunityToolkit.Mvvm.DependencyInjection;
 using SimTuning.Core.Helpers;
-using SimTuning.Maui.UI.ViewModels.Dyno;
+using SimTuning.Maui.UI.ViewModels;
 
 namespace SimTuning.Maui.UI.Views.Dyno
 {
     public partial class DynoDataView : ContentView
     {
-        public DataViewModel ViewModel => (DataViewModel)BindingContext;
+        public DynoDataViewModel ViewModel => (DynoDataViewModel)BindingContext;
 
         public DynoDataView()
         {

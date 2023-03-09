@@ -2,7 +2,7 @@
 using CommunityToolkit.Maui.Core.Primitives;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using SimTuning.Maui.UI.ViewModels.Dyno;
+using SimTuning.Maui.UI.ViewModels;
 
 namespace SimTuning.Maui.UI.Views.Dyno
 {
@@ -10,13 +10,13 @@ namespace SimTuning.Maui.UI.Views.Dyno
     {
         private readonly ILogger<DynoSpectrogramView> _logger;
 
-        public SpectrogramViewModel ViewModel => (SpectrogramViewModel)BindingContext;
+        public DynoSpectrogramViewModel ViewModel => (DynoSpectrogramViewModel)BindingContext;
 
         public DynoSpectrogramView()
         {
             InitializeComponent();
 
-            BindingContext = Ioc.Default.GetRequiredService<SpectrogramViewModel>();
+            BindingContext = Ioc.Default.GetRequiredService<DynoSpectrogramViewModel>();
             _logger = Ioc.Default.GetRequiredService<ILogger<DynoSpectrogramView>>();
         }
 

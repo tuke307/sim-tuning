@@ -4,8 +4,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:tabs="http://sharpnado.com"
              xmlns:local="clr-namespace:SimTuning.Maui.UI.Views.Dyno"
-             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels.Dyno"
-             x:DataType="vm:MainViewModel"
+             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
+             x:DataType="vm:DynoMainViewModel"
              Title="Dyno">
     <Grid>
         <Grid.RowDefinitions>

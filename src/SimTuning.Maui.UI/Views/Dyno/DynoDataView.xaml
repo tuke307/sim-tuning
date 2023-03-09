@@ -5,7 +5,7 @@
              x:Class="SimTuning.Maui.UI.Views.Dyno.DynoDataView"
              xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
              xmlns:models="clr-namespace:SimTuning.Data.Models;assembly=SimTuning.Data"
-             x:DataType="vm:DataViewModel">
+             x:DataType="vm:DynoDataViewModel">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />

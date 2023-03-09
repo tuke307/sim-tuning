@@ -341,7 +341,7 @@ namespace SimTuning.Maui.UI.ViewModels
 
         protected readonly INavigationService _navigationService;
         private readonly IBrowserService _browserService;
-        private readonly ILogger<DataViewModel> _logger;
+        private readonly ILogger<DynoDataViewModel> _logger;
         private readonly IVehicleService _vehicleService;
         private bool _createNewVehicle;
         private DynoModel _dyno;
