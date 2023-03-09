@@ -1,8 +1,6 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
 using Microsoft.Extensions.Logging;
-using CommunityToolkit.Mvvm.ComponentModel;
-using System.Threading.Tasks;
-using SimTuning.Core.Services;using SimTuning.Maui.UI.Services;
+using SimTuning.Maui.UI.Services;
 
 namespace SimTuning.Maui.UI.ViewModels
 {
@@ -13,7 +11,7 @@ namespace SimTuning.Maui.UI.ViewModels
             INavigationService navigationService)
         {
             this._logger = logger;
-            this._navigationService = navigationService ;
+            this._navigationService = navigationService;
         }
 
         #region Methods

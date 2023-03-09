@@ -41,7 +41,7 @@
 
     <FlyoutItem Title="Dyno"
                 FlyoutIcon="{StaticResource IconChartBellCurveMedium}">
-        <ShellContent ContentTemplate="{DataTemplate dyno:DynoDataView}" />
+        <ShellContent ContentTemplate="{DataTemplate dyno:DynoMainView}" />
     </FlyoutItem>
 
     <FlyoutItem Title="Einstellungen"

@@ -1,17 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             Title="Datensatz"
              x:Class="SimTuning.Maui.UI.Views.Dyno.DynoDataView"
              xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
              xmlns:models="clr-namespace:SimTuning.Data.Models;assembly=SimTuning.Data"
-             x:DataType="vm:DynoDataViewModel">
-
+             x:DataType="vm:DataViewModel">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
         <Border Grid.Row="0">
@@ -109,74 +108,73 @@
             </StackLayout>
         </Border>
 
-        <ScrollView Grid.Row="1">
-            <Border>
-                <StackLayout>
-                    <Label Text="Daten"
-                           FontSize="Medium"
-                           FontAttributes="Bold" />
+        <Border Grid.Row="1">
+            <StackLayout>
+                <Label Text="Daten"
+                       FontSize="Medium"
+                       FontAttributes="Bold" />
 
-                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+                <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
 
-                        <StackLayout Grid.Column="0"
-                                     Grid.RowSpan="3">
-                            <Entry Placeholder="Name"
-                                   Text="{Binding Mode=TwoWay, Path=DynoName}"
-                                   Margin="5">
-                            </Entry>
+                    <StackLayout Grid.Column="0"
+                                 Grid.RowSpan="3">
+                        <Entry Placeholder="Name"
+                               Text="{Binding Mode=TwoWay, Path=DynoName}"
+                               Margin="5">
+                        </Entry>
 
-                            <Editor Placeholder="Beschreibung"
-                                    Text="{Binding Mode=TwoWay, Path=DynoBeschreibung}"
-                                    HeightRequest="150"
-                                    Margin="5">
-                            </Editor>
-                        </StackLayout>
+                        <Editor Placeholder="Beschreibung"
+                                Text="{Binding Mode=TwoWay, Path=DynoBeschreibung}"
+                                HeightRequest="150"
+                                Margin="5">
+                        </Editor>
+                    </StackLayout>
 
-                        <Button Margin="5"
-                                Grid.Column="1"
-                                Grid.Row="0"
-                                VerticalOptions="Center"
-                                HorizontalOptions="FillAndExpand"
-                                ImageSource="{StaticResource IconContentSaveMedium}"
-                                IsEnabled="{Binding Mode=OneWay, Path=SaveButton}"
-                                Command="{Binding SaveDynoCommand}"
-                                HeightRequest="60">
-                        </Button>
+                    <Button Margin="5"
+                            Grid.Column="1"
+                            Grid.Row="0"
+                            VerticalOptions="Center"
+                            HorizontalOptions="FillAndExpand"
+                            ImageSource="{StaticResource IconContentSaveMedium}"
+                            IsEnabled="{Binding Mode=OneWay, Path=SaveButton}"
+                            Command="{Binding SaveDynoCommand}"
+                            HeightRequest="60">
+                    </Button>
 
-                        <Button Margin="5"
-                                Grid.Column="1"
-                                Grid.Row="1"
-                                VerticalOptions="Center"
-                                HorizontalOptions="FillAndExpand"
-                                ImageSource="{StaticResource IconBackupRestoreMedium}"
-                                Command="{Binding ExportDynoCommand}"
-                                HeightRequest="60">
-                        </Button>
+                    <Button Margin="5"
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            VerticalOptions="Center"
+                            HorizontalOptions="FillAndExpand"
+                            ImageSource="{StaticResource IconBackupRestoreMedium}"
+                            Command="{Binding ExportDynoCommand}"
+                            HeightRequest="60">
+                    </Button>
 
-                        <Button Margin="5"
-                                Grid.Column="1"
-                                Grid.Row="2"
-                                VerticalOptions="Center"
-                                HorizontalOptions="FillAndExpand"
-                                ImageSource="{StaticResource IconFileImportOutlineMedium}"
-                                Command="{Binding ImportDynoCommand}"
-                                HeightRequest="60">
-                        </Button>
-                    </Grid>
+                    <Button Margin="5"
+                            Grid.Column="1"
+                            Grid.Row="2"
+                            VerticalOptions="Center"
+                            HorizontalOptions="FillAndExpand"
+                            ImageSource="{StaticResource IconFileImportOutlineMedium}"
+                            Command="{Binding ImportDynoCommand}"
+                            HeightRequest="60">
+                    </Button>
+                </Grid>
 
-                    <!--Audio-->
-                    <!--<Expander>
+                <!--Audio-->
+                <!--<Expander>
                         <Expander.Header>
                             <Border>
                                 <Label>
@@ -205,8 +203,8 @@
                     </Expander>
 
                     -->
-                    <!--PS-->
-                    <!--
+                <!--PS-->
+                <!--
                     <Expander>
                         <Expander.Header>
                             <Border>
@@ -235,8 +233,8 @@
                         </HorizontalStackLayout>
                     </Expander>-->
 
-                    <!--Nm-->
-                    <!--<Expander>
+                <!--Nm-->
+                <!--<Expander>
                         <Expander.Header>
                             <Border>
                                 <Label>
@@ -267,17 +265,13 @@
                             </DataTemplate>
                         </HorizontalStackLayout>
                     </Expander>-->
-                </StackLayout>
-            </Border>
-        </ScrollView>
-        <!--<Button
-                    Margin="15"
-                    VerticalOptions="Center"
-                    HorizontalOptions="End"
-                    ImageSource="{StaticResource IconChevronRightMedium}"
-                    Command="{Binding ShowSettingsCommand}"
-                    WidthRequest="100"
-                    HeightRequest="60">
-            </Button>-->
+            </StackLayout>
+        </Border>
+
+        <Button Margin="5"
+                Grid.Row="2"
+                ImageSource="{StaticResource IconChevronRightMedium}"
+                Clicked="Button_Clicked">
+        </Button>
     </Grid>
-</ContentPage>
+</ContentView>

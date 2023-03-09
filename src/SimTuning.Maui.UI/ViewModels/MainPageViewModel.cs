@@ -16,17 +16,6 @@ namespace SimTuning.Maui.UI.ViewModels
         {
             this._logger = logger;
             this._navigationService = navigationService;
-
-            InitializePermissionsAsync();
-        }
-
-        /// <summary>
-        /// Initializes the database asynchronous.
-        /// </summary>
-        protected async Task InitializePermissionsAsync()
-        {
-            await Functions.GetPermission<Permissions.StorageRead>().ConfigureAwait(true);
-            await Functions.GetPermission<Permissions.StorageWrite>().ConfigureAwait(true);
         }
 
         #region Values

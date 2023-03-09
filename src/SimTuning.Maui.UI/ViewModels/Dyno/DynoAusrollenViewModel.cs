@@ -1,14 +1,15 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
-using Microsoft.Extensions.Logging;
-using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using LiveChartsCore;
+using Microsoft.Extensions.Logging;
 using SimTuning.Core.ModuleLogic;
-using SimTuning.Core.Services;using SimTuning.Maui.UI.Services;
+using SimTuning.Core.Services;
 using SimTuning.Data.Models;
+using SimTuning.Maui.UI.Services;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using LiveChartsCore;
 
 namespace SimTuning.Maui.UI.ViewModels
 {
@@ -20,10 +21,10 @@ namespace SimTuning.Maui.UI.ViewModels
             IVehicleService vehicleService)
         {
             this._logger = logger;
-            this._navigationService = navigationService ;
+            this._navigationService = navigationService;
             this._vehicleService = vehicleService;
 
-            this.ShowDiagnosisCommand = new AsyncRelayCommand(async () => await _navigationService.Navigate<SimTuning.Maui.UI.Views.Dyno.DynoDiagnosisView>(null));
+            //this.ShowDiagnosisCommand = new AsyncRelayCommand(async () => await _navigationService.Navigate<SimTuning.Maui.UI.Views.Dyno.DynoDiagnosisView>(null));
 
             this.RefreshPlotCommand = new AsyncRelayCommand(this.RefreshPlot);
             this.ReloadData();
@@ -51,7 +52,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// </summary>
         public ISeries PlotAusrollen
         {
-            get => DynoLogic.PlotAusrollen;
+            get => null;//DynoLogic.PlotAusrollen;
         }
 
         public IAsyncRelayCommand RefreshPlotCommand { get; set; }
@@ -61,8 +62,6 @@ namespace SimTuning.Maui.UI.ViewModels
         #endregion Values
 
         #region Methods
-
-
 
         /// <summary>
         /// Reloads the data.
@@ -78,6 +77,34 @@ namespace SimTuning.Maui.UI.ViewModels
                 _logger.LogError("Fehler bei ReloadData: ", exc);
             }
         }
+
+        /// <summary>
+        /// Aktualisiert den Ausroll-Graphen.
+        /// </summary>
+        /// <returns></returns>
+        protected async Task RefreshPlot()
+        {
+            if (!this.CheckDynoData())
+            {
+                return;
+            }
+
+            try
+            {
+                //var loadingDialog = await DisplayAlert(message: SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "MES_LOAD")).ConfigureAwait(false);
+
+                //DynoLogic.GetAusrollGraphFitted(this.Dyno?.Ausrollen.ToList());
+
+                this.OnPropertyChanged(nameof(PlotAusrollen));
+
+                //await loadingDialog.DismissAsync().ConfigureAwait(false);
+            }
+            catch (Exception exc)
+            {
+                _logger.LogError("Fehler bei RefreshPlot: ", exc);
+            }
+        }
+
         /// <summary>
         /// Überprüft ob wichtige Dyno-Audio-Daten vorhanden sind.
         /// </summary>
@@ -98,33 +125,6 @@ namespace SimTuning.Maui.UI.ViewModels
             }
 
             return true;
-        }
-
-        /// <summary>
-        /// Aktualisiert den Ausroll-Graphen.
-        /// </summary>
-        /// <returns></returns>
-        protected async Task RefreshPlot()
-        {
-            if (!this.CheckDynoData())
-            {
-                return;
-            }
-
-            try
-            {
-                //var loadingDialog = await DisplayAlert(message: SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "MES_LOAD")).ConfigureAwait(false);
-
-                DynoLogic.GetAusrollGraphFitted(this.Dyno?.Ausrollen.ToList());
-
-                this.OnPropertyChanged(nameof(PlotAusrollen));
-
-                //await loadingDialog.DismissAsync().ConfigureAwait(false);
-            }
-            catch (Exception exc)
-            {
-                _logger.LogError("Fehler bei RefreshPlot: ", exc);
-            }
         }
 
         #endregion Methods

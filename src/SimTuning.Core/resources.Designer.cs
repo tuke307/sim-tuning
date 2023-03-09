@@ -97,11 +97,29 @@ namespace SimTuning.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This platform is not supported!.
+        ///   Looks up a localized string similar to This is feature is only for mobile devices (Android, iOS)..
         /// </summary>
-        public static string ERR_NOSUPPORT {
+        public static string ERR_ONLYMOBILE {
             get {
-                return ResourceManager.GetString("ERR_NOSUPPORT", resourceCulture);
+                return ResourceManager.GetString("ERR_ONLYMOBILE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 1.
+        /// </summary>
+        public static string ERR_STORAGEREAD {
+            get {
+                return ResourceManager.GetString("ERR_STORAGEREAD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 1.
+        /// </summary>
+        public static string ERR_STORAGEWRITE {
+            get {
+                return ResourceManager.GetString("ERR_STORAGEWRITE", resourceCulture);
             }
         }
         
@@ -111,15 +129,6 @@ namespace SimTuning.Core {
         public static string MES_LOAD {
             get {
                 return ResourceManager.GetString("MES_LOAD", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Buy the Pro version to change presets.
-        /// </summary>
-        public static string MES_PRO {
-            get {
-                return ResourceManager.GetString("MES_PRO", resourceCulture);
             }
         }
     }

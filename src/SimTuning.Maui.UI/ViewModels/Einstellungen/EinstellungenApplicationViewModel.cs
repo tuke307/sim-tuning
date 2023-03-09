@@ -1,18 +1,13 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
-using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.Logging;
-using SimTuning.Core.Services;
 using SimTuning.Maui.UI.Services;
-using System.Threading.Tasks;
 
 namespace SimTuning.Maui.UI.ViewModels
 {
     public class EinstellungenApplicationViewModel : ViewModelBase
     {
-        /// <summary> Initializes a new instance of the <see cref="EinstellungenApplicationViewModel"/> class. </summary> <param name="logger"><inheritdoc cref="ILogger" path="/summary/node()"
-        /// /></param> <param name="INavigationService"><inheritdoc cref="INavigationService" path="/summary/node()" /></param
-        public EinstellungenApplicationViewModel(
-            ILogger<EinstellungenApplicationViewModel> logger,
+        public ApplicationViewModel(
+            ILogger<ApplicationViewModel> logger,
             INavigationService navigationService)
         {
             this._logger = logger;

@@ -1,19 +1,20 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
-using Microsoft.Extensions.Logging;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
-using SimTuning.Core.ModuleLogic;
-using SimTuning.Core.Services;using SimTuning.Maui.UI.Services;
-using SimTuning.Data.Models;
-using SkiaSharp;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Maui.Controls;
-using SimTuning.Core.Helpers;
 using LiveChartsCore;
+using LiveChartsCore.Defaults;
+using LiveChartsCore.Easing;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.Painting;
+using LiveChartsCore.SkiaSharpView.Painting.Effects;
+using MathNet.Numerics;
+using Microsoft.Extensions.Logging;
+using SimTuning.Core.Helpers;
+using SimTuning.Core.ModuleLogic;
+using SimTuning.Core.Services;
+using SimTuning.Data.Models;
+using SimTuning.Maui.UI.Services;
+using SkiaSharp;
+using System.Collections.ObjectModel;
 
 namespace SimTuning.Maui.UI.ViewModels
 {
@@ -25,33 +26,133 @@ namespace SimTuning.Maui.UI.ViewModels
             IVehicleService vehicleService)
         {
             this._logger = logger;
-            this._navigationService = navigationService ;
+            this._navigationService = navigationService;
             this._vehicleService = vehicleService;
-
-            this.RefreshSpectrogramCommand = new RelayCommand(this.ReloadImageAudioSpectrogram);
-            this.SpecificGraphCommand = new RelayCommand(this.SpecificGraph);
-
-            this.ShowBeschleunigungCommand = new AsyncRelayCommand(() => this._navigationService.Navigate<SimTuning.Maui.UI.Views.Dyno.DynoGeschwindigkeitView>(null));
 
             this.Frequenzbeginn = 3000;
             this.Frequenzende = 12000;
             this.FilterValue = 2;
 
-            this.Quality = this.Qualitys[1]; // mittel
-            this.Colormap = this.Colormaps[0]; // viridis
-            this.Intensity = this.Intensitys[4]; // 0.5
-
-            this.Normal_Refresh = true;
-            this.Badge_Refresh = false;
+            // letzten 5 sind relevant! von 2^13 bis 2^18
+            this.fftSizes = Functions.GetPowersOf2(13, 18);
+            this.FftSizeIndex = 2; // 2. Index von fftSizes = 2^15 = 32768
+            this.Intensity = 100;
 
             this.FilterPlotCommand = new AsyncRelayCommand(this.FilterPlot);
-            this.RefreshAudioFileCommand = new AsyncRelayCommand(this.RefreshAudioFileAsync);
             this.RefreshPlotCommand = new AsyncRelayCommand(this.RefreshPlot);
+            this.SpecificGraphCommand = new RelayCommand(this.SpecificGraph);
 
-            //this.ReloadData();
+            this.ReloadData();
+
+            //RefreshPlotCommand.ExecuteAsync(null);
         }
 
         #region Methods
+
+        private List<ObservableCollection<ObservablePoint>> values;
+
+        /// <summary>
+        /// Reloads the data.
+        /// </summary>
+        /// <param name="mvxReloaderMessage">The MVX reloader message.</param>
+        public void ReloadData()
+        {
+            try
+            {
+                this.Dyno = _vehicleService.RetrieveOneActive();
+            }
+            catch (Exception exc)
+            {
+                _logger.LogError("Fehler beim Laden des Dyno-Datensatz: ", exc);
+            }
+        }
+
+        /// <summary>
+        /// Filters the plot.
+        /// </summary>
+        protected async Task FilterPlot()
+        {
+            try
+            {
+                LoadFilteredAccelerationGraph();
+            }
+            catch (Exception exc)
+            {
+                _logger.LogError("Fehler bei FilterPlot: ", exc);
+            }
+        }
+
+        /// <summary>
+        /// Refreshes the plot.
+        /// </summary>
+        /// <returns><placeholder>A <see cref="Task" /> representing the asynchronous operation.</placeholder></returns>
+        protected async Task RefreshPlot()
+        {
+            if (!this.CheckDynoData())
+            {
+                return;
+            }
+
+            try
+            {
+                ReloadImageAudioSpectrogram();
+                LoadAccelerationGraph();
+            }
+            catch (Exception exc)
+            {
+                _logger.LogError("Fehler bei RefreshPlot: ", exc);
+            }
+        }
+
+        /// <summary>
+        /// Reloads the image audio spectrogram.
+        /// </summary>
+        protected void ReloadImageAudioSpectrogram()
+        {
+            if (!this.CheckDynoData())
+            {
+                return;
+            }
+
+            try
+            {
+                // TODO: duration from audio
+                SKBitmap spec = AudioLogic.GetSpectrogram(
+                    audioFile: SimTuning.Core.GeneralSettings.AudioAccelerationFilePath,
+                    fftSize: this.fftSizes[FftSizeIndex],
+                    intensity: (double)this.Intensity / 100,
+                    minFreq: this.Frequenzbeginn / 60,
+                    maxFreq: this.Frequenzende / 60,
+                    targetWidthPx: /*(int)this.Duration / 10*/1000);
+
+                //Stream stream = SimTuning.Core.Converters.Converts.SKBitmapToStream(spec);
+                //this.DisplayedImage = ImageSource.FromStream(() => stream);
+            }
+            catch (Exception exc)
+            {
+                _logger.LogError("Fehler bei ReloadImageAudioSpectrogram: ", exc);
+            }
+        }
+
+        /// <summary>
+        /// Specifics the graph.
+        /// </summary>
+        protected void SpecificGraph()
+        {
+            if (this.Graphs == null || this.Graph == null)
+            {
+                return;
+            }
+
+            try
+            {
+                LoadDrehzahlGraphFitted();
+            }
+            catch (Exception exc)
+            {
+                _logger.LogError("Fehler bei SpecificGraph: ", exc);
+            }
+        }
 
         /// <summary>
         /// Überprüft ob wichtige Dyno-Audio-Daten vorhanden sind.
@@ -75,204 +176,94 @@ namespace SimTuning.Maui.UI.ViewModels
             return true;
         }
 
-
         /// <summary>
-        /// Reloads the data.
+        /// Gibt das Diagramm aus den Spectogram Daten zurück. vorher muss Audio-Spectrogram der Audio bereits einmal berechnet sein mit AudioLogic.GetSpectrogram().
         /// </summary>
-        /// <param name="mvxReloaderMessage">The MVX reloader message.</param>
-        //public void ReloadData(Models.MvxReloaderMessage mvxReloaderMessage = null)
-        //{
-        //    try
-        //    {
-        //        this.Dyno = _vehicleService.RetrieveOneActive();
-        //    }
-        //    catch (Exception exc)
-        //    {
-        //        _logger.LogError("Fehler beim Laden des Dyno-Datensatz: ", exc);
-        //    }
-        //}
-
-        /// <summary>
-        /// Filters the plot.
-        /// </summary>
-        protected async Task FilterPlot()
+        private void LoadAccelerationGraph()
         {
-            try
-            {
-                DynoLogic.GetDrehzahlGraph(areas: true, areaAbstand: this.FilterValue);
+            List<ObservablePoint> values = new List<ObservablePoint>();
 
-                //this.OnPropertyChanged(nameof(this.Graphs));
+            AudioLogic.GetDrehzahlGraph(intensity: (double)Intensity / 100);
 
-                //this.OnPropertyChanged(nameof(this.PlotAudio));
-            }
-            catch (Exception exc)
+            foreach (var item in AudioLogic.AccelerationPoints)
             {
-                _logger.LogError("Fehler bei FilterPlot: ", exc);
+                values.Add(item.ToObservablePoint());
             }
+
+            PlotAudio = new ObservableCollection<ISeries>();
+            PlotAudio.Add(new ScatterSeries<ObservablePoint>()
+            {
+                GeometrySize = 5,
+                Name = "Acceleration",
+                Values = values,
+            });
+        }
+
+        private void LoadDrehzahlGraphFitted()
+        {
+            List<ObservablePoint> values = new List<ObservablePoint>();
+            int index = Graphs.IndexOf(Graph);
+            double xMin = AudioLogic.AreaAccelerationPoints[index].Min(x => x.X);
+            double xMax = AudioLogic.AreaAccelerationPoints[index].Max(x => x.X);
+            double stepSize = 0.1;
+            int polynomialFuncOrder = 5;
+            ISeries series = PlotAudio[index];
+
+            PlotAudio.Clear();
+            PlotAudio.Add(series);
+
+            // Polynom: Regressions-Punkte bilden
+            var drehzahlfunction = Fit.PolynomialFunc(
+                AudioLogic.AreaAccelerationPoints[index].Select(x => x.X).ToArray(),
+                AudioLogic.AreaAccelerationPoints[index].Select(x => x.Y).ToArray(),
+                polynomialFuncOrder);
+
+            for (double x = xMin; x < xMax; x += stepSize)
+            {
+                values.Add(new ObservablePoint(x, drehzahlfunction(x)));
+            }
+
+            PlotAudio.Add(new LineSeries<ObservablePoint>()
+            {
+                GeometrySize = 5,
+                Name = "Eased",
+                Values = values,
+            });
+
+            //this.Dyno.Drehzahl = values;
+            //_vehicleService.UpdateOne(this.Dyno);
         }
 
         /// <summary>
-        /// Opens the file dialog.
+        /// Definiert Graph für alle Punkte und den Areas.
         /// </summary>
-        /// <param name="fileName">Name of the file.</param>
-        // protected async Task OpenFileDialog(string fileName) { //bool status =
-        // false;
-
-        // // zip extrahieren if
-        // (File.Exists(SimTuning.Core.GeneralSettings.DataExportFilePath)) {
-        // File.Delete(SimTuning.Core.GeneralSettings.DataExportFilePath); } if
-        // (File.Exists(SimTuning.Core.GeneralSettings.AudioAccelerationFilePath)) {
-        // File.Delete(SimTuning.Core.GeneralSettings.AudioAccelerationFilePath); }
-        // ZipFile.ExtractToDirectory(fileName,
-        // SimTuning.Core.GeneralSettings.FileDirectory);
-
-        // // wenn Datei ausgewählt //using (FileStream sourceStream = File.Open(fileName,
-        // FileMode.OpenOrCreate)) //{ // status =
-        // SimTuning.Core.Helpers.AudioUtils.AudioCopy(SimTuning.Core.GeneralSettings.AudioFile,
-        // sourceStream); //}
-
-        // //if (status) //{ await this.RefreshAudioFileAsync().ConfigureAwait(true); //}
-
-        // // TODO: only for testing if
-        // (File.Exists(SimTuning.Core.GeneralSettings.DataExportFilePath)) { string json
-        // = File.ReadAllText(SimTuning.Core.GeneralSettings.DataExportFilePath);
-        // DynoModel _dyno = JsonConvert.DeserializeObject<DynoModel>(json); } }
-
-        /// <summary>
-        /// Opens the file.
-        /// </summary>
-        /// <returns>
-        /// <placeholder>A <see cref="Task" /> representing the asynchronous
-        /// operation.</placeholder>
-        /// </returns>
-        protected async Task RefreshAudioFileAsync()
+        private void LoadFilteredAccelerationGraph()
         {
-            try
-            {
-                //var generatedMediaItem = await _mediaManager.Extractor.CreateMediaItem(GeneralSettings.AudioAccelerationFilePath).ConfigureAwait(true);
-                //_mediaManager.Queue.Add(generatedMediaItem);
-            }
-            catch (Exception exc)
-            {
-                _logger.LogError("Fehler bei OpenFileAsync: ", exc);
-            }
-        }
+            values = new List<ObservableCollection<ObservablePoint>>();
 
-        /// <summary>
-        /// Refreshes the plot.
-        /// </summary>
-        /// <returns>
-        /// <placeholder>A <see cref="Task" /> representing the asynchronous
-        /// operation.</placeholder>
-        /// </returns>
-        protected async Task RefreshPlot()
-        {
-            if (!this.CheckDynoData())
-            {
-                return;
-            }
+            AudioLogic.GetDrehzahlGraph(areas: true, intensity: (double)Intensity / 100, areaAbstand: this.FilterValue);
 
-            try
-            {
-                DynoLogic.GetDrehzahlGraph(intensity: this.Intensity);
+            PlotAudio.Clear();
 
-                this.OnPropertyChanged(nameof(this.PlotAudio));
-
-                //PlotAudio.MouseDown += PlotAudioMouseDown;
-            }
-            catch (Exception exc)
+            // spalte einfügen
+            for (int anzahl = 0; anzahl < AudioLogic.AreaAccelerationPoints.Count; anzahl++)
             {
-                _logger.LogError("Fehler bei RefreshPlot: ", exc);
-            }
-        }
+                values.Add(new ObservableCollection<ObservablePoint>());
 
-        /// <summary>
-        /// Reloads the image audio spectrogram.
-        /// </summary>
-        /// <returns></returns>
-        protected void ReloadImageAudioSpectrogram()
-        {
-            if (!this.CheckDynoData())
-            {
-                return;
-            }
-
-            try
-            {
-                // Normal_Refresh = true; Badge_Refresh = false;
-                int _fftSize;
-                switch (this.Quality)
+                foreach (var item in AudioLogic.AreaAccelerationPoints[anzahl])
                 {
-                    case "schlecht":
-                        _fftSize = 8192; // 2^13
-                        break;
-
-                    case "mittel":
-                        _fftSize = 16384; // 2^14
-                        break;
-
-                    case "gut":
-                        _fftSize = 32768; // 2^15
-                        break;
-
-                    case "sehr gut":
-                        _fftSize = 65536; // 2^16
-                        break;
-
-                    default:
-                        _fftSize = 16384;
-                        break;
+                    values[anzahl].Add(item.ToObservablePoint());
                 }
 
-                // TODO: duration from audio
-                SKBitmap spec = AudioLogic.GetSpectrogram(
-                    audioFile: SimTuning.Core.GeneralSettings.AudioAccelerationFilePath,
-                    fftSize: _fftSize,
-                    intensity: this.Intensity,
-                    colormap: this.Colormap,
-                    minFreq: this.Frequenzbeginn / 60,
-                    maxFreq: this.Frequenzende / 60,
-                    targetWidthPx: /*(int)this.Duration / 10*/1000);
-
-                Stream stream = SimTuning.Core.Converters.Converts.SKBitmapToStream(spec);
-
-                this.DisplayedImage = ImageSource.FromStream(() => stream);
+                PlotAudio.Add(new ScatterSeries<ObservablePoint>()
+                {
+                    GeometrySize = 5,
+                    Name = "Graph " + (anzahl + 1),
+                    Values = values[anzahl],
+                });
             }
-            catch (Exception exc)
-            {
-                _logger.LogError("Fehler bei ReloadImageAudioSpectrogram: ", exc);
-            }
-        }
 
-        /// <summary>
-        /// Specifics the graph.
-        /// </summary>
-        protected void SpecificGraph()
-        {
-            //if (this.Graphs == null || this.Graph == null)
-            //{
-            //    return;
-            //}
-
-            try
-            {
-                //DynoLogic.Graphauswahl = this.Graphs.IndexOf(this.Graph);
-                //DynoLogic.GetDrehzahlGraphFitted(out var drehzahlModels);
-                //this.Dyno.Drehzahl = drehzahlModels;
-
-                //_vehicleService.UpdateOne(this.Dyno);
-
-                //this.OnPropertyChanged(nameof(PlotAudio));
-            }
-            catch (Exception exc)
-            {
-                _logger.LogError("Fehler bei SpecificGraph: ", exc);
-            }
-        }
-
-        private void PlotAudioMouseDown(object sender/*, OxyMouseDownEventArgs e*/)
-        {
-            //PlotAudio.EntfernePunkt(e.Position);
+            OnPropertyChanged(nameof(Graphs));
         }
 
         #endregion Methods
@@ -281,19 +272,11 @@ namespace SimTuning.Maui.UI.ViewModels
 
         #region Commands
 
-        private readonly ILogger<DynoSpectrogramViewModel> _logger;
-
         /// <summary>
         /// Gets or sets the filter plot command.
         /// </summary>
         /// <value>The filter plot command.</value>
         public IAsyncRelayCommand FilterPlotCommand { get; set; }
-
-        /// <summary>
-        /// Gets or sets the open file command.
-        /// </summary>
-        /// <value>The open file command.</value>
-        // public IAsyncRelayCommand OpenFileCommand { get; set; }
 
         /// <summary>
         /// Gets or sets the open file command.
@@ -308,135 +291,29 @@ namespace SimTuning.Maui.UI.ViewModels
         public IAsyncRelayCommand RefreshPlotCommand { get; set; }
 
         /// <summary>
-        /// Gets or sets the refresh spectrogram command.
-        /// </summary>
-        /// <value>The refresh spectrogram command.</value>
-        public IRelayCommand RefreshSpectrogramCommand { get; set; }
-
-        /// <summary>
         /// Gets or sets the specific graph command.
         /// </summary>
         /// <value>The specific graph command.</value>
         public IRelayCommand SpecificGraphCommand { get; set; }
 
-        /// <summary>
-        /// Gets or sets the stop command.
-        /// </summary>
-        /// <value>The stop command.</value>
-        // public IAsyncRelayCommand StopCommand { get; set; }
-
         #endregion Commands
 
         #region private
 
-        //protected readonly IMediaManager _mediaManager;
-
         protected readonly INavigationService _navigationService;
         protected readonly IVehicleService _vehicleService;
-        private static readonly List<string> _qualitys = new List<string>() { "schlecht", "mittel", "gut", "sehr gut" };
-        private bool _badge_Refresh;
-
-        private Spectrogram.Colormap _colormap;
-
-        private List<Spectrogram.Colormap> _colormaps = Enum.GetValues(typeof(Spectrogram.Colormap)).Cast<Spectrogram.Colormap>().ToList();
-
+        private readonly ILogger<SpectrogramViewModel> _logger;
+        private readonly List<int> fftSizes;
         private DynoModel _dyno;
-
+        private int _fftSizeIndex;
         private int _filterValue;
-
         private int _frequenzbeginn;
-
         private int _frequenzende;
-
         private string _graph;
-
-        private double _intensity;
-
-        private List<double> _intensitys = new List<double>() { 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.5, 2.0, 3.0, 4.0, 5.0 };
-
-        private bool _normal_Refresh;
-
-        private string _quality;
-
-        /*= CrossMediaManager.Current;*/
+        private int _intensity;
+        private ObservableCollection<ISeries> _plotAudio;
 
         #endregion private
-
-
-        private ImageSource _displayedImage;
-
-        public ImageSource DisplayedImage
-        {
-            get => _displayedImage;
-            set => SetProperty(ref _displayedImage, value);
-        }
-
-        /// <summary>
-        /// Gets the show beschleunigung command.
-        /// </summary>
-        /// <value>The show beschleunigung command.</value>
-        public IAsyncRelayCommand ShowBeschleunigungCommand { get; private set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether [badge refresh].
-        /// </summary>
-        /// <value><c>true</c> if [badge refresh]; otherwise, <c>false</c>.</value>
-        public bool Badge_Refresh
-        {
-            get => _badge_Refresh;
-            set => SetProperty(ref _badge_Refresh, value);
-        }
-
-        /// <summary>
-        /// Gets the buffered.
-        /// </summary>
-        /// <value>The buffered.</value>
-        //public int Buffered => Convert.ToInt32(_mediaManager.Buffered.TotalSeconds);
-
-        /// <summary>
-        /// Gets or sets the colormap.
-        /// </summary>
-        /// <value>The colormap.</value>
-        public Spectrogram.Colormap Colormap
-        {
-            get => _colormap;
-            set
-            {
-                SetProperty(ref _colormap, value);
-
-                // Warnung setzen
-                Normal_Refresh = false;
-                Badge_Refresh = true;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the colormaps.
-        /// </summary>
-        /// <value>The colormaps.</value>
-        public List<Spectrogram.Colormap> Colormaps
-        {
-            get => _colormaps;
-            // set => SetProperty(ref _colormaps, value);
-        }
-
-        /// <summary>
-        /// Gets the current.
-        /// </summary>
-        /// <value>The current.</value>
-        //public IMediaItem Current => _mediaManager.Queue.Current;
-
-        /// <summary>
-        /// Gets the current subtitle.
-        /// </summary>
-        /// <value>The current subtitle.</value>
-        //public string CurrentSubtitle => Current.DisplaySubtitle;
-
-        /// <summary>
-        /// Gets the current title.
-        /// </summary>
-        /// <value>The current title.</value>
-        //public string CurrentTitle => Current.DisplayTitle;
 
         /// <summary>
         /// Gets or sets the dyno.
@@ -449,8 +326,17 @@ namespace SimTuning.Maui.UI.ViewModels
         }
 
         /// <summary>
-        /// Wert für den Abstand, um einen Punkt herum. Dieser Wert wird bei der Funktion
-        /// der Areas verwendet.
+        /// Gets or sets the quality.
+        /// </summary>
+        /// <value>The quality.</value>
+        public int FftSizeIndex
+        {
+            get => _fftSizeIndex;
+            set => SetProperty(ref _fftSizeIndex, value);
+        }
+
+        /// <summary>
+        /// Wert für den Abstand, um einen Punkt herum. Dieser Wert wird bei der Funktion der Areas verwendet.
         /// </summary>
         public int FilterValue
         {
@@ -503,67 +389,62 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The graphs.</value>
         public List<string> Graphs
         {
-            get => null;//DynoLogic.PlotAudio?.Series?.Select(x => x.Title).ToList();
+            get => PlotAudio?.Select(x => x.Name).ToList();
         }
 
         /// <summary>
-        /// Gets or sets the intensity.
+        /// Gets or sets the intensity. wird durch 100 dividiert.
         /// </summary>
         /// <value>The intensity.</value>
-        public double Intensity
+        public int Intensity
         {
             get => _intensity;
             set => SetProperty(ref _intensity, value);
         }
 
         /// <summary>
-        /// Gets or sets the intensitys.
-        /// </summary>
-        /// <value>The intensitys.</value>
-        public List<double> Intensitys
-        {
-            get => _intensitys;
-            set => SetProperty(ref _intensitys, value);
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether [normal refresh].
-        /// </summary>
-        /// <value><c>true</c> if [normal refresh]; otherwise, <c>false</c>.</value>
-        public bool Normal_Refresh
-        {
-            get => _normal_Refresh;
-            set => SetProperty(ref _normal_Refresh, value);
-        }
-
-        /// <summary>
         /// Gets the plot audio.
         /// </summary>
         /// <value>The plot audio.</value>
-        public ISeries PlotAudio
+        public ObservableCollection<ISeries> PlotAudio
         {
-            get => DynoLogic.PlotAudio;
+            get => _plotAudio;
+            set => SetProperty(ref _plotAudio, value);
         }
 
-        /// <summary>
-        /// Gets or sets the quality.
-        /// </summary>
-        /// <value>The quality.</value>
-        public string Quality
-        {
-            get => _quality;
-            set => SetProperty(ref _quality, value);
-        }
+        public Axis[] XAxes { get; set; }
+            = new Axis[]
+            {
+                new Axis
+                {
+                    Name = "Zeit in ms",
+                    NamePaint = new SolidColorPaint(SKColors.Black),
 
-        /// <summary>
-        /// Gets or sets the qualitys. 0 schlecht, 1 mittel, 2 gut, 3 sehr gut.
-        /// </summary>
-        /// <value>The qualitys.</value>
-        public List<string> Qualitys
-        {
-            get => _qualitys;
-            // set => SetProperty(ref _qualitys, value);
-        }
+                    LabelsPaint = new SolidColorPaint(SKColors.Black),
+                    TextSize = 14,
+
+                    SeparatorsPaint = new SolidColorPaint(SKColors.LightSlateGray) { StrokeThickness = 2 },
+                },
+            };
+
+        public Axis[] YAxes { get; set; }
+            = new Axis[]
+            {
+                new Axis
+                {
+                    Name = "Drehzahl in 1/min",
+                    NamePaint = new SolidColorPaint(SKColors.Black),
+
+                    LabelsPaint = new SolidColorPaint(SKColors.Black),
+                    TextSize = 14,
+
+                    SeparatorsPaint = new SolidColorPaint(SKColors.LightSlateGray)
+                    {
+                        StrokeThickness = 2,
+                        PathEffect = new DashEffect(new float[] { 3, 3 }),
+                    },
+                },
+            };
 
         #endregion Values
     }

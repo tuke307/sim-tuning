@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.DependencyInjection;
 
 namespace SimTuning.Maui.UI.Views.Dyno
 {
-    public partial class DynoDiagnosisView : ContentPage
+    public partial class DynoDiagnosisView : ContentView
     {
         public DynoDiagnosisView()
         {

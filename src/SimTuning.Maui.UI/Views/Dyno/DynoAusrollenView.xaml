@@ -28,22 +28,18 @@
                 Grid.Row="1"
                 VerticalOptions="FillAndExpand">
             <StackLayout>
-                <!--<Label  Text="Ausroll-Experiment"
-                                        FontSize="Medium"
-                                        FontAttributes="Bold" />
+                <Label Text="Ausroll-Experiment"
+                       FontSize="Medium"
+                       FontAttributes="Bold" />
 
-                <BoxView Color="{DynamicResource DesignDivider}"
-                         HeightRequest="2"
-                         HorizontalOptions="Fill"
-                         Margin="0, 0, 0, 5" />-->
+                <BoxView />
 
                 <lvc:CartesianChart Series="{Binding Mode=OneWay, Path=PlotAusrollen}"
                                     HeightRequest="400" />
             </StackLayout>
         </Border>
 
-        <Button WidthRequest="100"
-                HeightRequest="60"
+        <Button 
                 Margin="15"
                 Grid.Row="2"
                 HorizontalOptions="End"
