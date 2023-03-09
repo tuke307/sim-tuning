@@ -10,12 +10,12 @@ using SimTuning.Maui.UI.Services;
 using System.Collections.ObjectModel;
 using System.IO.Compression;
 
-namespace SimTuning.Maui.UI.ViewModels.Dyno
+namespace SimTuning.Maui.UI.ViewModels
 {
-    public class DataViewModel : ViewModelBase
+    public class DynoDataViewModel : ViewModelBase
     {
-        public DataViewModel(
-            ILogger<DataViewModel> logger,
+        public DynoDataViewModel(
+            ILogger<DynoDataViewModel> logger,
             INavigationService navigationService,
             IVehicleService vehicleService)
         {
@@ -337,7 +337,7 @@ namespace SimTuning.Maui.UI.ViewModels.Dyno
         #endregion Commands
 
         protected readonly INavigationService _navigationService;
-        private readonly ILogger<DataViewModel> _logger;
+        private readonly ILogger<DynoDataViewModel> _logger;
         private readonly IVehicleService _vehicleService;
         private bool _createNewVehicle;
         private DynoModel _dyno;

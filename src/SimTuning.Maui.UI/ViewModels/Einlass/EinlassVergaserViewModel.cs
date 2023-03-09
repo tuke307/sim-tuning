@@ -9,12 +9,12 @@ using SimTuning.Data.Models;
 using System.Collections.ObjectModel;
 using UnitsNet.Units;
 
-namespace SimTuning.Maui.UI.ViewModels.Einlass
+namespace SimTuning.Maui.UI.ViewModels
 {
-    public class VergaserViewModel : ViewModelBase
+    public class EinlassVergaserViewModel : ViewModelBase
     {
-        public VergaserViewModel(
-            ILogger<VergaserViewModel> logger,
+        public EinlassVergaserViewModel(
+            ILogger<EinlassVergaserViewModel> logger,
             IVehicleService vehicleService)
         {
             this._logger = logger;
@@ -26,25 +26,18 @@ namespace SimTuning.Maui.UI.ViewModels.Einlass
             UnitHubvolumen = VolumeQuantityUnits.Where(x => x.UnitEnumValue.Equals(VolumeUnit.CubicMillimeter)).First();
             UnitVergasergroeße = LengthQuantityUnits.Where(x => x.UnitEnumValue.Equals(LengthUnit.Millimeter)).First();
             UnitHauptdueseD = LengthQuantityUnits.Where(x => x.UnitEnumValue.Equals(LengthUnit.Micrometer)).First();
-
-            HelperVehicles = new ObservableCollection<VehiclesModel>(_vehicleService.RetrieveVehicles());
-
-            InsertDataCommand = new RelayCommand(InsertData);
         }
 
         #region Commands
 
-
-
-        public void InsertData()
+        public void InsertHelperVehicle(VehiclesModel helperVehicle)
         {
-            if (HelperVehicle.Motor.HubraumV.HasValue)
-                Hubvolumen = HelperVehicle.Motor.HubraumV;
+            if (helperVehicle.Motor.HubraumV.HasValue)
+                Hubvolumen = helperVehicle.Motor.HubraumV;
 
-            if (HelperVehicle.Motor.ResonanzU.HasValue)
-                Resonanzdrehzahl = HelperVehicle.Motor.ResonanzU;
+            if (helperVehicle.Motor.ResonanzU.HasValue)
+                Resonanzdrehzahl = helperVehicle.Motor.ResonanzU;
         }
-
 
         private void Refresh_Hauptduesendurchmesser()
         {
@@ -75,13 +68,9 @@ namespace SimTuning.Maui.UI.ViewModels.Einlass
 
         #region Values
 
-        private readonly ILogger<VergaserViewModel> _logger;
+        private readonly ILogger<EinlassVergaserViewModel> _logger;
         private readonly IVehicleService _vehicleService;
         private double? _hauptdueseD;
-
-        private VehiclesModel _helperVehicle;
-
-        private ObservableCollection<VehiclesModel> _helperVehicles;
 
         private double? _hubvolumen;
 
@@ -101,18 +90,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einlass
             set { SetProperty(ref _hauptdueseD, value); }
         }
 
-        public VehiclesModel HelperVehicle
-        {
-            get => _helperVehicle;
-            set { SetProperty(ref _helperVehicle, value); }
-        }
-
-        public ObservableCollection<VehiclesModel> HelperVehicles
-        {
-            get => _helperVehicles;
-            set { SetProperty(ref _helperVehicles, value); }
-        }
-
         public double? Hubvolumen
         {
             get => _hubvolumen;
@@ -122,8 +99,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einlass
                 Refresh_Vergasergroeße();
             }
         }
-
-        public IRelayCommand InsertDataCommand { get; set; }
 
         public ObservableCollection<UnitListItem> LengthQuantityUnits { get; }
 

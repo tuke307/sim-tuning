@@ -2,8 +2,8 @@
 <ContentView x:Class="SimTuning.Maui.UI.Views.Auslass.AuslassTheorieView"
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels.Auslass"
-             x:DataType="vm:TheorieViewModel">
+             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
+             x:DataType="vm:AuslassTheorieViewModel">
     <ScrollView>
         <Grid>
             <Grid.RowDefinitions>
@@ -92,9 +92,20 @@
             <!--  DURCHMESSER  -->
             <Border Grid.Row="1">
                 <StackLayout>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
 
-                    <Label Style="{StaticResource LabelTitleStyle}"
-                           Text="Krümmer-Durchmesser" />
+                        <Label Grid.Column="0"
+                               Style="{StaticResource LabelTitleStyle}"
+                               Text="Krümmer-Durchmesser" />
+
+                        <ImageButton Grid.Column="1"
+                                     Clicked="HelperVehiclesButton_Clicked"
+                                     Source="{StaticResource IconHelpCircleOutlineMedium}" />
+                    </Grid>
 
                     <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
@@ -168,9 +179,20 @@
 
             <Border Grid.Row="3">
                 <StackLayout>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
 
-                    <Label Style="{StaticResource LabelTitleStyle}"
-                           Text="Resonanzlänge" />
+                        <Label Grid.Column="0"
+                               Style="{StaticResource LabelTitleStyle}"
+                               Text="Resonanzlänge" />
+
+                        <ImageButton Grid.Column="1"
+                                     Clicked="HelperVehiclesButton_Clicked"
+                                     Source="{StaticResource IconHelpCircleOutlineMedium}" />
+                    </Grid>
 
                     <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
@@ -226,101 +248,6 @@
                                 SelectedItem="{Binding Path=VehicleMotorAuslassAuspuffResonanzLUnit}"
                                 VerticalOptions="CenterAndExpand" />
                     </StackLayout>
-                </StackLayout>
-            </Border>
-
-            <Border Grid.Row="4">
-                <StackLayout>
-                    <Label Style="{StaticResource LabelTitleStyle}"
-                           Text="Hilfe" />
-
-                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
-
-                    <Picker ItemsSource="{Binding HelperVehicles}"
-                            ItemDisplayBinding="{Binding Name}"
-                            Title="Fahrzeug"
-                            SelectedItem="{Binding HelperVehicle}" />
-
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-
-                        <Label Grid.Row="0"
-                               Grid.Column="0"
-                               Text="Auslass-Fläche"
-                               VerticalOptions="Center" />
-                        <Label Grid.Row="1"
-                               Grid.Column="0"
-                               Text="Auslass-Steuerwinkel"
-                               VerticalOptions="Center" />
-                        <Label Grid.Row="2"
-                               Grid.Column="0"
-                               Text="Resonanzdrehzahl"
-                               VerticalOptions="Center" />
-
-                        <StackLayout Grid.Row="0"
-                                     Grid.Column="1"
-                                     Orientation="Horizontal">
-                            <Entry Margin="10,0,0,0"
-                                   Keyboard="Numeric"
-                                   IsEnabled="False"
-                                   Placeholder=" "
-                                   Text="{Binding Mode=OneWay, Path=HelperVehicle.Motor.Auslass.FlaecheA}"
-                                   WidthRequest="100" />
-
-                            <Label Margin="5,0,0,0"
-                                   VerticalOptions="Center">
-                                mm²
-                            </Label>
-                        </StackLayout>
-
-                        <StackLayout Grid.Row="1"
-                                     Grid.Column="1"
-                                     Orientation="Horizontal">
-                            <Entry Margin="10,0,0,0"
-                                   Keyboard="Numeric"
-                                   IsEnabled="False"
-                                   Placeholder=" "
-                                   Text="{Binding Mode=OneWay, Path=HelperVehicle.Motor.Auslass.SteuerzeitSZ}"
-                                   WidthRequest="100" />
-
-                            <Label Margin="5,0,0,0"
-                                   VerticalOptions="Center">
-                                °KW
-                            </Label>
-                        </StackLayout>
-
-                        <StackLayout Grid.Row="2"
-                                     Grid.Column="1"
-                                     Orientation="Horizontal">
-
-                            <Entry Margin="10,0,0,0"
-                                   Keyboard="Numeric"
-                                   IsEnabled="False"
-                                   Placeholder=" "
-                                   Text="{Binding Mode=OneWay, Path=HelperVehicle.Motor.ResonanzU}"
-                                   WidthRequest="100" />
-
-                            <Label Margin="5,0,0,0"
-                                   VerticalOptions="Center">
-                                1/min
-                            </Label>
-                        </StackLayout>
-                    </Grid>
-
-                    <Button Margin="10"
-                            Command="{Binding InsertDataCommand}"
-                            HeightRequest="70"
-                            HorizontalOptions="Center"
-                            ImageSource="{StaticResource IconChevronRightMedium}"
-                            WidthRequest="100" />
                 </StackLayout>
             </Border>
         </Grid>

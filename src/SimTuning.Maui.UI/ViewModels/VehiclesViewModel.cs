@@ -7,19 +7,16 @@ using SimTuning.Core.Services;
 using SimTuning.Maui.UI.Services;
 using System.Collections.ObjectModel;
 
-namespace SimTuning.Maui.UI.ViewModels.Einstellungen
+namespace SimTuning.Maui.UI.ViewModels
 {
     public class VehiclesViewModel : ViewModelBase
     {
         public VehiclesViewModel(
             ILogger<VehiclesViewModel> logger,
-            INavigationService navigationService,
             IVehicleService vehicleService)
         {
             this._logger = logger;
-            this._navigationService = navigationService;
             this._vehicleService = vehicleService;
-            //this._messenger = messenger;
 
             this.AreaQuantityUnits = new AreaQuantity();
             this.VolumeQuantityUnits = new VolumeQuantity();
@@ -27,89 +24,10 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
             this.MassQuantityUnits = new MassQuantity();
             this.SpeedQuantityUnits = new SpeedQuantity();
 
-            this.NewVehicleCommand = new RelayCommand(this.NewVehicle);
-            this.DeleteVehicleCommand = new RelayCommand(this.DeleteVehicle);
-            this.SaveVehicleCommand = new RelayCommand(this.SaveVehicle);
-
             this.ReloadData();
         }
 
         #region Methods
-
-        /// <summary>
-        /// Deletes the vehicle.
-        /// </summary>
-        protected void DeleteVehicle()
-        {
-            try
-            {
-                if (this.Vehicle.Deletable)
-                {
-                    // in Datenbank löschen
-                    _vehicleService.DeleteOne(this.Vehicle);
-
-                    // in lokaler liste löschen
-                    this.Vehicles.Remove(this.Vehicle);
-
-                    this.Vehicle = null;
-                }
-            }
-            catch (Exception exc)
-            {
-                _logger.LogError(exc, exc.Message, null);
-            }
-        }
-
-        /// <summary>
-        /// Creates new vehicle.
-        /// </summary>
-        protected void NewVehicle()
-        {
-            try
-            {
-                // Vordefinieren des neuen Fahrzeugs
-                this.Vehicles.Add(new Data.Models.VehiclesModel()
-                {
-                    Name = "Neues Fahrzeug",
-                    Beschreibung = "Erstellt am " + DateTime.Now + " über Fahrzeug-Modul",
-                    Deletable = true,
-                });
-
-                this.Vehicle = this.Vehicles.Last();
-
-                this._saveButton = true;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
-            }
-            catch (Exception exc)
-            {
-                _logger.LogError(exc, exc.Message, null);
-            }
-        }
-
-        /// <summary>
-        /// Saves the vehicle.
-        /// </summary>
-        protected void SaveVehicle()
-        {
-            try
-            {
-                if (this.Vehicle.Id != null)
-                {
-                    _vehicleService.UpdateOne(this.Vehicle);
-                }
-                else
-                {
-                    this.Vehicle = _vehicleService.CreateOne(this.Vehicle);
-                }
-
-                this._saveButton = false;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
-            }
-            catch (Exception exc)
-            {
-                _logger.LogError(exc, exc.Message, null);
-            }
-        }
 
         /// <summary>
         /// Reloads the data.
@@ -125,14 +43,7 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
 
         #region Values
 
-        protected readonly INavigationService _navigationService;
         protected readonly IVehicleService _vehicleService;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether [save button].
-        /// </summary>
-        /// <value><c>true</c> if [save button]; otherwise, <c>false</c>.</value>
-        protected bool _saveButton;
 
         private readonly ILogger<VehiclesViewModel> _logger;
         private Data.Models.MotorModel _engine;
@@ -180,7 +91,7 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                 this.SetProperty(ref this._engine, value);
 
                 // Motor-Werte für UI updaten
-                //this.RaiseAllPropertiesChanged();
+                raiseAllPropertyChanged();
             }
         }
 
@@ -205,18 +116,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
         /// </summary>
         /// <value>The mass quantity units.</value>
         public ObservableCollection<UnitListItem> MassQuantityUnits { get; }
-
-        /// <summary>
-        /// Creates new vehiclecommand.
-        /// </summary>
-        /// <value>The new vehicle command.</value>
-        public IRelayCommand NewVehicleCommand { get; set; }
-
-        /// <summary>
-        /// Gets or sets the save vehicle command.
-        /// </summary>
-        /// <value>The save vehicle command.</value>
-        public IRelayCommand SaveVehicleCommand { get; set; }
 
         /// <summary>
         /// Gets the speed quantity units.
@@ -250,16 +149,10 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                 // Einfügen
                 this.SetProperty(ref this._vehicle, value);
 
-                // nix mehr zu speichern
-                this._saveButton = false;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
-
                 // Motor refreshen
                 this.Engine = null;
 
-                // TODO: this.RaiseAllPropertiesChanged();
-                OnPropertyChanged(nameof(VehicleName));
-                OnPropertyChanged(nameof(VehicleBeschreibung));
+                raiseAllPropertyChanged();
             }
         }
 
@@ -278,20 +171,8 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                 }
 
                 this.Vehicle.Beschreibung = value;
-                this._saveButton = true;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
-
-        /// <summary>
-        /// Gets or sets the vehicle cw.
-        /// </summary>
-        /// <value>The vehicle cw.</value>
-        // public double? VehicleCw { get => this.Vehicle?.Cw; set { if (this.Vehicle ==
-        // null) { return; }
-
-        // this.Vehicle.Cw = value; this._saveButton = true;
-        // SaveVehicleCommand.NotifyCanExecuteChanged(); } }
 
         /// <summary>
         /// Gets the vehicle dyno audio.
@@ -317,19 +198,8 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                 }
 
                 this.Vehicle.Dyno.Beschreibung = value;
-                this._saveButton = true;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
-
-        /// <summary>
-        /// Gets the vehicle dyno dyno nm.
-        /// </summary>
-        /// <value>The vehicle dyno dyno nm.</value>
-        // public ObservableCollection<Data.Models.DynoNmModel> VehicleDynoDynoNm { get =>
-        // this.Vehicle?.Dyno?.DynoNm == null ? new
-        // ObservableCollection<Data.Models.DynoNmModel>() : new
-        // ObservableCollection<Data.Models.DynoNmModel>(this.Vehicle?.Dyno?.DynoNm); }
 
         /// <summary>
         /// Gets the vehicle dyno dyno ps.
@@ -354,31 +224,8 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Dyno.Name = value;
-                this._saveButton = true;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
-
-        /// <summary>
-        /// Gets or sets the vehicle front a.
-        /// </summary>
-        /// <value>The vehicle front a.</value>
-        // public double? VehicleFrontA { get => this.Vehicle?.FrontA; set { if
-        // (this.Vehicle == null) { return; } this.Vehicle.FrontA = value;
-        // this._saveButton
-        // = true; } }
-
-        /// <summary>
-        /// Gets or sets the vehicle front a unit.
-        /// </summary>
-        /// <value>The vehicle front a unit.</value>
-        // public UnitListItem VehicleFrontAUnit { get =>
-        // this.AreaQuantityUnits.SingleOrDefault(x =>
-        // x.UnitEnumValue.Equals(this.Vehicle?.FrontAUnit)); set { if (this.Vehicle ==
-        // null) { return; }
-
-        // this.Vehicle.FrontAUnit = (UnitsNet.Units.AreaUnit)value?.UnitEnumValue;
-        // this.OnPropertyChanged(nameof(VehicleFrontA); } }
 
         /// <summary>
         /// Gets or sets the vehicle gewicht.
@@ -395,11 +242,10 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                 }
 
                 this.Vehicle.Gewicht = value;
-                this._saveButton = true;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
+        // this.Vehicle.FrontAUnit = (UnitsNet.Units.AreaUnit)value?.UnitEnumValue; this.OnPropertyChanged(nameof(VehicleFrontA); } }
         /// <summary>
         /// Gets or sets the vehicle gewicht unit.
         /// </summary>
@@ -420,6 +266,12 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
         }
 
         /// <summary>
+        /// Gets or sets the vehicle front a unit.
+        /// </summary>
+        /// <value>The vehicle front a unit.</value>
+        // public UnitListItem VehicleFrontAUnit { get => this.AreaQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(this.Vehicle?.FrontAUnit)); set { if (this.Vehicle ==
+        // null) { return; }
+        /// <summary>
         /// Gets or sets the vehicle motor auslass breite b.
         /// </summary>
         /// <value>The vehicle motor auslass breite b.</value>
@@ -433,11 +285,15 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.Auslass.BreiteB = value;
-                this._saveButton = true;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
+        /// <summary>
+        /// Gets or sets the vehicle front a.
+        /// </summary>
+        /// <value>The vehicle front a.</value>
+        // public double? VehicleFrontA { get => this.Vehicle?.FrontA; set { if (this.Vehicle == null) { return; } this.Vehicle.FrontA = value; this._saveButton
+        // = true; } }
         /// <summary>
         /// Gets or sets the vehicle motor auslass breite b unit.
         /// </summary>
@@ -470,8 +326,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.Auslass.FlaecheA = value;
-                this._saveButton = true;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -507,8 +361,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.Auslass.HoeheH = value;
-                this._saveButton = true;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -544,8 +396,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.Auslass.LaengeL = value;
-                this._saveButton = true;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -581,8 +431,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.Auslass.SteuerzeitSZ = value;
-                this._saveButton = true;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -600,8 +448,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.BohrungD = value;
-                this._saveButton = true;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -637,8 +483,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.BrennraumV = value;
-                this._saveButton = true;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -674,8 +518,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.DeachsierungL = value;
-                this._saveButton = true;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -711,8 +553,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.Einlass.BreiteB = value;
-                this._saveButton = true;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -744,8 +584,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.Einlass.DurchmesserD = value;
-                this._saveButton = true;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -777,8 +615,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.Einlass.FlaecheA = value;
-                this._saveButton = true;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -814,8 +650,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.Einlass.HoeheH = value;
-                this._saveButton = true;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -851,8 +685,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.Einlass.LaengeL = value;
-                this._saveButton = true;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -888,8 +720,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.Einlass.LuftBedarf = value;
-                this._saveButton = true;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -907,8 +737,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.Einlass.SteuerzeitSZ = value;
-                this._saveButton = true;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -926,8 +754,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.Einlass.Vergaser.BenzinLuftF = value;
-                this._saveButton = true;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -945,8 +771,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.Einlass.Vergaser.DurchmesserD = value;
-                this._saveButton = true;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -984,8 +808,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                 }
 
                 this.Vehicle.Motor.HeizwertU = value;
-                this._saveButton = true;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -1003,8 +825,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.HubL = value;
-                this._saveButton = true;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -1041,8 +861,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.HubraumV = value;
-                this._saveButton = true;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -1078,8 +896,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.KolbenG = value;
-                this._saveButton = true;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -1115,8 +931,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.KurbelgehaeuseV = value;
-                this._saveButton = true;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -1153,8 +967,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.Name = value;
-                this._saveButton = true;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -1172,8 +984,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.PleulL = value;
-                this._saveButton = true;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -1209,8 +1019,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.ResonanzU = value;
-                this._saveButton = true;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -1228,8 +1036,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.Ueberstroemer.Anzahl = value;
-                this._saveButton = true;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -1247,8 +1053,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.Ueberstroemer.BreiteB = value;
-                this._saveButton = true;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -1285,8 +1089,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.Ueberstroemer.FlaecheA = value;
-                this._saveButton = true;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -1322,8 +1124,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.Ueberstroemer.HoeheH = value;
-                this._saveButton = true;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -1359,8 +1159,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.Ueberstroemer.SteuerzeitSZ = value;
-                this._saveButton = true;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -1378,8 +1176,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.VerdichtungV = value;
-                this._saveButton = true;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -1397,8 +1193,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.Zuendzeitpunkt = value;
-                this._saveButton = true;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -1416,8 +1210,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Motor.ZylinderAnz = value;
-                this._saveButton = true;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -1435,8 +1227,6 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
                     return;
                 }
                 this.Vehicle.Name = value;
-                this._saveButton = true;
-                SaveVehicleCommand.NotifyCanExecuteChanged();
             }
         }
 
@@ -1451,19 +1241,84 @@ namespace SimTuning.Maui.UI.ViewModels.Einstellungen
         }
 
         /// <summary>
-        /// Gets or sets the vehicle uebersetzung.
-        /// </summary>
-        /// <value>The vehicle uebersetzung.</value>
-        // public double? VehicleUebersetzung { get => this.Vehicle?.ueb; set { if
-        // (this.Vehicle == null) { return; } this.Vehicle.Uebersetzung = value;
-        // this._saveButton = true;
-        //SaveVehicleCommand.NotifyCanExecuteChanged(); } }
-
-        /// <summary>
         /// Gets the volume quantity units.
         /// </summary>
         /// <value>The volume quantity units.</value>
         public ObservableCollection<UnitListItem> VolumeQuantityUnits { get; }
+
+        private void raiseAllPropertyChanged()
+        {
+            OnPropertyChanged(nameof(VehicleName));
+            OnPropertyChanged(nameof(VehicleBeschreibung));
+
+            OnPropertyChanged(nameof(VehicleGewicht));
+            OnPropertyChanged(nameof(VehicleGewichtUnit));
+            OnPropertyChanged(nameof(VehicleMotorName));
+            OnPropertyChanged(nameof(VehicleMotorHubL));
+            OnPropertyChanged(nameof(VehicleMotorHubLUnit));
+            OnPropertyChanged(nameof(VehicleMotorHubL));
+            OnPropertyChanged(nameof(VehicleMotorHubLUnit));
+            OnPropertyChanged(nameof(VehicleMotorAuslassBreiteB));
+            OnPropertyChanged(nameof(VehicleMotorAuslassBreiteBUnit));
+            OnPropertyChanged(nameof(VehicleMotorAuslassFlaecheA));
+            OnPropertyChanged(nameof(VehicleMotorAuslassFlaecheAUnit));
+            OnPropertyChanged(nameof(VehicleMotorAuslassHoeheH));
+            OnPropertyChanged(nameof(VehicleMotorAuslassHoeheHUnit));
+            OnPropertyChanged(nameof(VehicleMotorAuslassLaengeL));
+            OnPropertyChanged(nameof(VehicleMotorAuslassLaengeLUnit));
+            OnPropertyChanged(nameof(VehicleMotorAuslassSteuerzeitSZ));
+            OnPropertyChanged(nameof(VehicleMotorBohrungD));
+            OnPropertyChanged(nameof(VehicleMotorBohrungDUnit));
+            OnPropertyChanged(nameof(VehicleMotorBrennraumV));
+            OnPropertyChanged(nameof(VehicleMotorBrennraumVUnit));
+            OnPropertyChanged(nameof(VehicleMotorDeachsierungL﻿));
+            OnPropertyChanged(nameof(VehicleMotorDeachsierungLUnit));
+            OnPropertyChanged(nameof(VehicleMotorEinlassBreiteB));
+            OnPropertyChanged(nameof(VehicleMotorEinlassBreiteBUnit));
+            OnPropertyChanged(nameof(VehicleMotorEinlassDurchmesserD));
+            OnPropertyChanged(nameof(VehicleMotorEinlassDurchmesserDUnit));
+            OnPropertyChanged(nameof(VehicleMotorEinlassFlaecheA));
+            OnPropertyChanged(nameof(VehicleMotorEinlassFlaecheAUnit));
+            OnPropertyChanged(nameof(VehicleMotorEinlassHoeheH));
+            OnPropertyChanged(nameof(VehicleMotorEinlassHoeheHUnit));
+            OnPropertyChanged(nameof(VehicleMotorEinlassLaengeL));
+            OnPropertyChanged(nameof(VehicleMotorEinlassLaengeLUnit));
+            OnPropertyChanged(nameof(VehicleMotorEinlassLuftBedarf));
+            OnPropertyChanged(nameof(VehicleMotorEinlassSteuerzeitSZ));
+            OnPropertyChanged(nameof(VehicleMotorEinlassVergaserBenzinLuftF));
+            OnPropertyChanged(nameof(VehicleMotorEinlassVergaserDurchmesserD));
+            OnPropertyChanged(nameof(VehicleMotorEinlassVergaserDurchmesserDUnit));
+            OnPropertyChanged(nameof(VehicleMotorHeizwertU));
+            OnPropertyChanged(nameof(VehicleMotorHubL));
+            OnPropertyChanged(nameof(VehicleMotorHubLUnit));
+            OnPropertyChanged(nameof(VehicleMotorHubraumV));
+            OnPropertyChanged(nameof(VehicleMotorHubraumVUnit));
+            OnPropertyChanged(nameof(VehicleMotorKolbenG));
+            OnPropertyChanged(nameof(VehicleMotorKolbenGUnit));
+            OnPropertyChanged(nameof(VehicleMotorKurbelgehaeuseV));
+            OnPropertyChanged(nameof(VehicleMotorKurbelgehaeuseVUnit));
+            OnPropertyChanged(nameof(VehicleMotorName));
+            OnPropertyChanged(nameof(VehicleMotorPleulL));
+            OnPropertyChanged(nameof(VehicleMotorPleulLUnit));
+            OnPropertyChanged(nameof(VehicleMotorResonanzU));
+            OnPropertyChanged(nameof(VehicleMotorUeberstroemerAnzahl));
+            OnPropertyChanged(nameof(VehicleMotorUeberstroemerBreiteB));
+            OnPropertyChanged(nameof(VehicleMotorUeberstroemerBreiteBUnit));
+            OnPropertyChanged(nameof(VehicleMotorUeberstroemerFlaecheA));
+            OnPropertyChanged(nameof(VehicleMotorUeberstroemerFlaecheAUnit));
+            OnPropertyChanged(nameof(VehicleMotorUeberstroemerHoeheH));
+            OnPropertyChanged(nameof(VehicleMotorUeberstroemerHoeheHUnit));
+            OnPropertyChanged(nameof(VehicleMotorUeberstroemerSteuerzeitSZ));
+            OnPropertyChanged(nameof(VehicleMotorVerdichtungV));
+            OnPropertyChanged(nameof(VehicleMotorZuendzeitpunkt));
+            OnPropertyChanged(nameof(VehicleMotorZylinderAnz));
+
+            OnPropertyChanged(nameof(VehicleDynoAudio));
+            OnPropertyChanged(nameof(VehicleDynoAudio));
+            OnPropertyChanged(nameof(VehicleDynoBeschreibung));
+            OnPropertyChanged(nameof(VehicleDynoDynoPS));
+            OnPropertyChanged(nameof(VehicleDynoName));
+        }
 
         #endregion Values
     }

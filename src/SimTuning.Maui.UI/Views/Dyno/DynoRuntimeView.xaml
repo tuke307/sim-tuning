@@ -4,8 +4,8 @@
              x:Class="SimTuning.Maui.UI.Views.Dyno.DynoRuntimeView"
              Title="Messung"
              BackgroundColor="{Binding Path=PageBackColor, Mode=OneWay}"
-             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels.Dyno"
-             x:DataType="vm:RuntimeViewModel">
+             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
+             x:DataType="vm:DynoRuntimeViewModel">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="0.5*" />
@@ -19,18 +19,18 @@
                                      WidthRequest="100"
                                      HeightRequest="60"
                                      Margin="15"
-                                     
+
                                      HorizontalOptions="Start"
                                      VerticalOptions="Center"
                                      Image="ic_arrow_back_black_18dp.png"
                                      Command="{Binding CloseCommand}" />-->
 
         <Border Grid.Row="1"
-               HorizontalOptions="FillAndExpand"
-               VerticalOptions="Center"
-               HeightRequest="200"
-               Margin="10, 0, 10, 0"
-               BackgroundColor="{Binding Path=SpeedBackColor, Mode=OneWay}">
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="Center"
+                HeightRequest="200"
+                Margin="10, 0, 10, 0"
+                BackgroundColor="{Binding Path=SpeedBackColor, Mode=OneWay}">
 
             <Grid>
                 <StackLayout Orientation="Horizontal"
@@ -84,7 +84,7 @@
 
             <!--<Button   Text="Stop"
                                      IsVisible="{Binding StopAccelerationButtonVis}"
-                                     
+
                                      VerticalOptions="Center"
                                      WidthRequest="125"
                                      Image="ic_stop_black_18dp.png"

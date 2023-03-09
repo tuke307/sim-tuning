@@ -1,5 +1,5 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
-using SimTuning.Maui.UI.ViewModels.Dyno;
+using SimTuning.Maui.UI.ViewModels;
 using CommunityToolkit.Mvvm.DependencyInjection;
 
 namespace SimTuning.Maui.UI.Views.Dyno
@@ -10,9 +10,9 @@ namespace SimTuning.Maui.UI.Views.Dyno
         {
             this.InitializeComponent();
             
-            BindingContext = Ioc.Default.GetRequiredService<AudioPlayerViewModel>();
+            BindingContext = Ioc.Default.GetRequiredService<DynoAudioPlayerViewModel>();
         }
 
-        public AudioPlayerViewModel ViewModel => (AudioPlayerViewModel)BindingContext;
+        public DynoAudioPlayerViewModel ViewModel => (DynoAudioPlayerViewModel)BindingContext;
     }
 }

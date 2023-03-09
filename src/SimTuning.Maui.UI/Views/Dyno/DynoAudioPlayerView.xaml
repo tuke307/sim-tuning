@@ -4,8 +4,8 @@
              xmlns:behaviors="clr-namespace:SimTuning.Maui.UI.Behaviors"
              xmlns:converters="clr-namespace:SimTuning.Core.Converters;assembly=SimTuning.Core"
              x:Class="SimTuning.Maui.UI.Views.Dyno.DynoAudioPlayerView"
-             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels.Dyno"
-             x:DataType="vm:AudioPlayerViewModel">
+             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
+             x:DataType="vm:DynoAudioPlayerViewModel">
     <ContentView.Resources>
         <!--CONVERTER-->
         <behaviors:InvertedBoolConverter x:Key="Inverter" />

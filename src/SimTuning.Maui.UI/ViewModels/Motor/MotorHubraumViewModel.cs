@@ -1,26 +1,26 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
+using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using CommunityToolkit.Mvvm.ComponentModel;
+using SimTuning.Core;
 using SimTuning.Core.Models;
 using SimTuning.Core.ModuleLogic;
 using SimTuning.Core.Services;
-using SimTuning.Maui.UI.Services;
 using SimTuning.Data;
 using SimTuning.Data.Models;
+using SimTuning.Maui.UI.Services;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using UnitsNet.Units;
-using SimTuning.Core;
 
-namespace SimTuning.Maui.UI.ViewModels.Motor
+namespace SimTuning.Maui.UI.ViewModels
 {
-    public class HubraumViewModel : ViewModelBase
+    public class MotorHubraumViewModel : ViewModelBase
     {
-        public HubraumViewModel(
-            ILogger<HubraumViewModel> logger,
+        public MotorHubraumViewModel(
+            ILogger<MotorHubraumViewModel> logger,
             INavigationService navigationService,
             IVehicleService vehicleService)
         {
@@ -35,11 +35,18 @@ namespace SimTuning.Maui.UI.ViewModels.Motor
             UnitHubraumV = VolumeQuantityUnits.Where(x => x.UnitEnumValue.Equals(VolumeUnit.CubicCentimeter)).First();
             UnitKolbenD = LengthQuantityUnits.Where(x => x.UnitEnumValue.Equals(LengthUnit.Centimeter)).First();
             UnitBohrungD = LengthQuantityUnits.Where(x => x.UnitEnumValue.Equals(LengthUnit.Centimeter)).First();
-
-            HelperVehicles = new ObservableCollection<VehiclesModel>(_vehicleService.RetrieveVehicles());
         }
 
         #region Commands
+
+        public void InsertHelperVehicle(VehiclesModel helperVehicle)
+        {
+            if (helperVehicle.Motor.BohrungD.HasValue)
+            {
+                this.Hub = helperVehicle.Motor.HubL;
+                //GrindingDiameters = EngineLogic.GetGrindingDiameters(helperVehicle.Motor.BohrungD.Value);
+            }
+        }
 
         private void Refresh_all()
         {
@@ -76,7 +83,7 @@ namespace SimTuning.Maui.UI.ViewModels.Motor
 
         #region Values
 
-        private readonly ILogger<HubraumViewModel> _logger;
+        private readonly ILogger<MotorHubraumViewModel> _logger;
 
         private readonly IVehicleService _vehicleService;
 
@@ -85,10 +92,6 @@ namespace SimTuning.Maui.UI.ViewModels.Motor
         private double? _einbauspiel;
 
         private GrindingDiametersModel _grindingDiameters;
-
-        private VehiclesModel _helperVehicle;
-
-        private ObservableCollection<VehiclesModel> _helperVehicles;
 
         private double? _hub;
 
@@ -126,24 +129,6 @@ namespace SimTuning.Maui.UI.ViewModels.Motor
         {
             get => _grindingDiameters;
             set { SetProperty(ref _grindingDiameters, value); }
-        }
-
-        public VehiclesModel HelperVehicle
-        {
-            get => _helperVehicle;
-            set
-            {
-                SetProperty(ref _helperVehicle, value);
-
-                if (value.Motor.BohrungD.HasValue)
-                    GrindingDiameters = EngineLogic.GetGrindingDiameters(value.Motor.BohrungD.Value);
-            }
-        }
-
-        public ObservableCollection<VehiclesModel> HelperVehicles
-        {
-            get => _helperVehicles;
-            set { SetProperty(ref _helperVehicles, value); }
         }
 
         public double? Hub

@@ -1,5 +1,5 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
-using SimTuning.Maui.UI.ViewModels.Auslass;
+using SimTuning.Maui.UI.ViewModels;
 using CommunityToolkit.Mvvm.DependencyInjection;
 
 namespace SimTuning.Maui.UI.Views.Auslass
@@ -10,9 +10,9 @@ namespace SimTuning.Maui.UI.Views.Auslass
         {
             InitializeComponent();
             
-            BindingContext = Ioc.Default.GetRequiredService<MainViewModel>();
+            BindingContext = Ioc.Default.GetRequiredService<AuslassMainViewModel>();
         }
 
-        public MainViewModel ViewModel => (MainViewModel)BindingContext;
+        public AuslassMainViewModel ViewModel => (AuslassMainViewModel)BindingContext;
     }
 }

@@ -9,12 +9,12 @@ using SimTuning.Data.Models;
 using SimTuning.Maui.UI.Services;
 using System.Collections.ObjectModel;
 
-namespace SimTuning.Maui.UI.ViewModels.Auslass
+namespace SimTuning.Maui.UI.ViewModels
 {
-    public class AnwendungViewModel : ViewModelBase
+    public class AuslassAnwendungViewModel : ViewModelBase
     {
-        public AnwendungViewModel(
-            ILogger<AnwendungViewModel> logger,
+        public AuslassAnwendungViewModel(
+            ILogger<AuslassAnwendungViewModel> logger,
             IVehicleService vehicleService)
         {
             this._logger = logger;
@@ -31,13 +31,10 @@ namespace SimTuning.Maui.UI.ViewModels.Auslass
             this.LengthQuantityUnits = new LengthQuantity();
             this.SpeedQuantityUnits = new SpeedQuantity();
 
-            this.HelperVehicles = new ObservableCollection<VehiclesModel>(_vehicleService.RetrieveVehicles());
-
             this.DiffStages = new List<string>() { "One Stage", "Two Stage", "Three Stage" };
 
             // Methods
             this.CalculateCommand = new RelayCommand(this.Calculate);
-            this.InsertDataCommand = new RelayCommand(this.InsertData);
             this.DiffusorStageCommand = new RelayCommand<int>(this.DiffusorStage);
         }
 
@@ -54,28 +51,23 @@ namespace SimTuning.Maui.UI.ViewModels.Auslass
         /// <summary>
         /// Fügt Vehicle-Helper ein.
         /// </summary>
-        public void InsertData()
+        public void InsertHelperVehicle(VehiclesModel helperVehicle)
         {
-            if (this.HelperVehicle.Motor.Auslass.FlaecheA.HasValue)
+            if (helperVehicle.Motor.Auslass.FlaecheA.HasValue)
             {
-                this.VehicleMotorAuslassFlaecheA = this.HelperVehicle.Motor.Auslass.FlaecheA.Value;
+                this.VehicleMotorAuslassFlaecheA = helperVehicle.Motor.Auslass.FlaecheA.Value;
             }
 
-            if (this.HelperVehicle.Motor.ResonanzU.HasValue)
+            if (helperVehicle.Motor.ResonanzU.HasValue)
             {
-                this.VehicleMotorResonanzU = this.HelperVehicle.Motor.ResonanzU;
+                this.VehicleMotorResonanzU = helperVehicle.Motor.ResonanzU;
             }
 
-            if (this.HelperVehicle.Motor.Auslass.SteuerzeitSZ.HasValue)
+            if (helperVehicle.Motor.Auslass.SteuerzeitSZ.HasValue)
             {
-                this.VehicleMotorAuslassSteuerzeitSZ = this.HelperVehicle.Motor.Auslass.SteuerzeitSZ;
+                this.VehicleMotorAuslassSteuerzeitSZ = helperVehicle.Motor.Auslass.SteuerzeitSZ;
             }
-
-            this.OnPropertyChanged(nameof(this.VehicleMotorAuslassFlaecheA));
-            this.OnPropertyChanged(nameof(this.VehicleMotorResonanzU));
-            this.OnPropertyChanged(nameof(this.VehicleMotorAuslassSteuerzeitSZ));
         }
-
 
         /// <summary>
         /// Berechnet den Auspuff.
@@ -106,26 +98,24 @@ namespace SimTuning.Maui.UI.ViewModels.Auslass
 
         #region Values
 
-        private readonly ILogger<AnwendungViewModel> _logger;
+        private readonly ILogger<AuslassAnwendungViewModel> _logger;
         private readonly IVehicleService _vehicleService;
+        private ImageSource _auspuff;
         private VehiclesModel _helperVehicle;
 
-        private ObservableCollection<VehiclesModel> _helperVehicles;
-
         private VehiclesModel _vehicle;
-        private ImageSource _auspuff;
-
-        public ImageSource Auspuff
-        {
-            get => _auspuff;
-            private set => SetProperty(ref _auspuff, value);
-        }
 
         /// <summary>
         /// Gets or sets the area quantity units.
         /// </summary>
         /// <value>The area quantity units.</value>
         public ObservableCollection<UnitListItem> AreaQuantityUnits { get; protected set; }
+
+        public ImageSource Auspuff
+        {
+            get => _auspuff;
+            private set => SetProperty(ref _auspuff, value);
+        }
 
         /// <summary>
         /// Gets or sets the calculate command.
@@ -144,32 +134,6 @@ namespace SimTuning.Maui.UI.ViewModels.Auslass
         /// </summary>
         /// <value>The diffusor stage command.</value>
         public IRelayCommand DiffusorStageCommand { get; set; }
-
-        /// <summary>
-        /// Gets or sets the helper vehicle.
-        /// </summary>
-        /// <value>The helper vehicle.</value>
-        public VehiclesModel HelperVehicle
-        {
-            get => this._helperVehicle;
-            set { this.SetProperty(ref this._helperVehicle, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets the helper vehicles.
-        /// </summary>
-        /// <value>The helper vehicles.</value>
-        public ObservableCollection<VehiclesModel> HelperVehicles
-        {
-            get => this._helperVehicles;
-            set { this.SetProperty(ref this._helperVehicles, value); }
-        }
-
-        /// <summary>
-        /// Gets or sets the insert data command.
-        /// </summary>
-        /// <value>The insert data command.</value>
-        public IRelayCommand InsertDataCommand { get; set; }
 
         /// <summary>
         /// Gets or sets the length quantity units.
@@ -662,6 +626,7 @@ namespace SimTuning.Maui.UI.ViewModels.Auslass
                 }
 
                 this.Vehicle.Motor.Auslass.FlaecheA = value;
+                this.OnPropertyChanged(nameof(this.VehicleMotorAuslassFlaecheA));
             }
         }
 
@@ -736,6 +701,7 @@ namespace SimTuning.Maui.UI.ViewModels.Auslass
                 }
 
                 this.Vehicle.Motor.Auslass.SteuerzeitSZ = value;
+                this.OnPropertyChanged(nameof(this.VehicleMotorAuslassSteuerzeitSZ));
             }
         }
 
@@ -754,6 +720,7 @@ namespace SimTuning.Maui.UI.ViewModels.Auslass
                 }
 
                 this.Vehicle.Motor.ResonanzU = value;
+                this.OnPropertyChanged(nameof(this.VehicleMotorResonanzU));
             }
         }
 

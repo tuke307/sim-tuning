@@ -1,18 +1,19 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
-using Microsoft.Extensions.Logging;
-using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
+using SimTuning.Core.Services;
+using SimTuning.Maui.UI.Services;
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using SimTuning.Core.Services;using SimTuning.Maui.UI.Services;
 
-namespace SimTuning.Maui.UI.ViewModels.Dyno
+namespace SimTuning.Maui.UI.ViewModels
 {
-    public class AudioPlayerViewModel : ViewModelBase
+    public class DynoAudioPlayerViewModel : ViewModelBase
     {
-        public AudioPlayerViewModel(
-            ILogger<AudioPlayerViewModel> logger,
+        public DynoAudioPlayerViewModel(
+            ILogger<DynoAudioPlayerViewModel> logger,
             INavigationService navigationService)
         {
             this._logger = logger;
@@ -52,7 +53,7 @@ namespace SimTuning.Maui.UI.ViewModels.Dyno
 
         #region Values
 
-        private readonly ILogger<AudioPlayerViewModel> _logger;
+        private readonly ILogger<DynoAudioPlayerViewModel> _logger;
         private bool _dragStarted = false;
 
         private double _duration = 100;
@@ -140,7 +141,6 @@ namespace SimTuning.Maui.UI.ViewModels.Dyno
 
         #region Methods
 
-
         //protected void Current_BufferingChanged(object sender, MediaManager.Playback.BufferedChangedEventArgs e)
         //{
         //    _logger.LogDebug($"Total buffered time is {e.Buffered};");
@@ -159,10 +159,7 @@ namespace SimTuning.Maui.UI.ViewModels.Dyno
         /// <summary>
         /// Cuts the beginn.
         /// </summary>
-        /// <returns>
-        /// <placeholder>A <see cref="Task" /> representing the asynchronous
-        /// operation.</placeholder>
-        /// </returns>
+        /// <returns><placeholder>A <see cref="Task" /> representing the asynchronous operation.</placeholder></returns>
         protected async Task CutBeginn()
         {
             //await _mediaManager.Stop().ConfigureAwait(true);
@@ -192,10 +189,7 @@ namespace SimTuning.Maui.UI.ViewModels.Dyno
         /// <summary>
         /// Cuts the end.
         /// </summary>
-        /// <returns>
-        /// <placeholder>A <see cref="Task" /> representing the asynchronous
-        /// operation.</placeholder>
-        /// </returns>
+        /// <returns><placeholder>A <see cref="Task" /> representing the asynchronous operation.</placeholder></returns>
         protected async Task CutEnd()
         {
             //await _mediaManager.Stop().ConfigureAwait(true);
@@ -236,10 +230,9 @@ namespace SimTuning.Maui.UI.ViewModels.Dyno
         //    this.TimeSpanDuration = this._mediaManager.Duration;
         //    this.Duration = this._mediaManager.Duration.TotalSeconds;
 
-        //    this.OnPropertyChanged(nameof(this.IsPlaying);
+        // this.OnPropertyChanged(nameof(this.IsPlaying);
 
-        //    this._logger.LogDebug($"Current position is {e.Position};");
-
+        // this._logger.LogDebug($"Current position is {e.Position};");
 
         //protected void MediaManager_StateChanged(object sender, MediaManager.Playback.StateChangedEventArgs e)
         //{
@@ -249,19 +242,11 @@ namespace SimTuning.Maui.UI.ViewModels.Dyno
         /// <summary>
         /// Opens the file.
         /// </summary>
-        /// <returns>
-        /// A <see cref="Task" /> representing the asynchronous operation.
-        /// </returns>
+        /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
         protected async Task PlayFileAsync()
         {
-            //    try
-            //    {
-            //        Source = await _mediaManager.Play(SimTuning.Core.GeneralSettings.AudioAccelerationFilePath).ConfigureAwait(true);
-            //    }
-            //    catch (Exception exc)
-            //    {
-            //        this._logger.LogError("Fehler bei PlayFileAsync: ", exc);
-            //    }
+            // try { Source = await _mediaManager.Play(SimTuning.Core.GeneralSettings.AudioAccelerationFilePath).ConfigureAwait(true); } catch (Exception exc) { this._logger.LogError("Fehler bei
+            // PlayFileAsync: ", exc); }
 
             //var check = this.CheckDynoData();
             //if (!check)
@@ -277,22 +262,7 @@ namespace SimTuning.Maui.UI.ViewModels.Dyno
         }
 
         /// <summary>
-        /// Überprüft ob wichtige Dyno-Audio-Daten vorhanden sind.
-        /// </summary>
-        private bool CheckDynoData()
-        {
-            if (!File.Exists(SimTuning.Core.GeneralSettings.AudioAccelerationFilePath))
-            {
-                //Maui.UI.Helpers.Functions.ShowSnackbarDialog(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_NOAUDIOFILE"));
-
-                return false;
-            }
-
-            return true;
-        }
-        /// <summary>
-        /// Schneidet die Audio Datei zurecht speichert den geschnittenen Schnipsel in
-        /// einem Stream und überschreibt diese dann.
+        /// Schneidet die Audio Datei zurecht speichert den geschnittenen Schnipsel in einem Stream und überschreibt diese dann.
         /// </summary>
         /// <param name="cutStart">The cut start.</param>
         /// <param name="cutEnd">The cut end.</param>
@@ -327,36 +297,39 @@ namespace SimTuning.Maui.UI.ViewModels.Dyno
             }
         }
 
+        /// <summary>
+        /// Überprüft ob wichtige Dyno-Audio-Daten vorhanden sind.
+        /// </summary>
+        private bool CheckDynoData()
+        {
+            if (!File.Exists(SimTuning.Core.GeneralSettings.AudioAccelerationFilePath))
+            {
+                //Maui.UI.Helpers.Functions.ShowSnackbarDialog(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_NOAUDIOFILE"));
+
+                return false;
+            }
+
+            return true;
+        }
+
         private async Task PlayPause()
         {
-            //    //if (Source == null)
-            //    //{
-            //    //    // abspielen zum ersten mal
-            //    //    await PlayFileAsync().ConfigureAwait(true);
-            //    //}
-            //    //else
-            //    //{
-            //    //    await _mediaManager.PlayPause().ConfigureAwait(true);
-            //    //}
+            // //if (Source == null) //{ // // abspielen zum ersten mal // await PlayFileAsync().ConfigureAwait(true); //} //else //{ // await _mediaManager.PlayPause().ConfigureAwait(true); //}
 
-            //    await this.OnPropertyChanged(nameof(this.IsPlaying).ConfigureAwait(true);
+            // await this.OnPropertyChanged(nameof(this.IsPlaying).ConfigureAwait(true);
         }
 
         ///// <summary>
         ///// Gets the audio maximum. wenn 0 dann gibt es Fehler in xamarin anwendung.
         ///// </summary>
         ///// <value>The audio maximum.</value>
-        // public double? AudioMaximum { get =>
-        // this.MediaManager.Duration.TotalMilliseconds == 0 ? 100 :
-        // this.MediaManager.Duration.TotalMilliseconds; }
+        // public double? AudioMaximum { get => this.MediaManager.Duration.TotalMilliseconds == 0 ? 100 : this.MediaManager.Duration.TotalMilliseconds; }
 
         ///// <summary>
         ///// Gets or sets the audio position.
         ///// </summary>
         ///// <value>The audio position.</value>
-        // public double? AudioPosition { get => this.MediaManager?.Position.Milliseconds
-        // ?? 0; set { this.MediaManager.SeekTo(TimeSpan.FromMilliseconds(value.Value)); }
-        // }
+        // public double? AudioPosition { get => this.MediaManager?.Position.Milliseconds ?? 0; set { this.MediaManager.SeekTo(TimeSpan.FromMilliseconds(value.Value)); } }
 
         #endregion Methods
     }

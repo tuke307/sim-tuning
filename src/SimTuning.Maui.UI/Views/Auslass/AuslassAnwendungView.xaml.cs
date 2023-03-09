@@ -1,18 +1,31 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
+using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.DependencyInjection;
-using SimTuning.Maui.UI.ViewModels.Auslass;
+using SimTuning.Data.Models;
+using SimTuning.Maui.UI.ViewModels;
+using SimTuning.Maui.UI.Views.Popups;
 
 namespace SimTuning.Maui.UI.Views.Auslass
 {
     public partial class AuslassAnwendungView : ContentView
     {
+        public AuslassAnwendungViewModel ViewModel => (AuslassAnwendungViewModel)BindingContext;
+
         public AuslassAnwendungView()
         {
             InitializeComponent();
 
-            BindingContext = Ioc.Default.GetRequiredService<AnwendungViewModel>();
+            BindingContext = Ioc.Default.GetRequiredService<AuslassAnwendungViewModel>();
         }
 
-        public AnwendungViewModel ViewModel => (AnwendungViewModel)BindingContext;
+        private async void HelperVehiclesButton_Clicked(object sender, EventArgs e)
+        {
+            var task = Application.Current.MainPage.ShowPopupAsync(new VehiclePopup());
+            var result = await task;
+            if (result != null)
+            {
+                ViewModel.InsertHelperVehicle(result as VehiclesModel);
+            }
+        }
     }
 }

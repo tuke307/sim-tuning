@@ -1,5 +1,5 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
-using SimTuning.Maui.UI.ViewModels.Dyno;
+using SimTuning.Maui.UI.ViewModels;
 using CommunityToolkit.Mvvm.DependencyInjection;
 
 
@@ -11,9 +11,9 @@ namespace SimTuning.Maui.UI.Views.Dyno
         {
             this.InitializeComponent();
 
-            BindingContext = Ioc.Default.GetRequiredService<DataViewModel>();
+            BindingContext = Ioc.Default.GetRequiredService<DynoDataViewModel>();
         }
 
-        public DataViewModel ViewModel => (DataViewModel)BindingContext;
+        public DynoDataViewModel ViewModel => (DynoDataViewModel)BindingContext;
     }
 }
