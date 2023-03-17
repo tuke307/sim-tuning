@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.DependencyInjection;
+using Serilog;
 using SimTuning.Core.Services;
 using SimTuning.Data;
 using SimTuning.Maui.UI.Services;
@@ -20,7 +21,7 @@ namespace SimTuning.Maui.App
                 _initialized = true;
                 Ioc.Default.ConfigureServices(
                     new ServiceCollection()
-                    .AddLogging()
+                    .AddLogging(logging => logging.AddSerilog(dispose: true))
 
                     .AddSingleton<DatabaseContext, DatabaseContext>()
                     .AddSingleton<IVehicleService, VehicleService>()

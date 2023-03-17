@@ -1,11 +1,8 @@
 ﻿using CommunityToolkit.Maui;
-using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
 using Sharpnado.Tabs;
 using SimTuning.Core;
-using SimTuning.Core.Services;
-using SimTuning.Data;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 
 namespace SimTuning.Maui.App
@@ -29,13 +26,7 @@ namespace SimTuning.Maui.App
                     fonts.AddFont(filename: "materialdesignicons-webfont.ttf", alias: "MaterialDesignIcons");
                     fonts.AddFont(filename: "Roboto-Regular.ttf", alias: "Roboto-Regular");
                     fonts.AddFont(filename: "Roboto-Bold.ttf", alias: "Roboto-Bold");
-                })
-
-                //.RegisterAppServices()
-                //.RegisterViewModels()
-
-                // logger
-                .Logging.AddSerilog();
+                });
 
             return builder.Build();
         }
@@ -49,6 +40,7 @@ namespace SimTuning.Maui.App
             .MinimumLevel.Verbose()
             .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
             .Enrich.FromLogContext()
+            .WriteTo.Debug()
             .WriteTo.File(file, flushToDiskInterval: flushInterval, encoding: System.Text.Encoding.UTF8, rollingInterval: RollingInterval.Day, retainedFileCountLimit: 22)
             .CreateLogger();
         }
