@@ -1,30 +1,15 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
 namespace SimTuning.Core.ModuleLogic
 {
-    using LiveChartsCore;
-    using LiveChartsCore.Defaults;
-    using LiveChartsCore.Kernel;
-    using LiveChartsCore.Kernel.Sketches;
-    using LiveChartsCore.SkiaSharpView;
-    using NAudio.Wave;
     using SimTuning.Core.Models;
     using SkiaSharp;
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using UnitsNet;
 
-    /// <summary>
-    /// AudioLogic.
-    /// </summary>
     public static class AudioLogic
     {
         #region variables
 
-        /// <summary>
-        /// Gets or sets tODO: nutzer soll dies einstellen können. Math.Round(Math.Sqrt(Convert.ToDouble(AudioLogic.SpectrogramAudio.DisplaySettings.freqHigh
-        /// - AudioLogic.SpectrogramAudio.DisplaySettings.freqLow)) / 2);.
-        /// </summary>
         private static double _areaAbstand;
 
         private static string _audioFile;
@@ -32,23 +17,22 @@ namespace SimTuning.Core.ModuleLogic
         private static double _intensity;
         private static int _maxFreq;
         private static int _minFreq;
+        private static int _sampleRate;
         private static int _stepSize;
         private static int _targetWidthPx;
         private static SKBitmap bmp;
-        // private static int sampleRate;
 
         /// <summary>
-        /// Gets array Handling. Punkte der Drehzahl.
+        /// Punkte der Drehzahl.
         /// </summary>
         public static List<DataPoint> AccelerationPoints { get; private set; }
 
         /// <summary>
         /// Gets array Handling.
-        /// 1. Liste = Graphen, 2. Liste = Punkte.
+        /// 1. Liste = Graphen,
+        /// 2. Liste = Punkte des Graphen.
         /// </summary>
         public static List<List<DataPoint>> AreaAccelerationPoints { get; private set; }
-
-        public static List<List<DataPoint>> RotSpeedAccPoints { get; private set; }
 
         /// <summary>
         /// Gets the spectrogram audio.
@@ -57,21 +41,11 @@ namespace SimTuning.Core.ModuleLogic
         public static Spectrogram.Spectrogram SpectrogramAudio { get; private set; }
 
         /// <summary>
-        /// Gets the FFT beginn.
-        /// </summary>
-        // private static double FftBeginn { get => Math.Round(Convert.ToDouble(AudioLogic.SpectrogramAudio.FreqMin) / HzPerFFT); }
-
-        ///// <summary>
-        ///// Gets the FFT ende
-        ///// </summary>
-        // private static double FftEnde { get => Math.Round(Convert.ToDouble(AudioLogic.SpectrogramAudio.FreqMax) / HzPerFFT); }
-
-        /// <summary>
         /// Gets fFT-Array-elements pro 1 Hertz.
         /// </summary>
         private static double HzPerFFT
         {
-            get => AudioLogic.SpectrogramAudio.HzPerPx;
+            get => SpectrogramAudio.HzPerPx;
         }
 
         /// <summary>
@@ -79,7 +53,7 @@ namespace SimTuning.Core.ModuleLogic
         /// </summary>
         private static double SegmentsPerSecond
         {
-            get => AudioLogic.SpectrogramAudio.SecPerPx;
+            get => SpectrogramAudio.SecPerPx;
         }
 
         /// <summary>
@@ -87,7 +61,7 @@ namespace SimTuning.Core.ModuleLogic
         /// </summary>
         private static List<double[]> SpecData
         {
-            get => AudioLogic.SpectrogramAudio?.GetFFTs();
+            get => SpectrogramAudio?.GetFFTs();
         }
 
         #endregion variables
@@ -96,7 +70,10 @@ namespace SimTuning.Core.ModuleLogic
         /// Bildet aus den Spectrogram Daten X-Y Punkte.
         /// </summary>
         /// <param name="areas">if set to <c>true</c> [areas].</param>
-        public static void GetDrehzahlGraph(bool areas = false, double intensity = 0.75, double areaAbstand = 8)
+        public static void GetDrehzahlGraph(
+            bool areas = false,
+            double intensity = 0.75,
+            double areaAbstand = 8)
         {
             _intensity = intensity;
             _areaAbstand = areaAbstand;
@@ -108,8 +85,10 @@ namespace SimTuning.Core.ModuleLogic
                 PointsToAreas();
 
                 foreach (var areaAccelerationPoint in AreaAccelerationPoints)
+                {
                     foreach (var accelerationPoint in areaAccelerationPoint)
                         accelerationPoint.ToRotionalSpeed();
+                }
             }
             else
             {
@@ -126,7 +105,6 @@ namespace SimTuning.Core.ModuleLogic
         /// <param name="minFreq"></param>
         /// <param name="maxFreq"></param>
         /// <param name="intensity"></param>
-        /// <param name="colormap"></param>
         /// <param name="targetWidthPx"></param>
         /// <returns>Bild des Spectrograms.</returns>
         public static SKBitmap GetSpectrogram(
@@ -251,9 +229,9 @@ namespace SimTuning.Core.ModuleLogic
         /// </summary>
         private static void Spectogram()
         {
-            (int _sampleRate, double[] _audio) = Spectrogram.WavFile.ReadMono(_audioFile);
+            (_sampleRate, double[] _audio) = Spectrogram.WavFile.ReadMono(_audioFile);
 
-            int _stepSize = _audio.Length / _targetWidthPx;
+            _stepSize = _audio.Length / _targetWidthPx;
 
             // load audio and process FFT
             SpectrogramAudio = new Spectrogram.Spectrogram(
@@ -270,12 +248,13 @@ namespace SimTuning.Core.ModuleLogic
         /// <summary>
         /// Umrechnen von Hertz in Drehzahl.
         /// </summary>
-        private static DataPoint ToRotionalSpeed(this DataPoint DataPoint)
+        /// <param name="dataPoint"></param>
+        private static DataPoint ToRotionalSpeed(this DataPoint dataPoint)
         {
             // Y(vertikal) = 1U/min; 1Hz = 60 U/min bei Einzylider Motoren X(horizontal) = 1s
             DataPoint converted = new DataPoint(
-                Math.Round(DataPoint.X * SegmentsPerSecond, 4),
-                Math.Round(DataPoint.Y * HzPerFFT * 60, 4));
+                Math.Round(dataPoint.X * SegmentsPerSecond, 4),
+                Math.Round(dataPoint.Y * HzPerFFT * 60, 4));
 
             return converted;
         }
