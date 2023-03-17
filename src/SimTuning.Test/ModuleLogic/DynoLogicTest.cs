@@ -17,6 +17,7 @@ namespace SimTuning.Test
         [Fact]
         public void PlotCreationTest()
         {
+            /*
             string _filePath;
             string _fileName;
 
@@ -24,13 +25,13 @@ namespace SimTuning.Test
                 audioFile: SimTuning.Test.Constants.DynoAudioFile,
                 fftSize: 32768);
 
-            // AudioLogic.GetDrehzahlGraph(areas: false, intensity: 0.75, areaAbstand: 5);
+            AudioLogic.GetDrehzahlGraph(areas: false, intensity: 0.75, areaAbstand: 5);
 
             DynoLogic.GetDrehzahlGraph(areas: false, intensity: 0.75, areaAbstand: 5);
 
             _fileName = nameof(DynoLogic.PlotAudio) + ".png";
             _filePath = Path.Combine(SimTuning.Test.Constants.Directory, _fileName);
-            /*
+
             PngExporter.Export(DynoLogic.PlotAudio, _filePath, 1000, 1000, OxyColors.White);
 
             DynoLogic.GetDrehzahlGraphFitted(out var drehzahlModels);

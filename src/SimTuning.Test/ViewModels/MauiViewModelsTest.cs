@@ -62,27 +62,6 @@ namespace SimTuning.Test
         }
 
         /// <summary>
-        /// Dynoes the audio player view model test.
-        /// </summary>
-        [Fact]
-        public void DynoAudioPlayerViewModelTest()
-        {
-            // Arrange
-            var logger = new Mock<ILogger<DynoAudioPlayerViewModel>>();
-            var vm = new DynoAudioPlayerViewModel(
-                logger.Object,
-                navigationServiceMock.Object);
-
-            vm.CutBeginnCommand.Execute(null);
-            vm.CutEndCommand.Execute(null);
-            vm.DragCompletedCommand.Execute(null);
-            vm.DragStartedCommand.Execute(null);
-            vm.PlayPauseCommand.Execute(null);
-            vm.SkipForwardCommand.Execute(null);
-            vm.SkipBackwardsCommand.Execute(null);
-        }
-
-        /// <summary>
         /// Dynoes the ausrollen view model test.
         /// </summary>
         [Fact]
@@ -127,7 +106,8 @@ namespace SimTuning.Test
             var vm = new DynoDataViewModel(
                 logger.Object,
                 navigationServiceMock.Object,
-                vehicleServiceMock.Object);
+                vehicleServiceMock.Object,
+                browserServiceMock.Object);
 
             vm.DeleteDynoCommand.Execute(null);
             vm.ExportDynoCommand.Execute(null);
@@ -202,7 +182,6 @@ namespace SimTuning.Test
             vm.FilterPlotCommand.Execute(null);
             vm.RefreshAudioFileCommand.Execute(null);
             vm.RefreshPlotCommand.Execute(null);
-            vm.RefreshSpectrogramCommand.Execute(null);
             vm.SpecificGraphCommand.Execute(null);
         }
 
@@ -280,7 +259,6 @@ namespace SimTuning.Test
             var logger = new Mock<ILogger<EinstellungenVehiclesViewModel>>();
             var vm = new EinstellungenVehiclesViewModel(
                 logger.Object,
-                navigationServiceMock.Object,
                 vehicleServiceMock.Object);
 
             vm.DeleteVehicleCommand.Execute(null);
@@ -362,8 +340,8 @@ namespace SimTuning.Test
                 navigationServiceMock.Object,
                 vehicleServiceMock.Object);
 
-            vm.InsertReferenceCommand.Execute(null);
-            vm.InsertVehicleCommand.Execute(null);
+            vm.InsertHelperEngines(null);
+            vm.InsertHelperVehicle(null);
         }
 
         /// <summary>
@@ -393,7 +371,7 @@ namespace SimTuning.Test
                 navigationServiceMock.Object,
                 vehicleServiceMock.Object);
 
-            vm.InsertDataCommand.Execute(null);
+            vm.InsertHelperVehicle(null);
         }
     }
 }

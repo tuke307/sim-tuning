@@ -15,8 +15,6 @@ namespace SimTuning.Test
 
         #region Dyno
 
-        void DynoAudioPlayerViewModelTest();
-
         void DynoAusrollenViewModelTest();
 
         void DynoBeschleunigungViewModelTest();
