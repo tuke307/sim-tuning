@@ -41,16 +41,15 @@ namespace SimTuning.Maui.UI.ViewModels
         /// </summary>
         public void InsertEnvironment(EnvironmentModel helperEnvironment)
         {
-            if (this.HelperEnvironment.LuftdruckP.HasValue)
+            if (helperEnvironment.LuftdruckP.HasValue)
             {
-                this.DynoEnvironmentLuftdruckP =
-                this.HelperEnvironment.LuftdruckP;
+                this.DynoEnvironmentLuftdruckP = helperEnvironment.LuftdruckP;
                 this.OnPropertyChanged(nameof(this.DynoEnvironmentLuftdruckP));
             }
 
-            if (this.HelperEnvironment.TemperaturT.HasValue)
+            if (helperEnvironment.TemperaturT.HasValue)
             {
-                this.DynoEnvironmentTemperaturT = this.HelperEnvironment.TemperaturT;
+                this.DynoEnvironmentTemperaturT = helperEnvironment.TemperaturT;
                 this.OnPropertyChanged(nameof(this.DynoEnvironmentTemperaturT));
             }
         }
@@ -72,6 +71,7 @@ namespace SimTuning.Maui.UI.ViewModels
         //        _logger.LogError("Fehler bei ReloadData: ", exc);
         //    }
         //}
+
         public void InsertVehicle(VehiclesModel helperVehicle)
         {
             //if (this.HelperVehicle?.Gewicht != null)
@@ -173,8 +173,8 @@ namespace SimTuning.Maui.UI.ViewModels
 
         public double? DynoEnvironmentLuftdruckP
         {
-            get =>
-        Dyno?.Environment?.LuftdruckP; set
+            get => Dyno?.Environment?.LuftdruckP;
+            set
             {
                 if (this.Dyno?.Environment == null)
                 {
@@ -198,8 +198,8 @@ namespace SimTuning.Maui.UI.ViewModels
 
         public double? DynoEnvironmentTemperaturT
         {
-            get =>
-        Dyno?.Environment?.TemperaturT; set
+            get => Dyno?.Environment?.TemperaturT;
+            set
             {
                 if (this.Dyno?.Environment == null)
                 {
@@ -295,18 +295,6 @@ namespace SimTuning.Maui.UI.ViewModels
         //    }
         //}
 
-        /// <summary>
-        /// Gets or sets the insert environment command.
-        /// </summary>
-        /// <value>The insert environment command.</value>
-        public IRelayCommand InsertEnvironmentCommand { get; set; }
-
-        /// <summary>
-        /// Gets or sets the insert vehicle command.
-        /// </summary>
-        /// <value>The insert vehicle command.</value>
-        public IRelayCommand InsertVehicleCommand { get; set; }
-
         public ObservableCollection<UnitListItem> MassQuantityUnits { get; }
 
         public ISeries PlotStrength
@@ -329,24 +317,6 @@ namespace SimTuning.Maui.UI.ViewModels
         public IRelayCommand ShowSaveCommand { get; set; }
 
         public ObservableCollection<UnitListItem> TemperatureQuantityUnits { get; }
-
-        #region Hilfs-Daten
-
-        public Data.Models.VehiclesModel _helperVehicle;
-        private Data.Models.EnvironmentModel _helperEnvironment;
-
-        public Data.Models.EnvironmentModel HelperEnvironment
-        {
-            get => _helperEnvironment;
-            set => SetProperty(ref _helperEnvironment, value);
-        }
-
-        public ObservableCollection<Data.Models.EnvironmentModel> HelperEnvironments
-        {
-            get => new ObservableCollection<EnvironmentModel>(_vehicleService.RetrieveEnvironments());
-        }
-
-        #endregion Hilfs-Daten
 
         #endregion Values
     }
