@@ -6,18 +6,18 @@ using SimTuning.Maui.UI.ViewModels;
 
 namespace SimTuning.Maui.UI.Views.Dyno
 {
-    public partial class DynoSpectrogramView : ContentView
+    public partial class DynoAudioView : ContentView
     {
-        private readonly ILogger<DynoSpectrogramView> _logger;
+        private readonly ILogger<DynoAudioView> _logger;
 
-        public DynoSpectrogramViewModel ViewModel => (DynoSpectrogramViewModel)BindingContext;
+        public DynoAudioViewModel ViewModel => (DynoAudioViewModel)BindingContext;
 
-        public DynoSpectrogramView()
+        public DynoAudioView()
         {
             InitializeComponent();
 
-            BindingContext = Ioc.Default.GetRequiredService<DynoSpectrogramViewModel>();
-            _logger = Ioc.Default.GetRequiredService<ILogger<DynoSpectrogramView>>();
+            BindingContext = Ioc.Default.GetRequiredService<DynoAudioViewModel>();
+            _logger = Ioc.Default.GetRequiredService<ILogger<DynoAudioView>>();
         }
 
         private void OnMediaEnded(object? sender, EventArgs e) =>

@@ -1,5 +1,6 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using LiveChartsCore;
 using LiveChartsCore.Defaults;
 using LiveChartsCore.Easing;
@@ -9,6 +10,7 @@ using LiveChartsCore.SkiaSharpView.Painting.Effects;
 using MathNet.Numerics;
 using Microsoft.Extensions.Logging;
 using SimTuning.Core.Helpers;
+using SimTuning.Core.Models.Messages;
 using SimTuning.Core.ModuleLogic;
 using SimTuning.Core.Services;
 using SimTuning.Data.Models;
@@ -18,10 +20,10 @@ using System.Collections.ObjectModel;
 
 namespace SimTuning.Maui.UI.ViewModels
 {
-    public class DynoSpectrogramViewModel : ViewModelBase
+    public class DynoAudioViewModel : ViewModelBase
     {
-        public DynoSpectrogramViewModel(
-            ILogger<DynoSpectrogramViewModel> logger,
+        public DynoAudioViewModel(
+            ILogger<DynoAudioViewModel> logger,
             INavigationService navigationService,
             IVehicleService vehicleService)
         {
@@ -42,9 +44,12 @@ namespace SimTuning.Maui.UI.ViewModels
             this.RefreshPlotCommand = new AsyncRelayCommand(this.RefreshPlot);
             this.SpecificGraphCommand = new RelayCommand(this.SpecificGraph);
 
-            this.ReloadData();
+            // erste navigation: selected dyno wird requested
+            this.Dyno = Messenger.Send<CurrentDynoRequestMessage>();
+            // bei dyno änderung (viewmodel schon geladen)
+            Messenger.Register<DynoAudioViewModel, DynoChangedMessage>(this, (r, m) => r.Dyno = m.Value);
 
-            //RefreshPlotCommand.ExecuteAsync(null);
+            // RefreshPlotCommand.ExecuteAsync(null);
         }
 
         #region Methods
@@ -52,26 +57,15 @@ namespace SimTuning.Maui.UI.ViewModels
         private List<ObservableCollection<ObservablePoint>> values;
 
         /// <summary>
-        /// Reloads the data.
-        /// </summary>
-        /// <param name="mvxReloaderMessage">The MVX reloader message.</param>
-        public void ReloadData()
-        {
-            try
-            {
-                this.Dyno = _vehicleService.RetrieveOneActive();
-            }
-            catch (Exception exc)
-            {
-                _logger.LogError("Fehler beim Laden des Dyno-Datensatz: ", exc);
-            }
-        }
-
-        /// <summary>
         /// Filters the plot.
         /// </summary>
         protected async Task FilterPlot()
         {
+            if (!this.CheckDynoData())
+            {
+                return;
+            }
+
             try
             {
                 LoadFilteredAccelerationGraph();
@@ -177,7 +171,8 @@ namespace SimTuning.Maui.UI.ViewModels
         }
 
         /// <summary>
-        /// Gibt das Diagramm aus den Spectogram Daten zurück. vorher muss Audio-Spectrogram der Audio bereits einmal berechnet sein mit AudioLogic.GetSpectrogram().
+        /// Gibt das Diagramm aus den Spectogram Daten zurück.
+        /// vorher muss Audio-Spectrogram der Audio bereits einmal berechnet sein mit AudioLogic.GetSpectrogram().
         /// </summary>
         private void LoadAccelerationGraph()
         {
@@ -230,8 +225,13 @@ namespace SimTuning.Maui.UI.ViewModels
                 Values = values,
             });
 
-            //this.Dyno.Drehzahl = values;
-            //_vehicleService.UpdateOne(this.Dyno);
+            List<DrehzahlModel> drehzahlModels = new List<DrehzahlModel>();
+            foreach (var value in values)
+            {
+                drehzahlModels.Add(value.ToDrehzahlModel());
+            }
+            this.Dyno.Drehzahl = drehzahlModels;
+            _vehicleService.UpdateOne(this.Dyno);
         }
 
         /// <summary>
@@ -302,7 +302,7 @@ namespace SimTuning.Maui.UI.ViewModels
 
         protected readonly INavigationService _navigationService;
         protected readonly IVehicleService _vehicleService;
-        private readonly ILogger<DynoSpectrogramViewModel> _logger;
+        private readonly ILogger<DynoAudioViewModel> _logger;
         private readonly List<int> fftSizes;
         private DynoModel _dyno;
         private int _fftSizeIndex;

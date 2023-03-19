@@ -58,7 +58,7 @@ namespace SimTuning.Maui.App
                     .AddTransient<DynoDiagnosisViewModel>()
                     .AddTransient<DynoGeschwindigkeitViewModel>()
                     .AddTransient<DynoRuntimeViewModel>()
-                    .AddTransient<DynoSpectrogramViewModel>()
+                    .AddTransient<DynoAudioViewModel>()
 
                     .BuildServiceProvider());
             }
