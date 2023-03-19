@@ -4,6 +4,7 @@
     <UseMaui>true</UseMaui>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="DBSCAN" Version="3.0.0" />
     <PackageReference Include="NAudio" Version="2.1.0" />
   </ItemGroup>
   <ItemGroup>

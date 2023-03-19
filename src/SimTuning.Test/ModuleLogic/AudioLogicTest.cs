@@ -29,9 +29,11 @@ namespace SimTuning.Test
             _fileName = "colormap" + _fftSize + ".png";
             _filePath = Path.Combine(SimTuning.Test.Constants.Directory, _fileName);
 
-            colormap = AudioLogic.GetSpectrogram(
+            AudioLogic.CalculateSpectrogram(
                 audioFile: SimTuning.Test.Constants.DynoAudioFile,
                 fftSize: _fftSize);
+
+            colormap = AudioLogic.SpectrogramAudio.GetBitmap();
 
             using (var image = SKImage.FromBitmap(colormap))
             using (var data = image.Encode())

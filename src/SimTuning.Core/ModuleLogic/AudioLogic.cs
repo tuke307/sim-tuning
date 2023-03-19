@@ -1,17 +1,17 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
 namespace SimTuning.Core.ModuleLogic
 {
+    using Dbscan;
     using SimTuning.Core.Models;
-    using SkiaSharp;
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     public static class AudioLogic
     {
         #region variables
 
-        private static double _areaAbstand;
-
+        private static double _epsilon;
         private static string _audioFile;
         private static int _fftSize;
         private static double _intensity;
@@ -19,20 +19,17 @@ namespace SimTuning.Core.ModuleLogic
         private static int _minFreq;
         private static int _sampleRate;
         private static int _stepSize;
-        private static int _targetWidthPx;
-        private static SKBitmap bmp;
 
         /// <summary>
         /// Punkte der Drehzahl.
         /// </summary>
-        public static List<DataPoint> AccelerationPoints { get; private set; }
+        public static List<DataPoint> RotationalSpeedPoints { get; private set; }
 
         /// <summary>
-        /// Gets array Handling.
-        /// 1. Liste = Graphen,
-        /// 2. Liste = Punkte des Graphen.
+        /// 1. Liste = Custer,
+        /// 2. Liste = Punkte des Custers.
         /// </summary>
-        public static List<List<DataPoint>> AreaAccelerationPoints { get; private set; }
+        public static List<List<DataPoint>> ClusterPoints { get; private set; }
 
         /// <summary>
         /// Gets the spectrogram audio.
@@ -69,32 +66,36 @@ namespace SimTuning.Core.ModuleLogic
         /// <summary>
         /// Bildet aus den Spectrogram Daten X-Y Punkte.
         /// </summary>
-        /// <param name="areas">if set to <c>true</c> [areas].</param>
-        public static void GetDrehzahlGraph(
-            bool areas = false,
-            double intensity = 0.75,
-            double areaAbstand = 8)
+        /// <param name="intensity">if set to <c>true</c> [areas].</param>
+        public static void CalculateRotationalSpeed(double intensity = 0.75)
         {
             _intensity = intensity;
-            _areaAbstand = areaAbstand;
 
             DefineHotPoints();
 
-            if (areas)
+            for (int j = 0; j < RotationalSpeedPoints.Count; j++)
             {
-                PointsToAreas();
+                RotationalSpeedPoints[j] = RotationalSpeedPoints[j].ToRotionalSpeed();
+            }
+        }
 
-                foreach (var areaAccelerationPoint in AreaAccelerationPoints)
-                {
-                    foreach (var accelerationPoint in areaAccelerationPoint)
-                        accelerationPoint.ToRotionalSpeed();
-                }
-            }
-            else
-            {
-                foreach (var accelerationPoint in AccelerationPoints)
-                    accelerationPoint.ToRotionalSpeed();
-            }
+        /// <summary>
+        /// Definieren von Clustern aus Gesamtpunkten.
+        /// </summary>
+        /// <param name="epsilon">if set to <c>true</c> [areas].</param>
+        public static void CalculateClusters(double epsilon = 8)
+        {
+            _epsilon = epsilon;
+
+            ClusterPoints = new List<List<DataPoint>>();
+
+            var clusters = Dbscan.CalculateClusters(
+                data: RotationalSpeedPoints,
+                epsilon: _epsilon,
+                minimumPointsPerCluster: 5);
+
+            foreach (var cluster in clusters.Clusters)
+                ClusterPoints.Add(cluster.Objects.ToList());
         }
 
         /// <summary>
@@ -105,15 +106,13 @@ namespace SimTuning.Core.ModuleLogic
         /// <param name="minFreq"></param>
         /// <param name="maxFreq"></param>
         /// <param name="intensity"></param>
-        /// <param name="targetWidthPx"></param>
         /// <returns>Bild des Spectrograms.</returns>
-        public static SKBitmap GetSpectrogram(
+        public static void CalculateSpectrogram(
             string audioFile,
             int fftSize = 16384,
             int minFreq = 25,
             int maxFreq = 250,
-            double intensity = 0.75,
-            int targetWidthPx = 1000)
+            double intensity = 1)
         {
             _audioFile = audioFile;
 
@@ -125,11 +124,19 @@ namespace SimTuning.Core.ModuleLogic
 
             _fftSize = fftSize;
 
-            _targetWidthPx = targetWidthPx;
+            (_sampleRate, double[] _audio) = Spectrogram.WavFile.ReadMono(_audioFile);
 
-            Spectogram();
+            _stepSize = _audio.Length / 1000;
 
-            return bmp;
+            // load audio and process FFT
+            SpectrogramAudio = new Spectrogram.Spectrogram(
+                                                    sampleRate: _sampleRate,
+                                                    fftSize: _fftSize,
+                                                    stepSize: _stepSize,
+                                                    minFreq: _minFreq,
+                                                    maxFreq: _maxFreq);
+
+            SpectrogramAudio.Add(_audio, true);
         }
 
         /// <summary>
@@ -137,7 +144,7 @@ namespace SimTuning.Core.ModuleLogic
         /// </summary>
         private static void DefineHotPoints()
         {
-            AccelerationPoints = new List<DataPoint>();
+            RotationalSpeedPoints = new List<DataPoint>();
             List<DataPoint> hotDataPoints = new List<DataPoint>();
 
             for (int col = 0; col < SpecData.Count; col++)
@@ -168,81 +175,8 @@ namespace SimTuning.Core.ModuleLogic
 
             if (hotDataPoints.Count > 0)
             {
-                AccelerationPoints.AddRange(hotDataPoints);
+                RotationalSpeedPoints.AddRange(hotDataPoints);
             }
-        }
-
-        /// <summary>
-        /// Definieren von Bereichen aus Gesamtpunkten.
-        /// </summary>
-        private static void PointsToAreas()
-        {
-            AreaAccelerationPoints = new List<List<DataPoint>>();
-
-            // erste area hinzufügen
-            AreaAccelerationPoints.Add(new List<DataPoint>());
-            // Dummy punkt hinzufügen
-            AreaAccelerationPoints[0].Add(new DataPoint(0, 0));
-
-            foreach (var point in AccelerationPoints)
-            {
-                // punkt vergleichen mit vorhandenen punkten in areas
-                for (int area = 0; area < AccelerationPoints.Count; area++)
-                {
-                    // jeder punkt in area
-                    foreach (var areaPoint in AreaAccelerationPoints[area])
-                    {
-                        // Horizontal
-                        double differenz_horizontal = Math.Abs(point.X - areaPoint.X);
-
-                        // Vertikal
-                        double differenz_vertikal = Math.Abs(point.Y - areaPoint.Y);
-
-                        // in vorhandene area hinzufügen
-                        if (differenz_vertikal <= _areaAbstand && differenz_horizontal <= _areaAbstand)
-                        {
-                            AreaAccelerationPoints[area].Add(point);
-
-                            goto nextPoint;
-                        }
-                        // wenn auch in letzter Area nichts gefunden werden konnte
-                        else if (area == AreaAccelerationPoints.Count - 1)
-                        {
-                            // neue area beginnen
-                            AreaAccelerationPoints.Add(new List<DataPoint>() { point });
-
-                            goto nextPoint;
-                        }
-                    }
-                }
-
-                nextPoint:
-                continue;
-            }
-
-            // Dummy punkt löschen
-            AreaAccelerationPoints[0].Remove(AreaAccelerationPoints[0][0]);
-        }
-
-        /// <summary>
-        /// Erstellt das Frequenz-Spectrogram.
-        /// </summary>
-        private static void Spectogram()
-        {
-            (_sampleRate, double[] _audio) = Spectrogram.WavFile.ReadMono(_audioFile);
-
-            _stepSize = _audio.Length / _targetWidthPx;
-
-            // load audio and process FFT
-            SpectrogramAudio = new Spectrogram.Spectrogram(
-                                                    sampleRate: _sampleRate,
-                                                    fftSize: _fftSize,
-                                                    stepSize: _stepSize,
-                                                    minFreq: _minFreq,
-                                                    maxFreq: _maxFreq);
-
-            SpectrogramAudio.Add(_audio, true);
-            bmp = SpectrogramAudio.GetBitmap(intensity: _intensity);
         }
 
         /// <summary>
@@ -251,10 +185,10 @@ namespace SimTuning.Core.ModuleLogic
         /// <param name="dataPoint"></param>
         private static DataPoint ToRotionalSpeed(this DataPoint dataPoint)
         {
-            // X(horizontal) = 1s
-            // Y(vertikal) = 1U/min; 1Hz = 60 U/min bei Einzylider Motoren
+            // X (horizontal) = in ms
+            // Y (vertikal) = 1U/min; 1Hz = 60 U/min bei Einzylider Motoren
             DataPoint converted = new DataPoint(
-                Math.Round(dataPoint.X * SegmentsPerSecond, 4),
+                Math.Round(dataPoint.X * SegmentsPerSecond * 1000, 4),
                 Math.Round(dataPoint.Y * HzPerFFT * 60, 4));
 
             return converted;

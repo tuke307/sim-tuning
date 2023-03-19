@@ -33,15 +33,15 @@ namespace SimTuning.Maui.UI.ViewModels
 
             this.Frequenzbeginn = 3000;
             this.Frequenzende = 12000;
-            this.FilterValue = 2;
+            this.Epsilon = 160;
 
             // letzten 5 sind relevant! von 2^13 bis 2^18
             this.fftSizes = Functions.GetPowersOf2(13, 18);
             this.FftSizeIndex = 2; // 2. Index von fftSizes = 2^15 = 32768
             this.Intensity = 100;
 
-            this.FilterPlotCommand = new AsyncRelayCommand(this.FilterPlot);
-            this.RefreshPlotCommand = new AsyncRelayCommand(this.RefreshPlot);
+            this.RefreshPlotCommand = new RelayCommand(this.RefreshPlot);
+            this.FilterPlotCommand = new RelayCommand(this.FilterPlot);
             this.SpecificGraphCommand = new RelayCommand(this.SpecificGraph);
 
             // erste navigation: selected dyno wird requested
@@ -57,95 +57,42 @@ namespace SimTuning.Maui.UI.ViewModels
         private List<ObservableCollection<ObservablePoint>> values;
 
         /// <summary>
-        /// Filters the plot.
-        /// </summary>
-        protected async Task FilterPlot()
-        {
-            if (!this.CheckDynoData())
-            {
-                return;
-            }
-
-            try
-            {
-                LoadFilteredAccelerationGraph();
-            }
-            catch (Exception exc)
-            {
-                _logger.LogError("Fehler bei FilterPlot: ", exc);
-            }
-        }
-
-        /// <summary>
         /// Refreshes the plot.
         /// </summary>
-        /// <returns><placeholder>A <see cref="Task" /> representing the asynchronous operation.</placeholder></returns>
-        protected async Task RefreshPlot()
+        private void RefreshPlot()
         {
             if (!this.CheckDynoData())
             {
                 return;
             }
 
-            try
-            {
-                ReloadImageAudioSpectrogram();
-                LoadAccelerationGraph();
-            }
-            catch (Exception exc)
-            {
-                _logger.LogError("Fehler bei RefreshPlot: ", exc);
-            }
+            LoadRotationalSpeed();
         }
 
         /// <summary>
-        /// Reloads the image audio spectrogram.
+        /// Filters the plot.
         /// </summary>
-        protected void ReloadImageAudioSpectrogram()
+        protected void FilterPlot()
         {
             if (!this.CheckDynoData())
             {
                 return;
             }
 
-            try
-            {
-                // TODO: duration from audio
-                SKBitmap spec = AudioLogic.GetSpectrogram(
-                    audioFile: SimTuning.Core.GeneralSettings.AudioAccelerationFilePath,
-                    fftSize: this.fftSizes[FftSizeIndex],
-                    intensity: (double)this.Intensity / 100,
-                    minFreq: this.Frequenzbeginn / 60,
-                    maxFreq: this.Frequenzende / 60,
-                    targetWidthPx: /*(int)this.Duration / 10*/1000);
-
-                //Stream stream = SimTuning.Core.Converters.Converts.SKBitmapToStream(spec);
-                //this.DisplayedImage = ImageSource.FromStream(() => stream);
-            }
-            catch (Exception exc)
-            {
-                _logger.LogError("Fehler bei ReloadImageAudioSpectrogram: ", exc);
-            }
+            LoadClusters();
         }
 
         /// <summary>
         /// Specifics the graph.
         /// </summary>
-        protected void SpecificGraph()
+        private void SpecificGraph()
         {
             if (this.Graphs == null || this.Graph == null)
             {
                 return;
             }
 
-            try
-            {
-                LoadDrehzahlGraphFitted();
-            }
-            catch (Exception exc)
-            {
-                _logger.LogError("Fehler bei SpecificGraph: ", exc);
-            }
+            LoadSpecificCluster();
         }
 
         /// <summary>
@@ -171,99 +118,132 @@ namespace SimTuning.Maui.UI.ViewModels
         }
 
         /// <summary>
-        /// Gibt das Diagramm aus den Spectogram Daten zurück.
-        /// vorher muss Audio-Spectrogram der Audio bereits einmal berechnet sein mit AudioLogic.GetSpectrogram().
+        /// Lädt das Diagramm (Drehzahl in Abhängkeit der Zeit) aus den Spectogram Daten.
         /// </summary>
-        private void LoadAccelerationGraph()
+        private void LoadRotationalSpeed()
         {
-            List<ObservablePoint> values = new List<ObservablePoint>();
-
-            AudioLogic.GetDrehzahlGraph(intensity: (double)Intensity / 100);
-
-            foreach (var item in AudioLogic.AccelerationPoints)
+            try
             {
-                values.Add(item.ToObservablePoint());
-            }
+                AudioLogic.CalculateSpectrogram(
+                    audioFile: SimTuning.Core.GeneralSettings.AudioAccelerationFilePath,
+                    fftSize: this.fftSizes[FftSizeIndex],
+                    minFreq: this.Frequenzbeginn / 60,
+                    maxFreq: this.Frequenzende / 60,
+                    intensity: (double)this.Intensity / 100);
 
-            PlotAudio = new ObservableCollection<ISeries>();
-            PlotAudio.Add(new ScatterSeries<ObservablePoint>()
-            {
-                GeometrySize = 5,
-                Name = "Acceleration",
-                Values = values,
-            });
-        }
+                List<ObservablePoint> values = new List<ObservablePoint>();
 
-        private void LoadDrehzahlGraphFitted()
-        {
-            List<ObservablePoint> values = new List<ObservablePoint>();
-            int index = Graphs.IndexOf(Graph);
-            double xMin = AudioLogic.AreaAccelerationPoints[index].Min(x => x.X);
-            double xMax = AudioLogic.AreaAccelerationPoints[index].Max(x => x.X);
-            double stepSize = 0.1;
-            int polynomialFuncOrder = 5;
-            ISeries series = PlotAudio[index];
+                AudioLogic.CalculateRotationalSpeed(intensity: (double)Intensity / 100);
 
-            PlotAudio.Clear();
-            PlotAudio.Add(series);
-
-            // Polynom: Regressions-Punkte bilden
-            var drehzahlfunction = Fit.PolynomialFunc(
-                AudioLogic.AreaAccelerationPoints[index].Select(x => x.X).ToArray(),
-                AudioLogic.AreaAccelerationPoints[index].Select(x => x.Y).ToArray(),
-                polynomialFuncOrder);
-
-            for (double x = xMin; x < xMax; x += stepSize)
-            {
-                values.Add(new ObservablePoint(x, drehzahlfunction(x)));
-            }
-
-            PlotAudio.Add(new LineSeries<ObservablePoint>()
-            {
-                GeometrySize = 5,
-                Name = "Eased",
-                Values = values,
-            });
-
-            List<DrehzahlModel> drehzahlModels = new List<DrehzahlModel>();
-            foreach (var value in values)
-            {
-                drehzahlModels.Add(value.ToDrehzahlModel());
-            }
-            this.Dyno.Drehzahl = drehzahlModels;
-            _vehicleService.UpdateOne(this.Dyno);
-        }
-
-        /// <summary>
-        /// Definiert Graph für alle Punkte und den Areas.
-        /// </summary>
-        private void LoadFilteredAccelerationGraph()
-        {
-            values = new List<ObservableCollection<ObservablePoint>>();
-
-            AudioLogic.GetDrehzahlGraph(areas: true, intensity: (double)Intensity / 100, areaAbstand: this.FilterValue);
-
-            PlotAudio.Clear();
-
-            // spalte einfügen
-            for (int anzahl = 0; anzahl < AudioLogic.AreaAccelerationPoints.Count; anzahl++)
-            {
-                values.Add(new ObservableCollection<ObservablePoint>());
-
-                foreach (var item in AudioLogic.AreaAccelerationPoints[anzahl])
+                foreach (var item in AudioLogic.RotationalSpeedPoints)
                 {
-                    values[anzahl].Add(item.ToObservablePoint());
+                    values.Add(item.ToObservablePoint());
                 }
 
+                PlotAudio = new ObservableCollection<ISeries>();
                 PlotAudio.Add(new ScatterSeries<ObservablePoint>()
                 {
                     GeometrySize = 5,
-                    Name = "Graph " + (anzahl + 1),
-                    Values = values[anzahl],
+                    Name = "Drehzahl",
+                    Values = values,
                 });
             }
+            catch (Exception exc)
+            {
+                _logger.LogError("LoadRotationalSpeed: ", exc.Message);
+            }
+        }
 
-            OnPropertyChanged(nameof(Graphs));
+        /// <summary>
+        /// Funktion versucht aus den Drehzahl-Zeit Daten, verschiedene Clusters zu erkennen.
+        /// zuvor muss RefreshPlot() einmal ausgeführt worden sein.
+        /// </summary>
+        private void LoadClusters()
+        {
+            try
+            {
+                AudioLogic.CalculateClusters(this.Epsilon);
+
+                values = new List<ObservableCollection<ObservablePoint>>();
+
+                PlotAudio.Clear();
+
+                // spalte einfügen
+                for (int anzahl = 0; anzahl < AudioLogic.ClusterPoints.Count; anzahl++)
+                {
+                    values.Add(new ObservableCollection<ObservablePoint>());
+
+                    foreach (var item in AudioLogic.ClusterPoints[anzahl])
+                    {
+                        values[anzahl].Add(item.ToObservablePoint());
+                    }
+
+                    PlotAudio.Add(
+                        new ScatterSeries<ObservablePoint>()
+                        {
+                            GeometrySize = 5,
+                            Name = "Graph " + (anzahl + 1),
+                            Values = values[anzahl],
+                        });
+                }
+
+                OnPropertyChanged(nameof(Graphs));
+            }
+            catch (Exception exc)
+            {
+                _logger.LogError("Fehler bei LoadClusters: ", exc.Message);
+            }
+        }
+
+        /// <summary>
+        /// Funktion betrachtet ein spezifisch ausgewähltes Cluster und fügt zusätzlich eine Regression dieser ein.
+        /// </summary>
+        private void LoadSpecificCluster()
+        {
+            try
+            {
+                List<ObservablePoint> values = new List<ObservablePoint>();
+                int index = Graphs.IndexOf(Graph);
+                double xMin = AudioLogic.ClusterPoints[index].Min(x => x.X);
+                double xMax = AudioLogic.ClusterPoints[index].Max(x => x.X);
+                double stepSize = 5;
+                int polynomialFuncOrder = 5;
+                ISeries series = PlotAudio[index];
+
+                PlotAudio.Clear();
+                PlotAudio.Add(series);
+
+                // Polynom: Regressions-Punkte bilden
+                var drehzahlfunction = Fit.PolynomialFunc(
+                    AudioLogic.ClusterPoints[index].Select(x => x.X).ToArray(),
+                    AudioLogic.ClusterPoints[index].Select(x => x.Y).ToArray(),
+                    polynomialFuncOrder);
+
+                for (double x = xMin; x < xMax; x += stepSize)
+                {
+                    values.Add(new ObservablePoint(x, drehzahlfunction(x)));
+                }
+
+                PlotAudio.Add(
+                    new LineSeries<ObservablePoint>()
+                    {
+                        GeometrySize = 5,
+                        Name = "Eased",
+                        Values = values,
+                        Fill = null,
+                    });
+
+                this.Dyno.Drehzahl = new List<DrehzahlModel>();
+                foreach (var value in values)
+                {
+                    this.Dyno.Drehzahl.Add(value.ToDrehzahlModel());
+                }
+                _vehicleService.UpdateOne(this.Dyno);
+            }
+            catch (Exception exc)
+            {
+                _logger.LogError("Fehler bei LoadSpecificCluster: ", exc.Message);
+            }
         }
 
         #endregion Methods
@@ -276,7 +256,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the filter plot command.
         /// </summary>
         /// <value>The filter plot command.</value>
-        public IAsyncRelayCommand FilterPlotCommand { get; set; }
+        public IRelayCommand FilterPlotCommand { get; set; }
 
         /// <summary>
         /// Gets or sets the open file command.
@@ -288,7 +268,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the refresh plot command.
         /// </summary>
         /// <value>The refresh plot command.</value>
-        public IAsyncRelayCommand RefreshPlotCommand { get; set; }
+        public IRelayCommand RefreshPlotCommand { get; set; }
 
         /// <summary>
         /// Gets or sets the specific graph command.
@@ -306,7 +286,7 @@ namespace SimTuning.Maui.UI.ViewModels
         private readonly List<int> fftSizes;
         private DynoModel _dyno;
         private int _fftSizeIndex;
-        private int _filterValue;
+        private int _epsilon;
         private int _frequenzbeginn;
         private int _frequenzende;
         private string _graph;
@@ -336,16 +316,17 @@ namespace SimTuning.Maui.UI.ViewModels
         }
 
         /// <summary>
-        /// Wert für den Abstand, um einen Punkt herum. Dieser Wert wird bei der Funktion der Areas verwendet.
+        /// Wert für den Abstand, um einen Punkt herum.
+        /// Dieser Wert wird bei der Funktion der Cluster verwendet.
         /// </summary>
-        public int FilterValue
+        public int Epsilon
         {
-            get => this._filterValue;
-            set => this.SetProperty(ref this._filterValue, value);
+            get => this._epsilon;
+            set => this.SetProperty(ref this._epsilon, value);
         }
 
         /// <summary>
-        /// Gets or sets the frequenzbeginn.
+        /// Frequenzbeginn in U/min.
         /// </summary>
         /// <value>The frequenzbeginn.</value>
         public int Frequenzbeginn
@@ -355,7 +336,7 @@ namespace SimTuning.Maui.UI.ViewModels
         }
 
         /// <summary>
-        /// Gets or sets the frequenzende.
+        /// Frequenzende  in U/min.
         /// </summary>
         /// <value>The frequenzende.</value>
         public int Frequenzende

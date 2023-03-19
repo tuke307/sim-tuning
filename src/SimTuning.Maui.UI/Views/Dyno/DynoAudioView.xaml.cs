@@ -2,6 +2,7 @@
 using CommunityToolkit.Maui.Core.Primitives;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using SimTuning.Core;
 using SimTuning.Maui.UI.ViewModels;
 
 namespace SimTuning.Maui.UI.Views.Dyno
@@ -18,6 +19,8 @@ namespace SimTuning.Maui.UI.Views.Dyno
 
             BindingContext = Ioc.Default.GetRequiredService<DynoAudioViewModel>();
             _logger = Ioc.Default.GetRequiredService<ILogger<DynoAudioView>>();
+
+            mediaElement.Source = GeneralSettings.AudioAccelerationFilePath;
         }
 
         private void OnMediaEnded(object? sender, EventArgs e) =>

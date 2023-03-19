@@ -95,9 +95,9 @@
                             <!--Punktabstand Toleranz-->
                             <Label Text="Punktabstand Toleranz" />
 
-                            <Slider Minimum="0"
-                                    Maximum="25"
-                                    Value="{Binding Mode=TwoWay, Path=FilterValue}"
+                            <Slider Minimum="1"
+                                    Maximum="300"
+                                    Value="{Binding Mode=TwoWay, Path=Epsilon}"
                                     VerticalOptions="CenterAndExpand" />
 
                             <!--Graph-->

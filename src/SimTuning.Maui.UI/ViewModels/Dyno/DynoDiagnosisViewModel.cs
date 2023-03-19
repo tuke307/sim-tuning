@@ -101,22 +101,42 @@ namespace SimTuning.Maui.UI.ViewModels
                 List<ObservablePoint> values = new List<ObservablePoint>();
 
                 var maxDrehzahl = Dyno.Drehzahl.Max(x => x.Drehzahl);
-                var rangeToMaxDrehzahl = Dyno.Drehzahl.Take(Dyno.Drehzahl.IndexOf(Dyno.Drehzahl.FirstOrDefault(x => x.Drehzahl == maxDrehzahl)));
+                var rangeToMaxDrehzahl = Dyno.Drehzahl.Take(Dyno.Drehzahl.IndexOf(Dyno.Drehzahl.FirstOrDefault(x => x.Drehzahl == maxDrehzahl))).ToList();
+                rangeToMaxDrehzahl.RemoveAt(0);
 
                 foreach (var item in rangeToMaxDrehzahl)
                 {
-                    values.Add(new ObservablePoint(item.Drehzahl, DynoLogic.GetLeistung(item.Drehzahl, item.Zeit, 1.2, 0.8, 32.41, 0.277, 170, 0.005, 9.81, 0)));
+                    values.Add(new ObservablePoint(
+                        item.Drehzahl,
+                        DynoLogic.GetLeistung(
+                        item.Drehzahl,
+                        item.Zeit/1000,
+                        1.2,
+                        0.8,
+                        32.41,
+                        0.277,
+                        170,
+                        0.005,
+                        9.81,
+                        0)));
                 }
 
-                PlotStrength = new LineSeries<ObservablePoint>()
-                {
-                    GeometrySize = 5,
-                    Name = "Leistung",
-                    Values = values,
-                };
+                PlotStrength = new ObservableCollection<ISeries>();
+                PlotStrength.Add(
+                    new LineSeries<ObservablePoint>()
+                    {
+                        GeometrySize = 5,
+                        Name = "Leistung in PS",
+                        Values = values,
+                        Fill = null,
+                    });
 
-                //this.Dyno.DynoPS = ps;
-                //_vehicleService.UpdateOne(this.Dyno);
+                this.Dyno.DynoPS = new List<DynoPsModel>();
+                foreach (var item in values)
+                {
+                    this.Dyno.DynoPS.Add(item.ToDynoPSModel());
+                }
+                _vehicleService.UpdateOne(this.Dyno);
             }
             catch (Exception exc)
             {
@@ -164,7 +184,7 @@ namespace SimTuning.Maui.UI.ViewModels
         protected readonly IVehicleService _vehicleService;
         private readonly ILogger<DynoDiagnosisViewModel> _logger;
         private DynoModel _dyno;
-        private ISeries _plotStrength;
+        private ObservableCollection<ISeries> _plotStrength;
 
         public ObservableCollection<UnitListItem> AreaQuantityUnits { get; }
 
@@ -299,8 +319,8 @@ namespace SimTuning.Maui.UI.ViewModels
         //}
 
         public ObservableCollection<UnitListItem> MassQuantityUnits { get; }
-
-        public ISeries PlotStrength
+        
+        public ObservableCollection<ISeries> PlotStrength
         {
             get => _plotStrength;
             set => SetProperty(ref _plotStrength, value);

@@ -1,5 +1,7 @@
-﻿using LiveChartsCore.Defaults;
+﻿using Dbscan;
+using LiveChartsCore.Defaults;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -8,11 +10,13 @@ using System.Threading.Tasks;
 
 namespace SimTuning.Core.Models
 {
-    public class DataPoint
+    public class DataPoint : IPointData
     {
         public double X { get; set; }
 
         public double Y { get; set; }
+
+        public Point Point { get; }
 
         public DataPoint()
         {
@@ -22,6 +26,7 @@ namespace SimTuning.Core.Models
         {
             this.X = x;
             this.Y = y;
+            Point = new Point(x, y);
         }
     }
 }

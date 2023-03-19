@@ -9,6 +9,16 @@ namespace SimTuning.Data.Models
     /// <seealso cref="Data.Models.BaseEntityModel" />
     public class DynoPsModel : BaseEntityModel
     {
+        public DynoPsModel(double drehzahl, double ps)
+        {
+            this.Drehzahl = drehzahl;
+            this.Ps = ps;
+        }
+
+        public DynoPsModel()
+        {
+        }
+
         /// <summary>
         /// Gets or sets the x.
         /// </summary>
