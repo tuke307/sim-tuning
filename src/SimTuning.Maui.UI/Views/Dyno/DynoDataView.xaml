@@ -26,8 +26,36 @@
                           SelectedItem="{Binding Mode=TwoWay, Path=Dyno}">
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="models:DynoModel">
-                            <TextCell Text="{Binding Name}"
-                                      Detail="{Binding Beschreibung}" />
+                            <ViewCell>
+                                <Grid Padding="10">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Grid.Row="0"
+                                           Grid.Column="0"
+                                           Text="{Binding Name}"
+                                           
+                                           FontAttributes="Bold" />
+                                    
+                                    <Label Grid.Row="1"
+                                           Grid.Column="0"
+                                           Text="{Binding Beschreibung}"
+                                           FontAttributes="Italic"
+                                           VerticalOptions="End" />
+
+                                    <Label Grid.RowSpan="2"
+                                           Grid.Column="1"
+                                           Text="{Binding Vehicle.Name}"
+                                           FontAttributes="Italic"
+                                           VerticalOptions="End" />
+                                </Grid>
+                            </ViewCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
@@ -42,7 +70,7 @@
                     <ImageButton Grid.Column="0"
                                  MinimumWidthRequest="50"
                                  Source="{StaticResource IconPlusCircleMultipleOutlineMedium}"
-                                 Command="{Binding NewDynoCommand}">
+                                 Clicked="NewDynoButton_Clicked">
                     </ImageButton>
 
                     <ImageButton Grid.Column="2"
@@ -52,58 +80,6 @@
                                  Source="{StaticResource IconDeleteCircleOutlineMedium}"
                                  Command="{Binding DeleteDynoCommand}">
                     </ImageButton>
-                </Grid>
-
-                <Grid Margin="0, 20, 0, 0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1.5*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-
-                    <RadioButton x:Name="RB1"
-                                 Grid.Column="0"
-                                 Grid.Row="0"
-                                 Content="neues Fahrzeug erstellen"
-                                 IsChecked="{Binding Mode=TwoWay, Path=CreateNewVehicle}">
-                        <RadioButton.Triggers>
-                            <DataTrigger TargetType="RadioButton"
-                                         Binding="{Binding Source={x:Reference RB2},Path=IsChecked}"
-                                         Value="true">
-                                <Setter Property="IsChecked"
-                                        Value="false" />
-                            </DataTrigger>
-                        </RadioButton.Triggers>
-                    </RadioButton>
-
-                    <RadioButton x:Name="RB2"
-                                 Grid.Column="0"
-                                 Grid.Row="1"
-                                 VerticalOptions="CenterAndExpand"
-                                 Content="vorhandenes Fahrzeug verknüpfen"
-                                 IsChecked="{Binding Mode=TwoWay, Path=TakeExistingVehicle}">
-                        <RadioButton.Triggers>
-                            <DataTrigger TargetType="RadioButton"
-                                         Binding="{Binding Source={x:Reference RB1},Path=IsChecked}"
-                                         Value="true">
-                                <Setter Property="IsChecked"
-                                        Value="false" />
-                            </DataTrigger>
-                        </RadioButton.Triggers>
-                    </RadioButton>
-
-                    <Picker  Grid.Column="1"
-                             Grid.Row="1"
-                             VerticalOptions="CenterAndExpand"
-                             Title="Fahrzeug"
-                             IsEnabled="{Binding Source={x:Reference Name=RB2}, Path=IsChecked}"
-                             ItemsSource="{Binding Mode=TwoWay, Path=Vehicles}"
-                             SelectedItem="{Binding Mode=TwoWay, Path=Vehicle}"
-                             ItemDisplayBinding="{Binding Name}">
-                    </Picker>
                 </Grid>
             </StackLayout>
         </Border>
@@ -147,7 +123,6 @@
                             VerticalOptions="Center"
                             HorizontalOptions="FillAndExpand"
                             ImageSource="{StaticResource IconContentSaveMedium}"
-                            IsEnabled="{Binding Mode=OneWay, Path=SaveButton}"
                             Command="{Binding SaveDynoCommand}"
                             HeightRequest="60">
                     </Button>

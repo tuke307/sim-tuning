@@ -182,6 +182,11 @@ namespace SimTuning.Core.Services
                     using (var db = new DatabaseContext())
                     {
                         this.Dynos = db.Dyno
+                            // Vehicle
+                            .Include(dyno => dyno.Vehicle)
+                            .Include(dyno => dyno.Drehzahl)
+                            .Include(dyno => dyno.DynoPS)
+                            //.Include(dyno => dyno.DynoNm)
                             .ToList();
                     }
                 }

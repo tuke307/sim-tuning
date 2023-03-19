@@ -109,11 +109,10 @@ namespace SimTuning.Test
                 vehicleServiceMock.Object,
                 browserServiceMock.Object);
 
-            vm.DeleteDynoCommand.Execute(null);
-            vm.ExportDynoCommand.Execute(null);
-            vm.NewDynoCommand.Execute(null);
+            vm.NewDyno(null);
             vm.SaveDynoCommand.Execute(null);
-            vm.ShowSaveButtonCommand.Execute(null);
+            vm.ExportDynoCommand.Execute(null);
+            vm.DeleteDynoCommand.Execute(null);
         }
 
         /// <summary>
@@ -129,9 +128,8 @@ namespace SimTuning.Test
                 navigationServiceMock.Object,
                 vehicleServiceMock.Object);
 
-            vm.InsertVehicleCommand.Execute(null);
+            vm.InsertVehicle(null);
             vm.RefreshPlotCommand.Execute(null);
-            vm.ShowSaveCommand.Execute(null);
         }
 
         /// <summary>
@@ -170,11 +168,11 @@ namespace SimTuning.Test
         /// Dynoes the spectrogram view model test.
         /// </summary>
         [Fact]
-        public void DynoSpectrogramViewModelTest()
+        public void DynoAudioViewModelTest()
         {
             // Arrange
-            var logger = new Mock<ILogger<DynoSpectrogramViewModel>>();
-            var vm = new DynoSpectrogramViewModel(
+            var logger = new Mock<ILogger<DynoAudioViewModel>>();
+            var vm = new DynoAudioViewModel(
                 logger.Object,
                 navigationServiceMock.Object,
                 vehicleServiceMock.Object);

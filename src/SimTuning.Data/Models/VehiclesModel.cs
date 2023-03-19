@@ -90,20 +90,21 @@ namespace SimTuning.Data.Models
             {
                 if (this.Gewicht.HasValue)
                 {
-                }
-                UnitsNet.UnitConverter.TryConvert(
-               this.Gewicht.Value,
-               this.GewichtUnit,
-               value,
-               out double convertedValue);
 
-                if (UnitSettings.RoundOnUnitChange)
-                {
-                    this.Gewicht = Math.Round(convertedValue, UnitSettings.RoundingAccuracy);
-                }
-                else
-                {
-                    this.Gewicht = convertedValue;
+                    UnitsNet.UnitConverter.TryConvert(
+                       this.Gewicht.Value,
+                       this.GewichtUnit,
+                       value,
+                       out double convertedValue);
+
+                    if (UnitSettings.RoundOnUnitChange)
+                    {
+                        this.Gewicht = Math.Round(convertedValue, UnitSettings.RoundingAccuracy);
+                    }
+                    else
+                    {
+                        this.Gewicht = convertedValue;
+                    }
                 }
 
                 this._GewichtUnit = value;

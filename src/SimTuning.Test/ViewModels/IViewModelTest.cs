@@ -27,7 +27,7 @@ namespace SimTuning.Test
 
         void DynoRuntimeViewModelTest();
 
-        void DynoSpectrogramViewModelTest();
+        void DynoAudioViewModelTest();
 
         #endregion Dyno
 

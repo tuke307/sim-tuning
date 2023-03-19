@@ -9,6 +9,16 @@ namespace SimTuning.Data.Models
     /// <seealso cref="Data.Models.BaseEntityModel" />
     public class DrehzahlModel : BaseEntityModel
     {
+        public DrehzahlModel()
+        {
+        }
+
+        public DrehzahlModel(double zeit, double drehzahl)
+        {
+            this.Zeit = zeit;
+            this.Drehzahl = drehzahl;
+        }
+
         /// <summary>
         /// Gets or sets the drehzahl.
         /// </summary>

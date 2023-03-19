@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:SimTuning.Maui.UI.Views.Dyno"
              xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
              x:DataType="vm:DynoMainViewModel"
-             Title="Dyno">
+             Title="{Binding PageTitle, Mode=TwoWay}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -20,7 +20,7 @@
                 <tabs:UnderlinedTabItem Style="{StaticResource UnderlinedTabItemStyle}"
                                         Label="Datensatz" />
                 <tabs:UnderlinedTabItem Style="{StaticResource UnderlinedTabItemStyle}"
-                                        Label="Spectrogram" />
+                                        Label="Audio" />
                 <tabs:UnderlinedTabItem Style="{StaticResource UnderlinedTabItemStyle}"
                                         Label="Diagnose" />
             </tabs:TabHostView.Tabs>
@@ -31,7 +31,7 @@
                            SelectedIndex="{Binding DynoTabIndex, Mode=TwoWay}"
                            Animate="True">
             <local:DynoDataView />
-            <local:DynoSpectrogramView />
+            <local:DynoAudioView />
             <local:DynoDiagnosisView />
         </tabs:ViewSwitcher>
     </Grid>

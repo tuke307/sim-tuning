@@ -251,7 +251,8 @@ namespace SimTuning.Core.ModuleLogic
         /// <param name="dataPoint"></param>
         private static DataPoint ToRotionalSpeed(this DataPoint dataPoint)
         {
-            // Y(vertikal) = 1U/min; 1Hz = 60 U/min bei Einzylider Motoren X(horizontal) = 1s
+            // X(horizontal) = 1s
+            // Y(vertikal) = 1U/min; 1Hz = 60 U/min bei Einzylider Motoren
             DataPoint converted = new DataPoint(
                 Math.Round(dataPoint.X * SegmentsPerSecond, 4),
                 Math.Round(dataPoint.Y * HzPerFFT * 60, 4));

@@ -1,15 +1,22 @@
 ﻿// Copyright (c) 2021 tuke productions. All rights reserved.
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using LiveChartsCore;
+using LiveChartsCore.Defaults;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.Painting;
+using LiveChartsCore.SkiaSharpView.Painting.Effects;
 using Microsoft.Extensions.Logging;
 using SimTuning.Core;
 using SimTuning.Core.Helpers;
 using SimTuning.Core.Models;
+using SimTuning.Core.Models.Messages;
 using SimTuning.Core.Models.Quantity;
 using SimTuning.Core.ModuleLogic;
 using SimTuning.Core.Services;
 using SimTuning.Data.Models;
 using SimTuning.Maui.UI.Services;
+using SkiaSharp;
 using System.Collections.ObjectModel;
 
 namespace SimTuning.Maui.UI.ViewModels
@@ -23,7 +30,6 @@ namespace SimTuning.Maui.UI.ViewModels
         {
             this._logger = logger;
             this._vehicleService = vehicleService;
-            //this._messenger = messenger;
 
             this.AreaQuantityUnits = new AreaQuantity();
             this.TemperatureQuantityUnits = new TemperatureQuantity();
@@ -31,7 +37,11 @@ namespace SimTuning.Maui.UI.ViewModels
             this.MassQuantityUnits = new MassQuantity();
 
             this.RefreshPlotCommand = new RelayCommand(this.RefreshPlot);
-            //this.ReloadData();
+
+            // erste navigation: selected dyno wird requested
+            this.Dyno = Messenger.Send<CurrentDynoRequestMessage>();
+            // bei dyno änderung (viewmodel schon geladen)
+            Messenger.Register<DynoDiagnosisViewModel, DynoChangedMessage>(this, (r, m) => r.Dyno = m.Value);
         }
 
         #region Methods
@@ -54,24 +64,6 @@ namespace SimTuning.Maui.UI.ViewModels
             }
         }
 
-        /// <summary>
-        /// Reloads the data.
-        /// </summary>
-        /// <param name="mvxReloaderMessage">The MVX reloader message.</param>
-        //protected void ReloadData(Models.MvxReloaderMessage mvxReloaderMessage = null)
-        //{
-        //    try
-        //    {
-        //        OnPropertyChanged(nameof(HelperVehicles));
-        //        OnPropertyChanged(nameof(HelperEnvironments));
-        //        this.Dyno = _vehicleService.RetrieveOneActive();
-        //    }
-        //    catch (Exception exc)
-        //    {
-        //        _logger.LogError("Fehler bei ReloadData: ", exc);
-        //    }
-        //}
-
         public void InsertVehicle(VehiclesModel helperVehicle)
         {
             //if (this.HelperVehicle?.Gewicht != null)
@@ -93,6 +85,7 @@ namespace SimTuning.Maui.UI.ViewModels
             //this.DynoVehicleFrontA);
         }
 
+
         /// <summary>
         /// Refreshes the plot.
         /// </summary>
@@ -105,16 +98,25 @@ namespace SimTuning.Maui.UI.ViewModels
 
             try
             {
-                //var loadingDialog = await DisplayAlert(message: SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "MES_LOAD")).ConfigureAwait(false);
+                List<ObservablePoint> values = new List<ObservablePoint>();
 
-                //DynoLogic.GetLeistungsGraph(this.Dyno.Vehicle.Gewicht.Value, out List<DynoPsModel> ps/*, out List<DynoNmModel> nm*/);
+                var maxDrehzahl = Dyno.Drehzahl.Max(x => x.Drehzahl);
+                var rangeToMaxDrehzahl = Dyno.Drehzahl.Take(Dyno.Drehzahl.IndexOf(Dyno.Drehzahl.FirstOrDefault(x => x.Drehzahl == maxDrehzahl)));
+
+                foreach (var item in rangeToMaxDrehzahl)
+                {
+                    values.Add(new ObservablePoint(item.Drehzahl, DynoLogic.GetLeistung(item.Drehzahl, item.Zeit, 1.2, 0.8, 32.41, 0.277, 170, 0.005, 9.81, 0)));
+                }
+
+                PlotStrength = new LineSeries<ObservablePoint>()
+                {
+                    GeometrySize = 5,
+                    Name = "Leistung",
+                    Values = values,
+                };
+
                 //this.Dyno.DynoPS = ps;
-
-                _vehicleService.UpdateOne(this.Dyno);
-
-                this.OnPropertyChanged(nameof(this.PlotStrength));
-
-                //await loadingDialog.DismissAsync().ConfigureAwait(false);
+                //_vehicleService.UpdateOne(this.Dyno);
             }
             catch (Exception exc)
             {
@@ -162,6 +164,7 @@ namespace SimTuning.Maui.UI.ViewModels
         protected readonly IVehicleService _vehicleService;
         private readonly ILogger<DynoDiagnosisViewModel> _logger;
         private DynoModel _dyno;
+        private ISeries _plotStrength;
 
         public ObservableCollection<UnitListItem> AreaQuantityUnits { get; }
 
@@ -299,7 +302,8 @@ namespace SimTuning.Maui.UI.ViewModels
 
         public ISeries PlotStrength
         {
-            get => null;//DynoLogic.PlotLeistung;
+            get => _plotStrength;
+            set => SetProperty(ref _plotStrength, value);
         }
 
         public ObservableCollection<UnitListItem> PressureQuantityUnits { get; }
@@ -310,13 +314,41 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The refresh plot command.</value>
         public IRelayCommand RefreshPlotCommand { get; set; }
 
-        /// <summary>
-        /// Gets or sets the show save command.
-        /// </summary>
-        /// <value>The show save command.</value>
-        public IRelayCommand ShowSaveCommand { get; set; }
-
         public ObservableCollection<UnitListItem> TemperatureQuantityUnits { get; }
+
+        public Axis[] XAxes { get; set; }
+            = new Axis[]
+            {
+                new Axis
+                {
+                    Name = "Drehzahl in 1/min",
+                    NamePaint = new SolidColorPaint(SKColors.Black),
+
+                    LabelsPaint = new SolidColorPaint(SKColors.Black),
+                    TextSize = 14,
+
+                    SeparatorsPaint = new SolidColorPaint(SKColors.LightSlateGray) { StrokeThickness = 2 },
+                },
+            };
+
+        public Axis[] YAxes { get; set; }
+            = new Axis[]
+            {
+                new Axis
+                {
+                    Name = "Leistung in PS",
+                    NamePaint = new SolidColorPaint(SKColors.Black),
+
+                    LabelsPaint = new SolidColorPaint(SKColors.Black),
+                    TextSize = 14,
+
+                    SeparatorsPaint = new SolidColorPaint(SKColors.LightSlateGray)
+                    {
+                        StrokeThickness = 2,
+                        PathEffect = new DashEffect(new float[] { 3, 3 }),
+                    },
+                },
+            };
 
         #endregion Values
     }

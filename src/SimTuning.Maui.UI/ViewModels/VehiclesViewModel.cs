@@ -56,12 +56,6 @@ namespace SimTuning.Maui.UI.ViewModels
         public ObservableCollection<UnitListItem> AreaQuantityUnits { get; }
 
         /// <summary>
-        /// Gets or sets the delete vehicle command.
-        /// </summary>
-        /// <value>The delete vehicle command.</value>
-        public IRelayCommand DeleteVehicleCommand { get; set; }
-
-        /// <summary>
         /// Gets or sets the engine.
         /// </summary>
         /// <value>The engine.</value>
@@ -142,7 +136,7 @@ namespace SimTuning.Maui.UI.ViewModels
                     // gerade gelöscht => letztes Vehicle neu laden
                     if (this.Vehicles.Count != 0)
                     {
-                        this.Vehicle = this.Vehicles.Last();
+                        value = this.Vehicles.Last();
                     }
                 }
 
