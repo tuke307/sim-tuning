@@ -88,7 +88,7 @@ namespace SimTuning.Core.ModuleLogic
         /// <returns>Geschwindigkeit.</returns>
         private static double GetGeschwindigkeit(double r, double n, double i)
         {
-            return (2 * r * Math.PI * n * 60) / i * 1000;
+            return (2 * r * Math.PI * n * 60) / (i * 1000);
         }
 
         /// <summary>
@@ -114,6 +114,9 @@ namespace SimTuning.Core.ModuleLogic
         /// <returns>Steigungskraft.</returns>
         private static double GetSteigungskraft(double m, double g, double s)
         {
+            if (s == 0)
+                s = 1;
+
             return m * g * s;
         }
 
