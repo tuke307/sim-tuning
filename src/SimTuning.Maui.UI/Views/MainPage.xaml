@@ -8,6 +8,7 @@
        xmlns:auslass="clr-namespace:SimTuning.Maui.UI.Views.Auslass"
        xmlns:motor="clr-namespace:SimTuning.Maui.UI.Views.Motor"
        xmlns:dyno="clr-namespace:SimTuning.Maui.UI.Views.Dyno"
+       xmlns:vehicles="clr-namespace:SimTuning.Maui.UI.Views.Vehicles"
        xmlns:einstellungen="clr-namespace:SimTuning.Maui.UI.Views.Einstellungen"
        x:Class="SimTuning.Maui.UI.Views.MainPage"
        x:DataType="vm:MainPageViewModel"
@@ -43,9 +44,14 @@
                 FlyoutIcon="{StaticResource IconChartBellCurveMedium}">
         <ShellContent ContentTemplate="{DataTemplate dyno:DynoMainView}" />
     </FlyoutItem>
-
+    
+    <FlyoutItem Title="Fahrzeuge"
+                FlyoutIcon="{StaticResource IconAtvMedium}">
+        <ShellContent ContentTemplate="{DataTemplate vehicles:VehiclesView}" />
+    </FlyoutItem>
+    
     <FlyoutItem Title="Einstellungen"
                 FlyoutIcon="{StaticResource IconCogMedium}">
-        <ShellContent ContentTemplate="{DataTemplate einstellungen:EinstellungenMenuView}" />
+        <ShellContent ContentTemplate="{DataTemplate einstellungen:EinstellungenView}" />
     </FlyoutItem>
 </Shell>
