@@ -9,10 +9,10 @@ using System.Collections.ObjectModel;
 
 namespace SimTuning.Maui.UI.ViewModels
 {
-    public class VehiclesViewModel : ViewModelBase
+    public class VehiclesViewModelBase : ViewModelBase
     {
-        public VehiclesViewModel(
-            ILogger<VehiclesViewModel> logger,
+        public VehiclesViewModelBase(
+            ILogger<VehiclesViewModelBase> logger,
             IVehicleService vehicleService)
         {
             this._logger = logger;
@@ -45,7 +45,7 @@ namespace SimTuning.Maui.UI.ViewModels
 
         protected readonly IVehicleService _vehicleService;
 
-        private readonly ILogger<VehiclesViewModel> _logger;
+        private readonly ILogger<VehiclesViewModelBase> _logger;
         private Data.Models.MotorModel _engine;
 
         private ObservableCollection<Data.Models.MotorModel> _engines;
