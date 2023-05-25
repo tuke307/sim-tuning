@@ -104,7 +104,7 @@
 
                         <ImageButton Grid.Column="1"
                                      Clicked="HelperVehiclesButton_Clicked"
-                                     Source="{StaticResource IconHelpCircleOutlineMedium}" />
+                                     Source="{StaticResource IconAtvMedium}" />
                     </Grid>
 
                     <BoxView Style="{StaticResource DividerBoxViewStyle}" />
@@ -191,7 +191,7 @@
 
                         <ImageButton Grid.Column="1"
                                      Clicked="HelperVehiclesButton_Clicked"
-                                     Source="{StaticResource IconHelpCircleOutlineMedium}" />
+                                     Source="{StaticResource IconAtvMedium}" />
                     </Grid>
 
                     <BoxView Style="{StaticResource DividerBoxViewStyle}" />

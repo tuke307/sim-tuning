@@ -26,7 +26,7 @@
 
                         <ImageButton Grid.Column="1"
                                      Clicked="HelperVehiclesButton_Clicked"
-                                     Source="{StaticResource IconHelpCircleOutlineMedium}" />
+                                     Source="{StaticResource IconAtvMedium}" />
 
                         <ImageButton Grid.Column="2"
                                      Margin="5,0,0,0"
