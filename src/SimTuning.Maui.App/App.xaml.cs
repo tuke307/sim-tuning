@@ -32,6 +32,7 @@ namespace SimTuning.Maui.App
                     .AddTransient<VehiclesViewModel>()
                     .AddTransient<HomeViewModel>()
                     .AddTransient<PortTimingViewModel>()
+                    .AddTransient<VehiclesViewModelBase>()
 
                     .AddTransient<AuslassMainViewModel>()
                     .AddTransient<AuslassAnwendungViewModel>()
@@ -47,9 +48,9 @@ namespace SimTuning.Maui.App
                     .AddTransient<MotorUmrechnungViewModel>()
                     .AddTransient<MotorVerdichtungViewModel>()
 
-                    .AddTransient<EinstellungenMenuViewModel>()
-                    .AddTransient<EinstellungenApplicationViewModel>()
-                    .AddTransient<EinstellungenVehiclesViewModel>()
+                    .AddTransient<EinstellungenViewModel>()
+
+                    .AddTransient<VehiclesViewModel>()
 
                     .AddTransient<DynoMainViewModel>()
                     //.AddTransient<DynoAudioPlayerViewModel>()

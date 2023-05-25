@@ -2,9 +2,9 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              Title="Allgemein"
-             x:Class="SimTuning.Maui.UI.Views.Einstellungen.EinstellungenApplicationView"
+             x:Class="SimTuning.Maui.UI.Views.Einstellungen.EinstellungenView"
              xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
-             x:DataType="vm:EinstellungenApplicationViewModel">
+             x:DataType="vm:EinstellungenViewModel">
     <Grid Margin="20">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.25*" />

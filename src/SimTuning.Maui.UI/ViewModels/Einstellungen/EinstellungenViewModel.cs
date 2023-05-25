@@ -4,10 +4,10 @@ using SimTuning.Maui.UI.Services;
 
 namespace SimTuning.Maui.UI.ViewModels
 {
-    public class EinstellungenApplicationViewModel : ViewModelBase
+    public class EinstellungenViewModel : ViewModelBase
     {
-        public EinstellungenApplicationViewModel(
-            ILogger<EinstellungenApplicationViewModel> logger,
+        public EinstellungenViewModel(
+            ILogger<EinstellungenViewModel> logger,
             INavigationService navigationService)
         {
             this._logger = logger;
@@ -16,7 +16,7 @@ namespace SimTuning.Maui.UI.ViewModels
 
         #region Methods
 
-        private readonly ILogger<EinstellungenApplicationViewModel> _logger;
+        private readonly ILogger<EinstellungenViewModel> _logger;
 
         #endregion Methods
 
