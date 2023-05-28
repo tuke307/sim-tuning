@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<mct:Popup  xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+            xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:mct="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
+            xmlns:models="clr-namespace:SimTuning.Data.Models;assembly=SimTuning.Data"
+            xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
+            x:Class="SimTuning.Maui.UI.Views.Popups.EnvironmentPopup"
+            x:DataType="vm:EnvironmentViewModel"
+            Color="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}"
+            Size="500, 700">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <!--<Picker Grid.Row="0"
+                ItemsSource="{Binding Engines}"
+                SelectedItem="{Binding Mode=TwoWay, Path=Engine}"
+                ItemDisplayBinding="{Binding Name}"
+                HorizontalOptions="CenterAndExpand"
+                Margin="5">
+        </Picker>
+
+        <ScrollView Grid.Row="1">
+            <Border  Margin="10">
+                <StackLayout>
+                    <Label  Text="Hilfe"
+                            FontSize="Medium"
+                            FontAttributes="Bold" />
+
+                    <BoxView Color="{DynamicResource DesignDivider}"
+                             HeightRequest="2"
+                             HorizontalOptions="Fill"
+                             Margin="0, 0, 0, 5" />
+
+                    <Picker ItemsSource="{Binding Mode=OneTime, Path=HelperEnvironments}"
+                            SelectedItem="{Binding  Mode=TwoWay, Path=HelperEnvironment}"
+                            ItemDisplayBinding="{Binding Name}">
+                    </Picker>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+
+                        <Label  Text="Temperatur"
+                                VerticalOptions="Center"
+                                Grid.Row="0"
+                                Grid.Column="0" />
+                        <Label  Text="Luftdruck"
+                                VerticalOptions="Center"
+                                Grid.Row="1"
+                                Grid.Column="0" />
+
+                        <Entry Text="{Binding Mode=OneWay, Path= HelperEnvironment.TemperaturT}"
+                               Placeholder=" "
+                               Grid.Row="0"
+                               Grid.Column="1"
+                               IsEnabled="False"
+                               WidthRequest="100" />
+                        <Entry Text="{Binding Mode=OneWay, Path= HelperEnvironment.LuftdruckP}"
+                               Placeholder=" "
+                               Grid.Row="1"
+                               Grid.Column="1"
+                               IsEnabled="False"
+                               WidthRequest="100" />
+
+                        <Label  Grid.Row="0"
+                                Grid.Column="2"
+                                Margin="10, 15, 0, 0">
+                            mbar
+                        </Label>
+
+                        <Label  Grid.Row="1"
+                                Grid.Column="2"
+                                Margin="10, 15, 0, 0">
+                            °C
+                        </Label>
+                    </Grid>
+
+                    <Button   ImageSource="{StaticResource IconChevronRightMedium}"
+                              Command="{Binding InsertEnvironmentCommand}"
+                              WidthRequest="90" />
+                </StackLayout>
+            </Border>
+        </ScrollView>-->
+
+        <ImageButton Grid.Row="2"
+                     Clicked="Button_Clicked"
+                     Margin="5"
+                     Source="{StaticResource IconChevronRightMedium}" />
+    </Grid>
+</mct:Popup>

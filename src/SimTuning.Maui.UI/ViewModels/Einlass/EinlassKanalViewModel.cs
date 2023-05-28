@@ -65,9 +65,13 @@ namespace SimTuning.Maui.UI.ViewModels
             }
         }
 
-        private void RefreshResonanzlaenge()
+        private void CalculateResonanzlaenge()
         {
-            if (this.VehicleMotorEinlassFlaecheA.HasValue && this.Einlasssteuerwinkel.HasValue && this.VehicleMotorKurbelgehaeuseV.HasValue && this.VehicleMotorResonanzU.HasValue && this.VehicleMotorEinlassDurchmesserD.HasValue)
+            if (this.VehicleMotorEinlassFlaecheA.HasValue &&
+                this.Einlasssteuerwinkel.HasValue &&
+                this.VehicleMotorKurbelgehaeuseV.HasValue &&
+                this.VehicleMotorResonanzU.HasValue &&
+                this.VehicleMotorEinlassDurchmesserD.HasValue)
             {
                 this.Resonanzlaenge = EinlassLogic.GetResonanzLaenge(
                     UnitsNet.UnitConverter.Convert(this.VehicleMotorEinlassFlaecheA.Value, this.VehicleMotorEinlassFlaecheAUnit.UnitEnumValue, AreaUnit.SquareCentimeter),
@@ -104,8 +108,7 @@ namespace SimTuning.Maui.UI.ViewModels
             set
             {
                 SetProperty(ref _einlasssteuerwinkel, value);
-                this.OnPropertyChanged(nameof(this.Einlasssteuerwinkel));
-                RefreshResonanzlaenge();
+                CalculateResonanzlaenge();
             }
         }
 
@@ -154,7 +157,7 @@ namespace SimTuning.Maui.UI.ViewModels
 
                 this.Vehicle.Motor.Einlass.DurchmesserD = value;
                 this.OnPropertyChanged(nameof(this.VehicleMotorEinlassDurchmesserD));
-                RefreshResonanzlaenge();
+                CalculateResonanzlaenge();
             }
         }
 
@@ -185,7 +188,7 @@ namespace SimTuning.Maui.UI.ViewModels
 
                 this.Vehicle.Motor.Einlass.FlaecheA = value;
                 this.OnPropertyChanged(nameof(this.VehicleMotorEinlassFlaecheA));
-                RefreshResonanzlaenge();
+                CalculateResonanzlaenge();
             }
         }
 
@@ -216,7 +219,7 @@ namespace SimTuning.Maui.UI.ViewModels
 
                 this.Vehicle.Motor.KurbelgehaeuseV = value;
                 this.OnPropertyChanged(nameof(this.VehicleMotorKurbelgehaeuseV));
-                RefreshResonanzlaenge();
+                CalculateResonanzlaenge();
             }
         }
 
@@ -247,7 +250,7 @@ namespace SimTuning.Maui.UI.ViewModels
 
                 this.Vehicle.Motor.ResonanzU = value;
                 this.OnPropertyChanged(nameof(this.VehicleMotorResonanzU));
-                RefreshResonanzlaenge();
+                CalculateResonanzlaenge();
             }
         }
 

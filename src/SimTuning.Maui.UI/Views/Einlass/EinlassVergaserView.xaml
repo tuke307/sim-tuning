@@ -2,7 +2,16 @@
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
-             x:DataType="vm:EinlassVergaserViewModel">
+             x:DataType="vm:EinlassVergaserViewModel"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
+    <ContentView.Resources>
+        <Style x:Key="InvalidEntryStyle"
+               TargetType="Entry">
+            <Setter Property="BackgroundColor"
+                    Value="#FFC182" />
+        </Style>
+    </ContentView.Resources>
+    
     <ScrollView>
         <Grid>
             <Grid.RowDefinitions>
@@ -40,48 +49,78 @@
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto" />
-                            <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
 
                         <!--Hubraum Volumen-->
-                        <Entry Grid.Row="2"
-                               Grid.Column="0"
-                               Keyboard="Numeric"
-                               Placeholder="Hubraum Volumen"
-                               Text="{Binding Mode=TwoWay, Path=Hubvolumen}" />
+                        <HorizontalStackLayout Grid.Row="0">
+                            <Label Text="Hubraum- Volumen"
+                                   WidthRequest="60"
+                                   VerticalOptions="Center" />
 
-                        <Picker Grid.Row="2"
-                                Grid.Column="1"
-                                ItemsSource="{Binding Path=VolumeQuantityUnits, Mode=OneTime}"
-                                ItemDisplayBinding="{Binding Abbreviation}"
-                                SelectedItem="{Binding UnitHubvolumen}" />
+                            <Entry Keyboard="Numeric"
+                                   Text="{Binding Mode=TwoWay, Path=Hubvolumen}"
+                                   WidthRequest="200"
+                                   VerticalOptions="Center">
+                                <Entry.Behaviors>
+                                    <toolkit:TextValidationBehavior MinimumLength="1"
+                                                                Flags="ValidateOnUnfocusing"
+                                                                InvalidStyle="{StaticResource InvalidEntryStyle}" />
+                                </Entry.Behaviors>
+                            </Entry>
+
+                            <Picker VerticalOptions="Center"
+                                    ItemsSource="{Binding Path=VolumeQuantityUnits, Mode=OneTime}"
+                                    ItemDisplayBinding="{Binding Abbreviation}"
+                                    SelectedItem="{Binding UnitHubvolumen}" />
+                        </HorizontalStackLayout>
 
                         <!--Resonanzdrehzahl-->
-                        <Entry Grid.Row="3"
-                               Grid.Column="0"
-                               Keyboard="Numeric"
-                               Placeholder="Resonanzdrehzahl"
-                               Text="{Binding Mode=TwoWay, Path=Resonanzdrehzahl}" />
+                        <HorizontalStackLayout Grid.Row="1">
+                            <Label Text="Resonanzdrehzahl"
+                                   WidthRequest="60"
+                                   VerticalOptions="Center" />
 
-                        <Label Grid.Row="3"
-                               Grid.Column="1"
-                               VerticalOptions="Center">
-                            1/min
-                        </Label>
+                            <Entry Keyboard="Numeric"
+                                   Text="{Binding Mode=TwoWay, Path=Resonanzdrehzahl}"
+                                   WidthRequest="200"
+                                   VerticalOptions="Center">
+                                <Entry.Behaviors>
+                                    <toolkit:TextValidationBehavior MinimumLength="1"
+                                                                    Flags="ValidateOnUnfocusing"
+                                                                    InvalidStyle="{StaticResource InvalidEntryStyle}" />
+                                </Entry.Behaviors>
+                            </Entry>
+
+                            <Label VerticalOptions="Center">
+                                1/min
+                            </Label>
+                        </HorizontalStackLayout>
 
                         <!--Vergasergroeße-->
-                        <Entry Grid.Row="4"
-                               Grid.Column="0"
-                               Keyboard="Numeric"
-                               IsEnabled="False"
-                               Placeholder="Ø Vergaser"
-                               Text="{Binding Mode=TwoWay, Path=Vergasergroeße}" />
+                        <HorizontalStackLayout Grid.Row="2"
+                                               Margin="0,30,0,0">
+                            <Label Text="Ø Vergaser"
+                                   WidthRequest="60"
+                                   VerticalOptions="Center" />
 
-                        <Picker Grid.Row="4"
-                                Grid.Column="1"
-                                ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
-                                ItemDisplayBinding="{Binding Abbreviation}"
-                                SelectedItem="{Binding UnitVergasergroeße}" />
+                            <Entry Keyboard="Numeric"
+                                   Text="{Binding Mode=TwoWay, Path=Vergasergroeße}"
+                                   WidthRequest="200"
+                                   IsEnabled="False"
+                                   IsReadOnly="True"
+                                   VerticalOptions="Center">
+                                <Entry.Behaviors>
+                                    <toolkit:TextValidationBehavior MinimumLength="1"
+                                                                    Flags="ValidateOnUnfocusing"
+                                                                    InvalidStyle="{StaticResource InvalidEntryStyle}" />
+                                </Entry.Behaviors>
+                            </Entry>
+
+                            <Picker VerticalOptions="Center"
+                                    ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+                                    ItemDisplayBinding="{Binding Abbreviation}"
+                                    SelectedItem="{Binding UnitVergasergroeße}" />
+                        </HorizontalStackLayout>
                     </Grid>
                 </StackLayout>
             </Border>
@@ -101,7 +140,7 @@
 
                         <ImageButton Grid.Column="1"
                                      Clicked="HelperVehiclesButton_Clicked"
-                                     Source="{StaticResource IconHelpCircleOutlineMedium}" />
+                                     Source="{StaticResource IconAtvMedium}" />
                     </Grid>
 
                     <BoxView Style="{StaticResource DividerBoxViewStyle}" />
@@ -116,35 +155,56 @@
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto" />
-                            <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
 
                         <!--Vergasergroeße-->
-                        <Entry Grid.Row="2"
-                               Grid.Column="0"
-                               Keyboard="Numeric"
-                               Placeholder="Ø Vergaser"
-                               Text="{Binding Mode=OneWay, Path=Vergasergroeße}" />
+                        <HorizontalStackLayout Grid.Row="0">
+                            <Label Text="Ø Vergaser"
+                                   WidthRequest="60"
+                                   VerticalOptions="Center" />
 
-                        <Picker Grid.Row="2"
-                                Grid.Column="1"
-                                ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
-                                ItemDisplayBinding="{Binding Abbreviation}"
-                                SelectedItem="{Binding UnitVergasergroeße}" />
+                            <Entry Keyboard="Numeric"
+                                   Text="{Binding Mode=TwoWay, Path=Vergasergroeße}"
+                                   WidthRequest="200"
+                                   VerticalOptions="Center">
+                                <Entry.Behaviors>
+                                    <toolkit:TextValidationBehavior MinimumLength="1"
+                                                                    Flags="ValidateOnUnfocusing"
+                                                                    InvalidStyle="{StaticResource InvalidEntryStyle}" />
+                                </Entry.Behaviors>
+                            </Entry>
+
+                            <Picker VerticalOptions="Center"
+                                    ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+                                    ItemDisplayBinding="{Binding Abbreviation}"
+                                    SelectedItem="{Binding UnitVergasergroeße}" />
+                        </HorizontalStackLayout>
 
                         <!--HauptdueseD-->
-                        <Entry Grid.Row="3"
-                               Grid.Column="0"
-                               Keyboard="Numeric"
-                               IsEnabled="False"
-                               Placeholder="Ø Hauptdüse"
-                               Text="{Binding Mode=TwoWay, Path=HauptdueseD}" />
+                        <HorizontalStackLayout Grid.Row="2"
+                                               Margin="0,30,0,0">
+                            <Label Text="Ø Hauptdüse"
+                                   WidthRequest="60"
+                                   VerticalOptions="Center" />
 
-                        <Picker Grid.Row="3"
-                                Grid.Column="1"
-                                ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
-                                ItemDisplayBinding="{Binding Abbreviation}"
-                                SelectedItem="{Binding UnitHauptdueseD}" />
+                            <Entry Keyboard="Numeric"
+                                   Text="{Binding Mode=TwoWay, Path=HauptdueseD}"
+                                   WidthRequest="200"
+                                   IsEnabled="False"
+                                   IsReadOnly="True"
+                                   VerticalOptions="Center">
+                                <Entry.Behaviors>
+                                    <toolkit:TextValidationBehavior MinimumLength="1"
+                                                                    Flags="ValidateOnUnfocusing"
+                                                                    InvalidStyle="{StaticResource InvalidEntryStyle}" />
+                                </Entry.Behaviors>
+                            </Entry>
+
+                            <Picker VerticalOptions="Center"
+                                    ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+                                    ItemDisplayBinding="{Binding Abbreviation}"
+                                    SelectedItem="{Binding UnitHauptdueseD}" />
+                        </HorizontalStackLayout>
                     </Grid>
                 </StackLayout>
             </Border>

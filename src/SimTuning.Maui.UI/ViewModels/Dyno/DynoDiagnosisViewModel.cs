@@ -32,8 +32,6 @@ namespace SimTuning.Maui.UI.ViewModels
             this._vehicleService = vehicleService;
 
             this.AreaQuantityUnits = new AreaQuantity();
-            this.TemperatureQuantityUnits = new TemperatureQuantity();
-            this.PressureQuantityUnits = new PressureQuantity();
             this.MassQuantityUnits = new MassQuantity();
 
             this.RefreshPlotCommand = new RelayCommand(this.RefreshPlot);
@@ -42,49 +40,23 @@ namespace SimTuning.Maui.UI.ViewModels
             this.Dyno = Messenger.Send<CurrentDynoRequestMessage>();
             // bei dyno änderung (viewmodel schon geladen)
             Messenger.Register<DynoDiagnosisViewModel, DynoChangedMessage>(this, (r, m) => r.Dyno = m.Value);
+
+            Cw = 0.8;
+            Gesamtübersetzung = 14;
+            DynoVehicleGewicht = 170;
+            FrontA = 0.75;
         }
 
         #region Methods
 
-        /// <summary>
-        /// Inserts the environment.
-        /// </summary>
-        public void InsertEnvironment(EnvironmentModel helperEnvironment)
-        {
-            if (helperEnvironment.LuftdruckP.HasValue)
-            {
-                this.DynoEnvironmentLuftdruckP = helperEnvironment.LuftdruckP;
-                this.OnPropertyChanged(nameof(this.DynoEnvironmentLuftdruckP));
-            }
-
-            if (helperEnvironment.TemperaturT.HasValue)
-            {
-                this.DynoEnvironmentTemperaturT = helperEnvironment.TemperaturT;
-                this.OnPropertyChanged(nameof(this.DynoEnvironmentTemperaturT));
-            }
-        }
-
         public void InsertVehicle(VehiclesModel helperVehicle)
         {
-            //if (this.HelperVehicle?.Gewicht != null)
-            //{
-            //    this.DynoVehicleGewicht = this.HelperVehicle.Gewicht;
-            //    this.OnPropertyChanged(nameof(this.DynoVehicleGewicht));
-            //}
-
-            //if (this.HelperVehicle.Dyno.Environment..HasValue)
-            //{
-            //    this.DynoVehicleCw =
-            //this.HelperVehicle.Cw; this.OnPropertyChanged(nameof(this.DynoVehicleCw);
-            //}
-
-            //if (this.HelperVehicle.FrontA.HasValue)
-            //{
-            //    this.DynoVehicleFrontA =
-            //this.HelperVehicle.FrontA; this.OnPropertyChanged(() =>
-            //this.DynoVehicleFrontA);
+            if (helperVehicle.Gewicht != null)
+            {
+                this.DynoVehicleGewicht = helperVehicle.Gewicht;
+                this.OnPropertyChanged(nameof(this.DynoVehicleGewicht));
+            }
         }
-
 
         /// <summary>
         /// Refreshes the plot.
@@ -110,14 +82,15 @@ namespace SimTuning.Maui.UI.ViewModels
                         item.Drehzahl,
                         DynoLogic.GetLeistung(
                         item.Drehzahl,
-                        item.Zeit/1000,
+                        item.Zeit / 1000,
                         1.2,
-                        0.8,
-                        32.41,
+                        Cw.Value,
+                        Gesamtübersetzung.Value,
                         0.277,
-                        170,
+                        DynoVehicleGewicht.Value,
                         0.005,
                         9.81,
+                        FrontA.Value,
                         0)));
                 }
 
@@ -161,22 +134,6 @@ namespace SimTuning.Maui.UI.ViewModels
             }
         }
 
-        /// <summary>
-        /// Creates new environment.
-        /// </summary>
-        private void NewEnvironment()
-        {
-            if (this.Dyno.Environment == null)
-            {
-                this.Dyno.Environment = new EnvironmentModel()
-                {
-                    Name = "Automatisch erstellt " + DateTime.Now
-                };
-
-                //this.OnPropertyChanged(nameof(this.Dyno));
-            }
-        }
-
         #endregion Methods
 
         #region Values
@@ -185,6 +142,10 @@ namespace SimTuning.Maui.UI.ViewModels
         private readonly ILogger<DynoDiagnosisViewModel> _logger;
         private DynoModel _dyno;
         private ObservableCollection<ISeries> _plotStrength;
+        private double? _gesamtübersetzung;
+        private UnitListItem _frontAUnit;
+        private double? _cw;
+        private double? _frontA;
 
         public ObservableCollection<UnitListItem> AreaQuantityUnits { get; }
 
@@ -208,75 +169,23 @@ namespace SimTuning.Maui.UI.ViewModels
             }
         }
 
-        public UnitListItem DynoEnvironmentLuftdruckPUnit
+        public double? Cw
         {
-            get => this.PressureQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(this.Dyno?.Environment?.LuftdruckPUnit)); set
-            {
-                if (this.Dyno?.Environment == null) { return; }
-
-                this.Dyno.Environment.LuftdruckPUnit = (UnitsNet.Units.PressureUnit)value?.UnitEnumValue;
-                this.OnPropertyChanged(nameof(this.DynoEnvironmentLuftdruckP));
-            }
+            get => _cw;
+            set => SetProperty(ref _cw, value);
         }
 
-        public double? DynoEnvironmentTemperaturT
+        public double? FrontA
         {
-            get => Dyno?.Environment?.TemperaturT;
-            set
-            {
-                if (this.Dyno?.Environment == null)
-                {
-                    return;
-                }
-
-                this.Dyno.Environment.TemperaturT = value;
-            }
+            get => _frontA;
+            set => SetProperty(ref _frontA, value);
         }
 
-        public UnitListItem DynoEnvironmentTemperaturTUnit
+        public UnitListItem FrontAUnit
         {
-            get => this.TemperatureQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(this.Dyno?.Environment?.TemperaturTUnit)); set
-            {
-                if (this.Dyno?.Environment == null) { return; }
-
-                this.Dyno.Environment.TemperaturTUnit =
-                (UnitsNet.Units.TemperatureUnit)value?.UnitEnumValue;
-                this.OnPropertyChanged(nameof(this.DynoEnvironmentTemperaturT));
-            }
+            get => _frontAUnit;
+            set => SetProperty(ref _frontAUnit, value);
         }
-
-        //public double? DynoVehicleCw
-        //{
-        //    get => Dyno?.Vehicle?.Cw; set
-        //    {
-        //        if
-        //(this.Dyno?.Vehicle == null) { return; }
-
-        //        this.Dyno.Vehicle.Cw = value;
-        //    }
-        //}
-
-        //public double? DynoVehicleFrontA
-        //{
-        //    get => Dyno?.Vehicle?.FrontA; set
-        //    {
-        //        if(this.Dyno?.Vehicle == null) { return; }
-
-        //        this.Dyno.Vehicle.FrontA = value;
-        //    }
-        //}
-
-        //public UnitListItem DynoVehicleFrontAUnit
-        //{
-        //    get => this.AreaQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(this.Dyno?.Vehicle?.FrontA));
-        //    set
-        //    {
-        //        if(this.Dyno?.Vehicle == null) { return; }
-
-        //        this.Dyno.Vehicle.FrontAUnit = (UnitsNet.Units.AreaUnit)value?.UnitEnumValue;
-        //        this.OnPropertyChanged(nameof(this.DynoVehicleFrontAUnit));
-        //    }
-        //}
 
         public double? DynoVehicleGewicht
         {
@@ -307,34 +216,25 @@ namespace SimTuning.Maui.UI.ViewModels
             }
         }
 
-        //public double? DynoVehicleUebersetzung
-        //{
-        //    get => Dyno?.Vehicle?.Uebersetzung;
-        //    set
-        //    {
-        //        if (this.Dyno?.Vehicle == null) { return; }
-
-        //        this.Dyno.Vehicle.Uebersetzung = value;
-        //    }
-        //}
+        public double? Gesamtübersetzung
+        {
+            get => _gesamtübersetzung;
+            set => SetProperty(ref _gesamtübersetzung, value);
+        }
 
         public ObservableCollection<UnitListItem> MassQuantityUnits { get; }
-        
+
         public ObservableCollection<ISeries> PlotStrength
         {
             get => _plotStrength;
             set => SetProperty(ref _plotStrength, value);
         }
 
-        public ObservableCollection<UnitListItem> PressureQuantityUnits { get; }
-
         /// <summary>
         /// Gets or sets the refresh plot command.
         /// </summary>
         /// <value>The refresh plot command.</value>
         public IRelayCommand RefreshPlotCommand { get; set; }
-
-        public ObservableCollection<UnitListItem> TemperatureQuantityUnits { get; }
 
         public Axis[] XAxes { get; set; }
             = new Axis[]

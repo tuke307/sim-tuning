@@ -30,6 +30,7 @@
 
                 <Entry Placeholder="Gesamtübersetzung"
                        Keyboard="Numeric"
+                       Text="{Binding Mode=TwoWay, Path=Gesamtübersetzung}"
                        WidthRequest="250">
                 </Entry>
 
@@ -52,6 +53,7 @@
                 <StackLayout Orientation="Horizontal">
                     <Entry Placeholder="Frontfläche"
                            Keyboard="Numeric"
+                           Text="{Binding Mode=TwoWay, Path=FrontA}"
                            WidthRequest="250">
                     </Entry>
 
@@ -59,31 +61,18 @@
                             ItemsSource="{Binding Path=AreaQuantityUnits, Mode=OneTime}"
                             HorizontalOptions="StartAndExpand"
                             VerticalOptions="CenterAndExpand"
+                            SelectedItem="{Binding Mode=TwoWay, Path=FrontAUnit}"
                             ItemDisplayBinding="{Binding Abbreviation}">
                     </Picker>
                 </StackLayout>
 
                 <Entry Placeholder="cw"
                        Keyboard="Numeric"
+                       Text="{Binding Mode=TwoWay, Path=Cw}"
                        WidthRequest="250">
                 </Entry>
 
-                <StackLayout Orientation="Horizontal">
-                    <Entry Placeholder="Temperatur"
-                           Keyboard="Numeric"
-                           Text="{Binding Mode=TwoWay, Path=DynoEnvironmentTemperaturT}"
-                           WidthRequest="250">
-                    </Entry>
-
-                    <Picker VerticalOptions="Center"
-                            Margin="5, 0, 0, 0"
-                            ItemsSource="{Binding Path=TemperatureQuantityUnits, Mode=OneTime}"
-                            SelectedItem="{Binding Mode=TwoWay, Path=DynoEnvironmentTemperaturTUnit}"
-                            ItemDisplayBinding="{Binding Abbreviation}">
-                    </Picker>
-                </StackLayout>
-
-                <StackLayout Orientation="Horizontal">
+                <!--<StackLayout Orientation="Horizontal">
                     <Entry Placeholder="Luftdruck"
                            Keyboard="Numeric"
                            Text="{Binding Mode=TwoWay, Path=DynoEnvironmentLuftdruckP}"
@@ -96,7 +85,7 @@
                             SelectedItem="{Binding Mode=TwoWay, Path=DynoEnvironmentLuftdruckPUnit}"
                             ItemDisplayBinding="{Binding Abbreviation}">
                     </Picker>
-                </StackLayout>
+                </StackLayout>-->
 
                 <!--Refresh-->
                 <Button HorizontalOptions="FillAndExpand"

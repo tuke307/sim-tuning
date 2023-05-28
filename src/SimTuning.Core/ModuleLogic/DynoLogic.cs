@@ -11,22 +11,24 @@ namespace SimTuning.Core.ModuleLogic
     /// </summary>
     public static class DynoLogic
     {
-        public static double GetLeistung(double n, double t, double p, double cw, double i, double r, double m, double c, double g, double s)
+        public static double GetLeistung(double n, double t, double p, double cw, double i, double r, double m, double c, double g, double aw, double s)
         {
             double v = GetGeschwindigkeit(r, n, i);
             double a = GetBeschleunigung(v, t);
 
             double fr = GetRollreibungskraft(c, m, g);
             double fa = GetBeschleunigungskraft(m, a);
-            double fw = GetStrömungswiderstandskraft(p, cw, a, v);
+            double fw = GetStrömungswiderstandskraft(p, cw, aw, v*3.6);
             double fs = GetSteigungskraft(m, g, s);
 
             double P = GetFahrzeugLeistung(fr, fw, fs, fa, v);
 
-            // Wattstunden
-            //double Wh = P * (t / 3600);
+            // Leistung (Watt)
+            double W = (P * 1000 / n) * 2 * Math.PI * (n / 60);
+            // Leistung (PS)
+            double Ps = W / 735.49875;
 
-            return P / 735.49875;
+            return W;
         }
 
         public static DynoPsModel ToDynoPSModel(this ObservablePoint observablePoint)
@@ -93,7 +95,7 @@ namespace SimTuning.Core.ModuleLogic
         /// <returns>Geschwindigkeit.</returns>
         private static double GetGeschwindigkeit(double r, double n, double i)
         {
-            return (2 * r * Math.PI * n * 60) / (i * 1000);
+            return (2 * r * Math.PI * 60) * (n / i);
         }
 
         /// <summary>
