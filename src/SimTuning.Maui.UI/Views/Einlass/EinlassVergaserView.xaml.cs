@@ -7,7 +7,7 @@ using SimTuning.Maui.UI.Views.Popups;
 
 namespace SimTuning.Maui.UI.Views.Einlass
 {
-    public partial class EinlassVergaserView : ContentView
+    public partial class EinlassVergaserView : ContentPage
     {
         public EinlassVergaserViewModel ViewModel => (EinlassVergaserViewModel)BindingContext;
 

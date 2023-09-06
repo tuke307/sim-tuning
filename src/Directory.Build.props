@@ -45,17 +45,17 @@
   <!-- Nuget configuration -->
   <ItemGroup>
     <!-- Nugets -->
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
-    <PackageReference Include="UnitsNet" Version="5.13.0" />
-    <PackageReference Include="CommunityToolkit.Maui" Version="5.1.0" />
-    <PackageReference Include="CommunityToolkit.Maui.MediaElement" Version="1.0.2" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+    <PackageReference Include="UnitsNet" Version="5.32.0" />
+    <PackageReference Include="CommunityToolkit.Maui" Version="5.3.0" />
+    <PackageReference Include="CommunityToolkit.Maui.MediaElement" Version="2.0.0" />
     <PackageReference Include="Sharpnado.Maui.TaskLoaderView" Version="2.5.1" />
     <PackageReference Include="Sharpnado.Tabs.Maui" Version="3.0.1" />
     <PackageReference Include="LiveChartsCore.SkiaSharpView.Maui" Version="2.0.0-beta.700" />
-    <PackageReference Include="SkiaSharp" Version="2.88.3" />
+    <PackageReference Include="SkiaSharp" Version="2.88.5" />
     <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Serilog" Version="2.12.0" />
+    <PackageReference Include="Serilog" Version="3.0.1" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
     <PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="7.0.0" />
@@ -66,12 +66,12 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
 
-    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="7.0.1">
+    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="7.0.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
 
-    <PackageReference Include="Roslynator.Analyzers" Version="4.3.0">
+    <PackageReference Include="Roslynator.Analyzers" Version="4.5.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

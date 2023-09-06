@@ -1,4 +1,4 @@
-﻿<ContentView x:Class="SimTuning.Maui.UI.Views.Einlass.EinlassKanalView"
+﻿<ContentPage x:Class="SimTuning.Maui.UI.Views.Einlass.EinlassKanalView"
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
@@ -51,22 +51,22 @@
                             <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
 
-                        <!--Einlass-Fläche-->
-                        <HorizontalStackLayout Grid.Row="0">
-                            <Label Text="Einlass- Fläche"
-                                   WidthRequest="{OnPlatform Default=60, WinUI=150}"
-                                   VerticalOptions="Center" />
+                    <Label Grid.Row="0"
+                           Grid.ColumnSpan="2"
+                           Style="{StaticResource LabelTitleStyle}"
+                           Text="Einlass-Resonanzlänge" />
 
-                            <Entry VerticalOptions="Center"
-                                   Keyboard="Numeric"
-                                   Text="{Binding Mode=TwoWay, Path=VehicleMotorEinlassFlaecheA}"
-                                   WidthRequest="200">
-                                <Entry.Behaviors>
-                                    <toolkit:TextValidationBehavior MinimumLength="1"
-                                                                    Flags="ValidateOnUnfocusing"
-                                                                    InvalidStyle="{StaticResource InvalidEntryStyle}" />
-                                </Entry.Behaviors>
-                            </Entry>
+                    <BoxView Grid.Row="1"
+                             Grid.ColumnSpan="2"
+                             Style="{StaticResource DividerBoxViewStyle}" />
+
+                    <!--Einlass-Fläche-->
+                    <Entry Grid.Row="2"
+                           Grid.Column="0"
+                           Keyboard="Numeric"
+                           Placeholder="Einlass-Fläche"
+                           Text="{Binding Mode=TwoWay, Path=VehicleMotorEinlassFlaecheA}"
+                           WidthRequest="250" />
 
                             <Picker VerticalOptions="Center"
                                     ItemsSource="{Binding Path=AreaQuantityUnits, Mode=OneTime}"
@@ -144,22 +144,13 @@
                         </HorizontalStackLayout>
 
 
-                        <!--Ansaugleitung-->
-                        <HorizontalStackLayout Grid.Row="4">
-                            <Label Text="Ø Ansaugleitung"
-                                   WidthRequest="60"
-                                   VerticalOptions="Center" />
-
-                            <Entry VerticalOptions="Center"
-                                   Keyboard="Numeric"
-                                   Text="{Binding Mode=TwoWay, Path=VehicleMotorEinlassDurchmesserD}"
-                                   WidthRequest="200">
-                                <Entry.Behaviors>
-                                    <toolkit:TextValidationBehavior MinimumLength="1"
-                                                                    Flags="ValidateOnUnfocusing"
-                                                                    InvalidStyle="{StaticResource InvalidEntryStyle}" />
-                                </Entry.Behaviors>
-                            </Entry>
+                    <!--Ansaugleitung-->
+                    <Entry Grid.Row="6"
+                           Grid.Column="0"
+                           Keyboard="Numeric"
+                           Placeholder="Ø Ansaugleitung"
+                           Text="{Binding Mode=TwoWay, Path=VehicleMotorEinlassDurchmesserD}"
+                           WidthRequest="250" />
 
                             <Picker VerticalOptions="Center"
                                     ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
@@ -192,4 +183,4 @@
             </Border>
         </Grid>
     </ScrollView>
-</ContentView>
+</ContentPage>
