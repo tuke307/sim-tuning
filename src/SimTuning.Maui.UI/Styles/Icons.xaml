@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-                    xmlns:styles="clr-namespace:SimTuning.Maui.UI.Styles"
-                    x:Class="SimTuning.Maui.UI.Styles.Icons">
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:styles="clr-namespace:SimTuning.Maui.UI.Styles"
+    x:Class="SimTuning.Maui.UI.Styles.Icons">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Colors.xaml" />
@@ -12,225 +13,262 @@
     <x:Double x:Key="SizeMediumIcon">30</x:Double>
     <x:Double x:Key="SizeLargeIcon">90</x:Double>
 
-    <FontImageSource x:Key="IconHelpCircleOutlineMedium"
-                     FontFamily="MaterialDesignIcons"
-                     Glyph="{x:Static styles:MaterialDesignIcons.HelpCircleOutline}"
-                     Size="{StaticResource SizeMediumIcon}"
-                     Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
+    <FontImageSource
+        x:Key="IconHelpCircleOutlineMedium"
+        FontFamily="MaterialDesignIcons"
+        Glyph="{x:Static styles:MaterialDesignIcons.HelpCircleOutline}"
+        Size="{StaticResource SizeMediumIcon}"
+        Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
 
-    <FontImageSource x:Key="IconPencilMedium"
-                     FontFamily="MaterialDesignIcons"
-                     Glyph="{x:Static styles:MaterialDesignIcons.Pencil}"
-                     Size="{StaticResource SizeMediumIcon}"
-                     Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
+    <FontImageSource
+        x:Key="IconPencilMedium"
+        FontFamily="MaterialDesignIcons"
+        Glyph="{x:Static styles:MaterialDesignIcons.Pencil}"
+        Size="{StaticResource SizeMediumIcon}"
+        Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
 
-    <FontImageSource x:Key="IconAtvMedium"
-                     FontFamily="MaterialDesignIcons"
-                     Glyph="{x:Static styles:MaterialDesignIcons.Atv}"
-                     Size="{StaticResource SizeMediumIcon}"
-                     Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
+    <FontImageSource
+        x:Key="IconAtvMedium"
+        FontFamily="MaterialDesignIcons"
+        Glyph="{x:Static styles:MaterialDesignIcons.Atv}"
+        Size="{StaticResource SizeMediumIcon}"
+        Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
 
-    <FontImageSource x:Key="IconInstagramMedium"
-                     FontFamily="MaterialDesignIcons"
-                     Glyph="{x:Static styles:MaterialDesignIcons.Instagram}"
-                     Size="{StaticResource SizeMediumIcon}"
-                     Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
+    <FontImageSource
+        x:Key="IconInstagramMedium"
+        FontFamily="MaterialDesignIcons"
+        Glyph="{x:Static styles:MaterialDesignIcons.Instagram}"
+        Size="{StaticResource SizeMediumIcon}"
+        Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
 
-    <FontImageSource x:Key="IconTwitterMedium"
-                     FontFamily="MaterialDesignIcons"
-                     Glyph="{x:Static styles:MaterialDesignIcons.Twitter}"
-                     Size="{StaticResource SizeMediumIcon}"
-                     Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
+    <FontImageSource
+        x:Key="IconTwitterMedium"
+        FontFamily="MaterialDesignIcons"
+        Glyph="{x:Static styles:MaterialDesignIcons.Twitter}"
+        Size="{StaticResource SizeMediumIcon}"
+        Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
 
-    <FontImageSource x:Key="IconEngineMedium"
-                     FontFamily="MaterialDesignIcons"
-                     Glyph="{x:Static styles:MaterialDesignIcons.Engine}"
-                     Size="{StaticResource SizeMediumIcon}"
-                     Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
+    <FontImageSource
+        x:Key="IconEngineMedium"
+        FontFamily="MaterialDesignIcons"
+        Glyph="{x:Static styles:MaterialDesignIcons.Engine}"
+        Size="{StaticResource SizeMediumIcon}"
+        Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
 
-    <FontImageSource x:Key="IconWebMedium"
-                     FontFamily="MaterialDesignIcons"
-                     Glyph="{x:Static styles:MaterialDesignIcons.Web}"
-                     Size="{StaticResource SizeMediumIcon}"
-                     Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
+    <FontImageSource
+        x:Key="IconWebMedium"
+        FontFamily="MaterialDesignIcons"
+        Glyph="{x:Static styles:MaterialDesignIcons.Web}"
+        Size="{StaticResource SizeMediumIcon}"
+        Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
 
-    <FontImageSource x:Key="IconRewindMedium"
-                     FontFamily="MaterialDesignIcons"
-                     Glyph="{x:Static styles:MaterialDesignIcons.Rewind}"
-                     Size="{StaticResource SizeMediumIcon}"
-                     Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
+    <FontImageSource
+        x:Key="IconRewindMedium"
+        FontFamily="MaterialDesignIcons"
+        Glyph="{x:Static styles:MaterialDesignIcons.Rewind}"
+        Size="{StaticResource SizeMediumIcon}"
+        Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
 
-    <FontImageSource x:Key="IconFastForwardMedium"
-                     FontFamily="MaterialDesignIcons"
-                     Glyph="{x:Static styles:MaterialDesignIcons.FastForward}"
-                     Size="{StaticResource SizeMediumIcon}"
-                     Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
+    <FontImageSource
+        x:Key="IconFastForwardMedium"
+        FontFamily="MaterialDesignIcons"
+        Glyph="{x:Static styles:MaterialDesignIcons.FastForward}"
+        Size="{StaticResource SizeMediumIcon}"
+        Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
 
-    <FontImageSource x:Key="IconPlayMedium"
-                     FontFamily="MaterialDesignIcons"
-                     Glyph="{x:Static styles:MaterialDesignIcons.Play}"
-                     Size="{StaticResource SizeMediumIcon}"
-                     Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
+    <FontImageSource
+        x:Key="IconPlayMedium"
+        FontFamily="MaterialDesignIcons"
+        Glyph="{x:Static styles:MaterialDesignIcons.Play}"
+        Size="{StaticResource SizeMediumIcon}"
+        Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
 
-    <FontImageSource x:Key="IconWalletGiftcardMedium"
-                     FontFamily="MaterialDesignIcons"
-                     Glyph="{x:Static styles:MaterialDesignIcons.WalletGiftcard}"
-                     Size="{StaticResource SizeMediumIcon}"
-                     Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
+    <FontImageSource
+        x:Key="IconWalletGiftcardMedium"
+        FontFamily="MaterialDesignIcons"
+        Glyph="{x:Static styles:MaterialDesignIcons.WalletGiftcard}"
+        Size="{StaticResource SizeMediumIcon}"
+        Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
 
-    <FontImageSource x:Key="IconViewDashboardMedium"
-                     FontFamily="MaterialDesignIcons"
-                     Glyph="{x:Static styles:MaterialDesignIcons.ViewDashboard}"
-                     Size="{StaticResource SizeMediumIcon}"
-                     Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
+    <FontImageSource
+        x:Key="IconViewDashboardMedium"
+        FontFamily="MaterialDesignIcons"
+        Glyph="{x:Static styles:MaterialDesignIcons.ViewDashboard}"
+        Size="{StaticResource SizeMediumIcon}"
+        Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
 
-    <FontImageSource x:Key="IconRefreshMedium"
-                     FontFamily="MaterialDesignIcons"
-                     Glyph="{x:Static styles:MaterialDesignIcons.Refresh}"
-                     Size="{StaticResource SizeMediumIcon}"
-                     Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
+    <FontImageSource
+        x:Key="IconRefreshMedium"
+        FontFamily="MaterialDesignIcons"
+        Glyph="{x:Static styles:MaterialDesignIcons.Refresh}"
+        Size="{StaticResource SizeMediumIcon}"
+        Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
 
-    <FontImageSource x:Key="IconPlusCircleMultipleOutlineMedium"
-                     FontFamily="MaterialDesignIcons"
-                     Glyph="{x:Static styles:MaterialDesignIcons.PlusCircleMultipleOutline}"
-                     Size="{StaticResource SizeMediumIcon}"
-                     Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
+    <FontImageSource
+        x:Key="IconPlusCircleMultipleOutlineMedium"
+        FontFamily="MaterialDesignIcons"
+        Glyph="{x:Static styles:MaterialDesignIcons.PlusCircleMultipleOutline}"
+        Size="{StaticResource SizeMediumIcon}"
+        Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
 
-    <FontImageSource x:Key="IconPauseMedium"
-                     FontFamily="MaterialDesignIcons"
-                     Glyph="{x:Static styles:MaterialDesignIcons.Pause}"
-                     Size="{StaticResource SizeMediumIcon}"
-                     Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
+    <FontImageSource
+        x:Key="IconPauseMedium"
+        FontFamily="MaterialDesignIcons"
+        Glyph="{x:Static styles:MaterialDesignIcons.Pause}"
+        Size="{StaticResource SizeMediumIcon}"
+        Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
 
-    <FontImageSource x:Key="IconDeleteCircleOutlineMedium"
-                     FontFamily="MaterialDesignIcons"
-                     Glyph="{x:Static styles:MaterialDesignIcons.DeleteCircleOutline}"
-                     Size="{StaticResource SizeMediumIcon}"
-                     Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
+    <FontImageSource
+        x:Key="IconDeleteCircleOutlineMedium"
+        FontFamily="MaterialDesignIcons"
+        Glyph="{x:Static styles:MaterialDesignIcons.DeleteCircleOutline}"
+        Size="{StaticResource SizeMediumIcon}"
+        Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
 
-    <FontImageSource x:Key="IconMenuMedium"
-                     FontFamily="MaterialDesignIcons"
-                     Glyph="{x:Static styles:MaterialDesignIcons.Menu}"
-                     Size="{StaticResource SizeMediumIcon}"
-                     Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
+    <FontImageSource
+        x:Key="IconMenuMedium"
+        FontFamily="MaterialDesignIcons"
+        Glyph="{x:Static styles:MaterialDesignIcons.Menu}"
+        Size="{StaticResource SizeMediumIcon}"
+        Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
 
-    <FontImageSource x:Key="IconFilterMedium"
-                     FontFamily="MaterialDesignIcons"
-                     Glyph="{x:Static styles:MaterialDesignIcons.Filter}"
-                     Size="{StaticResource SizeMediumIcon}"
-                     Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
+    <FontImageSource
+        x:Key="IconFilterMedium"
+        FontFamily="MaterialDesignIcons"
+        Glyph="{x:Static styles:MaterialDesignIcons.Filter}"
+        Size="{StaticResource SizeMediumIcon}"
+        Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
 
-    <FontImageSource x:Key="IconFileImportOutlineMedium"
-                     FontFamily="MaterialDesignIcons"
-                     Glyph="{x:Static styles:MaterialDesignIcons.FileImportOutline}"
-                     Size="{StaticResource SizeMediumIcon}"
-                     Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
+    <FontImageSource
+        x:Key="IconFileImportOutlineMedium"
+        FontFamily="MaterialDesignIcons"
+        Glyph="{x:Static styles:MaterialDesignIcons.FileImportOutline}"
+        Size="{StaticResource SizeMediumIcon}"
+        Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
 
-    <FontImageSource x:Key="IconEmailMedium"
-                     FontFamily="MaterialDesignIcons"
-                     Glyph="{x:Static styles:MaterialDesignIcons.Email}"
-                     Size="{StaticResource SizeMediumIcon}"
-                     Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
+    <FontImageSource
+        x:Key="IconEmailMedium"
+        FontFamily="MaterialDesignIcons"
+        Glyph="{x:Static styles:MaterialDesignIcons.Email}"
+        Size="{StaticResource SizeMediumIcon}"
+        Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
 
-    <FontImageSource x:Key="IconContentSaveMedium"
-                     FontFamily="MaterialDesignIcons"
-                     Glyph="{x:Static styles:MaterialDesignIcons.ContentSave}"
-                     Size="{StaticResource SizeMediumIcon}"
-                     Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
+    <FontImageSource
+        x:Key="IconContentSaveMedium"
+        FontFamily="MaterialDesignIcons"
+        Glyph="{x:Static styles:MaterialDesignIcons.ContentSave}"
+        Size="{StaticResource SizeMediumIcon}"
+        Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
 
-    <FontImageSource x:Key="IconContentCutMedium"
-                     FontFamily="MaterialDesignIcons"
-                     Glyph="{x:Static styles:MaterialDesignIcons.ContentCut}"
-                     Size="{StaticResource SizeMediumIcon}"
-                     Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
+    <FontImageSource
+        x:Key="IconContentCutMedium"
+        FontFamily="MaterialDesignIcons"
+        Glyph="{x:Static styles:MaterialDesignIcons.ContentCut}"
+        Size="{StaticResource SizeMediumIcon}"
+        Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
 
-    <FontImageSource x:Key="IconChevronRightMedium"
-                     FontFamily="MaterialDesignIcons"
-                     Glyph="{x:Static styles:MaterialDesignIcons.ChevronRight}"
-                     Size="{StaticResource SizeMediumIcon}"
-                     Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
+    <FontImageSource
+        x:Key="IconChevronRightMedium"
+        FontFamily="MaterialDesignIcons"
+        Glyph="{x:Static styles:MaterialDesignIcons.ChevronRight}"
+        Size="{StaticResource SizeMediumIcon}"
+        Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
 
-    <FontImageSource x:Key="IconChartBellCurveMedium"
-                     FontFamily="MaterialDesignIcons"
-                     Glyph="{x:Static styles:MaterialDesignIcons.ChartBellCurve}"
-                     Size="{StaticResource SizeMediumIcon}"
-                     Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
+    <FontImageSource
+        x:Key="IconChartBellCurveMedium"
+        FontFamily="MaterialDesignIcons"
+        Glyph="{x:Static styles:MaterialDesignIcons.ChartBellCurve}"
+        Size="{StaticResource SizeMediumIcon}"
+        Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
 
-    <FontImageSource x:Key="IconArrowRightMedium"
-                     FontFamily="MaterialDesignIcons"
-                     Glyph="{x:Static styles:MaterialDesignIcons.ArrowRight}"
-                     Size="{StaticResource SizeMediumIcon}"
-                     Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
+    <FontImageSource
+        x:Key="IconArrowRightMedium"
+        FontFamily="MaterialDesignIcons"
+        Glyph="{x:Static styles:MaterialDesignIcons.ArrowRight}"
+        Size="{StaticResource SizeMediumIcon}"
+        Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
 
-    <FontImageSource x:Key="IconBackupRestoreMedium"
-                     FontFamily="MaterialDesignIcons"
-                     Glyph="{x:Static styles:MaterialDesignIcons.BackupRestore}"
-                     Size="{StaticResource SizeMediumIcon}"
-                     Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
+    <FontImageSource
+        x:Key="IconBackupRestoreMedium"
+        FontFamily="MaterialDesignIcons"
+        Glyph="{x:Static styles:MaterialDesignIcons.BackupRestore}"
+        Size="{StaticResource SizeMediumIcon}"
+        Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
 
-    <FontImageSource x:Key="IconArrowLeftMedium"
-                     FontFamily="MaterialDesignIcons"
-                     Glyph="{x:Static styles:MaterialDesignIcons.ArrowLeft}"
-                     Size="{StaticResource SizeMediumIcon}"
-                     Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
+    <FontImageSource
+        x:Key="IconArrowLeftMedium"
+        FontFamily="MaterialDesignIcons"
+        Glyph="{x:Static styles:MaterialDesignIcons.ArrowLeft}"
+        Size="{StaticResource SizeMediumIcon}"
+        Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
 
-    <FontImageSource x:Key="IconCheckMedium"
-                     FontFamily="MaterialDesignIcons"
-                     Glyph="{x:Static styles:MaterialDesignIcons.Check}"
-                     Size="{StaticResource SizeMediumIcon}"
-                     Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
+    <FontImageSource
+        x:Key="IconCheckMedium"
+        FontFamily="MaterialDesignIcons"
+        Glyph="{x:Static styles:MaterialDesignIcons.Check}"
+        Size="{StaticResource SizeMediumIcon}"
+        Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
 
-    <FontImageSource x:Key="IconCloseMedium"
-                     FontFamily="MaterialDesignIcons"
-                     Glyph="{x:Static styles:MaterialDesignIcons.Close}"
-                     Size="{StaticResource SizeMediumIcon}"
-                     Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
+    <FontImageSource
+        x:Key="IconCloseMedium"
+        FontFamily="MaterialDesignIcons"
+        Glyph="{x:Static styles:MaterialDesignIcons.Close}"
+        Size="{StaticResource SizeMediumIcon}"
+        Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
 
-    <FontImageSource x:Key="IconCogMedium"
-                     FontFamily="MaterialDesignIcons"
-                     Glyph="{x:Static styles:MaterialDesignIcons.Cog}"
-                     Size="{StaticResource SizeMediumIcon}"
-                     Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
+    <FontImageSource
+        x:Key="IconCogMedium"
+        FontFamily="MaterialDesignIcons"
+        Glyph="{x:Static styles:MaterialDesignIcons.Cog}"
+        Size="{StaticResource SizeMediumIcon}"
+        Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
 
-    <FontImageSource x:Key="IconFlagMedium"
-                     FontFamily="MaterialDesignIcons"
-                     Glyph="{x:Static styles:MaterialDesignIcons.Flag}"
-                     Size="{StaticResource SizeMediumIcon}"
-                     Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
+    <FontImageSource
+        x:Key="IconFlagMedium"
+        FontFamily="MaterialDesignIcons"
+        Glyph="{x:Static styles:MaterialDesignIcons.Flag}"
+        Size="{StaticResource SizeMediumIcon}"
+        Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
 
-    <FontImageSource x:Key="IconHistoryMedium"
-                     FontFamily="MaterialDesignIcons"
-                     Glyph="{x:Static styles:MaterialDesignIcons.History}"
-                     Size="{StaticResource SizeMediumIcon}"
-                     Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
+    <FontImageSource
+        x:Key="IconHistoryMedium"
+        FontFamily="MaterialDesignIcons"
+        Glyph="{x:Static styles:MaterialDesignIcons.History}"
+        Size="{StaticResource SizeMediumIcon}"
+        Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
 
-    <FontImageSource x:Key="IconMapMedium"
-                     FontFamily="MaterialDesignIcons"
-                     Glyph="{x:Static styles:MaterialDesignIcons.Map}"
-                     Size="{StaticResource SizeMediumIcon}"
-                     Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
+    <FontImageSource
+        x:Key="IconMapMedium"
+        FontFamily="MaterialDesignIcons"
+        Glyph="{x:Static styles:MaterialDesignIcons.Map}"
+        Size="{StaticResource SizeMediumIcon}"
+        Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
 
-    <FontImageSource x:Key="IconRestoreMedium"
-                     FontFamily="MaterialDesignIcons"
-                     Glyph="{x:Static styles:MaterialDesignIcons.Restore}"
-                     Size="{StaticResource SizeMediumIcon}"
-                     Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
+    <FontImageSource
+        x:Key="IconRestoreMedium"
+        FontFamily="MaterialDesignIcons"
+        Glyph="{x:Static styles:MaterialDesignIcons.Restore}"
+        Size="{StaticResource SizeMediumIcon}"
+        Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
 
-    <FontImageSource x:Key="IconStopMedium"
-                     FontFamily="MaterialDesignIcons"
-                     Glyph="{x:Static styles:MaterialDesignIcons.Stop}"
-                     Size="{StaticResource SizeMediumIcon}"
-                     Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
+    <FontImageSource
+        x:Key="IconStopMedium"
+        FontFamily="MaterialDesignIcons"
+        Glyph="{x:Static styles:MaterialDesignIcons.Stop}"
+        Size="{StaticResource SizeMediumIcon}"
+        Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
 
-    <FontImageSource x:Key="IconTimerMedium"
-                     FontFamily="MaterialDesignIcons"
-                     Glyph="{x:Static styles:MaterialDesignIcons.Timer}"
-                     Size="{StaticResource SizeMediumIcon}"
-                     Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
+    <FontImageSource
+        x:Key="IconTimerMedium"
+        FontFamily="MaterialDesignIcons"
+        Glyph="{x:Static styles:MaterialDesignIcons.Timer}"
+        Size="{StaticResource SizeMediumIcon}"
+        Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
 
-    <FontImageSource x:Key="IconDeleteMedium"
-                     FontFamily="MaterialDesignIcons"
-                     Glyph="{x:Static styles:MaterialDesignIcons.Delete}"
-                     Size="{StaticResource SizeMediumIcon}"
-                     Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
+    <FontImageSource
+        x:Key="IconDeleteMedium"
+        FontFamily="MaterialDesignIcons"
+        Glyph="{x:Static styles:MaterialDesignIcons.Delete}"
+        Size="{StaticResource SizeMediumIcon}"
+        Color="{AppThemeBinding Light={StaticResource BodyLight}, Dark={StaticResource BodyDark}}" />
 </ResourceDictionary>

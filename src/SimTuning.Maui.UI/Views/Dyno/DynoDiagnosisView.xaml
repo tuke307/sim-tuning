@@ -1,9 +1,10 @@
-﻿<ContentView x:Class="SimTuning.Maui.UI.Views.Dyno.DynoDiagnosisView"
-             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
-             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
-             x:DataType="vm:DynoDiagnosisViewModel">
+﻿<ContentView
+    x:Class="SimTuning.Maui.UI.Views.Dyno.DynoDiagnosisView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
+    xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
+    x:DataType="vm:DynoDiagnosisViewModel">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -11,65 +12,75 @@
         </Grid.RowDefinitions>
 
         <!--Plot-->
-        <Border Margin="10"
-                Grid.Row="0">
-            <lvc:CartesianChart Series="{Binding Mode=TwoWay, Path=PlotStrength}"
-                                XAxes="{Binding XAxes}"
-                                YAxes="{Binding YAxes}" />
+        <Border
+            Margin="10"
+            Grid.Row="0">
+            <lvc:CartesianChart
+                Series="{Binding Mode=TwoWay, Path=PlotStrength}"
+                XAxes="{Binding XAxes}"
+                YAxes="{Binding YAxes}" />
         </Border>
 
         <!--Einstellungen-->
-        <Border Margin="10"
-                Grid.Row="1">
+        <Border
+            Margin="10"
+            Grid.Row="1">
             <StackLayout>
-                <Label Text="Einstellungen"
-                       FontSize="Medium"
-                       FontAttributes="Bold" />
+                <Label
+                    Text="Einstellungen"
+                    FontSize="Medium"
+                    FontAttributes="Bold" />
 
                 <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
-                <Entry Placeholder="Gesamtübersetzung"
-                       Keyboard="Numeric"
-                       Text="{Binding Mode=TwoWay, Path=Gesamtübersetzung}"
-                       WidthRequest="250">
+                <Entry
+                    Placeholder="Gesamtübersetzung"
+                    Keyboard="Numeric"
+                    Text="{Binding Mode=TwoWay, Path=Gesamtübersetzung}"
+                    WidthRequest="250">
                 </Entry>
 
                 <StackLayout Orientation="Horizontal">
-                    <Entry Placeholder="Gewicht"
-                           Keyboard="Numeric"
-                           Text="{Binding Mode=TwoWay, Path=DynoVehicleGewicht}"
-                           WidthRequest="250">
+                    <Entry
+                        Placeholder="Gewicht"
+                        Keyboard="Numeric"
+                        Text="{Binding Mode=TwoWay, Path=DynoVehicleGewicht}"
+                        WidthRequest="250">
                     </Entry>
 
-                    <Picker Margin="5, 0, 0, 0"
-                            ItemsSource="{Binding Path=MassQuantityUnits, Mode=OneTime}"
-                            HorizontalOptions="StartAndExpand"
-                            VerticalOptions="CenterAndExpand"
-                            SelectedItem="{Binding Mode=TwoWay, Path=DynoVehicleGewichtUnit}"
-                            ItemDisplayBinding="{Binding Abbreviation}">
+                    <Picker
+                        Margin="5, 0, 0, 0"
+                        ItemsSource="{Binding Path=MassQuantityUnits, Mode=OneTime}"
+                        HorizontalOptions="StartAndExpand"
+                        VerticalOptions="CenterAndExpand"
+                        SelectedItem="{Binding Mode=TwoWay, Path=DynoVehicleGewichtUnit}"
+                        ItemDisplayBinding="{Binding Abbreviation}">
                     </Picker>
                 </StackLayout>
 
                 <StackLayout Orientation="Horizontal">
-                    <Entry Placeholder="Frontfläche"
-                           Keyboard="Numeric"
-                           Text="{Binding Mode=TwoWay, Path=FrontA}"
-                           WidthRequest="250">
+                    <Entry
+                        Placeholder="Frontfläche"
+                        Keyboard="Numeric"
+                        Text="{Binding Mode=TwoWay, Path=FrontA}"
+                        WidthRequest="250">
                     </Entry>
 
-                    <Picker Margin="5, 0, 0, 0"
-                            ItemsSource="{Binding Path=AreaQuantityUnits, Mode=OneTime}"
-                            HorizontalOptions="StartAndExpand"
-                            VerticalOptions="CenterAndExpand"
-                            SelectedItem="{Binding Mode=TwoWay, Path=FrontAUnit}"
-                            ItemDisplayBinding="{Binding Abbreviation}">
+                    <Picker
+                        Margin="5, 0, 0, 0"
+                        ItemsSource="{Binding Path=AreaQuantityUnits, Mode=OneTime}"
+                        HorizontalOptions="StartAndExpand"
+                        VerticalOptions="CenterAndExpand"
+                        SelectedItem="{Binding Mode=TwoWay, Path=FrontAUnit}"
+                        ItemDisplayBinding="{Binding Abbreviation}">
                     </Picker>
                 </StackLayout>
 
-                <Entry Placeholder="cw"
-                       Keyboard="Numeric"
-                       Text="{Binding Mode=TwoWay, Path=Cw}"
-                       WidthRequest="250">
+                <Entry
+                    Placeholder="cw"
+                    Keyboard="Numeric"
+                    Text="{Binding Mode=TwoWay, Path=Cw}"
+                    WidthRequest="250">
                 </Entry>
 
                 <!--<StackLayout Orientation="Horizontal">
@@ -88,9 +99,10 @@
                 </StackLayout>-->
 
                 <!--Refresh-->
-                <Button HorizontalOptions="FillAndExpand"
-                        ImageSource="{StaticResource IconRefreshMedium}"
-                        Command="{Binding RefreshPlotCommand}">
+                <Button
+                    HorizontalOptions="FillAndExpand"
+                    ImageSource="{StaticResource IconRefreshMedium}"
+                    Command="{Binding RefreshPlotCommand}">
                 </Button>
             </StackLayout>
         </Border>

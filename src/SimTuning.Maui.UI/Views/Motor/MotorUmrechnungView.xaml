@@ -1,8 +1,9 @@
-﻿<ContentView x:Class="SimTuning.Maui.UI.Views.Motor.MotorUmrechnungView"
-             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
-             x:DataType="vm:MotorUmrechnungViewModel">
+﻿<ContentView
+    x:Class="SimTuning.Maui.UI.Views.Motor.MotorUmrechnungView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
+    x:DataType="vm:MotorUmrechnungViewModel">
 
     <ScrollView>
         <Grid>
@@ -21,43 +22,49 @@
                             <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
 
-                        <Label Grid.Column="0"
-                               Style="{StaticResource LabelTitleStyle}"
-                               Text="Grundlegende Daten" />
+                        <Label
+                            Grid.Column="0"
+                            Style="{StaticResource LabelTitleStyle}"
+                            Text="Grundlegende Daten" />
 
-                        <ImageButton Grid.Column="1"
-                                     Clicked="HelperVehiclesButton_Clicked"
-                                     Source="{StaticResource IconAtvMedium}" />
+                        <ImageButton
+                            Grid.Column="1"
+                            Clicked="HelperVehiclesButton_Clicked"
+                            Source="{StaticResource IconAtvMedium}" />
                     </Grid>
 
                     <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
                     <StackLayout Orientation="Horizontal">
-                        <Entry Keyboard="Numeric"
-                               Placeholder="Hub"
-                               Text="{Binding Mode=TwoWay, Path=VehicleMotorHubL}"
-                               WidthRequest="250" />
+                        <Entry
+                            Keyboard="Numeric"
+                            Placeholder="Hub"
+                            Text="{Binding Mode=TwoWay, Path=VehicleMotorHubL}"
+                            WidthRequest="250" />
 
-                        <Picker Margin="5,0,0,0"
-                                ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
-                                ItemDisplayBinding="{Binding Abbreviation}"
-                                HorizontalOptions="StartAndExpand"
-                                SelectedItem="{Binding Path=VehicleMotorHubLUnit}"
-                                VerticalOptions="CenterAndExpand" />
+                        <Picker
+                            Margin="5,0,0,0"
+                            ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+                            ItemDisplayBinding="{Binding Abbreviation}"
+                            HorizontalOptions="StartAndExpand"
+                            SelectedItem="{Binding Path=VehicleMotorHubLUnit}"
+                            VerticalOptions="CenterAndExpand" />
                     </StackLayout>
 
                     <StackLayout Orientation="Horizontal">
-                        <Entry Keyboard="Numeric"
-                               Placeholder="Pleullänge"
-                               Text="{Binding Mode=TwoWay, Path=VehicleMotorPleulL}"
-                               WidthRequest="250" />
+                        <Entry
+                            Keyboard="Numeric"
+                            Placeholder="Pleullänge"
+                            Text="{Binding Mode=TwoWay, Path=VehicleMotorPleulL}"
+                            WidthRequest="250" />
 
-                        <Picker Margin="5,0,0,0"
-                                ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
-                                ItemDisplayBinding="{Binding Abbreviation}"
-                                HorizontalOptions="StartAndExpand"
-                                SelectedItem="{Binding Path=VehicleMotorPleulLUnit}"
-                                VerticalOptions="CenterAndExpand" />
+                        <Picker
+                            Margin="5,0,0,0"
+                            ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+                            ItemDisplayBinding="{Binding Abbreviation}"
+                            HorizontalOptions="StartAndExpand"
+                            SelectedItem="{Binding Path=VehicleMotorPleulLUnit}"
+                            VerticalOptions="CenterAndExpand" />
                         <!--<Label  Margin="5, 0, 0, 0"
                                VerticalOptions="Center">
                             mm
@@ -65,17 +72,19 @@
                     </StackLayout>
 
                     <StackLayout Orientation="Horizontal">
-                        <Entry Keyboard="Numeric"
-                               Placeholder="Deachsierung"
-                               Text="{Binding Mode=TwoWay, Path=VehicleMotorDeachsierungL}"
-                               WidthRequest="250" />
+                        <Entry
+                            Keyboard="Numeric"
+                            Placeholder="Deachsierung"
+                            Text="{Binding Mode=TwoWay, Path=VehicleMotorDeachsierungL}"
+                            WidthRequest="250" />
 
-                        <Picker Margin="5,0,0,0"
-                                ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
-                                ItemDisplayBinding="{Binding Abbreviation}"
-                                HorizontalOptions="StartAndExpand"
-                                SelectedItem="{Binding Path=VehicleMotorDeachsierungLUnit}"
-                                VerticalOptions="CenterAndExpand" />
+                        <Picker
+                            Margin="5,0,0,0"
+                            ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+                            ItemDisplayBinding="{Binding Abbreviation}"
+                            HorizontalOptions="StartAndExpand"
+                            SelectedItem="{Binding Path=VehicleMotorDeachsierungLUnit}"
+                            VerticalOptions="CenterAndExpand" />
                         <!--<Label  Margin="5, 0, 0, 0"
                                VerticalOptions="Center">
                             mm
@@ -83,18 +92,20 @@
                     </StackLayout>
 
                     <StackLayout Orientation="Horizontal">
-                        <Entry Keyboard="Numeric"
-                               IsEnabled="False"
-                               Placeholder="Hubradius"
-                               Text="{Binding Mode=OneWay, Path=VehicleMotorHubR}"
-                               WidthRequest="250" />
+                        <Entry
+                            Keyboard="Numeric"
+                            IsEnabled="False"
+                            Placeholder="Hubradius"
+                            Text="{Binding Mode=OneWay, Path=VehicleMotorHubR}"
+                            WidthRequest="250" />
 
-                        <Picker Margin="5,0,0,0"
-                                ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
-                                ItemDisplayBinding="{Binding Abbreviation}"
-                                HorizontalOptions="StartAndExpand"
-                                SelectedItem="{Binding Path=VehicleMotorHubRUnit}"
-                                VerticalOptions="CenterAndExpand" />
+                        <Picker
+                            Margin="5,0,0,0"
+                            ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+                            ItemDisplayBinding="{Binding Abbreviation}"
+                            HorizontalOptions="StartAndExpand"
+                            SelectedItem="{Binding Path=VehicleMotorHubRUnit}"
+                            VerticalOptions="CenterAndExpand" />
                         <!--<Label  Margin="5, 0, 0, 0"
                                VerticalOptions="Center">
                             mm
@@ -106,39 +117,46 @@
             <!--  UMRECHNUNG  -->
             <Border Grid.Row="1">
                 <StackLayout>
-                    <Label Style="{StaticResource LabelTitleStyle}"
-                           Text="Umrechnung" />
+                    <Label
+                        Style="{StaticResource LabelTitleStyle}"
+                        Text="Umrechnung" />
 
                     <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
-                    <StackLayout Grid.Row="0"
-                                 Orientation="Horizontal">
-                        <Entry Keyboard="Numeric"
-                               IsEnabled="True"
-                               Placeholder="Abstand vom OT"
-                               Text="{Binding Mode=TwoWay, Path=DegreeDifferenceToOT}"
-                               WidthRequest="250" />
+                    <StackLayout
+                        Grid.Row="0"
+                        Orientation="Horizontal">
+                        <Entry
+                            Keyboard="Numeric"
+                            IsEnabled="True"
+                            Placeholder="Abstand vom OT"
+                            Text="{Binding Mode=TwoWay, Path=DegreeDifferenceToOT}"
+                            WidthRequest="250" />
 
-                        <Label Margin="5,0,0,0"
-                               VerticalOptions="Center">
+                        <Label
+                            Margin="5,0,0,0"
+                            VerticalOptions="Center">
                             °KW
                         </Label>
                     </StackLayout>
 
-                    <StackLayout Grid.Row="1"
-                                 Orientation="Horizontal">
-                        <Entry Keyboard="Numeric"
-                               IsEnabled="false"
-                               Placeholder="Abstand vom OT"
-                               Text="{Binding Mode=OneWay, Path=LengthDifferenceToOT}"
-                               WidthRequest="250" />
+                    <StackLayout
+                        Grid.Row="1"
+                        Orientation="Horizontal">
+                        <Entry
+                            Keyboard="Numeric"
+                            IsEnabled="false"
+                            Placeholder="Abstand vom OT"
+                            Text="{Binding Mode=OneWay, Path=LengthDifferenceToOT}"
+                            WidthRequest="250" />
 
-                        <Picker Margin="5,0,0,0"
-                                ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
-                                ItemDisplayBinding="{Binding Abbreviation}"
-                                HorizontalOptions="StartAndExpand"
-                                SelectedItem="{Binding Path=LengthDifferenceToOTUnit}"
-                                VerticalOptions="CenterAndExpand" />
+                        <Picker
+                            Margin="5,0,0,0"
+                            ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+                            ItemDisplayBinding="{Binding Abbreviation}"
+                            HorizontalOptions="StartAndExpand"
+                            SelectedItem="{Binding Path=LengthDifferenceToOTUnit}"
+                            VerticalOptions="CenterAndExpand" />
                         <!--<Label  Margin="5, 0, 0, 0"
                                VerticalOptions="Center">
                             mm
@@ -150,56 +168,67 @@
             <!--  STEUERZEIT  -->
             <Border Grid.Row="2">
                 <StackLayout>
-                    <Label Style="{StaticResource LabelTitleStyle}"
-                           Text="Steuerzeit erhöhen" />
+                    <Label
+                        Style="{StaticResource LabelTitleStyle}"
+                        Text="Steuerzeit erhöhen" />
 
                     <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
                     <Label Text="Steuerzeit:" />
                     <StackLayout Orientation="Horizontal">
-                        <Entry Keyboard="Numeric"
-                               Placeholder="vorher"
-                               Text="{Binding Mode=TwoWay, Path=SteuerzeitVorher}"
-                               WidthRequest="150" />
-                        <Entry Keyboard="Numeric"
-                               Placeholder="nachher"
-                               Text="{Binding Mode=TwoWay, Path=SteuerzeitNachher}"
-                               WidthRequest="150" />
+                        <Entry
+                            Keyboard="Numeric"
+                            Placeholder="vorher"
+                            Text="{Binding Mode=TwoWay, Path=SteuerzeitVorher}"
+                            WidthRequest="150" />
+                        <Entry
+                            Keyboard="Numeric"
+                            Placeholder="nachher"
+                            Text="{Binding Mode=TwoWay, Path=SteuerzeitNachher}"
+                            WidthRequest="150" />
                     </StackLayout>
 
-                    <Label Margin="0,20,0,0"
-                           Text="Steuerung über:"
-                           VerticalOptions="Center" />
+                    <Label
+                        Margin="0,20,0,0"
+                        Text="Steuerung über:"
+                        VerticalOptions="Center" />
 
-                    <RadioButton x:Name="RB1"
-                                 IsChecked="{Binding Mode=OneWayToSource, Path=KolbenunterkanteChecked}"
-                                 Content="Kolben-unterkante">
+                    <RadioButton
+                        x:Name="RB1"
+                        IsChecked="{Binding Mode=OneWayToSource, Path=KolbenunterkanteChecked}"
+                        Content="Kolben-unterkante">
                         <RadioButton.Triggers>
-                            <DataTrigger Binding="{Binding Source={x:Reference RB2}, Path=IsChecked}"
-                                         TargetType="RadioButton"
-                                         Value="true">
-                                <Setter Property="IsChecked"
-                                        Value="false" />
+                            <DataTrigger
+                                Binding="{Binding Source={x:Reference RB2}, Path=IsChecked}"
+                                TargetType="RadioButton"
+                                Value="true">
+                                <Setter
+                                    Property="IsChecked"
+                                    Value="false" />
                             </DataTrigger>
                         </RadioButton.Triggers>
                     </RadioButton>
 
-                    <RadioButton x:Name="RB2"
-                                 Margin="0,-20,0,0"
-                                 IsChecked="{Binding Mode=OneWayToSource, Path=KolbenoberkanteChecked}"
-                                 Content="Kolben-oberkante">
+                    <RadioButton
+                        x:Name="RB2"
+                        Margin="0,-20,0,0"
+                        IsChecked="{Binding Mode=OneWayToSource, Path=KolbenoberkanteChecked}"
+                        Content="Kolben-oberkante">
                         <RadioButton.Triggers>
-                            <DataTrigger Binding="{Binding Source={x:Reference RB1}, Path=IsChecked}"
-                                         TargetType="RadioButton"
-                                         Value="true">
-                                <Setter Property="IsChecked"
-                                        Value="false" />
+                            <DataTrigger
+                                Binding="{Binding Source={x:Reference RB1}, Path=IsChecked}"
+                                TargetType="RadioButton"
+                                Value="true">
+                                <Setter
+                                    Property="IsChecked"
+                                    Value="false" />
                             </DataTrigger>
                         </RadioButton.Triggers>
                     </RadioButton>
 
-                    <Label Margin="0,20,0,0"
-                           Text="Steuerwinkel:" />
+                    <Label
+                        Margin="0,20,0,0"
+                        Text="Steuerwinkel:" />
 
                     <Grid HorizontalOptions="FillAndExpand">
                         <Grid.ColumnDefinitions>
@@ -209,60 +238,69 @@
 
                         <StackLayout Grid.Column="0">
                             <Label Text="öffnet" />
-                            <Entry Grid.Column="0"
-                                   Keyboard="Numeric"
-                                   IsEnabled="False"
-                                   Placeholder="vorher"
-                                   Text="{Binding Mode=OneWay, Path=SteuerwinkelVorherOeffnet}" />
+                            <Entry
+                                Grid.Column="0"
+                                Keyboard="Numeric"
+                                IsEnabled="False"
+                                Placeholder="vorher"
+                                Text="{Binding Mode=OneWay, Path=SteuerwinkelVorherOeffnet}" />
 
-                            <Entry Grid.Column="0"
-                                   Keyboard="Numeric"
-                                   IsEnabled="False"
-                                   Placeholder="nachher"
-                                   Text="{Binding Mode=OneWay, Path=SteuerwinkelNachherOeffnet}" />
+                            <Entry
+                                Grid.Column="0"
+                                Keyboard="Numeric"
+                                IsEnabled="False"
+                                Placeholder="nachher"
+                                Text="{Binding Mode=OneWay, Path=SteuerwinkelNachherOeffnet}" />
                         </StackLayout>
 
                         <StackLayout Grid.Column="1">
                             <Label Text="schließt" />
 
-                            <Entry Grid.Column="1"
-                                   Keyboard="Numeric"
-                                   IsEnabled="False"
-                                   Placeholder="vorher"
-                                   Text="{Binding Mode=OneWay, Path=SteuerwinkelNachherOeffnet}" />
+                            <Entry
+                                Grid.Column="1"
+                                Keyboard="Numeric"
+                                IsEnabled="False"
+                                Placeholder="vorher"
+                                Text="{Binding Mode=OneWay, Path=SteuerwinkelNachherOeffnet}" />
 
-                            <Entry Grid.Column="1"
-                                   Keyboard="Numeric"
-                                   IsEnabled="False"
-                                   Placeholder="nachher"
-                                   Text="{Binding Mode=OneWay, Path=SteuerwinkelNachherSchließt}" />
+                            <Entry
+                                Grid.Column="1"
+                                Keyboard="Numeric"
+                                IsEnabled="False"
+                                Placeholder="nachher"
+                                Text="{Binding Mode=OneWay, Path=SteuerwinkelNachherSchließt}" />
                         </StackLayout>
                     </Grid>
 
                     <!--  Unterschied  -->
-                    <StackLayout Margin="0,20,0,0"
-                                 Orientation="Horizontal">
-                        <Entry Keyboard="Numeric"
-                               IsEnabled="false"
-                               Placeholder="Unterschied"
-                               Text="{Binding Mode=OneWay, Path=DifferenceDegree}"
-                               WidthRequest="250" />
+                    <StackLayout
+                        Margin="0,20,0,0"
+                        Orientation="Horizontal">
+                        <Entry
+                            Keyboard="Numeric"
+                            IsEnabled="false"
+                            Placeholder="Unterschied"
+                            Text="{Binding Mode=OneWay, Path=DifferenceDegree}"
+                            WidthRequest="250" />
 
-                        <Label Margin="5,0,0,0"
-                               VerticalOptions="Center">
+                        <Label
+                            Margin="5,0,0,0"
+                            VerticalOptions="Center">
                             °KW
                         </Label>
                     </StackLayout>
 
                     <StackLayout Orientation="Horizontal">
-                        <Entry Keyboard="Numeric"
-                               IsEnabled="false"
-                               Placeholder="Unterschied"
-                               Text="{Binding Mode=OneWay, Path=DifferenceLength}"
-                               WidthRequest="250" />
+                        <Entry
+                            Keyboard="Numeric"
+                            IsEnabled="false"
+                            Placeholder="Unterschied"
+                            Text="{Binding Mode=OneWay, Path=DifferenceLength}"
+                            WidthRequest="250" />
 
-                        <Label Margin="5,0,0,0"
-                               VerticalOptions="Center">
+                        <Label
+                            Margin="5,0,0,0"
+                            VerticalOptions="Center">
                             mm
                         </Label>
                     </StackLayout>

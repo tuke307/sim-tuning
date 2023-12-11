@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ResourceDictionary x:Class="SimTuning.Maui.UI.Themes.Primary.Teal"
-                    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+<ResourceDictionary
+    x:Class="SimTuning.Maui.UI.Themes.Primary.Teal"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
     <Color x:Key="Primary50">#e0f2f1</Color>
     <Color x:Key="Primary50Foreground">#DD000000</Color>
     <Color x:Key="Primary100">#b2dfdb</Color>

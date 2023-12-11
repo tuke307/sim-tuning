@@ -1,11 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             Title="Auswertung-Geschwindigkeit"
-             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
-             x:Class="SimTuning.Maui.UI.Views.Dyno.DynoGeschwindigkeitView"
-             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
-             x:DataType="vm:DynoGeschwindigkeitViewModel">
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Auswertung-Geschwindigkeit"
+    xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
+    x:Class="SimTuning.Maui.UI.Views.Dyno.DynoGeschwindigkeitView"
+    xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
+    x:DataType="vm:DynoGeschwindigkeitViewModel">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -13,20 +14,23 @@
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
-        <Border Margin="10"
-                Grid.Row="0">
+        <Border
+            Margin="10"
+            Grid.Row="0">
             <StackLayout>
-                <ImageButton Margin="5"
-                             HorizontalOptions="FillAndExpand"
-                             VerticalOptions="Center"
-                             Source="{StaticResource IconRefreshMedium}"
-                             Command="{Binding RefreshPlotCommand}" />
+                <ImageButton
+                    Margin="5"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="Center"
+                    Source="{StaticResource IconRefreshMedium}"
+                    Command="{Binding RefreshPlotCommand}" />
             </StackLayout>
         </Border>
 
-        <Border Margin="10"
-                Grid.Row="1"
-                VerticalOptions="FillAndExpand">
+        <Border
+            Margin="10"
+            Grid.Row="1"
+            VerticalOptions="FillAndExpand">
             <StackLayout>
                 <!--<Label  Text="Beschleunigungs-Experiment"
                                         FontSize="Medium"
@@ -37,18 +41,20 @@
                          HorizontalOptions="Fill"
                          Margin="0, 0, 0, 5" />-->
 
-                <lvc:CartesianChart Series="{Binding Mode=OneWay, Path=PlotGeschwindigkeit}"
-                                    HeightRequest="400" />
+                <lvc:CartesianChart
+                    Series="{Binding Mode=OneWay, Path=PlotGeschwindigkeit}"
+                    HeightRequest="400" />
             </StackLayout>
         </Border>
 
-        <Button WidthRequest="100"
-                HeightRequest="60"
-                Margin="15"
-                Grid.Row="2"
-                HorizontalOptions="End"
-                VerticalOptions="Center"
-                ImageSource="{StaticResource IconChevronRightMedium}"
-                Command="{Binding ShowAusrollenCommand}" />
+        <Button
+            WidthRequest="100"
+            HeightRequest="60"
+            Margin="15"
+            Grid.Row="2"
+            HorizontalOptions="End"
+            VerticalOptions="Center"
+            ImageSource="{StaticResource IconChevronRightMedium}"
+            Command="{Binding ShowAusrollenCommand}" />
     </Grid>
 </ContentPage>

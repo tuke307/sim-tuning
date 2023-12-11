@@ -1,12 +1,13 @@
-﻿<ContentView x:Class="SimTuning.Maui.UI.Views.Dyno.DynoAudioView"
-             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:behavior="clr-namespace:SimTuning.Maui.UI.Behaviors"
-             xmlns:views="clr-namespace:SimTuning.Maui.UI.Views.Dyno"
-             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
-             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
-             x:DataType="vm:DynoAudioViewModel">
+﻿<ContentView
+    x:Class="SimTuning.Maui.UI.Views.Dyno.DynoAudioView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:behavior="clr-namespace:SimTuning.Maui.UI.Behaviors"
+    xmlns:views="clr-namespace:SimTuning.Maui.UI.Views.Dyno"
+    xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
+    x:DataType="vm:DynoAudioViewModel">
     <ContentView.Resources>
         <behavior:InvertedBoolConverter x:Key="inverter" />
     </ContentView.Resources>
@@ -25,16 +26,19 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <Border Margin="10"
-                        Grid.Row="0">
-                    <lvc:CartesianChart Series="{Binding Mode=TwoWay, Path=PlotAudio}"
-                                        XAxes="{Binding XAxes}"
-                                        YAxes="{Binding YAxes}" />
+                <Border
+                    Margin="10"
+                    Grid.Row="0">
+                    <lvc:CartesianChart
+                        Series="{Binding Mode=TwoWay, Path=PlotAudio}"
+                        XAxes="{Binding XAxes}"
+                        YAxes="{Binding YAxes}" />
                 </Border>
 
                 <!--EINSTELLUNGEN-->
-                <Border Margin="10"
-                        Grid.Row="1">
+                <Border
+                    Margin="10"
+                    Grid.Row="1">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto" />
@@ -49,80 +53,91 @@
                                 </Label>
 
                                 <StackLayout Orientation="Horizontal">
-                                    <Entry Text="{Binding Mode=TwoWay, Path=Frequenzbeginn}"
-                                           Placeholder="von"
-                                           WidthRequest="100"
-                                           Keyboard="Numeric" />
-                                    <Label Text="-"
-                                           Margin="10, 0, 10, 0"
-                                           VerticalOptions="Center" />
-                                    <Entry Text="{Binding Mode=TwoWay, Path=Frequenzende}"
-                                           Placeholder="bis"
-                                           WidthRequest="100"
-                                           Keyboard="Numeric" />
+                                    <Entry
+                                        Text="{Binding Mode=TwoWay, Path=Frequenzbeginn}"
+                                        Placeholder="von"
+                                        WidthRequest="100"
+                                        Keyboard="Numeric" />
+                                    <Label
+                                        Text="-"
+                                        Margin="10, 0, 10, 0"
+                                        VerticalOptions="Center" />
+                                    <Entry
+                                        Text="{Binding Mode=TwoWay, Path=Frequenzende}"
+                                        Placeholder="bis"
+                                        WidthRequest="100"
+                                        Keyboard="Numeric" />
                                 </StackLayout>
                             </StackLayout>
 
                             <!--Rauschen-->
                             <Label Text="Rauschen" />
 
-                            <Slider Minimum="1"
-                                    Maximum="200"
-                                    Value="{Binding Mode=TwoWay, Path=Intensity}">
+                            <Slider
+                                Minimum="1"
+                                Maximum="200"
+                                Value="{Binding Mode=TwoWay, Path=Intensity}">
                             </Slider>
 
                             <!--Auflösungsqualität-->
                             <Label Text="Auflösungsqualität" />
 
-                            <Slider Minimum="0"
-                                    Maximum="4"
-                                    Value="{Binding Mode=TwoWay, Path=FftSizeIndex}">
+                            <Slider
+                                Minimum="0"
+                                Maximum="4"
+                                Value="{Binding Mode=TwoWay, Path=FftSizeIndex}">
                             </Slider>
 
-                            <Button ImageSource="{StaticResource IconRefreshMedium}"
-                                    Command="{Binding RefreshPlotCommand}"
-                                    CommandParameter="false">
+                            <Button
+                                ImageSource="{StaticResource IconRefreshMedium}"
+                                Command="{Binding RefreshPlotCommand}"
+                                CommandParameter="false">
                             </Button>
                         </StackLayout>
                     </Grid>
                 </Border>
 
                 <!--EINSTELLUNGEN-->
-                <Border Margin="10"
-                        Grid.Row="2">
+                <Border
+                    Margin="10"
+                    Grid.Row="2">
                     <Grid>
                         <StackLayout Grid.Row="0">
                             <!--Punktabstand Toleranz-->
                             <Label Text="Punktabstand Toleranz" />
 
-                            <Slider Minimum="1"
-                                    Maximum="300"
-                                    Value="{Binding Mode=TwoWay, Path=Epsilon}"
-                                    VerticalOptions="CenterAndExpand" />
+                            <Slider
+                                Minimum="1"
+                                Maximum="300"
+                                Value="{Binding Mode=TwoWay, Path=Epsilon}"
+                                VerticalOptions="CenterAndExpand" />
 
                             <!--Graph-->
-                            <Picker Title="Graphauswahl"
-                                    ItemsSource="{Binding Mode=OneWay, Path=Graphs}"
-                                    SelectedItem="{Binding Mode=TwoWay, Path=Graph}">
+                            <Picker
+                                Title="Graphauswahl"
+                                ItemsSource="{Binding Mode=OneWay, Path=Graphs}"
+                                SelectedItem="{Binding Mode=TwoWay, Path=Graph}">
                             </Picker>
 
                             <!--Filter-->
-                            <Button ImageSource="{StaticResource IconFilterMedium}"
-                                    Command="{Binding FilterPlotCommand}" />
+                            <Button
+                                ImageSource="{StaticResource IconFilterMedium}"
+                                Command="{Binding FilterPlotCommand}" />
                         </StackLayout>
                     </Grid>
                 </Border>
             </Grid>
         </ContentView>
 
-        <toolkit:MediaElement Grid.Row="1"
-                              x:Name="mediaElement"
-                              ShouldAutoPlay="False"
-                              MediaEnded="OnMediaEnded"
-                              MediaFailed="OnMediaFailed"
-                              MediaOpened="OnMediaOpened"
-                              PositionChanged="OnPositionChanged"
-                              StateChanged="OnStateChanged"
-                              SeekCompleted="OnSeekCompleted" />
+        <toolkit:MediaElement
+            Grid.Row="1"
+            x:Name="mediaElement"
+            ShouldAutoPlay="False"
+            MediaEnded="OnMediaEnded"
+            MediaFailed="OnMediaFailed"
+            MediaOpened="OnMediaOpened"
+            PositionChanged="OnPositionChanged"
+            StateChanged="OnStateChanged"
+            SeekCompleted="OnSeekCompleted" />
     </Grid>
 </ContentView>

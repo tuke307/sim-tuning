@@ -1,31 +1,36 @@
-﻿<ContentPage x:Class="SimTuning.Maui.UI.Views.Einlass.EinlassMainView"
-             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:tabs="http://sharpnado.com"
-             xmlns:local="clr-namespace:SimTuning.Maui.UI.Views.Einlass"
-             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
-             x:DataType="vm:EinlassMainViewModel">
+﻿<ContentPage
+    x:Class="SimTuning.Maui.UI.Views.Einlass.EinlassMainView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:tabs="http://sharpnado.com"
+    xmlns:local="clr-namespace:SimTuning.Maui.UI.Views.Einlass"
+    xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
+    x:DataType="vm:EinlassMainViewModel">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <tabs:TabHostView Grid.Row="0"
-                          SelectedIndex="{Binding Source={x:Reference Switcher}, Path=SelectedIndex, Mode=TwoWay}">
+        <tabs:TabHostView
+            Grid.Row="0"
+            SelectedIndex="{Binding Source={x:Reference Switcher}, Path=SelectedIndex, Mode=TwoWay}">
             <tabs:TabHostView.Tabs>
-                <tabs:UnderlinedTabItem Label="Kanal"
-                                        Style="{StaticResource UnderlinedTabItemStyle}" />
-                <tabs:UnderlinedTabItem Label="Vergaser"
-                                        Style="{StaticResource UnderlinedTabItemStyle}" />
+                <tabs:UnderlinedTabItem
+                    Label="Kanal"
+                    Style="{StaticResource UnderlinedTabItemStyle}" />
+                <tabs:UnderlinedTabItem
+                    Label="Vergaser"
+                    Style="{StaticResource UnderlinedTabItemStyle}" />
             </tabs:TabHostView.Tabs>
         </tabs:TabHostView>
 
         <!--  swipable views  -->
-        <tabs:ViewSwitcher x:Name="Switcher"
-                           Animate="True"
-                           Grid.Row="1"
-                           SelectedIndex="{Binding EinlassTabIndex, Mode=TwoWay}">
+        <tabs:ViewSwitcher
+            x:Name="Switcher"
+            Animate="True"
+            Grid.Row="1"
+            SelectedIndex="{Binding EinlassTabIndex, Mode=TwoWay}">
             <local:EinlassKanalView />
             <local:EinlassVergaserView />
             <!--<tabs:DelayedView x:TypeArguments="local:EinlassKanalView"

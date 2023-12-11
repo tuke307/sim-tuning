@@ -1,8 +1,9 @@
-﻿<ContentView x:Class="SimTuning.Maui.UI.Views.Motor.MotorSteuerdiagrammView"
-             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
-             x:DataType="vm:MotorSteuerdiagrammViewModel">
+﻿<ContentView
+    x:Class="SimTuning.Maui.UI.Views.Motor.MotorSteuerdiagrammView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
+    x:DataType="vm:MotorSteuerdiagrammViewModel">
 
     <ScrollView>
         <Grid>
@@ -20,25 +21,29 @@
                             <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
 
-                        <Label Grid.Column="0"
-                               Style="{StaticResource LabelTitleStyle}"
-                               Text="Diagramm" />
+                        <Label
+                            Grid.Column="0"
+                            Style="{StaticResource LabelTitleStyle}"
+                            Text="Diagramm" />
 
-                        <ImageButton Grid.Column="1"
-                                     Clicked="HelperVehiclesButton_Clicked"
-                                     Source="{StaticResource IconAtvMedium}" />
+                        <ImageButton
+                            Grid.Column="1"
+                            Clicked="HelperVehiclesButton_Clicked"
+                            Source="{StaticResource IconAtvMedium}" />
 
-                        <ImageButton Grid.Column="2"
-                                     Margin="5,0,0,0"
-                                     Clicked="HelperEnginesButton_Clicked"
-                                     Source="{StaticResource IconHelpCircleOutlineMedium}" />
+                        <ImageButton
+                            Grid.Column="2"
+                            Margin="5,0,0,0"
+                            Clicked="HelperEnginesButton_Clicked"
+                            Source="{StaticResource IconHelpCircleOutlineMedium}" />
                     </Grid>
 
                     <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
-                    <Image Margin="10"
-                           HeightRequest="200"
-                           Source="{Binding Mode=OneWay, Path=PortTimingCircle}" />
+                    <Image
+                        Margin="10"
+                        HeightRequest="200"
+                        Source="{Binding Mode=OneWay, Path=PortTimingCircle}" />
 
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -54,96 +59,112 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
-                        <Label Grid.Row="1"
-                               Grid.Column="0"
-                               Text="Einlass (°)"
-                               VerticalOptions="Center" />
-                        <Label Grid.Row="2"
-                               Grid.Column="0"
-                               Text="Auslass (°)"
-                               VerticalOptions="Center" />
-                        <Label Grid.Row="3"
-                               Grid.Column="0"
-                               Text="Überströmer (°)"
-                               VerticalOptions="Center" />
-                        <Entry Grid.Row="1"
-                               Grid.Column="1"
-                               Keyboard="Numeric"
-                               MinimumWidthRequest="60"
-                               Placeholder=" "
-                               Text="{Binding Mode=TwoWay, Path=SteuerzeitEinlass}" />
-                        <Entry Grid.Row="2"
-                               Grid.Column="1"
-                               Keyboard="Numeric"
-                               MinimumWidthRequest="60"
-                               Placeholder=" "
-                               Text="{Binding Mode=TwoWay, Path=SteuerzeitAuslass}" />
-                        <Entry Grid.Row="3"
-                               Grid.Column="1"
-                               Keyboard="Numeric"
-                               MinimumWidthRequest="60"
-                               Placeholder=" "
-                               Text="{Binding Mode=TwoWay, Path=SteuerzeitUeberstroemer}" />
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Text="Einlass (°)"
+                            VerticalOptions="Center" />
+                        <Label
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            Text="Auslass (°)"
+                            VerticalOptions="Center" />
+                        <Label
+                            Grid.Row="3"
+                            Grid.Column="0"
+                            Text="Überströmer (°)"
+                            VerticalOptions="Center" />
+                        <Entry
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Keyboard="Numeric"
+                            MinimumWidthRequest="60"
+                            Placeholder=" "
+                            Text="{Binding Mode=TwoWay, Path=SteuerzeitEinlass}" />
+                        <Entry
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Keyboard="Numeric"
+                            MinimumWidthRequest="60"
+                            Placeholder=" "
+                            Text="{Binding Mode=TwoWay, Path=SteuerzeitAuslass}" />
+                        <Entry
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            Keyboard="Numeric"
+                            MinimumWidthRequest="60"
+                            Placeholder=" "
+                            Text="{Binding Mode=TwoWay, Path=SteuerzeitUeberstroemer}" />
 
-                        <Label Grid.Row="0"
-                               Grid.Column="2"
-                               Text="öffnet (°)" />
-                        <Entry Grid.Row="1"
-                               Grid.Column="2"
-                               Keyboard="Numeric"
-                               IsEnabled="False"
-                               MinimumWidthRequest="46"
-                               Placeholder=" "
-                               Text="{Binding Mode=OneWay, Path=Einlass_Steuerwinkel_oeffnen}" />
-                        <Entry Grid.Row="2"
-                               Grid.Column="2"
-                               Keyboard="Numeric"
-                               IsEnabled="False"
-                               MinimumWidthRequest="46"
-                               Placeholder=" "
-                               Text="{Binding Mode=OneWay, Path=Auslass_Steuerwinkel_oeffnen}" />
-                        <Entry Grid.Row="3"
-                               Grid.Column="2"
-                               Keyboard="Numeric"
-                               IsEnabled="False"
-                               MinimumWidthRequest="46"
-                               Placeholder=" "
-                               Text="{Binding Mode=OneWay, Path=Ueberstroemer_Steuerwinkel_oeffnen}" />
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="2"
+                            Text="öffnet (°)" />
+                        <Entry
+                            Grid.Row="1"
+                            Grid.Column="2"
+                            Keyboard="Numeric"
+                            IsEnabled="False"
+                            MinimumWidthRequest="46"
+                            Placeholder=" "
+                            Text="{Binding Mode=OneWay, Path=Einlass_Steuerwinkel_oeffnen}" />
+                        <Entry
+                            Grid.Row="2"
+                            Grid.Column="2"
+                            Keyboard="Numeric"
+                            IsEnabled="False"
+                            MinimumWidthRequest="46"
+                            Placeholder=" "
+                            Text="{Binding Mode=OneWay, Path=Auslass_Steuerwinkel_oeffnen}" />
+                        <Entry
+                            Grid.Row="3"
+                            Grid.Column="2"
+                            Keyboard="Numeric"
+                            IsEnabled="False"
+                            MinimumWidthRequest="46"
+                            Placeholder=" "
+                            Text="{Binding Mode=OneWay, Path=Ueberstroemer_Steuerwinkel_oeffnen}" />
 
-                        <Label Grid.Row="0"
-                               Grid.Column="3"
-                               Text="schließt (°)" />
-                        <Entry Grid.Row="1"
-                               Grid.Column="3"
-                               Keyboard="Numeric"
-                               IsEnabled="False"
-                               MinimumWidthRequest="44"
-                               Placeholder=" "
-                               Text="{Binding Mode=OneWay, Path=Einlass_Steuerwinkel_schließen}" />
-                        <Entry Grid.Row="2"
-                               Grid.Column="3"
-                               Keyboard="Numeric"
-                               IsEnabled="False"
-                               MinimumWidthRequest="44"
-                               Placeholder=" "
-                               Text="{Binding Mode=OneWay, Path=Auslass_Steuerwinkel_schließen}" />
-                        <Entry Grid.Row="3"
-                               Grid.Column="3"
-                               Keyboard="Numeric"
-                               IsEnabled="False"
-                               MinimumWidthRequest="44"
-                               Placeholder=" "
-                               Text="{Binding Mode=OneWay, Path=Ueberstroemer_Steuerwinkel_schließen}" />
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="3"
+                            Text="schließt (°)" />
+                        <Entry
+                            Grid.Row="1"
+                            Grid.Column="3"
+                            Keyboard="Numeric"
+                            IsEnabled="False"
+                            MinimumWidthRequest="44"
+                            Placeholder=" "
+                            Text="{Binding Mode=OneWay, Path=Einlass_Steuerwinkel_schließen}" />
+                        <Entry
+                            Grid.Row="2"
+                            Grid.Column="3"
+                            Keyboard="Numeric"
+                            IsEnabled="False"
+                            MinimumWidthRequest="44"
+                            Placeholder=" "
+                            Text="{Binding Mode=OneWay, Path=Auslass_Steuerwinkel_schließen}" />
+                        <Entry
+                            Grid.Row="3"
+                            Grid.Column="3"
+                            Keyboard="Numeric"
+                            IsEnabled="False"
+                            MinimumWidthRequest="44"
+                            Placeholder=" "
+                            Text="{Binding Mode=OneWay, Path=Ueberstroemer_Steuerwinkel_schließen}" />
                     </Grid>
 
                     <StackLayout Orientation="Horizontal">
-                        <Label Text="Vorauslasszeit (°)"
-                               VerticalOptions="Center" />
-                        <Entry Keyboard="Numeric"
-                               IsEnabled="False"
-                               Placeholder=" "
-                               Text="{Binding Mode=OneWay, Path=SteuerzeitVorauslass}"
-                               WidthRequest="100" />
+                        <Label
+                            Text="Vorauslasszeit (°)"
+                            VerticalOptions="Center" />
+                        <Entry
+                            Keyboard="Numeric"
+                            IsEnabled="False"
+                            Placeholder=" "
+                            Text="{Binding Mode=OneWay, Path=SteuerzeitVorauslass}"
+                            WidthRequest="100" />
                     </StackLayout>
                 </StackLayout>
             </Border>

@@ -1,14 +1,15 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<mct:Popup  xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-            xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-            xmlns:mct="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
-            xmlns:models="clr-namespace:SimTuning.Data.Models;assembly=SimTuning.Data"
-            xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
-            x:Class="SimTuning.Maui.UI.Views.Popups.PortTimingPopup"
-            x:DataType="vm:PortTimingViewModel"
-            Color="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}"
-            Size="500, 700">
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<mct:Popup
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mct="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
+    xmlns:models="clr-namespace:SimTuning.Data.Models;assembly=SimTuning.Data"
+    xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
+    x:Class="SimTuning.Maui.UI.Views.Popups.PortTimingPopup"
+    x:DataType="vm:PortTimingViewModel"
+    Color="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}"
+    Size="500, 700">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -16,12 +17,13 @@
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
-        <Picker Grid.Row="0"
-                ItemsSource="{Binding Engines}"
-                SelectedItem="{Binding Mode=TwoWay, Path=Engine}"
-                ItemDisplayBinding="{Binding Name}"
-                HorizontalOptions="CenterAndExpand"
-                Margin="5">
+        <Picker
+            Grid.Row="0"
+            ItemsSource="{Binding Engines}"
+            SelectedItem="{Binding Mode=TwoWay, Path=Engine}"
+            ItemDisplayBinding="{Binding Name}"
+            HorizontalOptions="CenterAndExpand"
+            Margin="5">
         </Picker>
 
         <ScrollView Grid.Row="1">
@@ -53,11 +55,12 @@
                                 <!--#region VehicleMotorEinlassSteuerzeitSZ-->
                                 <!--ohne Unit-->
 
-                                <Entry Placeholder="Steuerzeit"
-                                       Text="{Binding Mode=TwoWay, Path=VehicleMotorEinlassSteuerzeitSZ}"
-                                       Grid.ColumnSpan="2"
-                                       Grid.Row="4"
-                                       Keyboard="Numeric">
+                                <Entry
+                                    Placeholder="Steuerzeit"
+                                    Text="{Binding Mode=TwoWay, Path=VehicleMotorEinlassSteuerzeitSZ}"
+                                    Grid.ColumnSpan="2"
+                                    Grid.Row="4"
+                                    Keyboard="Numeric">
                                 </Entry>
 
                                 <!--#endregion VehicleMotorEinlassSteuerzeitSZ-->
@@ -90,11 +93,12 @@
                                 <!--#region VehicleMotorAuslassSteuerzeitSZ-->
                                 <!--ohne Unit-->
 
-                                <Entry Placeholder="Steuerzeit"
-                                       Text="{Binding Mode=TwoWay, Path=VehicleMotorAuslassSteuerzeitSZ}"
-                                       Grid.ColumnSpan="2"
-                                       Grid.Row="4"
-                                       Keyboard="Numeric">
+                                <Entry
+                                    Placeholder="Steuerzeit"
+                                    Text="{Binding Mode=TwoWay, Path=VehicleMotorAuslassSteuerzeitSZ}"
+                                    Grid.ColumnSpan="2"
+                                    Grid.Row="4"
+                                    Keyboard="Numeric">
                                 </Entry>
 
                                 <!--#endregion VehicleMotorAuslassSteuerzeitSZ-->
@@ -127,11 +131,12 @@
                             <!--#region VehicleMotorUeberstroemerSteuerzeitSZ-->
                             <!--ohne Unit-->
 
-                            <Entry Placeholder="Steuerzeit"
-                                   Text="{Binding Mode=TwoWay, Path=VehicleMotorUeberstroemerSteuerzeitSZ}"
-                                   Grid.ColumnSpan="2"
-                                   Grid.Row="4"
-                                   Keyboard="Numeric">
+                            <Entry
+                                Placeholder="Steuerzeit"
+                                Text="{Binding Mode=TwoWay, Path=VehicleMotorUeberstroemerSteuerzeitSZ}"
+                                Grid.ColumnSpan="2"
+                                Grid.Row="4"
+                                Keyboard="Numeric">
                             </Entry>
 
                             <!--#endregion VehicleMotorUeberstroemerSteuerzeitSZ-->
@@ -143,9 +148,10 @@
             </Border>
         </ScrollView>
 
-        <ImageButton Grid.Row="2"
-                     Clicked="Button_Clicked"
-                     Margin="5"
-                     Source="{StaticResource IconChevronRightMedium}" />
+        <ImageButton
+            Grid.Row="2"
+            Clicked="Button_Clicked"
+            Margin="5"
+            Source="{StaticResource IconChevronRightMedium}" />
     </Grid>
 </mct:Popup>

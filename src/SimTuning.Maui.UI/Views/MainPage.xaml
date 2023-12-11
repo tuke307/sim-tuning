@@ -1,57 +1,66 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-       xmlns:behaviors="clr-namespace:SimTuning.Maui.UI.Behaviors"
-       xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
-       xmlns:home="clr-namespace:SimTuning.Maui.UI.Views.Home"
-       xmlns:einlass="clr-namespace:SimTuning.Maui.UI.Views.Einlass"
-       xmlns:auslass="clr-namespace:SimTuning.Maui.UI.Views.Auslass"
-       xmlns:motor="clr-namespace:SimTuning.Maui.UI.Views.Motor"
-       xmlns:dyno="clr-namespace:SimTuning.Maui.UI.Views.Dyno"
-       xmlns:vehicles="clr-namespace:SimTuning.Maui.UI.Views.Vehicles"
-       xmlns:einstellungen="clr-namespace:SimTuning.Maui.UI.Views.Einstellungen"
-       x:Class="SimTuning.Maui.UI.Views.MainPage"
-       x:DataType="vm:MainPageViewModel"
-       xmlns:sys="clr-namespace:System;assembly=netstandard"
-       Shell.FlyoutBehavior="Flyout">
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:behaviors="clr-namespace:SimTuning.Maui.UI.Behaviors"
+    xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
+    xmlns:home="clr-namespace:SimTuning.Maui.UI.Views.Home"
+    xmlns:einlass="clr-namespace:SimTuning.Maui.UI.Views.Einlass"
+    xmlns:auslass="clr-namespace:SimTuning.Maui.UI.Views.Auslass"
+    xmlns:motor="clr-namespace:SimTuning.Maui.UI.Views.Motor"
+    xmlns:dyno="clr-namespace:SimTuning.Maui.UI.Views.Dyno"
+    xmlns:vehicles="clr-namespace:SimTuning.Maui.UI.Views.Vehicles"
+    xmlns:einstellungen="clr-namespace:SimTuning.Maui.UI.Views.Einstellungen"
+    x:Class="SimTuning.Maui.UI.Views.MainPage"
+    x:DataType="vm:MainPageViewModel"
+    xmlns:sys="clr-namespace:System;assembly=netstandard"
+    Shell.FlyoutBehavior="Flyout">
 
     <Shell.FlyoutHeader>
-        <Grid BackgroundColor="{StaticResource Primary800}"
-              HeightRequest="200" />
+        <Grid
+            BackgroundColor="{StaticResource Primary800}"
+            HeightRequest="200" />
     </Shell.FlyoutHeader>
 
-    <FlyoutItem Title="Home"
-                FlyoutIcon="{StaticResource IconViewDashboardMedium}">
+    <FlyoutItem
+        Title="Home"
+        FlyoutIcon="{StaticResource IconViewDashboardMedium}">
         <ShellContent ContentTemplate="{DataTemplate home:HomeView}" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Einlass"
-                FlyoutIcon="{StaticResource IconArrowRightMedium}">
+    <FlyoutItem
+        Title="Einlass"
+        FlyoutIcon="{StaticResource IconArrowRightMedium}">
         <ShellContent ContentTemplate="{DataTemplate einlass:EinlassMainView}" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Auslass"
-                FlyoutIcon="{StaticResource IconArrowLeftMedium}">
+    <FlyoutItem
+        Title="Auslass"
+        FlyoutIcon="{StaticResource IconArrowLeftMedium}">
         <ShellContent ContentTemplate="{DataTemplate auslass:AuslassMainView}" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Motor"
-                FlyoutIcon="{StaticResource IconEngineMedium}">
+    <FlyoutItem
+        Title="Motor"
+        FlyoutIcon="{StaticResource IconEngineMedium}">
         <ShellContent ContentTemplate="{DataTemplate motor:MotorMainView}" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Dyno"
-                FlyoutIcon="{StaticResource IconChartBellCurveMedium}">
+    <FlyoutItem
+        Title="Dyno"
+        FlyoutIcon="{StaticResource IconChartBellCurveMedium}">
         <ShellContent ContentTemplate="{DataTemplate dyno:DynoMainView}" />
     </FlyoutItem>
     
-    <FlyoutItem Title="Fahrzeuge"
-                FlyoutIcon="{StaticResource IconAtvMedium}">
+    <FlyoutItem
+        Title="Fahrzeuge"
+        FlyoutIcon="{StaticResource IconAtvMedium}">
         <ShellContent ContentTemplate="{DataTemplate vehicles:VehiclesView}" />
     </FlyoutItem>
     
-    <FlyoutItem Title="Einstellungen"
-                FlyoutIcon="{StaticResource IconCogMedium}">
+    <FlyoutItem
+        Title="Einstellungen"
+        FlyoutIcon="{StaticResource IconCogMedium}">
         <ShellContent ContentTemplate="{DataTemplate einstellungen:EinstellungenView}" />
     </FlyoutItem>
 </Shell>

@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ResourceDictionary x:Class="SimTuning.Maui.UI.Themes.Accent.Cyan"
-                    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+<ResourceDictionary
+    x:Class="SimTuning.Maui.UI.Themes.Accent.Cyan"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
     <Color x:Key="Accent100">#84ffff</Color>
     <Color x:Key="Accent100Foreground">#DD000000</Color>
     <Color x:Key="Accent200">#18ffff</Color>

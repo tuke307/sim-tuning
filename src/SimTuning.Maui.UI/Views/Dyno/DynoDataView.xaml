@@ -1,11 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             x:Class="SimTuning.Maui.UI.Views.Dyno.DynoDataView"
-             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
-             xmlns:models="clr-namespace:SimTuning.Data.Models;assembly=SimTuning.Data"
-             x:DataType="vm:DynoDataViewModel">
+<ContentView
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Class="SimTuning.Maui.UI.Views.Dyno.DynoDataView"
+    xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
+    xmlns:models="clr-namespace:SimTuning.Data.Models;assembly=SimTuning.Data"
+    x:DataType="vm:DynoDataViewModel">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -15,15 +16,17 @@
 
         <Border Grid.Row="0">
             <StackLayout>
-                <Label Text="Auswahl"
-                       FontSize="Medium"
-                       FontAttributes="Bold" />
+                <Label
+                    Text="Auswahl"
+                    FontSize="Medium"
+                    FontAttributes="Bold" />
 
                 <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
-                <ListView HeightRequest="200"
-                          ItemsSource="{Binding Mode=TwoWay, Path=Dynos}"
-                          SelectedItem="{Binding Mode=TwoWay, Path=Dyno}">
+                <ListView
+                    HeightRequest="200"
+                    ItemsSource="{Binding Mode=TwoWay, Path=Dynos}"
+                    SelectedItem="{Binding Mode=TwoWay, Path=Dyno}">
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="models:DynoModel">
                             <ViewCell>
@@ -37,23 +40,25 @@
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
 
-                                    <Label Grid.Row="0"
-                                           Grid.Column="0"
-                                           Text="{Binding Name}"
-                                           
-                                           FontAttributes="Bold" />
+                                    <Label
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        Text="{Binding Name}"
+                                        FontAttributes="Bold" />
                                     
-                                    <Label Grid.Row="1"
-                                           Grid.Column="0"
-                                           Text="{Binding Beschreibung}"
-                                           FontAttributes="Italic"
-                                           VerticalOptions="End" />
+                                    <Label
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        Text="{Binding Beschreibung}"
+                                        FontAttributes="Italic"
+                                        VerticalOptions="End" />
 
-                                    <Label Grid.RowSpan="2"
-                                           Grid.Column="1"
-                                           Text="{Binding Vehicle.Name}"
-                                           FontAttributes="Italic"
-                                           VerticalOptions="End" />
+                                    <Label
+                                        Grid.RowSpan="2"
+                                        Grid.Column="1"
+                                        Text="{Binding Vehicle.Name}"
+                                        FontAttributes="Italic"
+                                        VerticalOptions="End" />
                                 </Grid>
                             </ViewCell>
                         </DataTemplate>
@@ -67,18 +72,20 @@
                         <ColumnDefinition Width="auto" />
                     </Grid.ColumnDefinitions>
 
-                    <ImageButton Grid.Column="0"
-                                 MinimumWidthRequest="50"
-                                 Source="{StaticResource IconPlusCircleMultipleOutlineMedium}"
-                                 Clicked="NewDynoButton_Clicked">
+                    <ImageButton
+                        Grid.Column="0"
+                        MinimumWidthRequest="50"
+                        Source="{StaticResource IconPlusCircleMultipleOutlineMedium}"
+                        Clicked="NewDynoButton_Clicked">
                     </ImageButton>
 
-                    <ImageButton Grid.Column="2"
-                                 MinimumWidthRequest="50"
-                                 Opacity="0.7"
-                                 BackgroundColor="{AppThemeBinding Light={StaticResource Primary600}, Dark={StaticResource Primary600}}"
-                                 Source="{StaticResource IconDeleteCircleOutlineMedium}"
-                                 Command="{Binding DeleteDynoCommand}">
+                    <ImageButton
+                        Grid.Column="2"
+                        MinimumWidthRequest="50"
+                        Opacity="0.7"
+                        BackgroundColor="{AppThemeBinding Light={StaticResource Primary600}, Dark={StaticResource Primary600}}"
+                        Source="{StaticResource IconDeleteCircleOutlineMedium}"
+                        Command="{Binding DeleteDynoCommand}">
                     </ImageButton>
                 </Grid>
             </StackLayout>
@@ -86,9 +93,10 @@
 
         <Border Grid.Row="1">
             <StackLayout>
-                <Label Text="Daten"
-                       FontSize="Medium"
-                       FontAttributes="Bold" />
+                <Label
+                    Text="Daten"
+                    FontSize="Medium"
+                    FontAttributes="Bold" />
 
                 <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
@@ -103,48 +111,54 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
-                    <StackLayout Grid.Column="0"
-                                 Grid.RowSpan="3">
-                        <Entry Placeholder="Name"
-                               Text="{Binding Mode=TwoWay, Path=DynoName}"
-                               Margin="5">
+                    <StackLayout
+                        Grid.Column="0"
+                        Grid.RowSpan="3">
+                        <Entry
+                            Placeholder="Name"
+                            Text="{Binding Mode=TwoWay, Path=DynoName}"
+                            Margin="5">
                         </Entry>
 
-                        <Editor Placeholder="Beschreibung"
-                                Text="{Binding Mode=TwoWay, Path=DynoBeschreibung}"
-                                HeightRequest="150"
-                                Margin="5">
+                        <Editor
+                            Placeholder="Beschreibung"
+                            Text="{Binding Mode=TwoWay, Path=DynoBeschreibung}"
+                            HeightRequest="150"
+                            Margin="5">
                         </Editor>
                     </StackLayout>
 
-                    <Button Margin="5"
-                            Grid.Column="1"
-                            Grid.Row="0"
-                            VerticalOptions="Center"
-                            HorizontalOptions="FillAndExpand"
-                            ImageSource="{StaticResource IconContentSaveMedium}"
-                            Command="{Binding SaveDynoCommand}"
-                            HeightRequest="60">
+                    <Button
+                        Margin="5"
+                        Grid.Column="1"
+                        Grid.Row="0"
+                        VerticalOptions="Center"
+                        HorizontalOptions="FillAndExpand"
+                        ImageSource="{StaticResource IconContentSaveMedium}"
+                        Command="{Binding SaveDynoCommand}"
+                        HeightRequest="60">
                     </Button>
 
-                    <Button Margin="5"
-                            Grid.Column="1"
-                            Grid.Row="1"
-                            VerticalOptions="Center"
-                            HorizontalOptions="FillAndExpand"
-                            ImageSource="{StaticResource IconBackupRestoreMedium}"
-                            Command="{Binding ExportDynoCommand}"
-                            HeightRequest="60">
+                    <Button
+                        Margin="5"
+                        Grid.Column="1"
+                        Grid.Row="1"
+                        VerticalOptions="Center"
+                        HorizontalOptions="FillAndExpand"
+                        ImageSource="{StaticResource IconBackupRestoreMedium}"
+                        Command="{Binding ExportDynoCommand}"
+                        HeightRequest="60">
                     </Button>
 
-                    <Button Margin="5"
-                            Grid.Column="1"
-                            Grid.Row="2"
-                            VerticalOptions="Center"
-                            HorizontalOptions="FillAndExpand"
-                            ImageSource="{StaticResource IconFileImportOutlineMedium}"
-                            Command="{Binding ImportDynoCommand}"
-                            HeightRequest="60">
+                    <Button
+                        Margin="5"
+                        Grid.Column="1"
+                        Grid.Row="2"
+                        VerticalOptions="Center"
+                        HorizontalOptions="FillAndExpand"
+                        ImageSource="{StaticResource IconFileImportOutlineMedium}"
+                        Command="{Binding ImportDynoCommand}"
+                        HeightRequest="60">
                     </Button>
                 </Grid>
 
@@ -243,10 +257,11 @@
             </StackLayout>
         </Border>
 
-        <Button Margin="5"
-                Grid.Row="2"
-                ImageSource="{StaticResource IconChevronRightMedium}"
-                Clicked="Button_Clicked">
+        <Button
+            Margin="5"
+            Grid.Row="2"
+            ImageSource="{StaticResource IconChevronRightMedium}"
+            Clicked="Button_Clicked">
         </Button>
     </Grid>
 </ContentView>
