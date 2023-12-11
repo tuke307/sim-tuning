@@ -1,14 +1,17 @@
-﻿<ContentView x:Class="SimTuning.Maui.UI.Views.Einlass.EinlassKanalView"
-             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
-             x:DataType="vm:EinlassKanalViewModel"
-             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
+﻿<ContentView
+    x:Class="SimTuning.Maui.UI.Views.Einlass.EinlassKanalView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
+    x:DataType="vm:EinlassKanalViewModel"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
     <ContentView.Resources>
-        <Style x:Key="InvalidEntryStyle"
-               TargetType="Entry">
-            <Setter Property="BackgroundColor"
-                    Value="#bf9494" />
+        <Style
+            x:Key="InvalidEntryStyle"
+            TargetType="Entry">
+            <Setter
+                Property="BackgroundColor"
+                Value="#bf9494" />
         </Style>
     </ContentView.Resources>
 
@@ -27,13 +30,15 @@
                             <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
 
-                        <Label Grid.Column="0"
-                               Style="{StaticResource LabelTitleStyle}"
-                               Text="Einlass-Resonanzlänge" />
+                        <Label
+                            Grid.Column="0"
+                            Style="{StaticResource LabelTitleStyle}"
+                            Text="Einlass-Resonanzlänge" />
 
-                        <ImageButton Grid.Column="1"
-                                     Clicked="HelperVehiclesButton_Clicked"
-                                     Source="{StaticResource IconAtvMedium}" />
+                        <ImageButton
+                            Grid.Column="1"
+                            Clicked="HelperVehiclesButton_Clicked"
+                            Source="{StaticResource IconAtvMedium}" />
                     </Grid>
 
                     <BoxView Style="{StaticResource DividerBoxViewStyle}" />
@@ -51,43 +56,48 @@
                             <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
 
-                    <Label Grid.Row="0"
-                           Grid.ColumnSpan="2"
-                           Style="{StaticResource LabelTitleStyle}"
-                           Text="Einlass-Resonanzlänge" />
+                        <Label
+                            Grid.ColumnSpan="2"
+                            Style="{StaticResource LabelTitleStyle}"
+                            Text="Einlass-Resonanzlänge" />
 
-                    <BoxView Grid.Row="1"
-                             Grid.ColumnSpan="2"
-                             Style="{StaticResource DividerBoxViewStyle}" />
+                        <BoxView
+                            Grid.ColumnSpan="2"
+                            Style="{StaticResource DividerBoxViewStyle}" />
 
-                    <!--Einlass-Fläche-->
-                    <Entry Grid.Row="2"
-                           Grid.Column="0"
-                           Keyboard="Numeric"
-                           Placeholder="Einlass-Fläche"
-                           Text="{Binding Mode=TwoWay, Path=VehicleMotorEinlassFlaecheA}"
-                           WidthRequest="250" />
+                        <!--Einlass-Fläche-->
+                        <HorizontalStackLayout>
+                            <Entry
+                                Grid.Column="0"
+                                Keyboard="Numeric"
+                                Placeholder="Einlass-Fläche"
+                                Text="{Binding Mode=TwoWay, Path=VehicleMotorEinlassFlaecheA}"
+                                WidthRequest="250" />
 
-                            <Picker VerticalOptions="Center"
-                                    ItemsSource="{Binding Path=AreaQuantityUnits, Mode=OneTime}"
-                                    ItemDisplayBinding="{Binding Abbreviation}"
-                                    SelectedItem="{Binding VehicleMotorEinlassFlaecheAUnit}" />
+                            <Picker
+                                VerticalOptions="Center"
+                                ItemsSource="{Binding Path=AreaQuantityUnits, Mode=OneTime}"
+                                ItemDisplayBinding="{Binding Abbreviation}"
+                                SelectedItem="{Binding VehicleMotorEinlassFlaecheAUnit}" />
                         </HorizontalStackLayout>
 
                         <!--Einlass-Steuerwinkel-->
-                        <HorizontalStackLayout Grid.Row="1">
-                            <Label Text="Einlass- Steuerwinkel"
-                                   WidthRequest="60"
-                                   VerticalOptions="Center" />
+                        <HorizontalStackLayout>
+                            <Label
+                                Text="Einlass- Steuerwinkel"
+                                WidthRequest="60"
+                                VerticalOptions="Center" />
 
-                            <Entry VerticalOptions="Center"
-                                   Keyboard="Numeric"
-                                   Text="{Binding Mode=TwoWay, Path=Einlasssteuerwinkel}"
-                                   WidthRequest="200">
+                            <Entry
+                                VerticalOptions="Center"
+                                Keyboard="Numeric"
+                                Text="{Binding Mode=TwoWay, Path=Einlasssteuerwinkel}"
+                                WidthRequest="200">
                                 <Entry.Behaviors>
-                                    <toolkit:TextValidationBehavior MinimumLength="1"
-                                                                    Flags="ValidateOnUnfocusing"
-                                                                    InvalidStyle="{StaticResource InvalidEntryStyle}" />
+                                    <toolkit:TextValidationBehavior
+                                        MinimumLength="1"
+                                        Flags="ValidateOnUnfocusing"
+                                        InvalidStyle="{StaticResource InvalidEntryStyle}" />
                                 </Entry.Behaviors>
                             </Entry>
 
@@ -97,86 +107,96 @@
                         </HorizontalStackLayout>
 
                         <!--Resonanzdrehzahl-->
-                        <HorizontalStackLayout Grid.Row="2">
-                            <Label Text="Resonanzdrehzahl"
-                                   WidthRequest="60"
-                                   VerticalOptions="Center" />
+                        <HorizontalStackLayout>
+                            <Label
+                                Text="Resonanzdrehzahl"
+                                WidthRequest="60"
+                                VerticalOptions="Center" />
 
-                            <Entry VerticalOptions="Center"
-                                   Keyboard="Numeric"
-                                   Text="{Binding Mode=TwoWay, Path=VehicleMotorResonanzU}"
-                                   WidthRequest="200">
+                            <Entry
+                                VerticalOptions="Center"
+                                Keyboard="Numeric"
+                                Text="{Binding Mode=TwoWay, Path=VehicleMotorResonanzU}"
+                                WidthRequest="200">
                                 <Entry.Behaviors>
-                                    <toolkit:TextValidationBehavior MinimumLength="1"
-                                                                    Flags="ValidateOnUnfocusing"
-                                                                    InvalidStyle="{StaticResource InvalidEntryStyle}" />
+                                    <toolkit:TextValidationBehavior
+                                        MinimumLength="1"
+                                        Flags="ValidateOnUnfocusing"
+                                        InvalidStyle="{StaticResource InvalidEntryStyle}" />
                                 </Entry.Behaviors>
                             </Entry>
 
-                            <Label Margin="5,0,0,0"
-                                   VerticalOptions="Center">
+                            <Label
+                                Margin="5,0,0,0"
+                                VerticalOptions="Center">
                                 1/min
                             </Label>
                         </HorizontalStackLayout>
 
-
                         <!--Kurbelgehäusevolumen-->
-                        <HorizontalStackLayout Grid.Row="3">
-                            <Label Text="Kurbelgehäusevolumen"
-                                   WidthRequest="60"
-                                   VerticalOptions="Center" />
+                        <HorizontalStackLayout>
+                            <Label
+                                Text="Kurbelgehäusevolumen"
+                                WidthRequest="60"
+                                VerticalOptions="Center" />
 
-                            <Entry VerticalOptions="Center"
-                                   Keyboard="Numeric"
-                                   Text="{Binding Mode=TwoWay, Path=VehicleMotorKurbelgehaeuseV}"
-                                   WidthRequest="200">
+                            <Entry
+                                VerticalOptions="Center"
+                                Keyboard="Numeric"
+                                Text="{Binding Mode=TwoWay, Path=VehicleMotorKurbelgehaeuseV}"
+                                WidthRequest="200">
                                 <Entry.Behaviors>
-                                    <toolkit:TextValidationBehavior MinimumLength="1"
-                                                                    Flags="ValidateOnUnfocusing"
-                                                                    InvalidStyle="{StaticResource InvalidEntryStyle}" />
+                                    <toolkit:TextValidationBehavior
+                                        MinimumLength="1"
+                                        Flags="ValidateOnUnfocusing"
+                                        InvalidStyle="{StaticResource InvalidEntryStyle}" />
                                 </Entry.Behaviors>
                             </Entry>
 
-                            <Picker VerticalOptions="Center"
-                                    ItemsSource="{Binding Path=VolumeQuantityUnits, Mode=OneTime}"
-                                    ItemDisplayBinding="{Binding Abbreviation}"
-                                    SelectedItem="{Binding VehicleMotorKurbelgehaeuseVUnit}" />
+                            <Picker
+                                VerticalOptions="Center"
+                                ItemsSource="{Binding Path=VolumeQuantityUnits, Mode=OneTime}"
+                                ItemDisplayBinding="{Binding Abbreviation}"
+                                SelectedItem="{Binding VehicleMotorKurbelgehaeuseVUnit}" />
                         </HorizontalStackLayout>
 
+                        <!--Ansaugleitung-->
+                        <HorizontalStackLayout>
 
-                    <!--Ansaugleitung-->
-                    <Entry Grid.Row="6"
-                           Grid.Column="0"
-                           Keyboard="Numeric"
-                           Placeholder="Ø Ansaugleitung"
-                           Text="{Binding Mode=TwoWay, Path=VehicleMotorEinlassDurchmesserD}"
-                           WidthRequest="250" />
+                            <Entry
+                                Grid.Column="0"
+                                Keyboard="Numeric"
+                                Placeholder="Ø Ansaugleitung"
+                                Text="{Binding Mode=TwoWay, Path=VehicleMotorEinlassDurchmesserD}"
+                                WidthRequest="250" />
 
-                            <Picker VerticalOptions="Center"
-                                    ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
-                                    ItemDisplayBinding="{Binding Abbreviation}"
-                                    SelectedItem="{Binding VehicleMotorEinlassDurchmesserDUnit}" />
+                            <Picker
+                                VerticalOptions="Center"
+                                ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+                                ItemDisplayBinding="{Binding Abbreviation}"
+                                SelectedItem="{Binding VehicleMotorEinlassDurchmesserDUnit}" />
                         </HorizontalStackLayout>
-
 
                         <!--Einlass-Resonanzlänge-->
-                        <HorizontalStackLayout Grid.Row="5"
-                                               Margin="0,30,0,0">
-                            <Label Text="Einlass- Resonanzlänge"
-                                   WidthRequest="60"
-                                   VerticalOptions="Center" />
+                        <HorizontalStackLayout>
+                            <Label
+                                Text="Einlass- Resonanzlänge"
+                                WidthRequest="60"
+                                VerticalOptions="Center" />
 
-                            <Entry VerticalOptions="Center"
-                                   Keyboard="Numeric"
-                                   IsEnabled="False"
-                                   IsReadOnly="True"
-                                   Text="{Binding Mode=TwoWay, Path=Resonanzlaenge}"
-                                   WidthRequest="200" />
+                            <Entry
+                                VerticalOptions="Center"
+                                Keyboard="Numeric"
+                                IsEnabled="False"
+                                IsReadOnly="True"
+                                Text="{Binding Mode=TwoWay, Path=Resonanzlaenge}"
+                                WidthRequest="200" />
 
-                            <Picker VerticalOptions="Center"
-                                    ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
-                                    ItemDisplayBinding="{Binding Abbreviation}"
-                                    SelectedItem="{Binding ResonanzlaengeUnit}" />
+                            <Picker
+                                VerticalOptions="Center"
+                                ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+                                ItemDisplayBinding="{Binding Abbreviation}"
+                                SelectedItem="{Binding ResonanzlaengeUnit}" />
                         </HorizontalStackLayout>
                     </Grid>
                 </StackLayout>
