@@ -12,3 +12,11 @@ dotnet list package --outdated
 
 npx prettier --write "**/\*.cs"
 npx prettier --write "**/\*.xaml"
+
+# Platforms
+
+| Platform | Tested | Deployed |
+| -------- | ------ | -------- |
+| Windows  | ✅     | ✅       |
+| macOS    | ✅     | ✅       |
+| iOS      | ✅     | ✅       |
