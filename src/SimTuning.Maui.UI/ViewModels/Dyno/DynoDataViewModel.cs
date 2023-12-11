@@ -152,8 +152,9 @@ namespace SimTuning.Maui.UI.ViewModels
             await Functions.GetPermission<Permissions.StorageRead>();
             await Functions.GetPermission<Permissions.StorageWrite>();
 
+            
             await _browserService.DownloadDocumentAsync(
-                "https://simtuning.tuke-productions.de/wp-content/uploads/DataExport.zip",
+                "https://simtuning.tony-luke.de/wp-content/uploads/DataExport.zip",
                 SimTuning.Core.GeneralSettings.DataExportArchivePath);
 
             // zip extrahieren
@@ -165,7 +166,16 @@ namespace SimTuning.Maui.UI.ViewModels
             {
                 File.Delete(SimTuning.Core.GeneralSettings.AudioAccelerationFilePath);
             }
+            
             ZipFile.ExtractToDirectory(SimTuning.Core.GeneralSettings.DataExportArchivePath, Data.DatabaseSettings.FileDirectory);
+
+            /*
+
+            using var stream = await FileSystem.OpenAppPackageFileAsync(GeneralSettings.AudioAccelerationFile);
+            using var reader = new StreamReader(stream);
+
+            var contents = reader.ReadToEnd();
+            */
 
             // wenn Datei ausgewählt using (FileStream sourceStream = File.Open(fileName, FileMode.OpenOrCreate)) { status =
             // SimTuning.Core.Helpers.AudioUtils.AudioCopy(SimTuning.Core.GeneralSettings.AudioFile, sourceStream); }
@@ -173,11 +183,13 @@ namespace SimTuning.Maui.UI.ViewModels
             // if (status) { await this.RefreshAudioFileAsync().ConfigureAwait(true); }
 
             // TODO: only for testing
+            /*
             if (File.Exists(SimTuning.Core.GeneralSettings.DataExportFilePath))
             {
                 string json = await File.ReadAllTextAsync(SimTuning.Core.GeneralSettings.DataExportFilePath);
                 DynoModel dyno = JsonConvert.DeserializeObject<DynoModel>(json);
             }
+            */
         }
 
         #endregion Methods

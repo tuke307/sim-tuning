@@ -1,0 +1,29 @@
+{
+    "useTabs": false,
+    "tabWidth": 4,
+    "printWidth": 120,
+    "singleQuote": true,
+    "trailingComma": "es5",
+    "semi": false,
+    "bracketSpacing": true,
+    "jsxBracketSameLine": false,
+    "arrowParens": "always",
+    "proseWrap": "preserve",
+    "endOfLine": "lf",
+    "overrides": [
+        {
+            "files": ["*.xaml"],
+            "options": {
+                "parser": "xml",
+                "printWidth": 120,
+                "singleAttributePerLine": false,
+                "tabWidth": 4,
+                "xmlQuoteAttributes": "preserve",
+                "xmlSelfClosingSpace": true,
+                "xmlSortAttributesByKey": false,
+                "xmlWhitespaceSensitivity": "strict"
+            }
+        }
+    ],
+    "plugins": ["@prettier/plugin-xml"]
+}

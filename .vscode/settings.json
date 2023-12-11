@@ -1,0 +1,12 @@
+{
+  "files.associations": {
+    "*.xaml": "xml"
+  },
+  "editor.formatOnSave": false,
+  "[csharp]": {
+    "editor.formatOnSave": true
+  },
+  "[XAML]": {
+    "editor.formatOnSave": true
+  }
+}
