@@ -52,27 +52,26 @@
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto" />
-                        </Grid.ColumnDefinitions>
-
-                        <Label
-                            Grid.ColumnSpan="2"
-                            Style="{StaticResource LabelTitleStyle}"
-                            Text="Einlass-Resonanzlänge" />
-
-                        <BoxView
-                            Grid.ColumnSpan="2"
-                            Style="{StaticResource DividerBoxViewStyle}" />
 
                         <!--Einlass-Fläche-->
-                        <HorizontalStackLayout>
+                        <HorizontalStackLayout Grid.Row="0">
+                            <Label
+                                Text="Einlass-Fläche"
+                                WidthRequest="60"
+                                VerticalOptions="Center" />
+
                             <Entry
-                                Grid.Column="0"
+                                VerticalOptions="Center"
                                 Keyboard="Numeric"
-                                Placeholder="Einlass-Fläche"
                                 Text="{Binding Mode=TwoWay, Path=VehicleMotorEinlassFlaecheA}"
-                                WidthRequest="250" />
+                                WidthRequest="200">
+                                <Entry.Behaviors>
+                                    <toolkit:TextValidationBehavior
+                                        MinimumLength="1"
+                                        Flags="ValidateOnUnfocusing"
+                                        InvalidStyle="{StaticResource InvalidEntryStyle}" />
+                                </Entry.Behaviors>
+                            </Entry>
 
                             <Picker
                                 VerticalOptions="Center"
@@ -82,7 +81,7 @@
                         </HorizontalStackLayout>
 
                         <!--Einlass-Steuerwinkel-->
-                        <HorizontalStackLayout>
+                        <HorizontalStackLayout Grid.Row="1">
                             <Label
                                 Text="Einlass- Steuerwinkel"
                                 WidthRequest="60"
@@ -107,7 +106,7 @@
                         </HorizontalStackLayout>
 
                         <!--Resonanzdrehzahl-->
-                        <HorizontalStackLayout>
+                        <HorizontalStackLayout Grid.Row="2">
                             <Label
                                 Text="Resonanzdrehzahl"
                                 WidthRequest="60"
@@ -134,7 +133,7 @@
                         </HorizontalStackLayout>
 
                         <!--Kurbelgehäusevolumen-->
-                        <HorizontalStackLayout>
+                        <HorizontalStackLayout Grid.Row="3">
                             <Label
                                 Text="Kurbelgehäusevolumen"
                                 WidthRequest="60"
@@ -161,14 +160,24 @@
                         </HorizontalStackLayout>
 
                         <!--Ansaugleitung-->
-                        <HorizontalStackLayout>
+                        <HorizontalStackLayout Grid.Row="4">
+                            <Label
+                                Text="Ø Ansaugleitung"
+                                WidthRequest="60"
+                                VerticalOptions="Center" />
 
                             <Entry
-                                Grid.Column="0"
+                                VerticalOptions="Center"
                                 Keyboard="Numeric"
-                                Placeholder="Ø Ansaugleitung"
                                 Text="{Binding Mode=TwoWay, Path=VehicleMotorEinlassDurchmesserD}"
-                                WidthRequest="250" />
+                                WidthRequest="200">
+                                <Entry.Behaviors>
+                                    <toolkit:TextValidationBehavior
+                                        MinimumLength="1"
+                                        Flags="ValidateOnUnfocusing"
+                                        InvalidStyle="{StaticResource InvalidEntryStyle}" />
+                                </Entry.Behaviors>
+                            </Entry>
 
                             <Picker
                                 VerticalOptions="Center"
@@ -178,7 +187,9 @@
                         </HorizontalStackLayout>
 
                         <!--Einlass-Resonanzlänge-->
-                        <HorizontalStackLayout>
+                        <HorizontalStackLayout
+                            Grid.Row="5"
+                            Margin="0,30,0,0">
                             <Label
                                 Text="Einlass- Resonanzlänge"
                                 WidthRequest="60"
