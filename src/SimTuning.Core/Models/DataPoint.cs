@@ -1,12 +1,12 @@
-﻿using Dbscan;
-using LiveChartsCore.Defaults;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Dbscan;
+using LiveChartsCore.Defaults;
 
 namespace SimTuning.Core.Models
 {
@@ -16,17 +16,15 @@ namespace SimTuning.Core.Models
 
         public double Y { get; set; }
 
-        public Point Point { get; }
+        public Dbscan.Point Point { get; }
 
-        public DataPoint()
-        {
-        }
+        public DataPoint() { }
 
         public DataPoint(double x, double y)
         {
             this.X = x;
             this.Y = y;
-            Point = new Point(x, y);
+            Point = new Dbscan.Point(x, y);
         }
     }
 }

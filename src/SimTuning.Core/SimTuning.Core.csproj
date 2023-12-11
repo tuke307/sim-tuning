@@ -1,8 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFrameworks>net8.0</TargetFrameworks>
-    <UseMaui>true</UseMaui>
-  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="DBSCAN" Version="3.0.0" />
     <PackageReference Include="NAudio" Version="2.1.0" />

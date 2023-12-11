@@ -1,7 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="Current">
   <PropertyGroup>
-    <TargetFrameworks>net8.0</TargetFrameworks>
-    <UseMaui>true</UseMaui>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
