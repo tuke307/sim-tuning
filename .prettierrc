@@ -6,18 +6,16 @@
     "trailingComma": "es5",
     "semi": false,
     "bracketSpacing": true,
-    "jsxBracketSameLine": false,
+    "bracketSameLine": true,
     "arrowParens": "always",
     "proseWrap": "preserve",
     "endOfLine": "lf",
+    "singleAttributePerLine": false,
     "overrides": [
         {
-            "files": ["*.xaml"],
+            "files": ["**/*.xaml"],
             "options": {
                 "parser": "xml",
-                "printWidth": 120,
-                "singleAttributePerLine": false,
-                "tabWidth": 4,
                 "xmlQuoteAttributes": "preserve",
                 "xmlSelfClosingSpace": true,
                 "xmlSortAttributesByKey": false,

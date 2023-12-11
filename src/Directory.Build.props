@@ -36,6 +36,8 @@
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
   </PropertyGroup>
 
+  <CodeAnalysisRuleSet>Code Rules.ruleset</CodeAnalysisRuleSet>
+
   <!-- Nuget configuration -->
   <ItemGroup>
     <!-- Nugets -->

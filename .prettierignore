@@ -1,0 +1,25 @@
+# Compiled output
+dist
+
+# Package manager lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Minified files
+*.min.js
+*.min.css
+
+# @template-customization-start
+
+# Images
+*.svg
+
+# Old CSS files
+*.css
+
+# JS libraries
+*.min.js
+jquery-lang.js
+
+# @template-customization-end
