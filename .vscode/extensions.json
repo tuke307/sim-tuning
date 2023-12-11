@@ -2,6 +2,7 @@
 // repository: https://go.microsoft.com/fwlink/?LinkId=827846
 {
     "recommendations": [
-        "esbenp.prettier-vscode" // Prettier - Code formatter
+        "esbenp.prettier-vscode", // Prettier - Code formatter
+        "csharpier.csharpier-vscode" // C# Prettier
     ]
 }
