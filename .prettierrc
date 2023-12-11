@@ -10,7 +10,7 @@
     "arrowParens": "always",
     "proseWrap": "preserve",
     "endOfLine": "lf",
-    "singleAttributePerLine": false,
+    "singleAttributePerLine": true,
     "overrides": [
         {
             "files": ["**/*.xaml"],

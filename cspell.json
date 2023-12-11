@@ -1,19 +1,23 @@
 {
     "version": "0.2",
-    "ignorePaths": [],
+    "ignorePaths": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/build/**",
+        "**/coverage/**",
+        "**/public/**",
+        "**/out/**",
+        "**/lib/**",
+        "**/tmp/**",
+        "**/temp/**",
+        "**/logs/**",
+        "**/bin/**",
+        "**/obj/**",
+        "**/dll/**"
+    ],
     "dictionaryDefinitions": [],
     "dictionaries": [],
-    "words": [
-        "esnext",
-        "Lokation",
-        "Mvvm",
-        "nextui",
-        "prisma",
-        "Regalabschnitt",
-        "tailwindcss",
-        "toastify",
-        "tuke"
-    ],
+    "words": ["esnext", "Lokation", "Mvvm", "nextui", "prisma", "Regalabschnitt", "tailwindcss", "toastify", "tuke"],
     "ignoreWords": [],
     "import": [],
     "language": "en, de-de"
