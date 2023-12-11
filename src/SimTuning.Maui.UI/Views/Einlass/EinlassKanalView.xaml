@@ -1,4 +1,4 @@
-﻿<ContentPage x:Class="SimTuning.Maui.UI.Views.Einlass.EinlassKanalView"
+﻿<ContentView x:Class="SimTuning.Maui.UI.Views.Einlass.EinlassKanalView"
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
@@ -183,4 +183,4 @@
             </Border>
         </Grid>
     </ScrollView>
-</ContentPage>
+</ContentView>
