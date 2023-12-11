@@ -13,8 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Base", "Base", "{88DA4224-6
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9DC045AF-3BC3-4D5C-AAE5-A94BDE8EB93C}"
 	ProjectSection(SolutionItems) = preProject
-		Code Rules.ruleset = Code Rules.ruleset
-		CodeMaid.config = CodeMaid.config
 		Directory.Build.props = Directory.Build.props
 		SimTuning.sln.licenseheader = SimTuning.sln.licenseheader
 	EndProjectSection
