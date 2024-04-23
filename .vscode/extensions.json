@@ -3,6 +3,8 @@
 {
     "recommendations": [
         "esbenp.prettier-vscode", // Prettier - Code formatter
-        "csharpier.csharpier-vscode" // C# Prettier
+        "csharpier.csharpier-vscode", // C# Prettier
+        "ms-dotnettools.dotnet-maui",
+        "editorconfig.editorconfig"
     ]
 }

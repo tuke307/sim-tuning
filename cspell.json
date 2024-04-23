@@ -17,7 +17,21 @@
     ],
     "dictionaryDefinitions": [],
     "dictionaries": [],
-    "words": ["esnext", "Lokation", "Mvvm", "nextui", "prisma", "Regalabschnitt", "tailwindcss", "toastify", "tuke"],
+    "words": [
+        "dyno",
+        "Dyno",
+        "Dynos",
+        "esnext",
+        "Lokation",
+        "Mvvm",
+        "nextui",
+        "prisma",
+        "Regalabschnitt",
+        "simtuning",
+        "tailwindcss",
+        "toastify",
+        "tuke"
+    ],
     "ignoreWords": [],
     "import": [],
     "language": "en, de-de"
