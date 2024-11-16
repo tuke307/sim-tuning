@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Maui;
+using CommunityToolkit.Maui;
 using Serilog;
 using Serilog.Events;
 using Sharpnado.Tabs;
@@ -17,7 +17,7 @@ namespace SimTuning.Maui.App
 
             builder
                 .UseMauiApp<App>()
-                .UseSkiaSharp(registerRenderers: true)
+                .UseSkiaSharp()
                 .UseSharpnadoTabs(loggerEnable: true, debugLogEnable: true)
                 .UseMauiCommunityToolkit()
                 .UseMauiCommunityToolkitMediaElement()
