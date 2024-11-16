@@ -4,9 +4,17 @@ https://simtuning.tuke-productions.de/
 
 # Developing
 
+download .NET 9.0 SKD from https://dotnet.microsoft.com/en-us/download/dotnet/9.0
+
+
+## Setup
+
+```bash
+dotnet workload install maui maui-android maui-ios maui-maccatalyst
 cd src/
-dotnet list package
-dotnet list package --outdated
+dotnet build -t:Run -f net9.0-ios
+dotnet build -t:Run -f net9.0-maccatalyst
+```
 
 ## format documents
 
