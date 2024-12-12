@@ -1,11 +1,8 @@
 # SimTuning
 
-https://simtuning.tuke-productions.de/
-
-# Developing
+## Developing
 
 download .NET 9.0 SKD from https://dotnet.microsoft.com/en-us/download/dotnet/9.0
-
 
 ## Setup
 
