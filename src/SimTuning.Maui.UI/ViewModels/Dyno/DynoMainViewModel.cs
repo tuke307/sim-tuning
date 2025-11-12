@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2021 tuke productions. All rights reserved.
+﻿// Copyright (c) 2025 tuke productions. All rights reserved.
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Logging;
 using SimTuning.Core.Models.Messages;

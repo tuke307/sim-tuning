@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2021 tuke productions. All rights reserved.
+﻿// Copyright (c) 2025 tuke productions. All rights reserved.
 using CommunityToolkit.Maui.Alerts;
 using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Devices;

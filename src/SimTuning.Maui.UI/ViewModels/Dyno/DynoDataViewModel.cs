@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2021 tuke productions. All rights reserved.
+﻿// Copyright (c) 2025 tuke productions. All rights reserved.
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -152,7 +152,7 @@ namespace SimTuning.Maui.UI.ViewModels
             await Functions.GetPermission<Permissions.StorageRead>();
             await Functions.GetPermission<Permissions.StorageWrite>();
 
-            
+
             await _browserService.DownloadDocumentAsync(
                 "https://simtuning.tony-luke.de/wp-content/uploads/DataExport.zip",
                 SimTuning.Core.GeneralSettings.DataExportArchivePath);
@@ -166,7 +166,7 @@ namespace SimTuning.Maui.UI.ViewModels
             {
                 File.Delete(SimTuning.Core.GeneralSettings.AudioAccelerationFilePath);
             }
-            
+
             ZipFile.ExtractToDirectory(SimTuning.Core.GeneralSettings.DataExportArchivePath, Data.DatabaseSettings.FileDirectory);
 
             /*
