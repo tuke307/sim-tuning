@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2021 tuke productions. All rights reserved.
+﻿// Copyright (c) 2025 tuke productions. All rights reserved.
 using Microsoft.Maui;using Microsoft.Maui.Controls;
 
 namespace SimTuning.Maui.UI.Themes.Primary
@@ -6,7 +6,7 @@ namespace SimTuning.Maui.UI.Themes.Primary
     public partial class DeepOrange : ResourceDictionary
     {
         public DeepOrange()
-        {   
+        {
             InitializeComponent();
         }
     }

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2021 tuke productions. All rights reserved.
+﻿// Copyright (c) 2025 tuke productions. All rights reserved.
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Devices;
@@ -37,7 +37,7 @@ namespace SimTuning.Core.Services
                     //PreferredToolbarColor = Colors.Violet,
                     //PreferredControlColor = Colors.SandyBrown
                 };
-                
+
                 await Browser.Default.OpenAsync(uri, options);
             }
             catch (Exception ex)

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2021 tuke productions. All rights reserved.
+﻿// Copyright (c) 2025 tuke productions. All rights reserved.
 using SimTuning.Core.ModuleLogic;
 using SimTuning.Test;
 using Xunit;
@@ -8,7 +8,7 @@ namespace SimTuning.Test
     /// <summary>
     /// EinlassLogicTest.
     /// </summary>
-    public class EinlassLogicTest 
+    public class EinlassLogicTest
     {
         /// <summary>
         /// Resonanzs the laenge test.

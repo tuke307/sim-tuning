@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2021 tuke productions. All rights reserved.
+﻿// Copyright (c) 2025 tuke productions. All rights reserved.
 using CommunityToolkit.Mvvm.DependencyInjection;
 using SimTuning.Maui.UI.ViewModels;
 
@@ -9,7 +9,7 @@ namespace SimTuning.Maui.UI.Views.Home
         public HomeView()
         {
             InitializeComponent();
-            
+
             this.BindingContext = Ioc.Default.GetRequiredService<HomeViewModel>();
         }
 
