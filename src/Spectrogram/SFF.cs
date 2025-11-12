@@ -93,9 +93,9 @@ namespace Spectrogram
             double timeSec = (double)x * StepSize / SampleRate;
 
             double maxFreq = SampleRate / 2;
-            double maxMel = FftSharp.Transform.MelFromFreq(maxFreq);
+            double maxMel = FftSharp.Mel.FromFreq(maxFreq);
             double frac = (ImageHeight - y) / (double)ImageHeight;
-            double freq = IsMel ? FftSharp.Transform.MelToFreq(frac * maxMel) : frac * maxFreq;
+            double freq = IsMel ? FftSharp.Mel.ToFreq(frac * maxMel) : frac * maxFreq;
 
             double mag = double.NaN;
             try { mag = Ffts[x][ImageHeight - y - 1]; } catch { }
@@ -269,19 +269,19 @@ namespace Spectrogram
             mels = new double[ImageHeight];
 
             double maxFreq = SampleRate / 2;
-            double maxMel = FftSharp.Transform.MelFromFreq(maxFreq);
+            double maxMel = FftSharp.Mel.FromFreq(maxFreq);
             for (int y = 0; y < ImageHeight; y++)
             {
                 double frac = (ImageHeight - y) / (double)ImageHeight;
                 if (IsMel)
                 {
                     mels[y] = frac * maxMel;
-                    freqs[y] = FftSharp.Transform.MelToFreq(mels[y]);
+                    freqs[y] = FftSharp.Mel.ToFreq(mels[y]);
                 }
                 else
                 {
                     freqs[y] = frac * maxFreq;
-                    mels[y] = FftSharp.Transform.MelFromFreq(freqs[y]);
+                    mels[y] = FftSharp.Mel.FromFreq(freqs[y]);
                 }
             }
         }
