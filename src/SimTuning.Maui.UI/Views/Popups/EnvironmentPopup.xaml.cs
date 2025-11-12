@@ -1,10 +1,11 @@
 ﻿using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.DependencyInjection;
+using SimTuning.Data.Models;
 using SimTuning.Maui.UI.ViewModels;
 
 namespace SimTuning.Maui.UI.Views.Popups
 {
-    public partial class EnvironmentPopup : Popup
+    public partial class EnvironmentPopup : Popup<MotorModel>
     {
         public PortTimingViewModel ViewModel => (PortTimingViewModel)BindingContext;
 
@@ -15,9 +16,9 @@ namespace SimTuning.Maui.UI.Views.Popups
             BindingContext = Ioc.Default.GetRequiredService<PortTimingViewModel>();
         }
 
-        private void Button_Clicked(object sender, EventArgs e)
+        private async void Button_Clicked(object sender, EventArgs e)
         {
-            Close(ViewModel.Engine);
+            await CloseAsync(ViewModel.Engine);
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿// Copyright (c) 2025 tuke productions. All rights reserved.
 using CommunityToolkit.Maui.Core.Primitives;
+using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.DependencyInjection;
+using CommunityToolkit.Maui.Core;
 using Microsoft.Extensions.Logging;
 using SimTuning.Core;
 using SimTuning.Maui.UI.ViewModels;

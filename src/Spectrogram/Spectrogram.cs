@@ -105,7 +105,7 @@ namespace Spectrogram
 
             var fftsMel = new List<double[]>();
             foreach (var fft in ffts)
-                fftsMel.Add(FftSharp.Transform.MelScale(fft, SampleRate, melBinCount));
+                fftsMel.Add(FftSharp.Mel.Scale(fft, SampleRate, melBinCount));
 
             return fftsMel;
         }
@@ -160,12 +160,12 @@ namespace Spectrogram
 
             Parallel.For(0, newFftCount, newFftIndex =>
             {
-                FftSharp.Complex[] buffer = new FftSharp.Complex[settings.FftSize];
+                System.Numerics.Complex[] buffer = new System.Numerics.Complex[settings.FftSize];
                 int sourceIndex = newFftIndex * settings.StepSize;
                 for (int i = 0; i < settings.FftSize; i++)
-                    buffer[i].Real = newAudio[sourceIndex + i] * settings.Window[i];
+                    buffer[i] = new System.Numerics.Complex(newAudio[sourceIndex + i] * settings.Window[i], 0);
 
-                FftSharp.Transform.FFT(buffer);
+                FftSharp.FFT.Forward(buffer);
 
                 newFfts[newFftIndex] = new double[settings.Height];
                 for (int i = 0; i < settings.Height; i++)

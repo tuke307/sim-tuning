@@ -32,7 +32,7 @@ namespace Spectrogram
 
         public Settings(int sampleRate, int fftSize, int stepSize, double minFreq, double maxFreq, int offsetHz)
         {
-            if (FftSharp.Transform.IsPowerOfTwo(fftSize) == false)
+            if (fftSize <= 0 || (fftSize & (fftSize - 1)) != 0)
                 throw new ArgumentException("FFT size must be a power of 2");
 
             // FFT info
@@ -56,7 +56,12 @@ namespace Spectrogram
 
             // horizontal
             StepLengthSec = (double)StepSize / sampleRate;
-            Window = FftSharp.Window.Hanning(fftSize);
+            // Create a Hanning window manually to avoid obsolete/removed API usage
+            Window = new double[fftSize];
+            for (int n = 0; n < fftSize; n++)
+            {
+                Window[n] = 0.5 - 0.5 * Math.Cos(2.0 * Math.PI * n / (fftSize - 1));
+            }
             StepOverlapSec = FftLengthSec - StepLengthSec;
             StepOverlapFrac = StepOverlapSec / FftLengthSec;
         }

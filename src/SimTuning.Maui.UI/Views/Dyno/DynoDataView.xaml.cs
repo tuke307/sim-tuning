@@ -1,4 +1,5 @@
 ﻿// Copyright (c) 2025 tuke productions. All rights reserved.
+using CommunityToolkit.Maui.Extensions;
 using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using SimTuning.Core.Helpers;
@@ -30,11 +31,14 @@ namespace SimTuning.Maui.UI.Views.Dyno
 
         private async void NewDynoButton_Clicked(object sender, EventArgs e)
         {
-            var task = Application.Current.MainPage.ShowPopupAsync(new DynoCreationPopup());
-            var result = await task;
-            if (result != null)
+            var page = Window?.Page;
+            if (page != null)
             {
-                ViewModel.NewDyno(result as VehiclesModel);
+                var result = await page.ShowPopupAsync(new DynoCreationPopup());
+                if (result is VehiclesModel vehicleModel)
+                {
+                    ViewModel.NewDyno(vehicleModel);
+                }
             }
         }
     }

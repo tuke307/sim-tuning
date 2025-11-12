@@ -1,8 +1,10 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <mct:Popup
+    x:TypeArguments="models:VehiclesModel"
     xmlns="http://schemas.microsoft.com/dotnet/maui/global"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:mct="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
+    xmlns:models="clr-namespace:SimTuning.Data.Models;assembly=SimTuning.Data"
     x:Class="SimTuning.Maui.UI.Views.Popups.VehiclePopup"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:DataType="VehiclesViewModel"
