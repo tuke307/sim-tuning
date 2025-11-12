@@ -17,8 +17,5 @@ namespace SimTuning.Core
         public static readonly string MyWebsite = "https://www.tony-luke.de";
         public static readonly string Paypaldonation =
             "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PZ5GBAFYMBPWS&source=url";
-        public static readonly string SimTuningWebsite = "https://simtuning.www.tony-luke.de";
-
-        public static readonly string TutorialWebsite = SimTuningWebsite + "/anleitung/";
     }
 }

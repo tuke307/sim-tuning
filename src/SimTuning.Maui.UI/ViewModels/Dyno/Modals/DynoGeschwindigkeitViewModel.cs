@@ -21,15 +21,15 @@ namespace SimTuning.Maui.UI.ViewModels
             INavigationService navigationService,
             IVehicleService vehicleService)
         {
-            this._logger = logger;
-            this._navigationService = navigationService;
-            this._vehicleService = vehicleService;
+            _logger = logger;
+            _navigationService = navigationService;
+            _vehicleService = vehicleService;
 
-            this.ShowAusrollenCommand = new AsyncRelayCommand(async () => await _navigationService.Navigate<SimTuning.Maui.UI.Views.Dyno.DynoAusrollenView>(null));
+            ShowAusrollenCommand = new AsyncRelayCommand(async () => await _navigationService.Navigate<SimTuning.Maui.UI.Views.Dyno.DynoAusrollenView>(null));
 
-            this.RefreshPlotCommand = new AsyncRelayCommand(this.RefreshPlot);
+            RefreshPlotCommand = new AsyncRelayCommand(RefreshPlot);
 
-            this.ReloadData();
+            ReloadData();
         }
 
         #region Values
@@ -69,7 +69,7 @@ namespace SimTuning.Maui.UI.ViewModels
         {
             try
             {
-                this.Dyno = _vehicleService.RetrieveOneActive();
+                Dyno = _vehicleService.RetrieveOneActive();
             }
             catch (Exception exc)
             {
@@ -83,7 +83,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <returns></returns>
         protected async Task RefreshPlot()
         {
-            if (!this.CheckDynoData())
+            if (!CheckDynoData())
             {
                 return;
             }
@@ -92,15 +92,15 @@ namespace SimTuning.Maui.UI.ViewModels
             {
                 //var loadingDialog = await DisplayAlert(message: SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "MES_LOAD")).ConfigureAwait(false);
 
-                //DynoLogic.GetGeschwindigkeitsGraphFitted(this.Dyno?.Geschwindigkeit.ToList());
+                //DynoLogic.GetGeschwindigkeitsGraphFitted(Dyno?.Geschwindigkeit.ToList());
 
-                this.OnPropertyChanged(nameof(PlotGeschwindigkeit));
+                OnPropertyChanged(nameof(PlotGeschwindigkeit));
 
                 //await loadingDialog.DismissAsync().ConfigureAwait(false);
             }
             catch (Exception exc)
             {
-                _logger.LogError("Fehler bei RefreshPlot: ", exc);
+                _logger.LogError(exc, "Fehler beim Laden der Plots");
             }
         }
 
@@ -109,14 +109,14 @@ namespace SimTuning.Maui.UI.ViewModels
         /// </summary>
         private bool CheckDynoData()
         {
-            if (this.Dyno == null)
+            if (Dyno == null)
             {
                 Core.Helpers.Functions.ShowSnackbarDialog(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_NODATA"));
 
                 return false;
             }
 
-            if (this.Dyno.Geschwindigkeit == null)
+            if (Dyno.Geschwindigkeit == null)
             {
                 Core.Helpers.Functions.ShowSnackbarDialog(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_NODATA"));
 

@@ -1,14 +1,13 @@
 ﻿<ContentView
     x:Class="SimTuning.Maui.UI.Views.Dyno.DynoDiagnosisView"
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns="http://schemas.microsoft.com/dotnet/maui/global"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
-    xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
-    x:DataType="vm:DynoDiagnosisViewModel">
+    x:DataType="DynoDiagnosisViewModel">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
-            <RowDefinition Height="auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <!--Plot-->
@@ -16,7 +15,7 @@
             Margin="10"
             Grid.Row="0">
             <lvc:CartesianChart
-                Series="{Binding Mode=TwoWay, Path=PlotStrength}"
+                Series="{Binding PlotStrength}"
                 XAxes="{Binding XAxes}"
                 YAxes="{Binding YAxes}" />
         </Border>
@@ -36,7 +35,7 @@
                 <Entry
                     Placeholder="Gesamtübersetzung"
                     Keyboard="Numeric"
-                    Text="{Binding Mode=TwoWay, Path=Gesamtübersetzung}"
+                    Text="{Binding Gesamtübersetzung}"
                     WidthRequest="250">
                 </Entry>
 
@@ -44,7 +43,7 @@
                     <Entry
                         Placeholder="Gewicht"
                         Keyboard="Numeric"
-                        Text="{Binding Mode=TwoWay, Path=DynoVehicleGewicht}"
+                        Text="{Binding DynoVehicleGewicht}"
                         WidthRequest="250">
                     </Entry>
 
@@ -53,7 +52,7 @@
                         ItemsSource="{Binding Path=MassQuantityUnits, Mode=OneTime}"
                         HorizontalOptions="StartAndExpand"
                         VerticalOptions="CenterAndExpand"
-                        SelectedItem="{Binding Mode=TwoWay, Path=DynoVehicleGewichtUnit}"
+                        SelectedItem="{Binding DynoVehicleGewichtUnit}"
                         ItemDisplayBinding="{Binding Abbreviation}">
                     </Picker>
                 </StackLayout>
@@ -62,7 +61,7 @@
                     <Entry
                         Placeholder="Frontfläche"
                         Keyboard="Numeric"
-                        Text="{Binding Mode=TwoWay, Path=FrontA}"
+                        Text="{Binding FrontA}"
                         WidthRequest="250">
                     </Entry>
 
@@ -71,7 +70,7 @@
                         ItemsSource="{Binding Path=AreaQuantityUnits, Mode=OneTime}"
                         HorizontalOptions="StartAndExpand"
                         VerticalOptions="CenterAndExpand"
-                        SelectedItem="{Binding Mode=TwoWay, Path=FrontAUnit}"
+                        SelectedItem="{Binding FrontAUnit}"
                         ItemDisplayBinding="{Binding Abbreviation}">
                     </Picker>
                 </StackLayout>
@@ -79,21 +78,21 @@
                 <Entry
                     Placeholder="cw"
                     Keyboard="Numeric"
-                    Text="{Binding Mode=TwoWay, Path=Cw}"
+                    Text="{Binding Cw}"
                     WidthRequest="250">
                 </Entry>
 
                 <!--<StackLayout Orientation="Horizontal">
                     <Entry Placeholder="Luftdruck"
                            Keyboard="Numeric"
-                           Text="{Binding Mode=TwoWay, Path=DynoEnvironmentLuftdruckP}"
+                           Text="{Binding DynoEnvironmentLuftdruckP}"
                            WidthRequest="250">
                     </Entry>
 
                     <Picker VerticalOptions="Center"
                             Margin="5, 0, 0, 0"
                             ItemsSource="{Binding Path=PressureQuantityUnits, Mode=OneTime}"
-                            SelectedItem="{Binding Mode=TwoWay, Path=DynoEnvironmentLuftdruckPUnit}"
+                            SelectedItem="{Binding DynoEnvironmentLuftdruckPUnit}"
                             ItemDisplayBinding="{Binding Abbreviation}">
                     </Picker>
                 </StackLayout>-->

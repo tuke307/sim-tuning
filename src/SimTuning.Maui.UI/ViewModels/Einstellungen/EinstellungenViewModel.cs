@@ -10,8 +10,8 @@ namespace SimTuning.Maui.UI.ViewModels
             ILogger<EinstellungenViewModel> logger,
             INavigationService navigationService)
         {
-            this._logger = logger;
-            this._navigationService = navigationService;
+            _logger = logger;
+            _navigationService = navigationService;
         }
 
         #region Methods
@@ -34,7 +34,7 @@ namespace SimTuning.Maui.UI.ViewModels
             set
             {
                 Data.UnitSettings.RoundingAccuracy = value;
-                this.OnPropertyChanged(nameof(this.RoundingAccuracy));
+                OnPropertyChanged(nameof(RoundingAccuracy));
             }
         }
 
@@ -48,7 +48,7 @@ namespace SimTuning.Maui.UI.ViewModels
             set
             {
                 Data.UnitSettings.RoundOnUnitChange = value;
-                this.OnPropertyChanged(nameof(this.RoundOnUnitChange));
+                OnPropertyChanged(nameof(RoundOnUnitChange));
             }
         }
 

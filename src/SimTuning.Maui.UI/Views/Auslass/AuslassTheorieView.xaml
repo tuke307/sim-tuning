@@ -1,18 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentView
     x:Class="SimTuning.Maui.UI.Views.Auslass.AuslassTheorieView"
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns="http://schemas.microsoft.com/dotnet/maui/global"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
-    x:DataType="vm:AuslassTheorieViewModel">
+    x:DataType="AuslassTheorieViewModel">
     <ScrollView>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <!--  LÄNGE  -->
@@ -32,7 +31,7 @@
                             <Entry
                                 Keyboard="Numeric"
                                 Placeholder="Ø Krümmer"
-                                Text="{Binding Mode=TwoWay, Path=VehicleMotorAuslassAuspuffKruemmerD}"
+                                Text="{Binding VehicleMotorAuslassAuspuffKruemmerD}"
                                 WidthRequest="250" />
 
                             <Picker
@@ -73,14 +72,14 @@
                             HorizontalOptions="FillAndExpand"
                             Maximum="12"
                             Minimum="6"
-                            Value="{Binding Mode=TwoWay, Path=VehicleMotorAuslassAuspuffKruemmerF}" />
+                            Value="{Binding VehicleMotorAuslassAuspuffKruemmerF}" />
 
                         <StackLayout Orientation="Horizontal">
                             <Entry
                                 Keyboard="Numeric"
                                 IsEnabled="False"
                                 Placeholder="Krümmerlänge"
-                                Text="{Binding Mode=TwoWay, Path=VehicleMotorAuslassAuspuffKruemmerL}"
+                                Text="{Binding VehicleMotorAuslassAuspuffKruemmerL}"
                                 WidthRequest="250" />
 
                             <Picker
@@ -105,7 +104,7 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
                         <Label
@@ -203,7 +202,7 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
                         <Label

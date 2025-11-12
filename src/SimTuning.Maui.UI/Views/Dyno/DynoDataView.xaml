@@ -1,17 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentView
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns="http://schemas.microsoft.com/dotnet/maui/global"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     x:Class="SimTuning.Maui.UI.Views.Dyno.DynoDataView"
-    xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
-    xmlns:models="clr-namespace:SimTuning.Data.Models;assembly=SimTuning.Data"
-    x:DataType="vm:DynoDataViewModel">
+    x:DataType="DynoDataViewModel">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Border Grid.Row="0">
@@ -23,53 +21,52 @@
 
                 <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
-                <ListView
+                <CollectionView
                     HeightRequest="200"
-                    ItemsSource="{Binding Mode=TwoWay, Path=Dynos}"
-                    SelectedItem="{Binding Mode=TwoWay, Path=Dyno}">
-                    <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="models:DynoModel">
-                            <ViewCell>
-                                <Grid Padding="10">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
+                    ItemsSource="{Binding Dynos}"
+                    SelectionMode="Single"
+                    SelectedItem="{Binding Dyno}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="DynoModel">
+                            <Grid Padding="10">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
 
-                                    <Label
-                                        Grid.Row="0"
-                                        Grid.Column="0"
-                                        Text="{Binding Name}"
-                                        FontAttributes="Bold" />
-                                    
-                                    <Label
-                                        Grid.Row="1"
-                                        Grid.Column="0"
-                                        Text="{Binding Beschreibung}"
-                                        FontAttributes="Italic"
-                                        VerticalOptions="End" />
+                                <Label
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Text="{Binding Name}"
+                                    FontAttributes="Bold" />
 
-                                    <Label
-                                        Grid.RowSpan="2"
-                                        Grid.Column="1"
-                                        Text="{Binding Vehicle.Name}"
-                                        FontAttributes="Italic"
-                                        VerticalOptions="End" />
-                                </Grid>
-                            </ViewCell>
+                                <Label
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Text="{Binding Beschreibung}"
+                                    FontAttributes="Italic"
+                                    VerticalOptions="End" />
+
+                                <Label
+                                    Grid.RowSpan="2"
+                                    Grid.Column="1"
+                                    Text="{Binding Vehicle.Name}"
+                                    FontAttributes="Italic"
+                                    VerticalOptions="End" />
+                            </Grid>
                         </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
 
                 <Grid Margin="5, 0, 0, 0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
                     <ImageButton
@@ -116,13 +113,13 @@
                         Grid.RowSpan="3">
                         <Entry
                             Placeholder="Name"
-                            Text="{Binding Mode=TwoWay, Path=DynoName}"
+                            Text="{Binding DynoName}"
                             Margin="5">
                         </Entry>
 
                         <Editor
                             Placeholder="Beschreibung"
-                            Text="{Binding Mode=TwoWay, Path=DynoBeschreibung}"
+                            Text="{Binding DynoBeschreibung}"
                             HeightRequest="150"
                             Margin="5">
                         </Editor>

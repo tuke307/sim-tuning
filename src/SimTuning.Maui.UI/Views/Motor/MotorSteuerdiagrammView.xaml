@@ -1,14 +1,13 @@
 ﻿<ContentView
     x:Class="SimTuning.Maui.UI.Views.Motor.MotorSteuerdiagrammView"
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns="http://schemas.microsoft.com/dotnet/maui/global"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
-    x:DataType="vm:MotorSteuerdiagrammViewModel">
+    x:DataType="MotorSteuerdiagrammViewModel">
 
     <ScrollView>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <!--  Steuerzeiten Rad  -->
@@ -17,8 +16,8 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="auto" />
-                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
                         <Label
@@ -47,13 +46,13 @@
 
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
@@ -80,21 +79,21 @@
                             Keyboard="Numeric"
                             MinimumWidthRequest="60"
                             Placeholder=" "
-                            Text="{Binding Mode=TwoWay, Path=SteuerzeitEinlass}" />
+                            Text="{Binding SteuerzeitEinlass}" />
                         <Entry
                             Grid.Row="2"
                             Grid.Column="1"
                             Keyboard="Numeric"
                             MinimumWidthRequest="60"
                             Placeholder=" "
-                            Text="{Binding Mode=TwoWay, Path=SteuerzeitAuslass}" />
+                            Text="{Binding SteuerzeitAuslass}" />
                         <Entry
                             Grid.Row="3"
                             Grid.Column="1"
                             Keyboard="Numeric"
                             MinimumWidthRequest="60"
                             Placeholder=" "
-                            Text="{Binding Mode=TwoWay, Path=SteuerzeitUeberstroemer}" />
+                            Text="{Binding SteuerzeitUeberstroemer}" />
 
                         <Label
                             Grid.Row="0"

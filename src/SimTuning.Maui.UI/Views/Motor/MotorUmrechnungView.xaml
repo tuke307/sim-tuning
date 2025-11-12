@@ -1,16 +1,15 @@
 ﻿<ContentView
     x:Class="SimTuning.Maui.UI.Views.Motor.MotorUmrechnungView"
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns="http://schemas.microsoft.com/dotnet/maui/global"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
-    x:DataType="vm:MotorUmrechnungViewModel">
+    x:DataType="MotorUmrechnungViewModel">
 
     <ScrollView>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <!--  GRUNDLEGENDES  -->
@@ -19,7 +18,7 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
                         <Label
@@ -39,7 +38,7 @@
                         <Entry
                             Keyboard="Numeric"
                             Placeholder="Hub"
-                            Text="{Binding Mode=TwoWay, Path=VehicleMotorHubL}"
+                            Text="{Binding VehicleMotorHubL}"
                             WidthRequest="250" />
 
                         <Picker
@@ -55,7 +54,7 @@
                         <Entry
                             Keyboard="Numeric"
                             Placeholder="Pleullänge"
-                            Text="{Binding Mode=TwoWay, Path=VehicleMotorPleulL}"
+                            Text="{Binding VehicleMotorPleulL}"
                             WidthRequest="250" />
 
                         <Picker
@@ -75,7 +74,7 @@
                         <Entry
                             Keyboard="Numeric"
                             Placeholder="Deachsierung"
-                            Text="{Binding Mode=TwoWay, Path=VehicleMotorDeachsierungL}"
+                            Text="{Binding VehicleMotorDeachsierungL}"
                             WidthRequest="250" />
 
                         <Picker
@@ -130,7 +129,7 @@
                             Keyboard="Numeric"
                             IsEnabled="True"
                             Placeholder="Abstand vom OT"
-                            Text="{Binding Mode=TwoWay, Path=DegreeDifferenceToOT}"
+                            Text="{Binding DegreeDifferenceToOT}"
                             WidthRequest="250" />
 
                         <Label
@@ -179,12 +178,12 @@
                         <Entry
                             Keyboard="Numeric"
                             Placeholder="vorher"
-                            Text="{Binding Mode=TwoWay, Path=SteuerzeitVorher}"
+                            Text="{Binding SteuerzeitVorher}"
                             WidthRequest="150" />
                         <Entry
                             Keyboard="Numeric"
                             Placeholder="nachher"
-                            Text="{Binding Mode=TwoWay, Path=SteuerzeitNachher}"
+                            Text="{Binding SteuerzeitNachher}"
                             WidthRequest="150" />
                     </StackLayout>
 

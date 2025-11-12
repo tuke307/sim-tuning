@@ -29,33 +29,20 @@ namespace SimTuning.Maui.UI.ViewModels
             //ILocationService locationService,
             IVehicleService vehicleService)
         {
-            this._logger = logger;
-            //this._token = messenger.Subscribe<MvxReloaderMessage>(this.ReloadData);
-            //this._token = messenger.Subscribe<MvxLocationMessage>(this.OnLocationUpdated);
-            // this._token =
-            // messenger.SubscribeOnMainThread<MvxLocationMessage>(this.OnLocationUpdated);
-
-            //this._locationService = locationService;
-            this._navigationService = navigationService;
-            this._vehicleService = vehicleService;
-
-            //this.ShowSpectrogramCommand = new AsyncRelayCommand(() => _navigationService.Navigate<SimTuning.Maui.UI.Views.Dyno.DynoSpectrogramView>(null));
+            _logger = logger;
+            _navigationService = navigationService;
+            _vehicleService = vehicleService;
 
             // Commands
-            this.StartAccelerationCommand = new AsyncRelayCommand(this.StartBeschleunigung);
-            this.ResetAccelerationCommand = new AsyncRelayCommand(this.ResetRun);
-            // this.StopAccelerationCommand = new AsyncRelayCommand(this.StopRun);
+            StartAccelerationCommand = new AsyncRelayCommand(StartBeschleunigung);
+            ResetAccelerationCommand = new AsyncRelayCommand(ResetRun);
+            ShowAudioButtonVis = true;
+            StopwatchVis = false;
+            CountdownVis = false;
 
-            // Visibility this.StopAccelerationButtonVis = false;
-            this.ShowAudioButtonVis = true;
-            this.StopwatchVis = false;
-            this.CountdownVis = false;
-
-            // Anfahren
-            this.CurrentState = PreState;
-            this.StartAccelerationButtonVis = true;
-
-            //this.ReloadData();
+            // Initial state
+            CurrentState = PreState;
+            StartAccelerationButtonVis = true;
         }
 
         #region Methods
@@ -65,78 +52,66 @@ namespace SimTuning.Maui.UI.ViewModels
         /// </summary>
         protected async Task EndRunAsync()
         {
-            // tracking und recording stoppen
-            //await this.recorder.StopRecording().ConfigureAwait(true);
-            this.trackingStarted = false;
+            // Stop tracking
+            trackingStarted = false;
 
-            // UI aktualisieren
-            this.ShowAudioButtonVis = true;
-            this.StopwatchVis = false;
-            this.CurrentState = PostState;
-            this.PageBackColor = stdBg;
-            this.SpeedBackColor = stdSur;
+            // Update UI
+            ShowAudioButtonVis = true;
+            StopwatchVis = false;
+            CurrentState = PostState;
+            PageBackColor = stdBg;
+            SpeedBackColor = stdSur;
 
-            // Timer und Stopwatch stoppen
-            if (this.stopwatch != null)
+            // Stop timer and stopwatch
+            if (stopwatch != null)
             {
-                this.stopwatch.Stop();
-                this.stopwatch.Reset();
+                stopwatch.Stop();
+                stopwatch.Reset();
             }
-            if (this.timer != null)
+            if (timer != null)
             {
-                this.timer.Stop();
-                this.timer.Dispose();
+                timer.Stop();
+                timer.Dispose();
             }
         }
-
-        //        if (this.Dyno.Ausrollen == null)
-        //        {
-        //            Dyno.Ausrollen = new List<AusrollenModel>();
-        //        }
-        //    }
-        //    catch (Exception exc)
-        //    {
-        //        _logger.LogError("Fehler beim Laden des Dyno-Datensatz: ", exc);
-        //    }
-        //}
         protected void OnCountdownTimedEvent(object sender, ElapsedEventArgs e)
         {
             countdownMilliseconds -= 10;
-            this.OnPropertyChanged(nameof(this.Countdown));
+            OnPropertyChanged(nameof(Countdown));
 
-            if (this.countdownMilliseconds == 0)
+            if (countdownMilliseconds == 0)
             {
                 // Timer löschen und verbergen
-                this.timer.Stop();
-                this.timer.Dispose();
-                this.CountdownVis = false;
+                timer.Stop();
+                timer.Dispose();
+                CountdownVis = false;
 
-                this.trackingStarted = true;
+                trackingStarted = true;
 
-                // this.StopAccelerationButtonVis = true;
+                // StopAccelerationButtonVis = true;
 
                 // Stopwatch starten
-                this.StartStopwatch();
+                StartStopwatch();
             }
         }
 
-        // if (this.Dyno.Geschwindigkeit == null) { Dyno.Geschwindigkeit = new List<GeschwindigkeitModel>(); }
+        // if (Dyno.Geschwindigkeit == null) { Dyno.Geschwindigkeit = new List<GeschwindigkeitModel>(); }
         /// <summary>
         /// Called when [location updated].
         /// </summary>
         /// <param name="obj">The object.</param>
         protected void OnLocationUpdated(/*MvxLocationMessage obj*/)
         {
-            //this.Speed = obj.Speed;
+            //Speed = obj.Speed;
 
-            //if (!this.trackingStarted)
+            //if (!trackingStarted)
             //{
             //    return;
             //}
 
             //List<double?> lastSpeedValues;
 
-            //if (this.CurrentState == AccelerationState)
+            //if (CurrentState == AccelerationState)
             //{
             //    // TODO: verbessern bei keiner Veränderung der Maximalgeschwindigkeit
             //    // StartAusrollen() beginnen.
@@ -151,11 +126,11 @@ namespace SimTuning.Maui.UI.ViewModels
             // obj.Longitude, Altitude = obj.Altitude, Speed = obj.Speed, };
 
             //    Dyno.Geschwindigkeit.Add(beschleunigung);
-            //    _vehicleService.UpdateOne(this.Dyno);
+            //    _vehicleService.UpdateOne(Dyno);
             //    // });
             //}
 
-            //if (this.CurrentState == RolloutState)
+            //if (CurrentState == RolloutState)
             //{
             //    using (var db = new Data.DatabaseContext())
             //    {
@@ -169,7 +144,7 @@ namespace SimTuning.Maui.UI.ViewModels
             // // Task.Run(async () => { AusrollenModel ausrollen = new AusrollenModel() { Latitude = obj.Latitude, Longitude = obj.Longitude, Altitude = obj.Altitude, Speed = obj.Speed, };
 
             //    Dyno.Ausrollen.Add(ausrollen);
-            //    _vehicleService.UpdateOne(this.Dyno);
+            //    _vehicleService.UpdateOne(Dyno);
             //    // });
             //}
         }
@@ -182,7 +157,7 @@ namespace SimTuning.Maui.UI.ViewModels
         //{
         //    try
         //    {
-        //        this.Dyno = _vehicleService.RetrieveOneActive();
+        //        Dyno = _vehicleService.RetrieveOneActive();
         /// <summary>
         /// Called when [stopwatch timed event].
         /// </summary>
@@ -190,14 +165,14 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <param name="e">The <see cref="ElapsedEventArgs" /> instance containing the event data.</param>
         protected void OnStopwatchTimedEvent(object sender, ElapsedEventArgs e)
         {
-            if (!this.stopwatch.IsRunning)
+            if (!stopwatch.IsRunning)
             {
-                this.timer.Stop();
-                this.timer.Dispose();
+                timer.Stop();
+                timer.Dispose();
             }
             else
             {
-                this.OnPropertyChanged(nameof(this.Stopwatch));
+                OnPropertyChanged(nameof(Stopwatch));
             }
         }
 
@@ -206,12 +181,12 @@ namespace SimTuning.Maui.UI.ViewModels
         /// </summary>
         protected void ResetDynoData()
         {
-            _vehicleService.Delete(this.Dyno.Geschwindigkeit.ToList());
-            _vehicleService.Delete(this.Dyno.Ausrollen.ToList());
+            _vehicleService.Delete(Dyno.Geschwindigkeit.ToList());
+            _vehicleService.Delete(Dyno.Ausrollen.ToList());
 
-            this.Dyno.Geschwindigkeit.Clear();
+            Dyno.Geschwindigkeit.Clear();
 
-            this.Dyno.Ausrollen.Clear();
+            Dyno.Ausrollen.Clear();
         }
 
         /// <summary>
@@ -224,30 +199,30 @@ namespace SimTuning.Maui.UI.ViewModels
                 //var loadingDialog = await DisplayAlert(message: SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "MES_LOAD")).ConfigureAwait(false);
 
                 // Timer und Stopwatch stoppen
-                if (this.stopwatch != null)
+                if (stopwatch != null)
                 {
-                    this.stopwatch.Stop();
-                    this.stopwatch.Reset();
+                    stopwatch.Stop();
+                    stopwatch.Reset();
                 }
-                if (this.timer != null)
+                if (timer != null)
                 {
-                    this.timer.Stop();
-                    this.timer.Dispose();
+                    timer.Stop();
+                    timer.Dispose();
                 }
 
                 // tracking und recording stoppen
-                //await this.recorder.StopRecording();
-                this.trackingStarted = false;
+                //await recorder.StopRecording();
+                trackingStarted = false;
 
                 // UI aktualisieren
                 OnPropertyChanged(nameof(Stopwatch));
-                this.PageBackColor = System.Drawing.Color.White;
-                this.SpeedBackColor = System.Drawing.Color.White;
-                this.CurrentState = PreState;
-                this.StopwatchVis = false;
-                this.CountdownVis = false;
-                this.StartAccelerationButtonVis = true;
-                this.ShowAudioButtonVis = true;
+                PageBackColor = System.Drawing.Color.White;
+                SpeedBackColor = System.Drawing.Color.White;
+                CurrentState = PreState;
+                StopwatchVis = false;
+                CountdownVis = false;
+                StartAccelerationButtonVis = true;
+                ShowAudioButtonVis = true;
 
                 // zuletzt probieren die Audio-Aufnahme zu löschen
                 File.Delete(GeneralSettings.AudioAccelerationFilePath);
@@ -257,7 +232,7 @@ namespace SimTuning.Maui.UI.ViewModels
             }
             catch (Exception exc)
             {
-                _logger.LogError("Fehler bei ResetBeschleunigung: ", exc);
+                _logger.LogError(exc, "Fehler bei ResetBeschleunigung");
             }
         }
 
@@ -268,14 +243,14 @@ namespace SimTuning.Maui.UI.ViewModels
         {
             try
             {
-                this.StopwatchVis = false;
+                StopwatchVis = false;
 
-                this.CurrentState = RolloutState;
-                this.PageBackColor = deepSkyBlue;
-                this.SpeedBackColor = skyBlue;
-                this.trackingStarted = true;
+                CurrentState = RolloutState;
+                PageBackColor = deepSkyBlue;
+                SpeedBackColor = skyBlue;
+                trackingStarted = true;
 
-                //await this.StartRecording().ConfigureAwait(true);
+                //await StartRecording().ConfigureAwait(true);
 
                 timer = new System.Timers.Timer();
 
@@ -284,14 +259,14 @@ namespace SimTuning.Maui.UI.ViewModels
                 timer.Elapsed += OnCountdownTimedEvent;
 
                 // count down from 5000 ms
-                this.countdownMilliseconds = 5000;
+                countdownMilliseconds = 5000;
 
                 timer.Start();
-                this.CountdownVis = true;
+                CountdownVis = true;
             }
             catch (Exception exc)
             {
-                _logger.LogError("Fehler bei StartAusrollen: ", exc);
+                _logger.LogError(exc, "Fehler bei StartAusrollen");
             }
         }
 
@@ -300,7 +275,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// </summary>
         protected async Task StartBeschleunigung()
         {
-            if (!await this.CheckDynoData().ConfigureAwait(true))
+            if (!await CheckDynoData().ConfigureAwait(true))
             {
                 return;
             }
@@ -309,36 +284,36 @@ namespace SimTuning.Maui.UI.ViewModels
             {
                 //var loadingDialog = await DisplayAlert(message: SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "MES_LOAD")).ConfigureAwait(false);
 
-                this.ResetDynoData();
+                ResetDynoData();
 
-                this.CurrentState = AccelerationState;
-                this.PageBackColor = darkSeaGreen;
-                this.SpeedBackColor = seaGreen;
+                CurrentState = AccelerationState;
+                PageBackColor = darkSeaGreen;
+                SpeedBackColor = seaGreen;
 
                 // es kann nun nicht mehr weiter navigiert werden
-                this.ShowAudioButtonVis = false;
+                ShowAudioButtonVis = false;
 
-                //await this.StartRecording().ConfigureAwait(true);
+                //await StartRecording().ConfigureAwait(true);
 
-                this.StartAccelerationButtonVis = false;
+                StartAccelerationButtonVis = false;
 
-                this.timer = new System.Timers.Timer();
+                timer = new System.Timers.Timer();
 
                 // trigger bei jeder 1/100 sekunde
                 timer.Interval = 10;
                 timer.Elapsed += OnCountdownTimedEvent;
 
                 // count down from 10000 ms / 10s
-                this.countdownMilliseconds = 10000;
+                countdownMilliseconds = 10000;
 
                 timer.Start();
-                this.CountdownVis = true;
+                CountdownVis = true;
 
                 //await loadingDialog.DismissAsync().ConfigureAwait(false);
             }
             catch (Exception exc)
             {
-                _logger.LogError("Fehler bei StartBeschleunigung: ", exc);
+                _logger.LogError(exc, "Fehler bei StartBeschleunigung");
             }
         }
 
@@ -347,20 +322,20 @@ namespace SimTuning.Maui.UI.ViewModels
         /// </summary>
         protected void StartStopwatch()
         {
-            this.stopwatch = new Stopwatch();
+            stopwatch = new Stopwatch();
 
-            if (!this.stopwatch.IsRunning)
+            if (!stopwatch.IsRunning)
             {
-                this.StopwatchVis = true;
-                this.stopwatch.Start();
+                StopwatchVis = true;
+                stopwatch.Start();
 
-                this.timer = new System.Timers.Timer();
+                timer = new System.Timers.Timer();
 
                 // Trigger nei 1/10 s bzw aller 100 ms
-                this.timer.Interval = 100;
-                this.timer.Elapsed += this.OnStopwatchTimedEvent;
+                timer.Interval = 100;
+                timer.Elapsed += OnStopwatchTimedEvent;
 
-                this.timer.Start();
+                timer.Start();
             }
         }
 
@@ -381,7 +356,7 @@ namespace SimTuning.Maui.UI.ViewModels
                 return false;
             }
 
-            if (this.Dyno == null)
+            if (Dyno == null)
             {
                 Functions.ShowSnackbarDialog(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_NODATA"));
 
@@ -397,22 +372,22 @@ namespace SimTuning.Maui.UI.ViewModels
         //protected Task StartRecording()
         //{
         // Recorder
-        //this.recorder = new AudioRecorderService();
+        //recorder = new AudioRecorderService();
 
         //// audio datei zum schreiben auswählen
-        //if (this.CurrentState == AccelerationState)
+        //if (CurrentState == AccelerationState)
         //{
-        //    this.recorder.FilePath = GeneralSettings.AudioAccelerationFilePath;
+        //    recorder.FilePath = GeneralSettings.AudioAccelerationFilePath;
         //}
-        //else if (this.CurrentState == RolloutState)
+        //else if (CurrentState == RolloutState)
         //{
-        //    this.recorder.FilePath = GeneralSettings.AudioRolloutFilePath;
+        //    recorder.FilePath = GeneralSettings.AudioRolloutFilePath;
         //}
 
-        //this.recorder.PreferredSampleRate = 44100;
+        //recorder.PreferredSampleRate = 44100;
 
         //// start recording audio
-        //return this.recorder.StartRecording();
+        //return recorder.StartRecording();
         //}
 
         #endregion Methods
@@ -513,8 +488,8 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value><c>true</c> if [countdown vis]; otherwise, <c>false</c>.</value>
         public bool CountdownVis
         {
-            get => this._countdownVis;
-            protected set => this.SetProperty(ref this._countdownVis, value);
+            get => _countdownVis;
+            protected set => SetProperty(ref _countdownVis, value);
         }
 
         /// <summary>
@@ -543,8 +518,8 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The color of the page back.</value>
         public System.Drawing.Color PageBackColor
         {
-            get => this._pageBackColor;
-            set => this.SetProperty(ref this._pageBackColor, value);
+            get => _pageBackColor;
+            set => SetProperty(ref _pageBackColor, value);
         }
 
         /// <summary>
@@ -553,8 +528,8 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value><c>true</c> if [show audio button vis]; otherwise, <c>false</c>.</value>
         public bool ShowAudioButtonVis
         {
-            get => this._showAudioButtonVis;
-            set => this.SetProperty(ref this._showAudioButtonVis, value);
+            get => _showAudioButtonVis;
+            set => SetProperty(ref _showAudioButtonVis, value);
         }
 
         /// <summary>
@@ -565,16 +540,16 @@ namespace SimTuning.Maui.UI.ViewModels
         {
             get
             {
-                if (this._speed == null)
+                if (_speed == null)
                 {
                     return 0.0;
                 }
                 else
                 {
-                    return Math.Round((double)this._speed, 2);
+                    return Math.Round((double)_speed, 2);
                 }
             }
-            set => this.SetProperty(ref this._speed, value);
+            set => SetProperty(ref _speed, value);
         }
 
         /// <summary>
@@ -583,8 +558,8 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The color of the speed back.</value>
         public System.Drawing.Color SpeedBackColor
         {
-            get => this._speedBackColor;
-            set => this.SetProperty(ref this._speedBackColor, value);
+            get => _speedBackColor;
+            set => SetProperty(ref _speedBackColor, value);
         }
 
         /// <summary>
@@ -593,15 +568,15 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value><c>true</c> if [start acceleration button vis]; otherwise, <c>false</c>.</value>
         public bool StartAccelerationButtonVis
         {
-            get => this._startRunButtonVis;
-            set => this.SetProperty(ref this._startRunButtonVis, value);
+            get => _startRunButtonVis;
+            set => SetProperty(ref _startRunButtonVis, value);
         }
 
         /// <summary>
         /// Gets or sets a value indicating whether [stop acceleration button vis].
         /// </summary>
         /// <value><c>true</c> if [stop acceleration button vis]; otherwise, <c>false</c>.</value>
-        // public bool StopAccelerationButtonVis { get => this._stopRunButtonVis; set => this.SetProperty(ref this._stopRunButtonVis, value); }
+        // public bool StopAccelerationButtonVis { get => _stopRunButtonVis; set => SetProperty(ref _stopRunButtonVis, value); }
 
         /// <summary>
         /// Gets the stopwatch.
@@ -609,7 +584,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The stopwatch.</value>
         public string? Stopwatch
         {
-            get => string.Format("{0:D2}:{1:D2}:{2:D2}", this.stopwatch?.Elapsed.Minutes, this.stopwatch?.Elapsed.Seconds, this.stopwatch?.Elapsed.Milliseconds);
+            get => string.Format("{0:D2}:{1:D2}:{2:D2}", stopwatch?.Elapsed.Minutes, stopwatch?.Elapsed.Seconds, stopwatch?.Elapsed.Milliseconds);
         }
 
         /// <summary>
@@ -618,8 +593,8 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value><c>true</c> if [stopwatch vis]; otherwise, <c>false</c>.</value>
         public bool StopwatchVis
         {
-            get => this._stopwatchVis;
-            set => this.SetProperty(ref this._stopwatchVis, value);
+            get => _stopwatchVis;
+            set => SetProperty(ref _stopwatchVis, value);
         }
 
         #endregion Values

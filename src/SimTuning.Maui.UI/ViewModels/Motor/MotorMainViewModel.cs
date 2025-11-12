@@ -12,8 +12,8 @@ namespace SimTuning.Maui.UI.ViewModels
             ILogger<MotorMainViewModel> logger,
             INavigationService navigationService)
         {
-            this._logger = logger;
-            this._navigationService = navigationService ;
+            _logger = logger;
+            _navigationService = navigationService ;
         }
 
         #region Methods

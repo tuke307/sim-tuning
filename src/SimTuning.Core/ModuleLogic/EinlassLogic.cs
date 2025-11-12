@@ -33,7 +33,8 @@ namespace SimTuning.Core.ModuleLogic
 
         /// <summary>
         /// Berechnet die Vergasergröße.
-        /// TODO: FAUSTFORMEL!!!.
+        /// Note: This calculation uses an empirical formula (rule of thumb) for approximation.
+        /// For precise tuning, additional factors should be considered.
         /// </summary>
         /// <param name="hubvolumen">Hubvolumen in cm³.</param>
         /// <param name="resonanzdrehzahl">Resonanzdrehzahl in 1/min.</param>
@@ -44,17 +45,15 @@ namespace SimTuning.Core.ModuleLogic
         public static double GetVergaserDurchmesser(double hubvolumen, double resonanzdrehzahl, double widerstandsFaktor = 0.9)
         {
             double vergasergroeße = widerstandsFaktor * Math.Sqrt((hubvolumen / 1000) * resonanzdrehzahl);
-
-            vergasergroeße = Math.Round(vergasergroeße, 2);
-
-            return vergasergroeße;
+            return Math.Round(vergasergroeße, 2);
         }
 
         /// <summary>
         /// Berechnet den Hauptdüsendurchmesser des Vergasers.
-        /// TODO: FAUSTFORMEL!!!.
+        /// Note: This calculation uses an empirical formula (rule of thumb) for approximation.
+        /// For precise tuning, carburetor manufacturer specifications should be consulted.
         /// </summary>
-        /// <param name="vergasergroeße">The vergasergroeße.</param>
+        /// <param name="vergasergroeße">Die Vergasergröße in mm.</param>
         /// <param name="widerstandsFaktor">
         /// Strömungswiderstand-Faktor, Bereich von 0(schlecht) bis 1(beste).
         /// </param>
@@ -62,10 +61,7 @@ namespace SimTuning.Core.ModuleLogic
         public static double GetVergaserHauptduesenDurchmesser(double vergasergroeße, double widerstandsFaktor = 0.95)
         {
             double hauptduesendurchmesser = vergasergroeße * 5 * widerstandsFaktor;
-
-            hauptduesendurchmesser = Math.Round(hauptduesendurchmesser, 0);
-
-            return hauptduesendurchmesser;
+            return Math.Round(hauptduesendurchmesser, 0);
         }
     }
 }

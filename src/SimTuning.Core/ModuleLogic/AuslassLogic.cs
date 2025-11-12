@@ -10,8 +10,9 @@ namespace SimTuning.Core.ModuleLogic
     public static class AuslassLogic
     {
         /// <summary>
-        /// Berechnet einen Auspuff.
-        /// TODO: diffusors.
+        /// Berechnet einen Auspuff und generiert eine Visualisierung.
+        /// Note: Multi-stage diffuser calculations are partially implemented.
+        /// Future enhancement: Complete implementation for 2 and 3-stage diffusors.
         /// </summary>
         /// <param name="vehicle">Die Daten für die Auspuffberechnung.</param>
         /// <returns>Bild des Auspuffs.</returns>

@@ -30,8 +30,8 @@ namespace SimTuning.Maui.UI.ViewModels
             INavigationService navigationService,
             IVehicleService vehicleService)
         {
-            this._logger = logger;
-            this._vehicleService = vehicleService;
+            _logger = logger;
+            _vehicleService = vehicleService;
         }
 
         #region Methods
@@ -43,17 +43,17 @@ namespace SimTuning.Maui.UI.ViewModels
         {
             if (helperEngine.Einlass.SteuerzeitSZ.HasValue)
             {
-                this.SteuerzeitEinlass = helperEngine.Einlass.SteuerzeitSZ.Value;
+                SteuerzeitEinlass = helperEngine.Einlass.SteuerzeitSZ.Value;
             }
 
             if (helperEngine.Auslass.SteuerzeitSZ.HasValue)
             {
-                this.SteuerzeitAuslass = helperEngine.Auslass.SteuerzeitSZ.Value;
+                SteuerzeitAuslass = helperEngine.Auslass.SteuerzeitSZ.Value;
             }
 
             if (helperEngine.Ueberstroemer.SteuerzeitSZ.HasValue)
             {
-                this.SteuerzeitUeberstroemer = helperEngine.Ueberstroemer.SteuerzeitSZ.Value;
+                SteuerzeitUeberstroemer = helperEngine.Ueberstroemer.SteuerzeitSZ.Value;
             }
         }
 
@@ -64,17 +64,17 @@ namespace SimTuning.Maui.UI.ViewModels
         {
             if (helperVehicle.Motor.Einlass.SteuerzeitSZ.HasValue)
             {
-                this.SteuerzeitEinlass = helperVehicle.Motor.Einlass.SteuerzeitSZ;
+                SteuerzeitEinlass = helperVehicle.Motor.Einlass.SteuerzeitSZ;
             }
 
             if (helperVehicle.Motor.Auslass.SteuerzeitSZ.HasValue)
             {
-                this.SteuerzeitAuslass = helperVehicle.Motor.Auslass.SteuerzeitSZ;
+                SteuerzeitAuslass = helperVehicle.Motor.Auslass.SteuerzeitSZ;
             }
 
             if (helperVehicle.Motor.Ueberstroemer.SteuerzeitSZ.HasValue)
             {
-                this.SteuerzeitUeberstroemer = helperVehicle.Motor.Ueberstroemer.SteuerzeitSZ;
+                SteuerzeitUeberstroemer = helperVehicle.Motor.Ueberstroemer.SteuerzeitSZ;
             }
         }
 
@@ -84,35 +84,35 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <returns></returns>
         protected void RefreshSteuerzeit()
         {
-            if (this.SteuerzeitEinlass.HasValue)
+            if (SteuerzeitEinlass.HasValue)
             {
-                this.Einlass_Steuerwinkel_oeffnen = EngineLogic.GetSteuerwinkelOeffnet(this.SteuerzeitEinlass.Value, 0, 0);
-                this.Einlass_Steuerwinkel_schließen = EngineLogic.GetSteuerwinkelSchließt(this.SteuerzeitEinlass.Value, 0, 0);
+                Einlass_Steuerwinkel_oeffnen = EngineLogic.GetSteuerwinkelOeffnet(SteuerzeitEinlass.Value, 0, 0);
+                Einlass_Steuerwinkel_schließen = EngineLogic.GetSteuerwinkelSchließt(SteuerzeitEinlass.Value, 0, 0);
             }
 
-            if (this.SteuerzeitAuslass.HasValue)
+            if (SteuerzeitAuslass.HasValue)
             {
-                this.Auslass_Steuerwinkel_oeffnen = EngineLogic.GetSteuerwinkelOeffnet(0, this.SteuerzeitAuslass.Value, 0);
-                this.Auslass_Steuerwinkel_schließen = EngineLogic.GetSteuerwinkelSchließt(0, this.SteuerzeitAuslass.Value, 0);
+                Auslass_Steuerwinkel_oeffnen = EngineLogic.GetSteuerwinkelOeffnet(0, SteuerzeitAuslass.Value, 0);
+                Auslass_Steuerwinkel_schließen = EngineLogic.GetSteuerwinkelSchließt(0, SteuerzeitAuslass.Value, 0);
             }
 
-            if (this.SteuerzeitUeberstroemer.HasValue)
+            if (SteuerzeitUeberstroemer.HasValue)
             {
-                this.Ueberstroemer_Steuerwinkel_oeffnen = EngineLogic.GetSteuerwinkelOeffnet(0, 0, this.SteuerzeitUeberstroemer.Value);
-                this.Ueberstroemer_Steuerwinkel_schließen = EngineLogic.GetSteuerwinkelSchließt(0, 0, this.SteuerzeitUeberstroemer.Value);
+                Ueberstroemer_Steuerwinkel_oeffnen = EngineLogic.GetSteuerwinkelOeffnet(0, 0, SteuerzeitUeberstroemer.Value);
+                Ueberstroemer_Steuerwinkel_schließen = EngineLogic.GetSteuerwinkelSchließt(0, 0, SteuerzeitUeberstroemer.Value);
             }
 
-            if (this.SteuerzeitUeberstroemer.HasValue && this.SteuerzeitAuslass.HasValue)
+            if (SteuerzeitUeberstroemer.HasValue && SteuerzeitAuslass.HasValue)
             {
-                this.SteuerzeitVorauslass = EngineLogic.GetVorauslass(this.SteuerzeitAuslass.Value, this.SteuerzeitUeberstroemer.Value);
+                SteuerzeitVorauslass = EngineLogic.GetVorauslass(SteuerzeitAuslass.Value, SteuerzeitUeberstroemer.Value);
             }
 
-            if (this.SteuerzeitEinlass.HasValue && this.SteuerzeitUeberstroemer.HasValue && this.SteuerzeitAuslass.HasValue)
+            if (SteuerzeitEinlass.HasValue && SteuerzeitUeberstroemer.HasValue && SteuerzeitAuslass.HasValue)
             {
-                Stream stream = SimTuning.Core.Converters.Converts.SKBitmapToStream(bitmap: EngineLogic.GetSteuerdiagramm(this.SteuerzeitEinlass.Value, this.SteuerzeitAuslass.Value, this.SteuerzeitUeberstroemer.Value));
+                Stream stream = SimTuning.Core.Converters.Converts.SKBitmapToStream(bitmap: EngineLogic.GetSteuerdiagramm(SteuerzeitEinlass.Value, SteuerzeitAuslass.Value, SteuerzeitUeberstroemer.Value));
                 if (stream != null)
                 {
-                    this.PortTimingCircle = ImageSource.FromStream(() => stream);
+                    PortTimingCircle = ImageSource.FromStream(() => stream);
                 }
             }
         }
@@ -144,26 +144,26 @@ namespace SimTuning.Maui.UI.ViewModels
 
         public double? Auslass_Steuerwinkel_oeffnen
         {
-            get => this._auslass_Steuerwinkel_oeffnen;
-            set => this.SetProperty(ref this._auslass_Steuerwinkel_oeffnen, value);
+            get => _auslass_Steuerwinkel_oeffnen;
+            set => SetProperty(ref _auslass_Steuerwinkel_oeffnen, value);
         }
 
         public double? Auslass_Steuerwinkel_schließen
         {
-            get => this._auslass_Steuerwinkel_schließen;
-            set => this.SetProperty(ref this._auslass_Steuerwinkel_schließen, value);
+            get => _auslass_Steuerwinkel_schließen;
+            set => SetProperty(ref _auslass_Steuerwinkel_schließen, value);
         }
 
         public double? Einlass_Steuerwinkel_oeffnen
         {
-            get => this._einlass_Steuerwinkel_oeffnen;
-            set => this.SetProperty(ref this._einlass_Steuerwinkel_oeffnen, value);
+            get => _einlass_Steuerwinkel_oeffnen;
+            set => SetProperty(ref _einlass_Steuerwinkel_oeffnen, value);
         }
 
         public double? Einlass_Steuerwinkel_schließen
         {
-            get => this._einlass_Steuerwinkel_schließen;
-            set => this.SetProperty(ref this._einlass_Steuerwinkel_schließen, value);
+            get => _einlass_Steuerwinkel_schließen;
+            set => SetProperty(ref _einlass_Steuerwinkel_schließen, value);
         }
 
         public ImageSource PortTimingCircle
@@ -178,11 +178,11 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The steuerzeit auslass.</value>
         public double? SteuerzeitAuslass
         {
-            get => this._steuerzeitAuslass;
+            get => _steuerzeitAuslass;
             set
             {
-                this.SetProperty(ref this._steuerzeitAuslass, value);
-                this.RefreshSteuerzeit();
+                SetProperty(ref _steuerzeitAuslass, value);
+                RefreshSteuerzeit();
             }
         }
 
@@ -192,11 +192,11 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The steuerzeit einlass.</value>
         public double? SteuerzeitEinlass
         {
-            get => this._steuerzeitEinlass;
+            get => _steuerzeitEinlass;
             set
             {
-                this.SetProperty(ref this._steuerzeitEinlass, value);
-                this.RefreshSteuerzeit();
+                SetProperty(ref _steuerzeitEinlass, value);
+                RefreshSteuerzeit();
             }
         }
 
@@ -206,30 +206,30 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The steuerzeit ueberstroemer.</value>
         public double? SteuerzeitUeberstroemer
         {
-            get => this._steuerzeitUeberstroemer;
+            get => _steuerzeitUeberstroemer;
             set
             {
-                this.SetProperty(ref this._steuerzeitUeberstroemer, value);
-                this.RefreshSteuerzeit();
+                SetProperty(ref _steuerzeitUeberstroemer, value);
+                RefreshSteuerzeit();
             }
         }
 
         public double? SteuerzeitVorauslass
         {
-            get => this._steuerzeitVorauslass;
-            set => this.SetProperty(ref this._steuerzeitVorauslass, value);
+            get => _steuerzeitVorauslass;
+            set => SetProperty(ref _steuerzeitVorauslass, value);
         }
 
         public double? Ueberstroemer_Steuerwinkel_oeffnen
         {
-            get => this._ueberstroemer_Steuerwinkel_oeffnen;
-            set => this.SetProperty(ref this._ueberstroemer_Steuerwinkel_oeffnen, value);
+            get => _ueberstroemer_Steuerwinkel_oeffnen;
+            set => SetProperty(ref _ueberstroemer_Steuerwinkel_oeffnen, value);
         }
 
         public double? Ueberstroemer_Steuerwinkel_schließen
         {
-            get => this._ueberstroemer_Steuerwinkel_schließen;
-            set => this.SetProperty(ref this._ueberstroemer_Steuerwinkel_schließen, value);
+            get => _ueberstroemer_Steuerwinkel_schließen;
+            set => SetProperty(ref _ueberstroemer_Steuerwinkel_schließen, value);
         }
 
         #endregion Values

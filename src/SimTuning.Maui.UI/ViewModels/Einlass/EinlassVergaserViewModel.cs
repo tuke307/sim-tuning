@@ -17,8 +17,8 @@ namespace SimTuning.Maui.UI.ViewModels
             ILogger<EinlassVergaserViewModel> logger,
             IVehicleService vehicleService)
         {
-            this._logger = logger;
-            this._vehicleService = vehicleService;
+            _logger = logger;
+            _vehicleService = vehicleService;
 
             VolumeQuantityUnits = new VolumeQuantity();
             LengthQuantityUnits = new LengthQuantity();

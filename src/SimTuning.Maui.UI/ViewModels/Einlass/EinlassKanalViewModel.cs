@@ -17,19 +17,19 @@ namespace SimTuning.Maui.UI.ViewModels
             ILogger<EinlassKanalViewModel> logger,
             IVehicleService vehicleService)
         {
-            this._logger = logger;
-            this._vehicleService = vehicleService;
+            _logger = logger;
+            _vehicleService = vehicleService;
 
-            this.AreaQuantityUnits = new AreaQuantity();
-            this.VolumeQuantityUnits = new VolumeQuantity();
-            this.LengthQuantityUnits = new LengthQuantity();
+            AreaQuantityUnits = new AreaQuantity();
+            VolumeQuantityUnits = new VolumeQuantity();
+            LengthQuantityUnits = new LengthQuantity();
 
             // Vehicle Creation
-            this.Vehicle = new VehiclesModel();
-            this.Vehicle.Motor = new MotorModel();
-            this.Vehicle.Motor.Einlass = new EinlassModel();
+            Vehicle = new VehiclesModel();
+            Vehicle.Motor = new MotorModel();
+            Vehicle.Motor.Einlass = new EinlassModel();
 
-            this.ResonanzlaengeUnit = this.LengthQuantityUnits.Where(x => x.UnitEnumValue.Equals(LengthUnit.Millimeter)).First();
+            ResonanzlaengeUnit = LengthQuantityUnits.Where(x => x.UnitEnumValue.Equals(LengthUnit.Millimeter)).First();
         }
 
         #region Methods
@@ -41,44 +41,44 @@ namespace SimTuning.Maui.UI.ViewModels
         {
             if (helperVehicle.Motor.Einlass.FlaecheA.HasValue)
             {
-                this.VehicleMotorEinlassFlaecheA = helperVehicle.Motor.Einlass.FlaecheA;
+                VehicleMotorEinlassFlaecheA = helperVehicle.Motor.Einlass.FlaecheA;
             }
 
             if (helperVehicle.Motor.Einlass.SteuerzeitSZ.HasValue)
             {
-                this.Einlasssteuerwinkel = helperVehicle.Motor.Einlass.SteuerzeitSZ;
+                Einlasssteuerwinkel = helperVehicle.Motor.Einlass.SteuerzeitSZ;
             }
 
             if (helperVehicle.Motor.ResonanzU.HasValue)
             {
-                this.VehicleMotorResonanzU = helperVehicle.Motor.ResonanzU;
+                VehicleMotorResonanzU = helperVehicle.Motor.ResonanzU;
             }
 
             if (helperVehicle.Motor.KurbelgehaeuseV.HasValue)
             {
-                this.VehicleMotorKurbelgehaeuseV = helperVehicle.Motor.KurbelgehaeuseV;
+                VehicleMotorKurbelgehaeuseV = helperVehicle.Motor.KurbelgehaeuseV;
             }
 
             if (helperVehicle.Motor.Einlass.DurchmesserD.HasValue)
             {
-                this.VehicleMotorEinlassDurchmesserD = helperVehicle.Motor.Einlass.DurchmesserD;
+                VehicleMotorEinlassDurchmesserD = helperVehicle.Motor.Einlass.DurchmesserD;
             }
         }
 
         private void CalculateResonanzlaenge()
         {
-            if (this.VehicleMotorEinlassFlaecheA.HasValue &&
-                this.Einlasssteuerwinkel.HasValue &&
-                this.VehicleMotorKurbelgehaeuseV.HasValue &&
-                this.VehicleMotorResonanzU.HasValue &&
-                this.VehicleMotorEinlassDurchmesserD.HasValue)
+            if (VehicleMotorEinlassFlaecheA.HasValue &&
+                Einlasssteuerwinkel.HasValue &&
+                VehicleMotorKurbelgehaeuseV.HasValue &&
+                VehicleMotorResonanzU.HasValue &&
+                VehicleMotorEinlassDurchmesserD.HasValue)
             {
-                this.Resonanzlaenge = EinlassLogic.GetResonanzLaenge(
-                    UnitsNet.UnitConverter.Convert(this.VehicleMotorEinlassFlaecheA.Value, this.VehicleMotorEinlassFlaecheAUnit.UnitEnumValue, AreaUnit.SquareCentimeter),
-                    this.Einlasssteuerwinkel.Value,
-                    UnitsNet.UnitConverter.Convert(this.VehicleMotorKurbelgehaeuseV.Value, this.VehicleMotorKurbelgehaeuseVUnit.UnitEnumValue, VolumeUnit.CubicCentimeter),
-                    this.VehicleMotorResonanzU.Value,
-                    UnitsNet.UnitConverter.Convert(this.VehicleMotorEinlassDurchmesserD.Value, this.VehicleMotorEinlassDurchmesserDUnit.UnitEnumValue, LengthUnit.Centimeter));
+                Resonanzlaenge = EinlassLogic.GetResonanzLaenge(
+                    UnitsNet.UnitConverter.Convert(VehicleMotorEinlassFlaecheA.Value, VehicleMotorEinlassFlaecheAUnit.UnitEnumValue, AreaUnit.SquareCentimeter),
+                    Einlasssteuerwinkel.Value,
+                    UnitsNet.UnitConverter.Convert(VehicleMotorKurbelgehaeuseV.Value, VehicleMotorKurbelgehaeuseVUnit.UnitEnumValue, VolumeUnit.CubicCentimeter),
+                    VehicleMotorResonanzU.Value,
+                    UnitsNet.UnitConverter.Convert(VehicleMotorEinlassDurchmesserD.Value, VehicleMotorEinlassDurchmesserDUnit.UnitEnumValue, LengthUnit.Centimeter));
             }
         }
 
@@ -141,115 +141,115 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle.</value>
         public VehiclesModel Vehicle
         {
-            get => this._vehicle;
-            set => this.SetProperty(ref this._vehicle, value);
+            get => _vehicle;
+            set => SetProperty(ref _vehicle, value);
         }
 
         public double? VehicleMotorEinlassDurchmesserD
         {
-            get => this.Vehicle?.Motor?.Einlass?.DurchmesserD;
+            get => Vehicle?.Motor?.Einlass?.DurchmesserD;
             set
             {
-                if (this.Vehicle?.Motor?.Einlass == null)
+                if (Vehicle?.Motor?.Einlass == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.Einlass.DurchmesserD = value;
-                this.OnPropertyChanged(nameof(this.VehicleMotorEinlassDurchmesserD));
+                Vehicle.Motor.Einlass.DurchmesserD = value;
+                OnPropertyChanged(nameof(VehicleMotorEinlassDurchmesserD));
                 CalculateResonanzlaenge();
             }
         }
 
         public UnitListItem VehicleMotorEinlassDurchmesserDUnit
         {
-            get => this.LengthQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(this.Vehicle?.Motor?.Einlass?.DurchmesserDUnit));
+            get => LengthQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.Einlass?.DurchmesserDUnit));
             set
             {
-                if (this.Vehicle?.Motor?.Einlass == null)
+                if (Vehicle?.Motor?.Einlass == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.Einlass.DurchmesserDUnit = (UnitsNet.Units.LengthUnit?)value?.UnitEnumValue;
-                this.OnPropertyChanged(nameof(this.VehicleMotorEinlassDurchmesserD));
+                Vehicle.Motor.Einlass.DurchmesserDUnit = (UnitsNet.Units.LengthUnit?)value?.UnitEnumValue;
+                OnPropertyChanged(nameof(VehicleMotorEinlassDurchmesserD));
             }
         }
 
         public double? VehicleMotorEinlassFlaecheA
         {
-            get => this.Vehicle?.Motor?.Einlass?.FlaecheA;
+            get => Vehicle?.Motor?.Einlass?.FlaecheA;
             set
             {
-                if (this.Vehicle?.Motor?.Einlass == null)
+                if (Vehicle?.Motor?.Einlass == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.Einlass.FlaecheA = value;
-                this.OnPropertyChanged(nameof(this.VehicleMotorEinlassFlaecheA));
+                Vehicle.Motor.Einlass.FlaecheA = value;
+                OnPropertyChanged(nameof(VehicleMotorEinlassFlaecheA));
                 CalculateResonanzlaenge();
             }
         }
 
         public UnitListItem VehicleMotorEinlassFlaecheAUnit
         {
-            get => this.AreaQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(this.Vehicle?.Motor?.Einlass?.FlaecheAUnit));
+            get => AreaQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.Einlass?.FlaecheAUnit));
             set
             {
-                if (this.Vehicle?.Motor?.Einlass == null)
+                if (Vehicle?.Motor?.Einlass == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.Einlass.FlaecheAUnit = (UnitsNet.Units.AreaUnit?)value?.UnitEnumValue;
-                this.OnPropertyChanged(nameof(this.VehicleMotorEinlassFlaecheA));
+                Vehicle.Motor.Einlass.FlaecheAUnit = (UnitsNet.Units.AreaUnit?)value?.UnitEnumValue;
+                OnPropertyChanged(nameof(VehicleMotorEinlassFlaecheA));
             }
         }
 
         public double? VehicleMotorKurbelgehaeuseV
         {
-            get => this.Vehicle?.Motor?.KurbelgehaeuseV;
+            get => Vehicle?.Motor?.KurbelgehaeuseV;
             set
             {
-                if (this.Vehicle?.Motor?.Einlass == null)
+                if (Vehicle?.Motor?.Einlass == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.KurbelgehaeuseV = value;
-                this.OnPropertyChanged(nameof(this.VehicleMotorKurbelgehaeuseV));
+                Vehicle.Motor.KurbelgehaeuseV = value;
+                OnPropertyChanged(nameof(VehicleMotorKurbelgehaeuseV));
                 CalculateResonanzlaenge();
             }
         }
 
         public UnitListItem VehicleMotorKurbelgehaeuseVUnit
         {
-            get => this.VolumeQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(this.Vehicle?.Motor?.KurbelgehaeuseVUnit));
+            get => VolumeQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.KurbelgehaeuseVUnit));
             set
             {
-                if (this.Vehicle?.Motor == null)
+                if (Vehicle?.Motor == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.KurbelgehaeuseVUnit = (UnitsNet.Units.VolumeUnit?)value?.UnitEnumValue;
-                this.OnPropertyChanged(nameof(this.VehicleMotorKurbelgehaeuseV));
+                Vehicle.Motor.KurbelgehaeuseVUnit = (UnitsNet.Units.VolumeUnit?)value?.UnitEnumValue;
+                OnPropertyChanged(nameof(VehicleMotorKurbelgehaeuseV));
             }
         }
 
         public double? VehicleMotorResonanzU
         {
-            get => this.Vehicle?.Motor?.ResonanzU;
+            get => Vehicle?.Motor?.ResonanzU;
             set
             {
-                if (this.Vehicle?.Motor == null)
+                if (Vehicle?.Motor == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.ResonanzU = value;
-                this.OnPropertyChanged(nameof(this.VehicleMotorResonanzU));
+                Vehicle.Motor.ResonanzU = value;
+                OnPropertyChanged(nameof(VehicleMotorResonanzU));
                 CalculateResonanzlaenge();
             }
         }

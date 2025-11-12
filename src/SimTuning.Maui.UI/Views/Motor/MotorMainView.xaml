@@ -1,14 +1,12 @@
 ﻿<ContentPage
     x:Class="SimTuning.Maui.UI.Views.Motor.MotorMainView"
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns="http://schemas.microsoft.com/dotnet/maui/global"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:tabs="http://sharpnado.com"
-    xmlns:local="clr-namespace:SimTuning.Maui.UI.Views.Motor"
-    xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
-    x:DataType="vm:MotorMainViewModel">
+    x:DataType="MotorMainViewModel">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -36,11 +34,11 @@
             Grid.Row="1"
             x:Name="Switcher"
             Animate="True"
-            SelectedIndex="{Binding MotorTabIndex, Mode=TwoWay}">
-            <local:MotorUmrechnungView />
-            <local:MotorSteuerdiagrammView />
-            <local:MotorVerdichtungView />
-            <local:MotorHubraumView />
+            SelectedIndex="{Binding MotorTabIndex}">
+            MotorUmrechnungView />
+            MotorSteuerdiagrammView />
+            MotorVerdichtungView />
+            MotorHubraumView />
         </tabs:ViewSwitcher>
     </Grid>
 </ContentPage>

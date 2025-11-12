@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
     x:Class="SimTuning.Maui.UI.Views.Dyno.DynoMainView"
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns="http://schemas.microsoft.com/dotnet/maui/global"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:tabs="http://sharpnado.com"
-    xmlns:local="clr-namespace:SimTuning.Maui.UI.Views.Dyno"
-    xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
-    x:DataType="vm:DynoMainViewModel"
+    x:DataType="DynoMainViewModel"
     Title="{Binding PageTitle, Mode=TwoWay}">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -34,11 +32,11 @@
         <tabs:ViewSwitcher
             x:Name="Switcher"
             Grid.Row="1"
-            SelectedIndex="{Binding DynoTabIndex, Mode=TwoWay}"
+            SelectedIndex="{Binding DynoTabIndex}"
             Animate="True">
-            <local:DynoDataView />
-            <local:DynoAudioView />
-            <local:DynoDiagnosisView />
+            DynoDataView />
+            DynoAudioView />
+            DynoDiagnosisView />
         </tabs:ViewSwitcher>
     </Grid>
 </ContentPage>

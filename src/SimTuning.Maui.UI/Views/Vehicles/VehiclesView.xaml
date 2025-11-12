@@ -1,17 +1,14 @@
 ﻿<ContentPage
     x:Class="SimTuning.Maui.UI.Views.Vehicles.VehiclesView"
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns="http://schemas.microsoft.com/dotnet/maui/global"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:SimTuning.Maui.UI.Behaviors"
-    Title="Fahrzeuge"
-    xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
-    xmlns:models="clr-namespace:SimTuning.Data.Models;assembly=SimTuning.Data"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-    x:DataType="vm:VehiclesViewModel">
+    Title="Fahrzeuge"
+    x:DataType="VehiclesViewModel">
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -23,24 +20,31 @@
 
                 <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
-                <ListView
+                <CollectionView
                     HeightRequest="150"
                     ItemsSource="{Binding Vehicles}"
-                    SelectedItem="{Binding Mode=TwoWay, Path=Vehicle}">
-                    <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="models:VehiclesModel">
-                            <TextCell
-                                Text="{Binding Name}"
-                                Detail="{Binding Beschreibung}" />
+                    SelectionMode="Single"
+                    SelectedItem="{Binding Vehicle}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="VehiclesModel">
+                            <VerticalStackLayout Padding="10" Spacing="4">
+                                <Label
+                                    Text="{Binding Name}"
+                                    FontAttributes="Bold" />
+                                <Label
+                                    Text="{Binding Beschreibung}"
+                                    FontSize="12"
+                                    TextColor="{AppThemeBinding Light=Gray, Dark=LightGray}" />
+                            </VerticalStackLayout>
                         </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
 
                 <Grid Margin="5, 0, 0, 0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
                     <ImageButton
@@ -74,19 +78,19 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
                         <StackLayout Grid.Column="0">
                             <Entry
                                 Placeholder="Name"
-                                Text="{Binding Mode=TwoWay, Path=VehicleName}"
+                                Text="{Binding VehicleName}"
                                 Margin="5">
                             </Entry>
 
                             <Editor
                                 Placeholder="Beschreibung"
-                                Text="{Binding Mode=TwoWay, Path=VehicleBeschreibung}"
+                                Text="{Binding VehicleBeschreibung}"
                                 Margin="5"
                                 HeightRequest="125">
                             </Editor>
@@ -120,7 +124,7 @@
 
                             <Entry
                                 Placeholder="Gewicht"
-                                Text="{Binding Mode=TwoWay, Path=VehicleGewicht}"
+                                Text="{Binding VehicleGewicht}"
                                 Keyboard="Numeric"
                                 Grid.Row="0"
                                 Grid.Column="0">
@@ -131,7 +135,7 @@
                                 ItemsSource="{Binding Path=MassQuantityUnits, Mode=OneTime}"
                                 HorizontalOptions="StartAndExpand"
                                 VerticalOptions="CenterAndExpand"
-                                SelectedItem="{Binding Mode=TwoWay, Path=VehicleGewichtUnit}"
+                                SelectedItem="{Binding VehicleGewichtUnit}"
                                 ItemDisplayBinding="{Binding Abbreviation}"
                                 Grid.Column="1"
                                 Grid.Row="0">
@@ -165,7 +169,7 @@
 
                             <Entry
                                 Placeholder="Name"
-                                Text="{Binding Mode=TwoWay, Path=VehicleMotorName}"
+                                Text="{Binding VehicleMotorName}"
                                 Keyboard="Numeric">
                             </Entry>
 
@@ -189,27 +193,27 @@
                                         <ColumnDefinition Width="100" />
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="auto" />
-                                        <RowDefinition Height="auto" />
-                                        <RowDefinition Height="auto" />
-                                        <RowDefinition Height="auto" />
-                                        <RowDefinition Height="auto" />
-                                        <RowDefinition Height="auto" />
-                                        <RowDefinition Height="auto" />
-                                        <RowDefinition Height="auto" />
-                                        <RowDefinition Height="auto" />
-                                        <RowDefinition Height="auto" />
-                                        <RowDefinition Height="auto" />
-                                        <RowDefinition Height="auto" />
-                                        <RowDefinition Height="auto" />
-                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
 
                                     <!--#region VehicleMotorHubL-->
 
                                     <Entry
                                         Placeholder="Hub"
-                                        Text="{Binding Mode=TwoWay, Path=VehicleMotorHubL}"
+                                        Text="{Binding VehicleMotorHubL}"
                                         Grid.Column="0"
                                         Grid.Row="0"
                                         Keyboard="Numeric">
@@ -220,7 +224,7 @@
                                         ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
                                         HorizontalOptions="StartAndExpand"
                                         VerticalOptions="CenterAndExpand"
-                                        SelectedItem="{Binding Mode=TwoWay, Path=VehicleMotorHubLUnit}"
+                                        SelectedItem="{Binding VehicleMotorHubLUnit}"
                                         ItemDisplayBinding="{Binding Abbreviation}"
                                         Grid.Column="1"
                                         Grid.Row="0">
@@ -232,7 +236,7 @@
 
                                     <Entry
                                         Placeholder="Pleuellänge"
-                                        Text="{Binding Mode=TwoWay, Path=VehicleMotorPleulL}"
+                                        Text="{Binding VehicleMotorPleulL}"
                                         Grid.Column="0"
                                         Grid.Row="1"
                                         Keyboard="Numeric">
@@ -243,7 +247,7 @@
                                         ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
                                         HorizontalOptions="StartAndExpand"
                                         VerticalOptions="CenterAndExpand"
-                                        SelectedItem="{Binding Mode=TwoWay, Path=VehicleMotorPleulLUnit}"
+                                        SelectedItem="{Binding VehicleMotorPleulLUnit}"
                                         ItemDisplayBinding="{Binding Abbreviation}"
                                         Grid.Column="1"
                                         Grid.Row="1">
@@ -255,7 +259,7 @@
 
                                     <Entry
                                         Placeholder="Kolben-Geschwindikeit"
-                                        Text="{Binding Mode=TwoWay, Path=VehicleMotorKolbenG}"
+                                        Text="{Binding VehicleMotorKolbenG}"
                                         Grid.Column="0"
                                         Grid.Row="2"
                                         Keyboard="Numeric">
@@ -266,7 +270,7 @@
                                         ItemsSource="{Binding Path=SpeedQuantityUnits, Mode=OneTime}"
                                         HorizontalOptions="StartAndExpand"
                                         VerticalOptions="CenterAndExpand"
-                                        SelectedItem="{Binding Mode=TwoWay, Path=VehicleMotorKolbenGUnit}"
+                                        SelectedItem="{Binding VehicleMotorKolbenGUnit}"
                                         ItemDisplayBinding="{Binding Abbreviation}"
                                         Grid.Column="1"
                                         Grid.Row="2">
@@ -278,7 +282,7 @@
 
                                     <Entry
                                         Placeholder="Deachsierung"
-                                        Text="{Binding Mode=TwoWay, Path=VehicleMotorDeachsierungL}"
+                                        Text="{Binding VehicleMotorDeachsierungL}"
                                         Grid.Column="0"
                                         Grid.Row="3"
                                         Keyboard="Numeric">
@@ -289,7 +293,7 @@
                                         ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
                                         HorizontalOptions="StartAndExpand"
                                         VerticalOptions="CenterAndExpand"
-                                        SelectedItem="{Binding Mode=TwoWay, Path=VehicleMotorDeachsierungLUnit}"
+                                        SelectedItem="{Binding VehicleMotorDeachsierungLUnit}"
                                         ItemDisplayBinding="{Binding Abbreviation}"
                                         Grid.Column="1"
                                         Grid.Row="3">
@@ -301,7 +305,7 @@
 
                                     <Entry
                                         Placeholder="Bohrung"
-                                        Text="{Binding Mode=TwoWay, Path=VehicleMotorBohrungD}"
+                                        Text="{Binding VehicleMotorBohrungD}"
                                         Grid.Column="0"
                                         Grid.Row="4"
                                         Keyboard="Numeric">
@@ -312,7 +316,7 @@
                                         ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
                                         HorizontalOptions="StartAndExpand"
                                         VerticalOptions="CenterAndExpand"
-                                        SelectedItem="{Binding Mode=TwoWay, Path=VehicleMotorBohrungDUnit}"
+                                        SelectedItem="{Binding VehicleMotorBohrungDUnit}"
                                         ItemDisplayBinding="{Binding Abbreviation}"
                                         Grid.Column="1"
                                         Grid.Row="4">
@@ -325,7 +329,7 @@
 
                                     <Entry
                                         Placeholder="Resonanzdrehzahl"
-                                        Text="{Binding Mode=TwoWay, Path=VehicleMotorResonanzU}"
+                                        Text="{Binding VehicleMotorResonanzU}"
                                         Grid.ColumnSpan="2"
                                         Grid.Row="5"
                                         Keyboard="Numeric">
@@ -337,7 +341,7 @@
 
                                     <Entry
                                         Placeholder="Hubraum Volumen"
-                                        Text="{Binding Mode=TwoWay, Path=VehicleMotorHubraumV}"
+                                        Text="{Binding VehicleMotorHubraumV}"
                                         Grid.Column="0"
                                         Grid.Row="6"
                                         Keyboard="Numeric">
@@ -346,7 +350,7 @@
                                     <Picker
                                         Margin="5, 0, 0, 0"
                                         ItemsSource="{Binding Path=VolumeQuantityUnits, Mode=OneTime}"
-                                        SelectedItem="{Binding Mode=TwoWay, Path=VehicleMotorHubraumVUnit}"
+                                        SelectedItem="{Binding VehicleMotorHubraumVUnit}"
                                         ItemDisplayBinding="{Binding Abbreviation}"
                                         HorizontalOptions="StartAndExpand"
                                         VerticalOptions="CenterAndExpand"
@@ -360,13 +364,13 @@
 
                                     <Entry
                                         Placeholder="Brennraum Volumen"
-                                        Text="{Binding Mode=TwoWay, Path=VehicleMotorBrennraumV}"
+                                        Text="{Binding VehicleMotorBrennraumV}"
                                         Grid.Column="0"
                                         Grid.Row="7"
                                         Keyboard="Numeric">
 
                                         <!--<Entry.Behaviors>
-                                            <local:EventToCommandBehavior EventName="TextChanged"
+                                            EventToCommandBehavior EventName="TextChanged"
                                                                           Command="{Binding ShowSaveButtonCommand}" />
                                         </Entry.Behaviors>-->
                                     </Entry>
@@ -388,13 +392,13 @@
 
                                     <Entry
                                         Placeholder="Kurbelgehaeuse Volumen"
-                                        Text="{Binding Mode=TwoWay, Path=VehicleMotorKurbelgehaeuseV}"
+                                        Text="{Binding VehicleMotorKurbelgehaeuseV}"
                                         Grid.Column="0"
                                         Grid.Row="8"
                                         Keyboard="Numeric">
 
                                         <!--<Entry.Behaviors>
-                                            <local:EventToCommandBehavior EventName="TextChanged"
+                                            EventToCommandBehavior EventName="TextChanged"
                                                                           Command="{Binding ShowSaveButtonCommand}" />
                                         </Entry.Behaviors>-->
                                     </Entry>
@@ -417,7 +421,7 @@
 
                                     <Entry
                                         Placeholder="Verdichtungsverhältnis"
-                                        Text="{Binding Mode=TwoWay, Path=VehicleMotorVerdichtungV}"
+                                        Text="{Binding VehicleMotorVerdichtungV}"
                                         Grid.ColumnSpan="2"
                                         Grid.Row="9"
                                         Keyboard="Numeric">
@@ -430,7 +434,7 @@
 
                                     <Entry
                                         Placeholder="Zylinder-Anzahl"
-                                        Text="{Binding Mode=TwoWay, Path=VehicleMotorZylinderAnz}"
+                                        Text="{Binding VehicleMotorZylinderAnz}"
                                         Grid.ColumnSpan="2"
                                         Grid.Row="10"
                                         Keyboard="Numeric">
@@ -443,7 +447,7 @@
 
                                     <Entry
                                         Placeholder="Zündzeitpunkt"
-                                        Text="{Binding Mode=TwoWay, Path=VehicleMotorZuendzeitpunkt}"
+                                        Text="{Binding VehicleMotorZuendzeitpunkt}"
                                         Grid.ColumnSpan="2"
                                         Grid.Row="11"
                                         Keyboard="Numeric">
@@ -456,7 +460,7 @@
 
                                     <Entry
                                         Placeholder="Heizwert"
-                                        Text="{Binding Mode=TwoWay, Path=VehicleMotorHeizwertU}"
+                                        Text="{Binding VehicleMotorHeizwertU}"
                                         Grid.ColumnSpan="2"
                                         Grid.Row="12"
                                         Keyboard="Numeric">
@@ -486,20 +490,20 @@
                                             <ColumnDefinition Width="100" />
                                         </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="auto" />
-                                            <RowDefinition Height="auto" />
-                                            <RowDefinition Height="auto" />
-                                            <RowDefinition Height="auto" />
-                                            <RowDefinition Height="auto" />
-                                            <RowDefinition Height="auto" />
-                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
 
                                         <!--#region VehicleMotorEinlassHoeheH-->
 
                                         <Entry
                                             Placeholder="Hoehe"
-                                            Text="{Binding Mode=TwoWay, Path=VehicleMotorEinlassHoeheH}"
+                                            Text="{Binding VehicleMotorEinlassHoeheH}"
                                             Grid.Column="0"
                                             Grid.Row="0"
                                             Keyboard="Numeric">
@@ -510,7 +514,7 @@
                                             ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
                                             HorizontalOptions="StartAndExpand"
                                             VerticalOptions="CenterAndExpand"
-                                            SelectedItem="{Binding Mode=TwoWay, Path=VehicleMotorEinlassHoeheHUnit}"
+                                            SelectedItem="{Binding VehicleMotorEinlassHoeheHUnit}"
                                             ItemDisplayBinding="{Binding Abbreviation}"
                                             Grid.Column="1"
                                             Grid.Row="0">
@@ -522,7 +526,7 @@
 
                                         <Entry
                                             Placeholder="Breite"
-                                            Text="{Binding Mode=TwoWay, Path=VehicleMotorEinlassBreiteB}"
+                                            Text="{Binding VehicleMotorEinlassBreiteB}"
                                             Grid.Column="0"
                                             Grid.Row="1"
                                             Keyboard="Numeric">
@@ -533,7 +537,7 @@
                                             ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
                                             HorizontalOptions="StartAndExpand"
                                             VerticalOptions="CenterAndExpand"
-                                            SelectedItem="{Binding Mode=TwoWay, Path=VehicleMotorEinlassBreiteBUnit}"
+                                            SelectedItem="{Binding VehicleMotorEinlassBreiteBUnit}"
                                             ItemDisplayBinding="{Binding Abbreviation}"
                                             Grid.Column="1"
                                             Grid.Row="1">
@@ -545,7 +549,7 @@
 
                                         <Entry
                                             Placeholder="Durchmesser"
-                                            Text="{Binding Mode=TwoWay, Path=VehicleMotorEinlassDurchmesserD}"
+                                            Text="{Binding VehicleMotorEinlassDurchmesserD}"
                                             Grid.Column="0"
                                             Grid.Row="2"
                                             Keyboard="Numeric">
@@ -556,7 +560,7 @@
                                             ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
                                             HorizontalOptions="StartAndExpand"
                                             VerticalOptions="CenterAndExpand"
-                                            SelectedItem="{Binding Mode=TwoWay, Path=VehicleMotorEinlassDurchmesserDUnit}"
+                                            SelectedItem="{Binding VehicleMotorEinlassDurchmesserDUnit}"
                                             ItemDisplayBinding="{Binding Abbreviation}"
                                             Grid.Column="1"
                                             Grid.Row="2">
@@ -568,7 +572,7 @@
 
                                         <Entry
                                             Placeholder="Flaeche"
-                                            Text="{Binding Mode=TwoWay, Path=VehicleMotorEinlassFlaecheA}"
+                                            Text="{Binding VehicleMotorEinlassFlaecheA}"
                                             Grid.Column="0"
                                             Grid.Row="3"
                                             Keyboard="Numeric">
@@ -579,7 +583,7 @@
                                             ItemsSource="{Binding Path=AreaQuantityUnits, Mode=OneTime}"
                                             HorizontalOptions="StartAndExpand"
                                             VerticalOptions="CenterAndExpand"
-                                            SelectedItem="{Binding Mode=TwoWay, Path=VehicleMotorEinlassFlaecheAUnit}"
+                                            SelectedItem="{Binding VehicleMotorEinlassFlaecheAUnit}"
                                             ItemDisplayBinding="{Binding Abbreviation}"
                                             Grid.Column="1"
                                             Grid.Row="3">
@@ -592,7 +596,7 @@
 
                                         <Entry
                                             Placeholder="Steuerzeit"
-                                            Text="{Binding Mode=TwoWay, Path=VehicleMotorEinlassSteuerzeitSZ}"
+                                            Text="{Binding VehicleMotorEinlassSteuerzeitSZ}"
                                             Grid.ColumnSpan="2"
                                             Grid.Row="4"
                                             Keyboard="Numeric">
@@ -604,7 +608,7 @@
 
                                         <Entry
                                             Placeholder="Länge"
-                                            Text="{Binding Mode=TwoWay, Path=VehicleMotorEinlassLaengeL}"
+                                            Text="{Binding VehicleMotorEinlassLaengeL}"
                                             Grid.Column="0"
                                             Grid.Row="5"
                                             Keyboard="Numeric">
@@ -615,7 +619,7 @@
                                             ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
                                             HorizontalOptions="StartAndExpand"
                                             VerticalOptions="CenterAndExpand"
-                                            SelectedItem="{Binding Mode=TwoWay, Path=VehicleMotorEinlassLaengeLUnit}"
+                                            SelectedItem="{Binding VehicleMotorEinlassLaengeLUnit}"
                                             ItemDisplayBinding="{Binding Abbreviation}"
                                             Grid.Column="1"
                                             Grid.Row="5">
@@ -628,7 +632,7 @@
 
                                         <Entry
                                             Placeholder="LuftBedarf"
-                                            Text="{Binding Mode=TwoWay, Path=VehicleMotorEinlassLuftBedarf}"
+                                            Text="{Binding VehicleMotorEinlassLuftBedarf}"
                                             Grid.ColumnSpan="2"
                                             Grid.Row="6"
                                             Keyboard="Numeric">
@@ -654,15 +658,15 @@
                                                 <ColumnDefinition Width="100" />
                                             </Grid.ColumnDefinitions>
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="auto" />
-                                                <RowDefinition Height="auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
                                             </Grid.RowDefinitions>
 
                                             <!--#region VehicleMotorEinlassVergaserDurchmesserD-->
 
                                             <Entry
                                                 Placeholder="Durchmesser"
-                                                Text="{Binding Mode=TwoWay, Path=VehicleMotorEinlassVergaserDurchmesserD}"
+                                                Text="{Binding VehicleMotorEinlassVergaserDurchmesserD}"
                                                 Grid.Column="0"
                                                 Grid.Row="0"
                                                 Keyboard="Numeric">
@@ -673,7 +677,7 @@
                                                 ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
                                                 HorizontalOptions="StartAndExpand"
                                                 VerticalOptions="CenterAndExpand"
-                                                SelectedItem="{Binding Mode=TwoWay, Path=VehicleMotorEinlassVergaserDurchmesserDUnit}"
+                                                SelectedItem="{Binding VehicleMotorEinlassVergaserDurchmesserDUnit}"
                                                 ItemDisplayBinding="{Binding Abbreviation}"
                                                 Grid.Column="1"
                                                 Grid.Row="0">
@@ -686,7 +690,7 @@
 
                                             <Entry
                                                 Placeholder="BenzinLuftF"
-                                                Text="{Binding Mode=TwoWay, Path=VehicleMotorEinlassVergaserBenzinLuftF}"
+                                                Text="{Binding VehicleMotorEinlassVergaserBenzinLuftF}"
                                                 Grid.ColumnSpan="2"
                                                 Grid.Row="1"
                                                 Keyboard="Numeric">
@@ -719,18 +723,18 @@
                                             <ColumnDefinition Width="100" />
                                         </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="auto" />
-                                            <RowDefinition Height="auto" />
-                                            <RowDefinition Height="auto" />
-                                            <RowDefinition Height="auto" />
-                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
 
                                         <!--#region VehicleMotorAuslassHoeheH-->
 
                                         <Entry
                                             Placeholder="Hoehe"
-                                            Text="{Binding Mode=TwoWay, Path=VehicleMotorAuslassHoeheH}"
+                                            Text="{Binding VehicleMotorAuslassHoeheH}"
                                             Grid.Column="0"
                                             Grid.Row="0"
                                             Keyboard="Numeric">
@@ -741,7 +745,7 @@
                                             ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
                                             HorizontalOptions="StartAndExpand"
                                             VerticalOptions="CenterAndExpand"
-                                            SelectedItem="{Binding Mode=TwoWay, Path=VehicleMotorAuslassHoeheHUnit}"
+                                            SelectedItem="{Binding VehicleMotorAuslassHoeheHUnit}"
                                             ItemDisplayBinding="{Binding Abbreviation}"
                                             Grid.Column="1"
                                             Grid.Row="0">
@@ -753,7 +757,7 @@
 
                                         <Entry
                                             Placeholder="Breite"
-                                            Text="{Binding Mode=TwoWay, Path=VehicleMotorAuslassBreiteB}"
+                                            Text="{Binding VehicleMotorAuslassBreiteB}"
                                             Grid.Column="0"
                                             Grid.Row="1"
                                             Keyboard="Numeric">
@@ -764,7 +768,7 @@
                                             ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
                                             HorizontalOptions="StartAndExpand"
                                             VerticalOptions="CenterAndExpand"
-                                            SelectedItem="{Binding Mode=TwoWay, Path=VehicleMotorAuslassBreiteBUnit}"
+                                            SelectedItem="{Binding VehicleMotorAuslassBreiteBUnit}"
                                             ItemDisplayBinding="{Binding Abbreviation}"
                                             Grid.Column="1"
                                             Grid.Row="1">
@@ -776,13 +780,13 @@
 
                                         <Entry
                                             Placeholder="Flaeche"
-                                            Text="{Binding Mode=TwoWay, Path=VehicleMotorAuslassFlaecheA}"
+                                            Text="{Binding VehicleMotorAuslassFlaecheA}"
                                             Grid.Column="0"
                                             Grid.Row="2"
                                             Keyboard="Numeric">
 
                                             <!--<Entry.Behaviors>
-                                                <local:EventToCommandBehavior EventName="TextChanged"
+                                                EventToCommandBehavior EventName="TextChanged"
                                                                               Command="{Binding ShowSaveButtonCommand}" />
                                             </Entry.Behaviors>-->
                                         </Entry>
@@ -792,7 +796,7 @@
                                             ItemsSource="{Binding Path=AreaQuantityUnits, Mode=OneTime}"
                                             HorizontalOptions="StartAndExpand"
                                             VerticalOptions="CenterAndExpand"
-                                            SelectedItem="{Binding Mode=TwoWay, Path=VehicleMotorAuslassFlaecheAUnit}"
+                                            SelectedItem="{Binding VehicleMotorAuslassFlaecheAUnit}"
                                             ItemDisplayBinding="{Binding Abbreviation}"
                                             Grid.Column="1"
                                             Grid.Row="2">
@@ -804,13 +808,13 @@
 
                                         <Entry
                                             Placeholder="Länge"
-                                            Text="{Binding Mode=TwoWay, Path=VehicleMotorAuslassLaengeL}"
+                                            Text="{Binding VehicleMotorAuslassLaengeL}"
                                             Grid.Column="0"
                                             Grid.Row="3"
                                             Keyboard="Numeric">
 
                                             <!--<Entry.Behaviors>
-                                                <local:EventToCommandBehavior EventName="TextChanged"
+                                                EventToCommandBehavior EventName="TextChanged"
                                                                               Command="{Binding ShowSaveButtonCommand}" />
                                             </Entry.Behaviors>-->
                                         </Entry>
@@ -820,7 +824,7 @@
                                             ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
                                             HorizontalOptions="StartAndExpand"
                                             VerticalOptions="CenterAndExpand"
-                                            SelectedItem="{Binding Mode=TwoWay, Path=VehicleMotorAuslassLaengeLUnit}"
+                                            SelectedItem="{Binding VehicleMotorAuslassLaengeLUnit}"
                                             ItemDisplayBinding="{Binding Abbreviation}"
                                             Grid.Column="1"
                                             Grid.Row="3">
@@ -833,7 +837,7 @@
 
                                         <Entry
                                             Placeholder="Steuerzeit"
-                                            Text="{Binding Mode=TwoWay, Path=VehicleMotorAuslassSteuerzeitSZ}"
+                                            Text="{Binding VehicleMotorAuslassSteuerzeitSZ}"
                                             Grid.ColumnSpan="2"
                                             Grid.Row="4"
                                             Keyboard="Numeric">
@@ -880,18 +884,18 @@
                                         <ColumnDefinition Width="100" />
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="auto" />
-                                        <RowDefinition Height="auto" />
-                                        <RowDefinition Height="auto" />
-                                        <RowDefinition Height="auto" />
-                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
 
                                     <!--#region VehicleMotorUeberstroemerHoeheH-->
 
                                     <Entry
                                         Placeholder="Hoehe"
-                                        Text="{Binding Mode=TwoWay, Path=VehicleMotorUeberstroemerHoeheH}"
+                                        Text="{Binding VehicleMotorUeberstroemerHoeheH}"
                                         Grid.Column="0"
                                         Grid.Row="0"
                                         Keyboard="Numeric">
@@ -902,7 +906,7 @@
                                         ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
                                         HorizontalOptions="StartAndExpand"
                                         VerticalOptions="CenterAndExpand"
-                                        SelectedItem="{Binding Mode=TwoWay, Path=VehicleMotorUeberstroemerHoeheHUnit}"
+                                        SelectedItem="{Binding VehicleMotorUeberstroemerHoeheHUnit}"
                                         ItemDisplayBinding="{Binding Abbreviation}"
                                         Grid.Column="1"
                                         Grid.Row="0">
@@ -914,7 +918,7 @@
 
                                     <Entry
                                         Placeholder="Breite"
-                                        Text="{Binding Mode=TwoWay, Path=VehicleMotorUeberstroemerBreiteB}"
+                                        Text="{Binding VehicleMotorUeberstroemerBreiteB}"
                                         Grid.Column="0"
                                         Grid.Row="1"
                                         Keyboard="Numeric">
@@ -925,7 +929,7 @@
                                         ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
                                         HorizontalOptions="StartAndExpand"
                                         VerticalOptions="CenterAndExpand"
-                                        SelectedItem="{Binding Mode=TwoWay, Path=VehicleMotorUeberstroemerBreiteBUnit}"
+                                        SelectedItem="{Binding VehicleMotorUeberstroemerBreiteBUnit}"
                                         ItemDisplayBinding="{Binding Abbreviation}"
                                         Grid.Column="1"
                                         Grid.Row="1">
@@ -937,7 +941,7 @@
 
                                     <Entry
                                         Placeholder="Flaeche"
-                                        Text="{Binding Mode=TwoWay, Path=VehicleMotorUeberstroemerFlaecheA}"
+                                        Text="{Binding VehicleMotorUeberstroemerFlaecheA}"
                                         Grid.Column="0"
                                         Grid.Row="2"
                                         Keyboard="Numeric">
@@ -948,7 +952,7 @@
                                         ItemsSource="{Binding Path=AreaQuantityUnits, Mode=OneTime}"
                                         HorizontalOptions="StartAndExpand"
                                         VerticalOptions="CenterAndExpand"
-                                        SelectedItem="{Binding Mode=TwoWay, Path=VehicleMotorUeberstroemerFlaecheAUnit}"
+                                        SelectedItem="{Binding VehicleMotorUeberstroemerFlaecheAUnit}"
                                         ItemDisplayBinding="{Binding Abbreviation}"
                                         Grid.Column="1"
                                         Grid.Row="2">
@@ -961,7 +965,7 @@
 
                                     <Entry
                                         Placeholder="Anzahl"
-                                        Text="{Binding Mode=TwoWay, Path=VehicleMotorUeberstroemerAnzahl}"
+                                        Text="{Binding VehicleMotorUeberstroemerAnzahl}"
                                         Grid.ColumnSpan="2"
                                         Grid.Row="3"
                                         Keyboard="Numeric">
@@ -974,7 +978,7 @@
 
                                     <Entry
                                         Placeholder="Steuerzeit"
-                                        Text="{Binding Mode=TwoWay, Path=VehicleMotorUeberstroemerSteuerzeitSZ}"
+                                        Text="{Binding VehicleMotorUeberstroemerSteuerzeitSZ}"
                                         Grid.ColumnSpan="2"
                                         Grid.Row="4"
                                         Keyboard="Numeric">
@@ -1005,14 +1009,14 @@
 
                             <Entry
                                 Placeholder="Name"
-                                Text="{Binding Mode=TwoWay, Path=VehicleDynoName}"
+                                Text="{Binding VehicleDynoName}"
                                 Grid.Column="0"
                                 Keyboard="Numeric">
                             </Entry>
 
                             <Editor
                                 Placeholder="Beschreibung"
-                                Text="{Binding Mode=TwoWay, Path=VehicleDynoBeschreibung}"
+                                Text="{Binding VehicleDynoBeschreibung}"
                                 Grid.Column="0"
                                 HeightRequest="150">
                             </Editor>

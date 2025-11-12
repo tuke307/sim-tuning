@@ -24,8 +24,8 @@ namespace SimTuning.Maui.UI.ViewModels
             INavigationService navigationService,
             IVehicleService vehicleService)
         {
-            this._logger = logger;
-            this._vehicleService = vehicleService;
+            _logger = logger;
+            _vehicleService = vehicleService;
 
             VolumeQuantityUnits = new VolumeQuantity();
             LengthQuantityUnits = new LengthQuantity();
@@ -43,7 +43,7 @@ namespace SimTuning.Maui.UI.ViewModels
         {
             if (helperVehicle.Motor.BohrungD.HasValue)
             {
-                this.Hub = helperVehicle.Motor.HubL;
+                Hub = helperVehicle.Motor.HubL;
                 //GrindingDiameters = EngineLogic.GetGrindingDiameters(helperVehicle.Motor.BohrungD.Value);
             }
         }

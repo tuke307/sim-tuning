@@ -27,25 +27,25 @@ namespace SimTuning.Maui.UI.ViewModels
             INavigationService navigationService,
             IVehicleService vehicleService)
         {
-            this._logger = logger;
-            this._navigationService = navigationService;
-            this._vehicleService = vehicleService;
+            _logger = logger;
+            _navigationService = navigationService;
+            _vehicleService = vehicleService;
 
-            this.Frequenzbeginn = 3000;
-            this.Frequenzende = 12000;
-            this.Epsilon = 160;
+            Frequenzbeginn = 3000;
+            Frequenzende = 12000;
+            Epsilon = 160;
 
             // letzten 5 sind relevant! von 2^13 bis 2^18
-            this.fftSizes = Functions.GetPowersOf2(13, 18);
-            this.FftSizeIndex = 2; // 2. Index von fftSizes = 2^15 = 32768
-            this.Intensity = 100;
+            fftSizes = Functions.GetPowersOf2(13, 18);
+            FftSizeIndex = 2; // 2. Index von fftSizes = 2^15 = 32768
+            Intensity = 100;
 
-            this.RefreshPlotCommand = new RelayCommand(this.RefreshPlot);
-            this.FilterPlotCommand = new RelayCommand(this.FilterPlot);
-            this.SpecificGraphCommand = new RelayCommand(this.SpecificGraph);
+            RefreshPlotCommand = new RelayCommand(RefreshPlot);
+            FilterPlotCommand = new RelayCommand(FilterPlot);
+            SpecificGraphCommand = new RelayCommand(SpecificGraph);
 
             // erste navigation: selected dyno wird requested
-            this.Dyno = Messenger.Send<CurrentDynoRequestMessage>();
+            Dyno = Messenger.Send<CurrentDynoRequestMessage>();
             // bei dyno änderung (viewmodel schon geladen)
             Messenger.Register<DynoAudioViewModel, DynoChangedMessage>(this, (r, m) => r.Dyno = m.Value);
 
@@ -61,7 +61,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// </summary>
         private void RefreshPlot()
         {
-            if (!this.CheckDynoData())
+            if (!CheckDynoData())
             {
                 return;
             }
@@ -74,7 +74,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// </summary>
         protected void FilterPlot()
         {
-            if (!this.CheckDynoData())
+            if (!CheckDynoData())
             {
                 return;
             }
@@ -87,7 +87,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// </summary>
         private void SpecificGraph()
         {
-            if (this.Graphs == null || this.Graph == null)
+            if (Graphs == null || Graph == null)
             {
                 return;
             }
@@ -107,7 +107,7 @@ namespace SimTuning.Maui.UI.ViewModels
                 return false;
             }
 
-            if (this.Dyno == null)
+            if (Dyno == null)
             {
                 Functions.ShowSnackbarDialog(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_NODATA"));
 
@@ -126,10 +126,10 @@ namespace SimTuning.Maui.UI.ViewModels
             {
                 AudioLogic.CalculateSpectrogram(
                     audioFile: SimTuning.Core.GeneralSettings.AudioAccelerationFilePath,
-                    fftSize: this.fftSizes[FftSizeIndex],
-                    minFreq: this.Frequenzbeginn / 60,
-                    maxFreq: this.Frequenzende / 60,
-                    intensity: (double)this.Intensity / 100);
+                    fftSize: fftSizes[FftSizeIndex],
+                    minFreq: Frequenzbeginn / 60,
+                    maxFreq: Frequenzende / 60,
+                    intensity: (double)Intensity / 100);
 
                 List<ObservablePoint> values = new List<ObservablePoint>();
 
@@ -162,7 +162,7 @@ namespace SimTuning.Maui.UI.ViewModels
         {
             try
             {
-                AudioLogic.CalculateClusters(this.Epsilon);
+                AudioLogic.CalculateClusters(Epsilon);
 
                 values = new List<ObservableCollection<ObservablePoint>>();
 
@@ -233,12 +233,12 @@ namespace SimTuning.Maui.UI.ViewModels
                         Fill = null,
                     });
 
-                this.Dyno.Drehzahl = new List<DrehzahlModel>();
+                Dyno.Drehzahl = new List<DrehzahlModel>();
                 foreach (var value in values)
                 {
-                    this.Dyno.Drehzahl.Add(value.ToDrehzahlModel());
+                    Dyno.Drehzahl.Add(value.ToDrehzahlModel());
                 }
-                _vehicleService.UpdateOne(this.Dyno);
+                _vehicleService.UpdateOne(Dyno);
             }
             catch (Exception exc)
             {
@@ -321,8 +321,8 @@ namespace SimTuning.Maui.UI.ViewModels
         /// </summary>
         public int Epsilon
         {
-            get => this._epsilon;
-            set => this.SetProperty(ref this._epsilon, value);
+            get => _epsilon;
+            set => SetProperty(ref _epsilon, value);
         }
 
         /// <summary>

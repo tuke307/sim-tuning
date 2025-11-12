@@ -8,7 +8,7 @@ namespace SimTuning.Maui.UI.ViewModels
         public EinlassMainViewModel(
             ILogger<EinlassMainViewModel> logger)
         {
-            this._logger = logger;
+            _logger = logger;
         }
 
         #region Methods

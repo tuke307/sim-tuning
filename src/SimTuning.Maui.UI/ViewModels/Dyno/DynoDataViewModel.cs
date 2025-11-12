@@ -25,19 +25,19 @@ namespace SimTuning.Maui.UI.ViewModels
             IVehicleService vehicleService,
             IBrowserService browserService)
         {
-            this._logger = logger;
-            this._navigationService = navigationService;
-            this._vehicleService = vehicleService;
-            this._browserService = browserService;
+            _logger = logger;
+            _navigationService = navigationService;
+            _vehicleService = vehicleService;
+            _browserService = browserService;
 
-            this.DeleteDynoCommand = new RelayCommand(this.DeleteDyno);
-            this.SaveDynoCommand = new RelayCommand(this.SaveDyno);
+            DeleteDynoCommand = new RelayCommand(DeleteDyno);
+            SaveDynoCommand = new RelayCommand(SaveDyno);
 
-            this.ImportDynoCommand = new AsyncRelayCommand(this.ImportDyno);
+            ImportDynoCommand = new AsyncRelayCommand(ImportDyno);
 
-            this.ExportDynoCommand = new AsyncRelayCommand(this.ExportDynoAsync);
+            ExportDynoCommand = new AsyncRelayCommand(ExportDynoAsync);
 
-            this.Dynos = new ObservableCollection<DynoModel>(_vehicleService.RetrieveDynos());
+            Dynos = new ObservableCollection<DynoModel>(_vehicleService.RetrieveDynos());
             Messenger.Register<DynoDataViewModel, CurrentDynoRequestMessage>(this, (r, m) => m.Reply(r.Dyno));
         }
 
@@ -51,12 +51,12 @@ namespace SimTuning.Maui.UI.ViewModels
             try
             {
                 // in Datenbank löschen
-                _vehicleService.DeleteOne(this.Dyno);
+                _vehicleService.DeleteOne(Dyno);
 
                 // in lokaler liste löschen
-                this.Dynos.Remove(this.Dyno);
+                Dynos.Remove(Dyno);
 
-                this.Dyno = null;
+                Dyno = null;
             }
             catch (Exception exc)
             {
@@ -73,7 +73,7 @@ namespace SimTuning.Maui.UI.ViewModels
             {
                 // erstellen der json.
                 // TODO: reference test check
-                string json = JsonConvert.SerializeObject(this.Dyno, Formatting.Indented,
+                string json = JsonConvert.SerializeObject(Dyno, Formatting.Indented,
                 new JsonSerializerSettings()
                 {
                     // ReferenceLoopHandling = ReferenceLoopHandling.Ignore, ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
@@ -120,8 +120,8 @@ namespace SimTuning.Maui.UI.ViewModels
                 dyno = _vehicleService.CreateOne(dyno);
                 dyno.Vehicle = vehicle;
 
-                this.Dynos.Add(dyno);
-                this.Dyno = this.Dynos.Last();
+                Dynos.Add(dyno);
+                Dyno = Dynos.Last();
             }
             catch (Exception exc)
             {
@@ -136,7 +136,7 @@ namespace SimTuning.Maui.UI.ViewModels
         {
             try
             {
-                _vehicleService.UpdateOne(this.Dyno);
+                _vehicleService.UpdateOne(Dyno);
             }
             catch (Exception exc)
             {
@@ -180,7 +180,7 @@ namespace SimTuning.Maui.UI.ViewModels
             // wenn Datei ausgewählt using (FileStream sourceStream = File.Open(fileName, FileMode.OpenOrCreate)) { status =
             // SimTuning.Core.Helpers.AudioUtils.AudioCopy(SimTuning.Core.GeneralSettings.AudioFile, sourceStream); }
 
-            // if (status) { await this.RefreshAudioFileAsync().ConfigureAwait(true); }
+            // if (status) { await RefreshAudioFileAsync().ConfigureAwait(true); }
 
             // TODO: only for testing
             /*
@@ -218,19 +218,19 @@ namespace SimTuning.Maui.UI.ViewModels
 
         public DynoModel Dyno
         {
-            get => this._dyno;
+            get => _dyno;
             set
             {
                 if (value == null)
                 {
-                    // gerade gelöscht => letztes Vehicle neu laden
-                    if (this.Dynos.Count != 0)
+                    // Just deleted => load last dyno
+                    if (Dynos.Count > 0)
                     {
-                        value = this.Dynos.Last();
+                        value = Dynos.Last();
                     }
                 }
 
-                this.SetProperty(ref this._dyno, value);
+                SetProperty(ref _dyno, value);
 
                 raiseAllPropertyChanged();
 
@@ -240,48 +240,48 @@ namespace SimTuning.Maui.UI.ViewModels
 
         private void raiseAllPropertyChanged()
         {
-            this.OnPropertyChanged(nameof(this.DynoBeschreibung));
-            this.OnPropertyChanged(nameof(this.DynoName));
+            OnPropertyChanged(nameof(DynoBeschreibung));
+            OnPropertyChanged(nameof(DynoName));
         }
 
         public string DynoBeschreibung
         {
-            get => this.Dyno?.Beschreibung;
+            get => Dyno?.Beschreibung;
             set
             {
-                if (this.Dyno == null)
+                if (Dyno == null)
                 {
                     return;
                 }
 
-                this.Dyno.Beschreibung = value;
+                Dyno.Beschreibung = value;
             }
         }
 
         public string DynoName
         {
-            get => this.Dyno?.Name;
+            get => Dyno?.Name;
             set
             {
-                if (this.Dyno == null)
+                if (Dyno == null)
                 {
                     return;
                 }
 
-                this.Dyno.Name = value;
+                Dyno.Name = value;
             }
         }
 
         public ObservableCollection<DynoModel> Dynos
         {
-            get => this._dynos;
-            set => this.SetProperty(ref this._dynos, value);
+            get => _dynos;
+            set => SetProperty(ref _dynos, value);
         }
 
         public VehiclesModel Vehicle
         {
-            get => this._vehicle;
-            set => SetProperty(ref this._vehicle, value);
+            get => _vehicle;
+            set => SetProperty(ref _vehicle, value);
         }
 
         #endregion Values

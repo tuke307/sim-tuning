@@ -16,8 +16,8 @@ namespace SimTuning.Maui.UI.ViewModels
             ILogger<PortTimingViewModel> logger,
             IVehicleService vehicleService)
         {
-            this._logger = logger;
-            this._vehicleService = vehicleService;
+            _logger = logger;
+            _vehicleService = vehicleService;
 
             // lokale liste kreieren
             Engines = new ObservableCollection<MotorModel>()
@@ -71,11 +71,11 @@ namespace SimTuning.Maui.UI.ViewModels
 
         public MotorModel Engine
         {
-            get => this._engine;
+            get => _engine;
             set
             {
                 // Einfügen
-                this.SetProperty(ref this._engine, value);
+                SetProperty(ref _engine, value);
 
                 OnPropertyChanged(nameof(VehicleMotorAuslassSteuerzeitSZ));
                 OnPropertyChanged(nameof(VehicleMotorEinlassSteuerzeitSZ));
@@ -85,46 +85,46 @@ namespace SimTuning.Maui.UI.ViewModels
 
         public ObservableCollection<MotorModel> Engines
         {
-            get => this._engines;
-            set => this.SetProperty(ref this._engines, value);
+            get => _engines;
+            set => SetProperty(ref _engines, value);
         }
 
         public double? VehicleMotorAuslassSteuerzeitSZ
         {
-            get => this.Engine?.Auslass?.SteuerzeitSZ;
+            get => Engine?.Auslass?.SteuerzeitSZ;
             set
             {
-                if (this.Engine?.Auslass == null)
+                if (Engine?.Auslass == null)
                 {
                     return;
                 }
-                this.Engine.Auslass.SteuerzeitSZ = value;
+                Engine.Auslass.SteuerzeitSZ = value;
             }
         }
 
         public double? VehicleMotorEinlassSteuerzeitSZ
         {
-            get => this.Engine?.Einlass?.SteuerzeitSZ;
+            get => Engine?.Einlass?.SteuerzeitSZ;
             set
             {
-                if (this.Engine?.Einlass == null)
+                if (Engine?.Einlass == null)
                 {
                     return;
                 }
-                this.Engine.Einlass.SteuerzeitSZ = value;
+                Engine.Einlass.SteuerzeitSZ = value;
             }
         }
 
         public double? VehicleMotorUeberstroemerSteuerzeitSZ
         {
-            get => this.Engine?.Ueberstroemer?.SteuerzeitSZ;
+            get => Engine?.Ueberstroemer?.SteuerzeitSZ;
             set
             {
-                if (this.Engine?.Ueberstroemer == null)
+                if (Engine?.Ueberstroemer == null)
                 {
                     return;
                 }
-                this.Engine.Ueberstroemer.SteuerzeitSZ = value;
+                Engine.Ueberstroemer.SteuerzeitSZ = value;
             }
         }
 

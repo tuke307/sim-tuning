@@ -1,11 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentView
     x:Class="SimTuning.Maui.UI.Views.Auslass.AuslassAnwendungView"
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns="http://schemas.microsoft.com/dotnet/maui/global"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:behaviors="clr-namespace:SimTuning.Maui.UI.Behaviors"
-    xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
-    x:DataType="vm:AuslassAnwendungViewModel">
+    x:DataType="AuslassAnwendungViewModel">
 
     <ContentView.Resources>
         <behaviors:InvertedBoolConverter x:Key="Inverter" />
@@ -14,13 +13,13 @@
     <ScrollView>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <!--  DATEN  -->
@@ -29,7 +28,7 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
                         <Label
@@ -49,7 +48,7 @@
                         <Entry
                             Keyboard="Numeric"
                             Placeholder="Schallgeschwindigkeit"
-                            Text="{Binding Mode=TwoWay, Path=VehicleMotorAuslassAuspuffAbgasV}"
+                            Text="{Binding VehicleMotorAuslassAuspuffAbgasV}"
                             WidthRequest="250" />
 
                         <Picker
@@ -65,7 +64,7 @@
                         <Entry
                             Keyboard="Numeric"
                             Placeholder="Resonanzdrehzahl"
-                            Text="{Binding Mode=TwoWay, Path=VehicleMotorResonanzU}"
+                            Text="{Binding VehicleMotorResonanzU}"
                             WidthRequest="250" />
 
                         <Label
@@ -79,7 +78,7 @@
                         <Entry
                             Keyboard="Numeric"
                             Placeholder="Auslass Durchmesser"
-                            Text="{Binding Mode=TwoWay, Path=VehicleMotorAuslassDurchmesserD}"
+                            Text="{Binding VehicleMotorAuslassDurchmesserD}"
                             WidthRequest="250" />
 
                         <Picker
@@ -94,7 +93,7 @@
                         <Entry
                             Keyboard="Numeric"
                             Placeholder="Auslass-Kanal Länge"
-                            Text="{Binding Mode=TwoWay, Path=VehicleMotorAuslassLaengeL}"
+                            Text="{Binding VehicleMotorAuslassLaengeL}"
                             WidthRequest="250" />
 
                         <Picker
@@ -110,7 +109,7 @@
                         <Entry
                             Keyboard="Numeric"
                             Placeholder="Auslass-Steuerzeit"
-                            Text="{Binding Mode=TwoWay, Path=VehicleMotorAuslassSteuerzeitSZ}"
+                            Text="{Binding VehicleMotorAuslassSteuerzeitSZ}"
                             WidthRequest="250" />
 
                         <Label
@@ -124,7 +123,7 @@
                         <Entry
                             Keyboard="Numeric"
                             Placeholder="Auslass-Fläche"
-                            Text="{Binding Mode=TwoWay, Path=VehicleMotorAuslassFlaecheA}"
+                            Text="{Binding VehicleMotorAuslassFlaecheA}"
                             WidthRequest="250" />
 
                         <Picker
@@ -176,13 +175,13 @@
                         HorizontalOptions="FillAndExpand"
                         Maximum="12"
                         Minimum="6"
-                        Value="{Binding Mode=TwoWay, Path=VehicleMotorAuslassAuspuffKruemmerF}" />
+                        Value="{Binding VehicleMotorAuslassAuspuffKruemmerF}" />
 
                     <StackLayout Orientation="Horizontal">
                         <Entry
                             Keyboard="Numeric"
                             Placeholder="Krümmer Winkel"
-                            Text="{Binding Mode=TwoWay, Path=VehicleMotorAuslassAuspuffKruemmerW}"
+                            Text="{Binding VehicleMotorAuslassAuspuffKruemmerW}"
                             WidthRequest="250" />
 
                         <Label
@@ -231,7 +230,7 @@
                         HorizontalOptions="FillAndExpand"
                         Maximum="12"
                         Minimum="6"
-                        Value="{Binding Mode=TwoWay, Path=VehicleMotorAuslassAuspuffMittelteilF}" />
+                        Value="{Binding VehicleMotorAuslassAuspuffMittelteilF}" />
                 </StackLayout>
             </Border>
 
@@ -249,7 +248,7 @@
                         <Entry
                             Keyboard="Numeric"
                             Placeholder="GegenKonus Winkel"
-                            Text="{Binding Mode=TwoWay, Path=VehicleMotorAuslassAuspuffGegenKonusW}"
+                            Text="{Binding VehicleMotorAuslassAuspuffGegenKonusW}"
                             WidthRequest="250" />
 
                         <Label
@@ -275,7 +274,7 @@
                         <Entry
                             Keyboard="Numeric"
                             Placeholder="Endrohr Durchmesser"
-                            Text="{Binding Mode=TwoWay, Path=VehicleMotorAuslassAuspuffEndrohrD}"
+                            Text="{Binding VehicleMotorAuslassAuspuffEndrohrD}"
                             WidthRequest="250" />
 
                         <Picker
@@ -292,7 +291,7 @@
                         <Entry
                             Keyboard="Numeric"
                             Placeholder="Endrohr Länge"
-                            Text="{Binding Mode=TwoWay, Path=VehicleMotorAuslassAuspuffEndrohrL}"
+                            Text="{Binding VehicleMotorAuslassAuspuffEndrohrL}"
                             WidthRequest="250" />
 
                         <Picker
@@ -342,7 +341,7 @@
 
                             <!--<StackLayout Orientation="Horizontal">
                                 <Entry Placeholder="Länge"
-                                                            Text="{Binding Mode=TwoWay, Path=InputExhaust.Diffusor1L}"
+                                                            Text="{Binding InputExhaust.Diffusor1L}"
                                                             WidthRequest="50" />
 
                                 <Label  Margin="5, 0, 0, 0">
@@ -356,7 +355,7 @@
                                 Orientation="Horizontal">
                                 <Entry
                                     Placeholder="Winkel"
-                                    Text="{Binding Mode=TwoWay, Path=VehicleMotorAuslassAuspuffDiffusorW1}"
+                                    Text="{Binding VehicleMotorAuslassAuspuffDiffusorW1}"
                                     WidthRequest="50" />
 
                                 <Label Margin="5,0,0,0">
@@ -401,7 +400,7 @@
 
                             <!--<StackLayout Orientation="Horizontal">
                                 <Entry Placeholder="Länge"
-                                                            Text="{Binding Mode=TwoWay, Path=InputExhaust.Diffusor1L}"
+                                                            Text="{Binding InputExhaust.Diffusor1L}"
                                                             WidthRequest="50" />
 
                                 <Label  Margin="5, 0, 0, 0">
@@ -412,7 +411,7 @@
                             <StackLayout Orientation="Horizontal">
                                 <Entry
                                     Placeholder="Winkel"
-                                    Text="{Binding Mode=TwoWay, Path=VehicleMotorAuslassAuspuffDiffusorW1}"
+                                    Text="{Binding VehicleMotorAuslassAuspuffDiffusorW1}"
                                     WidthRequest="50" />
 
                                 <Label Margin="5,0,0,0">
@@ -429,7 +428,7 @@
 
                             <!--<StackLayout Orientation="Horizontal">
                                 <Entry Placeholder="Länge"
-                                                            Text="{Binding Mode=TwoWay, Path=InputExhaust.Diffusor2L}"
+                                                            Text="{Binding InputExhaust.Diffusor2L}"
                                                             WidthRequest="50" />
 
                                 <Label  Margin="5, 0, 0, 0">
@@ -440,7 +439,7 @@
                             <StackLayout Orientation="Horizontal">
                                 <Entry
                                     Placeholder="Winkel"
-                                    Text="{Binding Mode=TwoWay, Path=VehicleMotorAuslassAuspuffDiffusorW2}"
+                                    Text="{Binding VehicleMotorAuslassAuspuffDiffusorW2}"
                                     WidthRequest="50" />
 
                                 <Label Margin="5,0,0,0">
@@ -486,7 +485,7 @@
 
                             <!--<StackLayout Orientation="Horizontal">
                                 <Entry Placeholder="Länge"
-                                                            Text="{Binding Mode=TwoWay, Path=InputExhaust.Diffusor1L}"
+                                                            Text="{Binding InputExhaust.Diffusor1L}"
                                                             WidthRequest="50" />
 
                                 <Label  Margin="5, 0, 0, 0">
@@ -497,7 +496,7 @@
                             <StackLayout Orientation="Horizontal">
                                 <Entry
                                     Placeholder="Winkel"
-                                    Text="{Binding Mode=TwoWay, Path=VehicleMotorAuslassAuspuffDiffusorW1}"
+                                    Text="{Binding VehicleMotorAuslassAuspuffDiffusorW1}"
                                     WidthRequest="50" />
 
                                 <Label Margin="5,0,0,0">
@@ -514,7 +513,7 @@
 
                             <!--<StackLayout Orientation="Horizontal">
                                 <Entry Placeholder="Länge"
-                                                            Text="{Binding Mode=TwoWay, Path=InputExhaust.Diffusor2L}"
+                                                            Text="{Binding InputExhaust.Diffusor2L}"
                                                             WidthRequest="50" />
 
                                 <Label  Margin="5, 0, 0, 0">
@@ -525,7 +524,7 @@
                             <StackLayout Orientation="Horizontal">
                                 <Entry
                                     Placeholder="Winkel"
-                                    Text="{Binding Mode=TwoWay, Path=VehicleMotorAuslassAuspuffDiffusorW2}"
+                                    Text="{Binding VehicleMotorAuslassAuspuffDiffusorW2}"
                                     WidthRequest="50" />
 
                                 <Label Margin="5,0,0,0">
@@ -542,7 +541,7 @@
 
                             <!--<StackLayout Orientation="Horizontal">
                                 <Entry Placeholder="Länge"
-                                                            Text="{Binding Mode=TwoWay, Path=InputExhaust.Diffusor3L}"
+                                                            Text="{Binding InputExhaust.Diffusor3L}"
                                                             WidthRequest="50" />
 
                                 <Label  Margin="5, 0, 0, 0">
@@ -553,7 +552,7 @@
                             <StackLayout Orientation="Horizontal">
                                 <Entry
                                     Placeholder="Winkel"
-                                    Text="{Binding Mode=TwoWay, Path=VehicleMotorAuslassAuspuffDiffusorW3}"
+                                    Text="{Binding VehicleMotorAuslassAuspuffDiffusorW3}"
                                     WidthRequest="50" />
 
                                 <Label Margin="5,0,0,0">
@@ -592,7 +591,7 @@
                                     Keyboard="Numeric"
                                     IsEnabled="False"
                                     Placeholder="D1"
-                                    Text="{Binding Mode=TwoWay, Path=VehicleMotorAuslassAuspuffKruemmerD}"
+                                    Text="{Binding VehicleMotorAuslassAuspuffKruemmerD}"
                                     WidthRequest="100" />
 
                                 <Label
@@ -607,7 +606,7 @@
                                     Keyboard="Numeric"
                                     IsEnabled="False"
                                     Placeholder="D2"
-                                    Text="{Binding Mode=TwoWay, Path=VehicleMotorAuslassAuspuffDiffusorD}"
+                                    Text="{Binding VehicleMotorAuslassAuspuffDiffusorD}"
                                     WidthRequest="100" />
 
                                 <Label
@@ -622,7 +621,7 @@
                                     Keyboard="Numeric"
                                     IsEnabled="False"
                                     Placeholder="D3"
-                                    Text="{Binding Mode=TwoWay, Path=VehicleMotorAuslassAuspuffMittelteilD}"
+                                    Text="{Binding VehicleMotorAuslassAuspuffMittelteilD}"
                                     WidthRequest="100" />
 
                                 <Label
@@ -637,7 +636,7 @@
                                     Keyboard="Numeric"
                                     IsEnabled="False"
                                     Placeholder="D4"
-                                    Text="{Binding Mode=TwoWay, Path=VehicleMotorAuslassAuspuffGegenkonusD}"
+                                    Text="{Binding VehicleMotorAuslassAuspuffGegenkonusD}"
                                     WidthRequest="100" />
 
                                 <Label
@@ -656,7 +655,7 @@
                                     Keyboard="Numeric"
                                     IsEnabled="False"
                                     Placeholder="LK"
-                                    Text="{Binding Mode=TwoWay, Path=VehicleMotorAuslassAuspuffKruemmerL}"
+                                    Text="{Binding VehicleMotorAuslassAuspuffKruemmerL}"
                                     WidthRequest="100" />
 
                                 <Label
@@ -671,7 +670,7 @@
                                     Keyboard="Numeric"
                                     IsEnabled="False"
                                     Placeholder="LD"
-                                    Text="{Binding Mode=TwoWay, Path=VehicleMotorAuslassAuspuffDiffusorL}"
+                                    Text="{Binding VehicleMotorAuslassAuspuffDiffusorL}"
                                     WidthRequest="100" />
 
                                 <Label
@@ -686,7 +685,7 @@
                                     Keyboard="Numeric"
                                     IsEnabled="False"
                                     Placeholder="LM"
-                                    Text="{Binding Mode=TwoWay, Path=VehicleMotorAuslassAuspuffMittelteilL}"
+                                    Text="{Binding VehicleMotorAuslassAuspuffMittelteilL}"
                                     WidthRequest="100" />
 
                                 <Label
@@ -701,7 +700,7 @@
                                     Keyboard="Numeric"
                                     IsEnabled="False"
                                     Placeholder="LG"
-                                    Text="{Binding Mode=TwoWay, Path=VehicleMotorAuslassAuspuffGegenkonusL}"
+                                    Text="{Binding VehicleMotorAuslassAuspuffGegenkonusL}"
                                     WidthRequest="100" />
 
                                 <Label
@@ -716,7 +715,7 @@
                                     Keyboard="Numeric"
                                     IsEnabled="False"
                                     Placeholder="LE"
-                                    Text="{Binding Mode=TwoWay, Path=VehicleMotorAuslassAuspuffEndrohrL}"
+                                    Text="{Binding VehicleMotorAuslassAuspuffEndrohrL}"
                                     WidthRequest="100" />
 
                                 <Label
@@ -737,7 +736,7 @@
                             Keyboard="Numeric"
                             IsEnabled="False"
                             Placeholder="Gesamtlänge"
-                            Text="{Binding Mode=TwoWay, Path=VehicleMotorAuslassAuspuffGesamtL}"
+                            Text="{Binding VehicleMotorAuslassAuspuffGesamtL}"
                             WidthRequest="250" />
 
                         <Label
@@ -752,7 +751,7 @@
                             Keyboard="Numeric"
                             IsEnabled="False"
                             Placeholder="Resonanzlänge"
-                            Text="{Binding Mode=TwoWay, Path=VehicleMotorAuslassAuspuffResonanzL}"
+                            Text="{Binding VehicleMotorAuslassAuspuffResonanzL}"
                             WidthRequest="250" />
 
                         <Label
