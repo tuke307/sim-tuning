@@ -31,8 +31,8 @@ namespace Spectrogram
 
             if (sff.MelBinCount > 0)
             {
-                double maxMel = FftSharp.Transform.MelFromFreq(maxFreq);
-                return FftSharp.Transform.MelToFreq(frac * maxMel);
+                double maxMel = FftSharp.Mel.FromFreq(maxFreq);
+                return FftSharp.Mel.ToFreq(frac * maxMel);
             }
             else
             {

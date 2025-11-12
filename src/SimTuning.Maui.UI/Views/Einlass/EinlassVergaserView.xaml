@@ -67,7 +67,6 @@
                                 <Entry.Behaviors>
                                     <toolkit:TextValidationBehavior
                                         MinimumLength="1"
-                                        Flags="ValidateOnUnfocusing"
                                         InvalidStyle="{StaticResource InvalidEntryStyle}" />
                                 </Entry.Behaviors>
                             </Entry>
@@ -94,7 +93,6 @@
                                 <Entry.Behaviors>
                                     <toolkit:TextValidationBehavior
                                         MinimumLength="1"
-                                        Flags="ValidateOnUnfocusing"
                                         InvalidStyle="{StaticResource InvalidEntryStyle}" />
                                 </Entry.Behaviors>
                             </Entry>
@@ -123,7 +121,6 @@
                                 <Entry.Behaviors>
                                     <toolkit:TextValidationBehavior
                                         MinimumLength="1"
-                                        Flags="ValidateOnUnfocusing"
                                         InvalidStyle="{StaticResource InvalidEntryStyle}" />
                                 </Entry.Behaviors>
                             </Entry>
@@ -187,7 +184,6 @@
                                 <Entry.Behaviors>
                                     <toolkit:TextValidationBehavior
                                         MinimumLength="1"
-                                        Flags="ValidateOnUnfocusing"
                                         InvalidStyle="{StaticResource InvalidEntryStyle}" />
                                 </Entry.Behaviors>
                             </Entry>
@@ -218,7 +214,6 @@
                                 <Entry.Behaviors>
                                     <toolkit:TextValidationBehavior
                                         MinimumLength="1"
-                                        Flags="ValidateOnUnfocusing"
                                         InvalidStyle="{StaticResource InvalidEntryStyle}" />
                                 </Entry.Behaviors>
                             </Entry>
