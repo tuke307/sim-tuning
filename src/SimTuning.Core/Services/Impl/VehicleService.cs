@@ -25,7 +25,7 @@ namespace SimTuning.Core.Services
 
         public VehicleService(ILogger<VehicleService> logger)
         {
-            this._logger = logger;
+            _logger = logger;
 
             Dynos = new List<DynoModel>();
             Vehicles = new List<VehiclesModel>();
@@ -38,25 +38,20 @@ namespace SimTuning.Core.Services
         {
             try
             {
-                using (var db = new DatabaseContext())
-                {
-                    // in Datenbank einfügen
-                    db.Dyno.Add(dyno);
-                    db.SaveChanges();
-                }
+                using var db = new DatabaseContext();
+                db.Dyno.Add(dyno);
+                db.SaveChanges();
 
-                // in lokaler liste hinzufügen
-                this.Dynos.Add(dyno);
+                Dynos.Add(dyno);
 
-                _logger.LogInformation("Dyno: {0} (ID: {1}) created.", dyno.Name, dyno.Id);
+                _logger.LogInformation("Dyno: {DynoName} (ID: {DynoId}) created.", dyno.Name, dyno.Id);
                 return dyno;
             }
             catch (Exception exc)
             {
-                _logger.LogError(exc, exc.Message);
+                _logger.LogError(exc, "Error creating dyno: {DynoName}", dyno.Name);
+                return null;
             }
-
-            return null;
         }
 
         /// <inheritdoc />
@@ -64,66 +59,53 @@ namespace SimTuning.Core.Services
         {
             try
             {
-                using (var db = new DatabaseContext())
-                {
-                    // in Datenbank einfügen
-                    db.Vehicles.Add(vehicle);
-                    db.SaveChanges();
-                }
+                using var db = new DatabaseContext();
+                db.Vehicles.Add(vehicle);
+                db.SaveChanges();
 
-                // in lokaler liste hinzufügen
-                this.Vehicles.Add(vehicle);
+                Vehicles.Add(vehicle);
 
-                _logger.LogInformation("Vehicle: {0} (ID: {1}) created.", vehicle.Name, vehicle.Id);
-
+                _logger.LogInformation("Vehicle: {VehicleName} (ID: {VehicleId}) created.", vehicle.Name, vehicle.Id);
                 return vehicle;
             }
             catch (Exception exc)
             {
-                _logger.LogError(exc, exc.Message);
+                _logger.LogError(exc, "Error creating vehicle: {VehicleName}", vehicle.Name);
+                return null;
             }
-
-            return null;
         }
 
         /// <inheritdoc />
         public void Delete(List<AusrollenModel> ausrollen)
         {
-            // Entitys mit keinen ID`s löschen.
-            foreach (var item in ausrollen)
-            {
-                if (item.Id == null || item.Id == 0)
-                    ausrollen.Remove(item);
-            }
+            // Remove entities with valid IDs only
+            var validItems = ausrollen.Where(item => item.Id.HasValue && item.Id.Value != 0).ToList();
 
-            using (var db = new DatabaseContext())
-            {
-                db.Ausrollen.RemoveRange(ausrollen);
-                db.SaveChanges();
-            }
+            if (!validItems.Any())
+                return;
+
+            using var db = new DatabaseContext();
+            db.Ausrollen.RemoveRange(validItems);
+            db.SaveChanges();
         }
 
         /// <inheritdoc />
         public void Delete(List<GeschwindigkeitModel> geschwindigkeit)
         {
-            // Entitys mit keinen ID`s löschen.
-            foreach (var item in geschwindigkeit)
-            {
-                if (item.Id == null || item.Id == 0)
-                    geschwindigkeit.Remove(item);
-            }
+            // Remove entities with valid IDs only
+            var validItems = geschwindigkeit.Where(item => item.Id.HasValue && item.Id.Value != 0).ToList();
 
-            using (var db = new DatabaseContext())
-            {
-                db.Geschwindigkeit.RemoveRange(geschwindigkeit);
-                db.SaveChanges();
-            }
+            if (!validItems.Any())
+                return;
+
+            using var db = new DatabaseContext();
+            db.Geschwindigkeit.RemoveRange(validItems);
+            db.SaveChanges();
         }
 
         /// <inheritdoc />
         public void DeleteOne(VehiclesModel vehicle)
         {
-            // wenn keine ID.
             if (vehicle.Id == null || vehicle.Id == 0)
             {
                 return;
@@ -131,44 +113,46 @@ namespace SimTuning.Core.Services
 
             using (var db = new DatabaseContext())
             {
-                // TODO: Database operation expected to affect 1 row(s) but actually affected 0 row(s).
-                db.Vehicles.Remove(vehicle);
-                db.SaveChanges();
+                var existingVehicle = db.Vehicles.Find(vehicle.Id);
+                if (existingVehicle != null)
+                {
+                    db.Vehicles.Remove(existingVehicle);
+                    db.SaveChanges();
+
+                    // Remove from local list
+                    Vehicles.Remove(Vehicles.Single(d => d.Id == vehicle.Id));
+
+                    _logger.LogInformation("Vehicle: {0} (ID: {1}) deleted.", vehicle.Name, vehicle.Id);
+                }
+                else
+                {
+                    _logger.LogWarning("Vehicle with ID: {0} not found in database.", vehicle.Id);
+                }
             }
-
-            // in lokaler liste löschen
-            this.Vehicles.Remove(this.Vehicles.Single(d => d.Id == vehicle.Id));
-
-            _logger.LogInformation("Vehicle: {0} (ID: {1}) deleted.", vehicle.Name, vehicle.Id);
         }
 
         /// <inheritdoc />
         public void DeleteOne(DynoModel dyno)
         {
-            try
+            if (dyno.Id == null || dyno.Id == 0)
             {
-                // wenn keine ID.
-                if (dyno.Id == null || dyno.Id == 0)
-                {
-                    return;
-                }
-
-                using (var db = new Data.DatabaseContext())
-                {
-                    // in Datenbank löschen
-                    db.Dyno.Remove(dyno);
-
-                    db.SaveChanges();
-                }
-
-                // in lokaler liste löschen
-                this.Dynos.Remove(this.Dynos.Single(d => d.Id == dyno.Id));
-
-                _logger.LogInformation("Dyno: {0} (ID: {1}) deleted.", dyno.Name, dyno.Id);
+                return;
             }
-            catch (Exception exc)
+
+            using var db = new DatabaseContext();
+            var existingDyno = db.Dyno.Find(dyno.Id);
+            if (existingDyno != null)
             {
-                _logger.LogError(exc, exc.Message);
+                db.Dyno.Remove(existingDyno);
+                db.SaveChanges();
+
+                Dynos.Remove(Dynos.Single(d => d.Id == dyno.Id));
+
+                _logger.LogInformation("Dyno: {DynoName} (ID: {DynoId}) deleted.", dyno.Name, dyno.Id);
+            }
+            else
+            {
+                _logger.LogWarning("Dyno with ID: {DynoId} not found in database.", dyno.Id);
             }
         }
 
@@ -179,16 +163,12 @@ namespace SimTuning.Core.Services
             {
                 if (Dynos.Count == 0 || forceupdate)
                 {
-                    using (var db = new DatabaseContext())
-                    {
-                        this.Dynos = db.Dyno
-                            // Vehicle
-                            .Include(dyno => dyno.Vehicle)
-                            .Include(dyno => dyno.Drehzahl)
-                            .Include(dyno => dyno.DynoPS)
-                            //.Include(dyno => dyno.DynoNm)
-                            .ToList();
-                    }
+                    using var db = new DatabaseContext();
+                    Dynos = db.Dyno
+                        .Include(dyno => dyno.Vehicle)
+                        .Include(dyno => dyno.Drehzahl)
+                        .Include(dyno => dyno.DynoPS)
+                        .ToList();
                 }
 
                 _logger.LogInformation("all Dynos retrieved.");
@@ -210,23 +190,18 @@ namespace SimTuning.Core.Services
             {
                 if (Environments.Count == 0 || forceupdate)
                 {
-                    using (var db = new DatabaseContext())
-                    {
-                        this.Environments = db.Environment
-                            .ToList();
-                    }
+                    using var db = new DatabaseContext();
+                    Environments = db.Environment.ToList();
                 }
 
                 _logger.LogInformation("all Environments retrieved.");
-
                 return Environments;
             }
             catch (Exception exc)
             {
-                _logger.LogError(exc, exc.Message);
+                _logger.LogError(exc, "Error retrieving environments");
+                return null;
             }
-
-            return null;
         }
 
         /// <inheritdoc />
@@ -236,14 +211,11 @@ namespace SimTuning.Core.Services
             {
                 if (Motoren.Count == 0 || forceupdate)
                 {
-                    using (var db = new DatabaseContext())
-                    {
-                        this.Motoren = db.Motor.ToList();
-                    }
+                    using var db = new DatabaseContext();
+                    Motoren = db.Motor.ToList();
                 }
 
                 _logger.LogInformation("all Motoren retrieved.");
-
                 return Motoren;
             }
             catch (Exception exc)
@@ -280,42 +252,33 @@ namespace SimTuning.Core.Services
             {
                 if (Vehicles.Count == 0 || forceupdate)
                 {
-                    using (var db = new DatabaseContext())
-                    {
-                        this.Vehicles = db.Vehicles
-                            // Motor
-                            .Include(vehicle => vehicle.Motor)
-                            // Dyno
-                            .Include(vehicle => vehicle.Dyno)
-                            .Include(vehicle => vehicle.Dyno)
-                                .ThenInclude(dyno => dyno.Ausrollen)
-                            .Include(vehicle => vehicle.Dyno)
-                                .ThenInclude(dyno => dyno.Geschwindigkeit)
-                             .Include(vehicle => vehicle.Dyno)
-                                .ThenInclude(dyno => dyno.DynoPS)
-                            // Motor
-                            .Include(vehicle => vehicle.Motor)
-                                .ThenInclude(motor => motor.Auslass)
-                                    .ThenInclude(auslass => auslass.Auspuff)
-                             .Include(vehicle => vehicle.Motor)
-                                .ThenInclude(motor => motor.Einlass)
-                                    .ThenInclude(einlass => einlass.Vergaser)
-                             .Include(vehicle => vehicle.Motor)
-                                .ThenInclude(motor => motor.Ueberstroemer)
-                            .ToList();
-                    }
+                    using var db = new DatabaseContext();
+                    Vehicles = db.Vehicles
+                        .Include(vehicle => vehicle.Motor)
+                            .ThenInclude(motor => motor.Auslass)
+                                .ThenInclude(auslass => auslass.Auspuff)
+                        .Include(vehicle => vehicle.Motor)
+                            .ThenInclude(motor => motor.Einlass)
+                                .ThenInclude(einlass => einlass.Vergaser)
+                        .Include(vehicle => vehicle.Motor)
+                            .ThenInclude(motor => motor.Ueberstroemer)
+                        .Include(vehicle => vehicle.Dyno)
+                            .ThenInclude(dyno => dyno.Ausrollen)
+                        .Include(vehicle => vehicle.Dyno)
+                            .ThenInclude(dyno => dyno.Geschwindigkeit)
+                        .Include(vehicle => vehicle.Dyno)
+                            .ThenInclude(dyno => dyno.DynoPS)
+                        .ToList();
                 }
 
                 _logger.LogInformation("retrieve all Vehicles.");
-
                 return Vehicles;
             }
             catch (Exception exc)
             {
-                _logger.LogError(exc, exc.Message);
+                _logger.LogError(exc, "Error retrieving vehicles");
+                return null;
             }
-
-            return null;
         }
 
         /// <inheritdoc />
@@ -323,27 +286,26 @@ namespace SimTuning.Core.Services
         {
             try
             {
-                // wenn keine ID => Vehicle muss erst erstellt werden.
                 if (vehicle.Id == null || vehicle.Id == 0)
                 {
                     return;
                 }
 
-                // in lokaler liste ersetzen
-                this.Vehicles[this.Vehicles.FindIndex(v => v.Id == vehicle.Id)] = vehicle;
-
-                using (var db = new DatabaseContext())
+                int index = Vehicles.FindIndex(v => v.Id == vehicle.Id);
+                if (index >= 0)
                 {
-                    // in Datenbank einfügen
-                    db.Vehicles.Attach(vehicle);
-                    db.SaveChanges();
+                    Vehicles[index] = vehicle;
                 }
 
-                _logger.LogInformation("Vehicle {0} (ID: {1}) updated.", vehicle.Name, vehicle.Id);
+                using var db = new DatabaseContext();
+                db.Vehicles.Attach(vehicle);
+                db.SaveChanges();
+
+                _logger.LogInformation("Vehicle {VehicleName} (ID: {VehicleId}) updated.", vehicle.Name, vehicle.Id);
             }
             catch (Exception exc)
             {
-                _logger.LogError(exc, exc.Message);
+                _logger.LogError(exc, "Error updating vehicle: {VehicleName}", vehicle.Name);
             }
         }
 
@@ -352,25 +314,26 @@ namespace SimTuning.Core.Services
         {
             try
             {
-                // wenn keine ID => Dyno muss erst erstellt werden.
                 if (dyno.Id == null || dyno.Id == 0)
                 {
                     return;
                 }
 
-                // in lokaler liste ersetzen
-                this.Dynos[this.Dynos.FindIndex(d => d.Id == dyno.Id)] = dyno;
-
-                using (var db = new DatabaseContext())
+                int index = Dynos.FindIndex(d => d.Id == dyno.Id);
+                if (index >= 0)
                 {
-                    // in Datenbank einfügen
-                    db.Dyno.Attach(dyno);
-                    db.SaveChanges();
+                    Dynos[index] = dyno;
                 }
+
+                using var db = new DatabaseContext();
+                db.Dyno.Attach(dyno);
+                db.SaveChanges();
+
+                _logger.LogInformation("Dyno {DynoName} (ID: {DynoId}) updated.", dyno.Name, dyno.Id);
             }
             catch (Exception exc)
             {
-                _logger.LogError(exc, exc.Message);
+                _logger.LogError(exc, "Error updating dyno: {DynoName}", dyno.Name);
             }
         }
     }

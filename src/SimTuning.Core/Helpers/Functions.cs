@@ -50,27 +50,22 @@ namespace SimTuning.Core.Helpers
 
         public static string GetLocalisedRes(Type resType, string resourceNameKey)
         {
-            string translate = string.Empty;
-            // string baseName = "SimTuning.Core." + resourceName;
-
             try
             {
-                // Type resType = Type.GetType(baseName);
                 ResourceManager rm = new ResourceManager(resType);
-                translate = rm.GetString(resourceNameKey, CultureInfo.CurrentCulture);
+                return rm.GetString(resourceNameKey, CultureInfo.CurrentCulture) ?? string.Empty;
             }
-            catch
+            catch (Exception)
             {
-                translate = string.Empty;
+                return string.Empty;
             }
-            return translate;
         }
 
         /// <summary>
-        /// Gets the permission.
+        /// Gets the permission status and requests it if needed.
         /// </summary>
         /// <typeparam name="TPermission">The type of the permission.</typeparam>
-        /// <returns></returns>
+        /// <returns>The permission status.</returns>
         public static async Task<PermissionStatus> GetPermission<TPermission>()
             where TPermission : BasePermission, new()
         {
@@ -83,41 +78,42 @@ namespace SimTuning.Core.Helpers
 
             if (status == PermissionStatus.Denied && DeviceInfo.Platform == DevicePlatform.iOS)
             {
-                // Prompt the user to turn on in settings On iOS once a permission has been denied it may not be requested again from the application
-                if (typeof(TPermission) is Permissions.StorageRead)
-                    Functions.ShowSnackbarDialog(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_STORAGEREAD"));
-
-                if (typeof(TPermission) is Permissions.StorageWrite)
-                    Functions.ShowSnackbarDialog(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_STORAGEWRITE"));
-
-                if (typeof(TPermission) is Permissions.LocationWhenInUse)
-                    Functions.ShowSnackbarDialog(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_LOCATION"));
-
-                if (typeof(TPermission) is Permissions.Microphone)
-                    Functions.ShowSnackbarDialog(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_MICROPHONE"));
-
+                // On iOS, once a permission has been denied it may not be requested again from the application
+                ShowPermissionDeniedMessage<TPermission>();
                 return status;
             }
 
             if (Permissions.ShouldShowRationale<TPermission>())
             {
-                // Prompt the user with additional information as to why the permission is needed
-                if (typeof(TPermission) is Permissions.StorageRead)
-                    Functions.ShowSnackbarDialog(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_STORAGEREAD"));
-
-                if (typeof(TPermission) is Permissions.StorageWrite)
-                    Functions.ShowSnackbarDialog(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_STORAGEWRITE"));
-
-                if (typeof(TPermission) is Permissions.LocationWhenInUse)
-                    Functions.ShowSnackbarDialog(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_LOCATION"));
-
-                if (typeof(TPermission) is Permissions.Microphone)
-                    Functions.ShowSnackbarDialog(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_MICROPHONE"));
+                // Show rationale before requesting permission
+                ShowPermissionDeniedMessage<TPermission>();
             }
 
-            var result = await RequestAsync<Permissions.StorageWrite>();
-
+            // Request the permission
+            status = await RequestAsync<TPermission>();
             return status;
+        }
+
+        /// <summary>
+        /// Shows the appropriate error message for denied permissions.
+        /// </summary>
+        /// <typeparam name="TPermission">The type of the permission.</typeparam>
+        private static void ShowPermissionDeniedMessage<TPermission>()
+            where TPermission : BasePermission
+        {
+            string messageKey = typeof(TPermission).Name switch
+            {
+                nameof(Permissions.StorageRead) => "ERR_STORAGEREAD",
+                nameof(Permissions.StorageWrite) => "ERR_STORAGEWRITE",
+                nameof(Permissions.LocationWhenInUse) => "ERR_LOCATION",
+                nameof(Permissions.Microphone) => "ERR_MICROPHONE",
+                _ => null
+            };
+
+            if (messageKey != null)
+            {
+                ShowSnackbarDialog(GetLocalisedRes(typeof(resources), messageKey));
+            }
         }
 
         /// <summary>

@@ -17,11 +17,11 @@ namespace SimTuning.Maui.UI.ViewModels
             IVehicleService vehicleService)
             : base(logger, vehicleService)
         {
-            this._logger = logger;
+            _logger = logger;
 
-            this.NewVehicleCommand = new RelayCommand(this.NewVehicle);
-            this.DeleteVehicleCommand = new RelayCommand(this.DeleteVehicle);
-            this.SaveVehicleCommand = new RelayCommand(this.SaveVehicle);
+            NewVehicleCommand = new RelayCommand(NewVehicle);
+            DeleteVehicleCommand = new RelayCommand(DeleteVehicle);
+            SaveVehicleCommand = new RelayCommand(SaveVehicle);
         }
 
         #region Methods
@@ -33,15 +33,15 @@ namespace SimTuning.Maui.UI.ViewModels
         {
             try
             {
-                if (this.Vehicle.Deletable)
+                if (Vehicle.Deletable)
                 {
                     // in Datenbank löschen
-                    _vehicleService.DeleteOne(this.Vehicle);
+                    _vehicleService.DeleteOne(Vehicle);
 
                     // in lokaler liste löschen
-                    this.Vehicles.Remove(this.Vehicle);
+                    Vehicles.Remove(Vehicle);
 
-                    this.Vehicle = null;
+                    Vehicle = null;
                 }
             }
             catch (Exception exc)
@@ -65,8 +65,8 @@ namespace SimTuning.Maui.UI.ViewModels
                 };
                 vehicle = _vehicleService.CreateOne(vehicle);
 
-                this.Vehicles.Add(vehicle);
-                this.Vehicle = this.Vehicles.Last();
+                Vehicles.Add(vehicle);
+                Vehicle = Vehicles.Last();
             }
             catch (Exception exc)
             {
@@ -79,7 +79,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// </summary>
         protected void SaveVehicle()
         {
-            _vehicleService.UpdateOne(this.Vehicle);
+            _vehicleService.UpdateOne(Vehicle);
         }
 
         #endregion Methods

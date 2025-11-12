@@ -8,7 +8,7 @@ namespace SimTuning.Maui.UI.ViewModels
         public AuslassMainViewModel(
             ILogger<AuslassMainViewModel> logger)
         {
-            this._logger = logger;
+            _logger = logger;
         }
 
 

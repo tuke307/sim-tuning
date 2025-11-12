@@ -15,15 +15,14 @@ namespace SimTuning.Maui.UI.ViewModels
             INavigationService navigationService,
             IBrowserService browserService)
         {
-            this._logger = logger;
-            this._browserService = browserService;
+            _logger = logger;
+            _browserService = browserService;
 
-            this.OpenInstagramCommand = new RelayCommand(() => _browserService.OpenBrowser(SimTuning.Core.WebsiteConstants.MyInstagram));
-            this.OpenWebsiteCommand = new RelayCommand(() => _browserService.OpenBrowser(SimTuning.Core.WebsiteConstants.MyWebsite));
-            this.OpenTwitterCommand = new RelayCommand(() => _browserService.OpenBrowser(SimTuning.Core.WebsiteConstants.MyTwitter));
-            this.OpenEmailCommand = new RelayCommand(() => _browserService.OpenBrowser(SimTuning.Core.WebsiteConstants.MailLink));
-            this.OpenDonateCommand = new RelayCommand(() => _browserService.OpenBrowser(SimTuning.Core.WebsiteConstants.Paypaldonation));
-            this.OpenTutorialCommand = new RelayCommand(() => _browserService.OpenBrowser(SimTuning.Core.WebsiteConstants.TutorialWebsite));
+            OpenInstagramCommand = new RelayCommand(() => _browserService.OpenBrowser(SimTuning.Core.WebsiteConstants.MyInstagram));
+            OpenWebsiteCommand = new RelayCommand(() => _browserService.OpenBrowser(SimTuning.Core.WebsiteConstants.MyWebsite));
+            OpenTwitterCommand = new RelayCommand(() => _browserService.OpenBrowser(SimTuning.Core.WebsiteConstants.MyTwitter));
+            OpenEmailCommand = new RelayCommand(() => _browserService.OpenBrowser(SimTuning.Core.WebsiteConstants.MailLink));
+            OpenDonateCommand = new RelayCommand(() => _browserService.OpenBrowser(SimTuning.Core.WebsiteConstants.Paypaldonation));
         }
 
 
@@ -38,8 +37,6 @@ namespace SimTuning.Maui.UI.ViewModels
         public IRelayCommand OpenEmailCommand { get; set; }
 
         public IRelayCommand OpenInstagramCommand { get; set; }
-
-        public IRelayCommand OpenTutorialCommand { get; set; }
 
         public IRelayCommand OpenTwitterCommand { get; set; }
 

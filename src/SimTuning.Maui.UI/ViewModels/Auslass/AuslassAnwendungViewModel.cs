@@ -17,25 +17,25 @@ namespace SimTuning.Maui.UI.ViewModels
             ILogger<AuslassAnwendungViewModel> logger,
             IVehicleService vehicleService)
         {
-            this._logger = logger;
-            this._vehicleService = vehicleService;
+            _logger = logger;
+            _vehicleService = vehicleService;
 
             // Vehicle Creation
-            this.Vehicle = new VehiclesModel();
-            this.Vehicle.Motor = new MotorModel();
-            this.Vehicle.Motor.Auslass = new AuslassModel();
-            this.Vehicle.Motor.Auslass.Auspuff = new AuspuffModel();
+            Vehicle = new VehiclesModel();
+            Vehicle.Motor = new MotorModel();
+            Vehicle.Motor.Auslass = new AuslassModel();
+            Vehicle.Motor.Auslass.Auspuff = new AuspuffModel();
 
-            this.AreaQuantityUnits = new AreaQuantity();
-            this.VolumeQuantityUnits = new VolumeQuantity();
-            this.LengthQuantityUnits = new LengthQuantity();
-            this.SpeedQuantityUnits = new SpeedQuantity();
+            AreaQuantityUnits = new AreaQuantity();
+            VolumeQuantityUnits = new VolumeQuantity();
+            LengthQuantityUnits = new LengthQuantity();
+            SpeedQuantityUnits = new SpeedQuantity();
 
-            this.DiffStages = new List<string>() { "One Stage", "Two Stage", "Three Stage" };
+            DiffStages = new List<string>() { "One Stage", "Two Stage", "Three Stage" };
 
             // Methods
-            this.CalculateCommand = new RelayCommand(this.Calculate);
-            this.DiffusorStageCommand = new RelayCommand<int>(this.DiffusorStage);
+            CalculateCommand = new RelayCommand(Calculate);
+            DiffusorStageCommand = new RelayCommand<int>(DiffusorStage);
         }
 
         #region Methods
@@ -45,7 +45,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// </summary>
         public void DiffusorStage(int stage)
         {
-            this.Vehicle.Motor.Auslass.Auspuff.DiffusorStage = stage;
+            Vehicle.Motor.Auslass.Auspuff.DiffusorStage = stage;
         }
 
         /// <summary>
@@ -55,17 +55,17 @@ namespace SimTuning.Maui.UI.ViewModels
         {
             if (helperVehicle.Motor.Auslass.FlaecheA.HasValue)
             {
-                this.VehicleMotorAuslassFlaecheA = helperVehicle.Motor.Auslass.FlaecheA.Value;
+                VehicleMotorAuslassFlaecheA = helperVehicle.Motor.Auslass.FlaecheA.Value;
             }
 
             if (helperVehicle.Motor.ResonanzU.HasValue)
             {
-                this.VehicleMotorResonanzU = helperVehicle.Motor.ResonanzU;
+                VehicleMotorResonanzU = helperVehicle.Motor.ResonanzU;
             }
 
             if (helperVehicle.Motor.Auslass.SteuerzeitSZ.HasValue)
             {
-                this.VehicleMotorAuslassSteuerzeitSZ = helperVehicle.Motor.Auslass.SteuerzeitSZ;
+                VehicleMotorAuslassSteuerzeitSZ = helperVehicle.Motor.Auslass.SteuerzeitSZ;
             }
         }
 
@@ -77,19 +77,19 @@ namespace SimTuning.Maui.UI.ViewModels
         {
             VehiclesModel vehicle = Vehicle;
             Stream stream = SimTuning.Core.Converters.Converts.SKBitmapToStream(AuslassLogic.Auspuff(ref vehicle));
-            this.Vehicle = vehicle;
+            Vehicle = vehicle;
 
-            this.OnPropertyChanged(nameof(this.VehicleMotorAuslassAuspuffKruemmerD));
-            this.OnPropertyChanged(nameof(this.VehicleMotorAuslassAuspuffKruemmerL));
-            this.OnPropertyChanged(nameof(this.VehicleMotorAuslassAuspuffDiffusorD));
-            this.OnPropertyChanged(nameof(this.VehicleMotorAuslassAuspuffDiffusorL));
-            this.OnPropertyChanged(nameof(this.VehicleMotorAuslassAuspuffMittelteilD));
-            this.OnPropertyChanged(nameof(this.VehicleMotorAuslassAuspuffMittelteilL));
-            this.OnPropertyChanged(nameof(this.VehicleMotorAuslassAuspuffGegenkonusD));
-            this.OnPropertyChanged(nameof(this.VehicleMotorAuslassAuspuffGegenkonusL));
-            this.OnPropertyChanged(nameof(this.VehicleMotorAuslassAuspuffEndrohrL));
-            this.OnPropertyChanged(nameof(this.VehicleMotorAuslassAuspuffGesamtL));
-            this.OnPropertyChanged(nameof(this.VehicleMotorAuslassAuspuffResonanzL));
+            OnPropertyChanged(nameof(VehicleMotorAuslassAuspuffKruemmerD));
+            OnPropertyChanged(nameof(VehicleMotorAuslassAuspuffKruemmerL));
+            OnPropertyChanged(nameof(VehicleMotorAuslassAuspuffDiffusorD));
+            OnPropertyChanged(nameof(VehicleMotorAuslassAuspuffDiffusorL));
+            OnPropertyChanged(nameof(VehicleMotorAuslassAuspuffMittelteilD));
+            OnPropertyChanged(nameof(VehicleMotorAuslassAuspuffMittelteilL));
+            OnPropertyChanged(nameof(VehicleMotorAuslassAuspuffGegenkonusD));
+            OnPropertyChanged(nameof(VehicleMotorAuslassAuspuffGegenkonusL));
+            OnPropertyChanged(nameof(VehicleMotorAuslassAuspuffEndrohrL));
+            OnPropertyChanged(nameof(VehicleMotorAuslassAuspuffGesamtL));
+            OnPropertyChanged(nameof(VehicleMotorAuslassAuspuffResonanzL));
 
             Auspuff = ImageSource.FromStream(() => stream);
         }
@@ -153,8 +153,8 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle.</value>
         public VehiclesModel Vehicle
         {
-            get => this._vehicle;
-            set => this.SetProperty(ref this._vehicle, value);
+            get => _vehicle;
+            set => SetProperty(ref _vehicle, value);
         }
 
         /// <summary>
@@ -163,15 +163,15 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle motor auslass auspuff abgas v.</value>
         public double? VehicleMotorAuslassAuspuffAbgasV
         {
-            get => this.Vehicle?.Motor?.Auslass?.Auspuff?.AbgasV;
+            get => Vehicle?.Motor?.Auslass?.Auspuff?.AbgasV;
             set
             {
-                if (this.Vehicle?.Motor?.Auslass?.Auspuff == null)
+                if (Vehicle?.Motor?.Auslass?.Auspuff == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.Auslass.Auspuff.AbgasV = value;
+                Vehicle.Motor.Auslass.Auspuff.AbgasV = value;
             }
         }
 
@@ -181,16 +181,16 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle motor auslass auspuff abgas v unit.</value>
         public UnitListItem VehicleMotorAuslassAuspuffAbgasVUnit
         {
-            get => this.SpeedQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(this.Vehicle?.Motor?.Auslass?.Auspuff?.AbgasVUnit));
+            get => SpeedQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.Auslass?.Auspuff?.AbgasVUnit));
             set
             {
-                if (this.Vehicle?.Motor?.Auslass?.Auspuff == null)
+                if (Vehicle?.Motor?.Auslass?.Auspuff == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.Auslass.Auspuff.AbgasVUnit = (UnitsNet.Units.SpeedUnit)value?.UnitEnumValue;
-                this.OnPropertyChanged(nameof(this.VehicleMotorAuslassAuspuffAbgasV));
+                Vehicle.Motor.Auslass.Auspuff.AbgasVUnit = (UnitsNet.Units.SpeedUnit)value?.UnitEnumValue;
+                OnPropertyChanged(nameof(VehicleMotorAuslassAuspuffAbgasV));
             }
         }
 
@@ -200,15 +200,15 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle motor auslass auspuff diffusor d.</value>
         public double? VehicleMotorAuslassAuspuffDiffusorD
         {
-            get => this.Vehicle?.Motor?.Auslass?.Auspuff?.DiffusorD;
+            get => Vehicle?.Motor?.Auslass?.Auspuff?.DiffusorD;
             set
             {
-                if (this.Vehicle?.Motor?.Auslass?.Auspuff == null)
+                if (Vehicle?.Motor?.Auslass?.Auspuff == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.Auslass.Auspuff.DiffusorD = value;
+                Vehicle.Motor.Auslass.Auspuff.DiffusorD = value;
             }
         }
 
@@ -218,15 +218,15 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle motor auslass auspuff diffusor l.</value>
         public double? VehicleMotorAuslassAuspuffDiffusorL
         {
-            get => this.Vehicle?.Motor?.Auslass?.Auspuff?.DiffusorL;
+            get => Vehicle?.Motor?.Auslass?.Auspuff?.DiffusorL;
             set
             {
-                if (this.Vehicle?.Motor?.Auslass?.Auspuff == null)
+                if (Vehicle?.Motor?.Auslass?.Auspuff == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.Auslass.Auspuff.DiffusorL = value;
+                Vehicle.Motor.Auslass.Auspuff.DiffusorL = value;
             }
         }
 
@@ -236,15 +236,15 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle motor auslass auspuff diffusor w1.</value>
         public double? VehicleMotorAuslassAuspuffDiffusorW1
         {
-            get => this.Vehicle?.Motor?.Auslass?.Auspuff?.DiffusorW1;
+            get => Vehicle?.Motor?.Auslass?.Auspuff?.DiffusorW1;
             set
             {
-                if (this.Vehicle?.Motor?.Auslass?.Auspuff == null)
+                if (Vehicle?.Motor?.Auslass?.Auspuff == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.Auslass.Auspuff.DiffusorW1 = value;
+                Vehicle.Motor.Auslass.Auspuff.DiffusorW1 = value;
             }
         }
 
@@ -254,15 +254,15 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle motor auslass auspuff diffusor w2.</value>
         public double? VehicleMotorAuslassAuspuffDiffusorW2
         {
-            get => this.Vehicle?.Motor?.Auslass?.Auspuff?.DiffusorW2;
+            get => Vehicle?.Motor?.Auslass?.Auspuff?.DiffusorW2;
             set
             {
-                if (this.Vehicle?.Motor?.Auslass?.Auspuff == null)
+                if (Vehicle?.Motor?.Auslass?.Auspuff == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.Auslass.Auspuff.DiffusorW2 = value;
+                Vehicle.Motor.Auslass.Auspuff.DiffusorW2 = value;
             }
         }
 
@@ -272,15 +272,15 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle motor auslass auspuff diffusor w3.</value>
         public double? VehicleMotorAuslassAuspuffDiffusorW3
         {
-            get => this.Vehicle?.Motor?.Auslass?.Auspuff?.DiffusorW3;
+            get => Vehicle?.Motor?.Auslass?.Auspuff?.DiffusorW3;
             set
             {
-                if (this.Vehicle?.Motor?.Auslass?.Auspuff == null)
+                if (Vehicle?.Motor?.Auslass?.Auspuff == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.Auslass.Auspuff.DiffusorW3 = value;
+                Vehicle.Motor.Auslass.Auspuff.DiffusorW3 = value;
             }
         }
 
@@ -290,15 +290,15 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle motor auslass auspuff endrohr d.</value>
         public double? VehicleMotorAuslassAuspuffEndrohrD
         {
-            get => this.Vehicle?.Motor?.Auslass?.Auspuff?.EndrohrD;
+            get => Vehicle?.Motor?.Auslass?.Auspuff?.EndrohrD;
             set
             {
-                if (this.Vehicle?.Motor?.Auslass?.Auspuff == null)
+                if (Vehicle?.Motor?.Auslass?.Auspuff == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.Auslass.Auspuff.EndrohrD = value;
+                Vehicle.Motor.Auslass.Auspuff.EndrohrD = value;
             }
         }
 
@@ -308,16 +308,16 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle motor auslass auspuff endrohr d unit.</value>
         public UnitListItem VehicleMotorAuslassAuspuffEndrohrDUnit
         {
-            get => this.LengthQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(this.Vehicle?.Motor?.Auslass?.Auspuff?.EndrohrDUnit));
+            get => LengthQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.Auslass?.Auspuff?.EndrohrDUnit));
             set
             {
-                if (this.Vehicle?.Motor?.Auslass?.Auspuff == null)
+                if (Vehicle?.Motor?.Auslass?.Auspuff == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.Auslass.Auspuff.EndrohrDUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
-                this.OnPropertyChanged(nameof(this.VehicleMotorAuslassAuspuffEndrohrD));
+                Vehicle.Motor.Auslass.Auspuff.EndrohrDUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
+                OnPropertyChanged(nameof(VehicleMotorAuslassAuspuffEndrohrD));
             }
         }
 
@@ -327,15 +327,15 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle motor auslass auspuff endrohr l.</value>
         public double? VehicleMotorAuslassAuspuffEndrohrL
         {
-            get => this.Vehicle?.Motor?.Auslass?.Auspuff?.EndrohrL;
+            get => Vehicle?.Motor?.Auslass?.Auspuff?.EndrohrL;
             set
             {
-                if (this.Vehicle?.Motor?.Auslass?.Auspuff == null)
+                if (Vehicle?.Motor?.Auslass?.Auspuff == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.Auslass.Auspuff.EndrohrL = value;
+                Vehicle.Motor.Auslass.Auspuff.EndrohrL = value;
             }
         }
 
@@ -345,16 +345,16 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle motor auslass auspuff endrohr l unit.</value>
         public UnitListItem VehicleMotorAuslassAuspuffEndrohrLUnit
         {
-            get => this.LengthQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(this.Vehicle?.Motor?.Auslass?.Auspuff?.EndrohrLUnit));
+            get => LengthQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.Auslass?.Auspuff?.EndrohrLUnit));
             set
             {
-                if (this.Vehicle?.Motor?.Auslass?.Auspuff == null)
+                if (Vehicle?.Motor?.Auslass?.Auspuff == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.Auslass.Auspuff.EndrohrLUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
-                this.OnPropertyChanged(nameof(this.VehicleMotorAuslassAuspuffEndrohrL));
+                Vehicle.Motor.Auslass.Auspuff.EndrohrLUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
+                OnPropertyChanged(nameof(VehicleMotorAuslassAuspuffEndrohrL));
             }
         }
 
@@ -364,15 +364,15 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle motor auslass auspuff gegenkonus d.</value>
         public double? VehicleMotorAuslassAuspuffGegenkonusD
         {
-            get => this.Vehicle?.Motor?.Auslass?.Auspuff?.GegenkonusD;
+            get => Vehicle?.Motor?.Auslass?.Auspuff?.GegenkonusD;
             set
             {
-                if (this.Vehicle?.Motor?.Auslass?.Auspuff == null)
+                if (Vehicle?.Motor?.Auslass?.Auspuff == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.Auslass.Auspuff.GegenkonusD = value;
+                Vehicle.Motor.Auslass.Auspuff.GegenkonusD = value;
             }
         }
 
@@ -382,15 +382,15 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle motor auslass auspuff gegenkonus l.</value>
         public double? VehicleMotorAuslassAuspuffGegenkonusL
         {
-            get => this.Vehicle?.Motor?.Auslass?.Auspuff?.GegenkonusL;
+            get => Vehicle?.Motor?.Auslass?.Auspuff?.GegenkonusL;
             set
             {
-                if (this.Vehicle?.Motor?.Auslass?.Auspuff == null)
+                if (Vehicle?.Motor?.Auslass?.Auspuff == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.Auslass.Auspuff.GegenkonusL = value;
+                Vehicle.Motor.Auslass.Auspuff.GegenkonusL = value;
             }
         }
 
@@ -400,15 +400,15 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle motor auslass auspuff gegen konus w.</value>
         public double? VehicleMotorAuslassAuspuffGegenKonusW
         {
-            get => this.Vehicle?.Motor?.Auslass?.Auspuff?.GegenKonusW;
+            get => Vehicle?.Motor?.Auslass?.Auspuff?.GegenKonusW;
             set
             {
-                if (this.Vehicle?.Motor?.Auslass?.Auspuff == null)
+                if (Vehicle?.Motor?.Auslass?.Auspuff == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.Auslass.Auspuff.GegenKonusW = value;
+                Vehicle.Motor.Auslass.Auspuff.GegenKonusW = value;
             }
         }
 
@@ -418,15 +418,15 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle motor auslass auspuff gesamt l.</value>
         public double? VehicleMotorAuslassAuspuffGesamtL
         {
-            get => this.Vehicle?.Motor?.Auslass?.Auspuff?.GesamtL;
+            get => Vehicle?.Motor?.Auslass?.Auspuff?.GesamtL;
             set
             {
-                if (this.Vehicle?.Motor?.Auslass?.Auspuff == null)
+                if (Vehicle?.Motor?.Auslass?.Auspuff == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.Auslass.Auspuff.GesamtL = value;
+                Vehicle.Motor.Auslass.Auspuff.GesamtL = value;
             }
         }
 
@@ -436,15 +436,15 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle motor auslass auspuff kruemmer d.</value>
         public double? VehicleMotorAuslassAuspuffKruemmerD
         {
-            get => this.Vehicle?.Motor?.Auslass?.Auspuff?.KruemmerD;
+            get => Vehicle?.Motor?.Auslass?.Auspuff?.KruemmerD;
             set
             {
-                if (this.Vehicle?.Motor?.Auslass?.Auspuff == null)
+                if (Vehicle?.Motor?.Auslass?.Auspuff == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.Auslass.Auspuff.KruemmerD = value;
+                Vehicle.Motor.Auslass.Auspuff.KruemmerD = value;
             }
         }
 
@@ -454,15 +454,15 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle motor auslass auspuff kruemmer f.</value>
         public double? VehicleMotorAuslassAuspuffKruemmerF
         {
-            get => this.Vehicle?.Motor?.Auslass?.Auspuff?.KruemmerF;
+            get => Vehicle?.Motor?.Auslass?.Auspuff?.KruemmerF;
             set
             {
-                if (this.Vehicle?.Motor?.Auslass?.Auspuff == null)
+                if (Vehicle?.Motor?.Auslass?.Auspuff == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.Auslass.Auspuff.KruemmerF = value;
+                Vehicle.Motor.Auslass.Auspuff.KruemmerF = value;
             }
         }
 
@@ -472,15 +472,15 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle motor auslass auspuff kruemmer l.</value>
         public double? VehicleMotorAuslassAuspuffKruemmerL
         {
-            get => this.Vehicle?.Motor?.Auslass?.Auspuff?.KruemmerL;
+            get => Vehicle?.Motor?.Auslass?.Auspuff?.KruemmerL;
             set
             {
-                if (this.Vehicle?.Motor?.Auslass?.Auspuff == null)
+                if (Vehicle?.Motor?.Auslass?.Auspuff == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.Auslass.Auspuff.KruemmerL = value;
+                Vehicle.Motor.Auslass.Auspuff.KruemmerL = value;
             }
         }
 
@@ -490,15 +490,15 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle motor auslass auspuff kruemmer w.</value>
         public double? VehicleMotorAuslassAuspuffKruemmerW
         {
-            get => this.Vehicle?.Motor?.Auslass?.Auspuff?.KruemmerW;
+            get => Vehicle?.Motor?.Auslass?.Auspuff?.KruemmerW;
             set
             {
-                if (this.Vehicle?.Motor?.Auslass?.Auspuff == null)
+                if (Vehicle?.Motor?.Auslass?.Auspuff == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.Auslass.Auspuff.KruemmerW = value;
+                Vehicle.Motor.Auslass.Auspuff.KruemmerW = value;
             }
         }
 
@@ -508,15 +508,15 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle motor auslass auspuff mittelteil d.</value>
         public double? VehicleMotorAuslassAuspuffMittelteilD
         {
-            get => this.Vehicle?.Motor?.Auslass?.Auspuff?.MittelteilD;
+            get => Vehicle?.Motor?.Auslass?.Auspuff?.MittelteilD;
             set
             {
-                if (this.Vehicle?.Motor?.Auslass?.Auspuff == null)
+                if (Vehicle?.Motor?.Auslass?.Auspuff == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.Auslass.Auspuff.MittelteilD = value;
+                Vehicle.Motor.Auslass.Auspuff.MittelteilD = value;
             }
         }
 
@@ -526,15 +526,15 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle motor auslass auspuff mittelteil f.</value>
         public double? VehicleMotorAuslassAuspuffMittelteilF
         {
-            get => this.Vehicle?.Motor?.Auslass?.Auspuff?.MittelteilF;
+            get => Vehicle?.Motor?.Auslass?.Auspuff?.MittelteilF;
             set
             {
-                if (this.Vehicle?.Motor?.Auslass?.Auspuff == null)
+                if (Vehicle?.Motor?.Auslass?.Auspuff == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.Auslass.Auspuff.MittelteilF = value;
+                Vehicle.Motor.Auslass.Auspuff.MittelteilF = value;
             }
         }
 
@@ -544,15 +544,15 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle motor auslass auspuff mittelteil l.</value>
         public double? VehicleMotorAuslassAuspuffMittelteilL
         {
-            get => this.Vehicle?.Motor?.Auslass?.Auspuff?.MittelteilL;
+            get => Vehicle?.Motor?.Auslass?.Auspuff?.MittelteilL;
             set
             {
-                if (this.Vehicle?.Motor?.Auslass?.Auspuff == null)
+                if (Vehicle?.Motor?.Auslass?.Auspuff == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.Auslass.Auspuff.MittelteilL = value;
+                Vehicle.Motor.Auslass.Auspuff.MittelteilL = value;
             }
         }
 
@@ -562,15 +562,15 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle motor auslass auspuff resonanz l.</value>
         public double? VehicleMotorAuslassAuspuffResonanzL
         {
-            get => this.Vehicle?.Motor?.Auslass?.Auspuff?.ResonanzL;
+            get => Vehicle?.Motor?.Auslass?.Auspuff?.ResonanzL;
             set
             {
-                if (this.Vehicle?.Motor?.Auslass?.Auspuff == null)
+                if (Vehicle?.Motor?.Auslass?.Auspuff == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.Auslass.Auspuff.ResonanzL = value;
+                Vehicle.Motor.Auslass.Auspuff.ResonanzL = value;
             }
         }
 
@@ -580,15 +580,15 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle motor auslass durchmesser d.</value>
         public double? VehicleMotorAuslassDurchmesserD
         {
-            get => this.Vehicle?.Motor?.Auslass?.DurchmesserD;
+            get => Vehicle?.Motor?.Auslass?.DurchmesserD;
             set
             {
-                if (this.Vehicle?.Motor?.Auslass == null)
+                if (Vehicle?.Motor?.Auslass == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.Auslass.DurchmesserD = value;
+                Vehicle.Motor.Auslass.DurchmesserD = value;
             }
         }
 
@@ -598,16 +598,16 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle motor auslass durchmesser d unit.</value>
         public UnitListItem VehicleMotorAuslassDurchmesserDUnit
         {
-            get => this.LengthQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(this.Vehicle?.Motor?.Auslass?.DurchmesserDUnit));
+            get => LengthQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.Auslass?.DurchmesserDUnit));
             set
             {
-                if (this.Vehicle?.Motor?.Auslass == null)
+                if (Vehicle?.Motor?.Auslass == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.Auslass.DurchmesserDUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
-                this.OnPropertyChanged(nameof(this.VehicleMotorAuslassDurchmesserD));
+                Vehicle.Motor.Auslass.DurchmesserDUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
+                OnPropertyChanged(nameof(VehicleMotorAuslassDurchmesserD));
             }
         }
 
@@ -617,16 +617,16 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle motor auslass flaeche a.</value>
         public double? VehicleMotorAuslassFlaecheA
         {
-            get => this.Vehicle?.Motor?.Auslass?.FlaecheA;
+            get => Vehicle?.Motor?.Auslass?.FlaecheA;
             set
             {
-                if (this.Vehicle?.Motor?.Auslass == null)
+                if (Vehicle?.Motor?.Auslass == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.Auslass.FlaecheA = value;
-                this.OnPropertyChanged(nameof(this.VehicleMotorAuslassFlaecheA));
+                Vehicle.Motor.Auslass.FlaecheA = value;
+                OnPropertyChanged(nameof(VehicleMotorAuslassFlaecheA));
             }
         }
 
@@ -636,16 +636,16 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle motor auslass flaeche a unit.</value>
         public UnitListItem VehicleMotorAuslassFlaecheAUnit
         {
-            get => this.AreaQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(this.Vehicle?.Motor?.Auslass?.FlaecheAUnit));
+            get => AreaQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.Auslass?.FlaecheAUnit));
             set
             {
-                if (this.Vehicle?.Motor?.Auslass == null)
+                if (Vehicle?.Motor?.Auslass == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.Auslass.FlaecheAUnit = (UnitsNet.Units.AreaUnit)value?.UnitEnumValue;
-                this.OnPropertyChanged(nameof(this.VehicleMotorAuslassFlaecheA));
+                Vehicle.Motor.Auslass.FlaecheAUnit = (UnitsNet.Units.AreaUnit)value?.UnitEnumValue;
+                OnPropertyChanged(nameof(VehicleMotorAuslassFlaecheA));
             }
         }
 
@@ -655,15 +655,15 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle motor auslass laenge l.</value>
         public double? VehicleMotorAuslassLaengeL
         {
-            get => this.Vehicle?.Motor?.Auslass?.LaengeL;
+            get => Vehicle?.Motor?.Auslass?.LaengeL;
             set
             {
-                if (this.Vehicle?.Motor?.Auslass == null)
+                if (Vehicle?.Motor?.Auslass == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.Auslass.LaengeL = value;
+                Vehicle.Motor.Auslass.LaengeL = value;
             }
         }
 
@@ -673,16 +673,16 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle motor auslass laenge l unit.</value>
         public UnitListItem VehicleMotorAuslassLaengeLUnit
         {
-            get => this.LengthQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(this.Vehicle?.Motor?.Auslass?.LaengeLUnit));
+            get => LengthQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.Auslass?.LaengeLUnit));
             set
             {
-                if (this.Vehicle?.Motor?.Auslass == null)
+                if (Vehicle?.Motor?.Auslass == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.Auslass.LaengeLUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
-                this.OnPropertyChanged(nameof(this.VehicleMotorAuslassLaengeL));
+                Vehicle.Motor.Auslass.LaengeLUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
+                OnPropertyChanged(nameof(VehicleMotorAuslassLaengeL));
             }
         }
 
@@ -692,16 +692,16 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle motor auslass steuerzeit sz.</value>
         public double? VehicleMotorAuslassSteuerzeitSZ
         {
-            get => this.Vehicle?.Motor?.Auslass?.SteuerzeitSZ;
+            get => Vehicle?.Motor?.Auslass?.SteuerzeitSZ;
             set
             {
-                if (this.Vehicle?.Motor?.Auslass == null)
+                if (Vehicle?.Motor?.Auslass == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.Auslass.SteuerzeitSZ = value;
-                this.OnPropertyChanged(nameof(this.VehicleMotorAuslassSteuerzeitSZ));
+                Vehicle.Motor.Auslass.SteuerzeitSZ = value;
+                OnPropertyChanged(nameof(VehicleMotorAuslassSteuerzeitSZ));
             }
         }
 
@@ -711,16 +711,16 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle motor resonanz u.</value>
         public double? VehicleMotorResonanzU
         {
-            get => this.Vehicle?.Motor?.ResonanzU;
+            get => Vehicle?.Motor?.ResonanzU;
             set
             {
-                if (this.Vehicle?.Motor == null)
+                if (Vehicle?.Motor == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.ResonanzU = value;
-                this.OnPropertyChanged(nameof(this.VehicleMotorResonanzU));
+                Vehicle.Motor.ResonanzU = value;
+                OnPropertyChanged(nameof(VehicleMotorResonanzU));
             }
         }
 

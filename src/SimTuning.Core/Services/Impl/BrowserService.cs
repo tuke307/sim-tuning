@@ -11,9 +11,12 @@ using System.Threading.Tasks;
 
 namespace SimTuning.Core.Services
 {
+    /// <summary>
+    /// Service for handling browser operations.
+    /// </summary>
     public class BrowserService : IBrowserService
     {
-        private ILogger<BrowserService> _logger;
+        private readonly ILogger<BrowserService> _logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BrowserService" /> class.
@@ -21,7 +24,7 @@ namespace SimTuning.Core.Services
         /// <param name="logger">The logger.</param>
         public BrowserService(ILogger<BrowserService> logger)
         {
-            this._logger = logger;
+            _logger = logger;
         }
 
         /// <inheritdoc />
@@ -33,17 +36,15 @@ namespace SimTuning.Core.Services
                 BrowserLaunchOptions options = new BrowserLaunchOptions()
                 {
                     LaunchMode = BrowserLaunchMode.SystemPreferred,
-                    TitleMode = BrowserTitleMode.Show,
-                    //PreferredToolbarColor = Colors.Violet,
-                    //PreferredControlColor = Colors.SandyBrown
+                    TitleMode = BrowserTitleMode.Show
                 };
 
                 await Browser.Default.OpenAsync(uri, options);
             }
             catch (Exception ex)
             {
-                // An unexpected error occured. No browser may be installed on the device.
-                this._logger.LogError(ex, ex.Message, null);
+                // An unexpected error occurred. No browser may be installed on the device.
+                _logger.LogError(ex, ex.Message, null);
             }
         }
 

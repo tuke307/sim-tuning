@@ -5,6 +5,9 @@
 		<SingleProject>True</SingleProject>
 		<RootNamespace>SimTuning.Maui.App</RootNamespace>
 
+		<!-- Enable .NET 10 preview features -->
+		<EnablePreviewFeatures>true</EnablePreviewFeatures>
+
 		<!-- Display name -->
 		<ApplicationTitle>SimTuning</ApplicationTitle>
 

@@ -28,16 +28,16 @@ namespace SimTuning.Maui.UI.ViewModels
             INavigationService navigationService,
             IVehicleService vehicleService)
         {
-            this._logger = logger;
-            this._vehicleService = vehicleService;
+            _logger = logger;
+            _vehicleService = vehicleService;
 
-            this.AreaQuantityUnits = new AreaQuantity();
-            this.MassQuantityUnits = new MassQuantity();
+            AreaQuantityUnits = new AreaQuantity();
+            MassQuantityUnits = new MassQuantity();
 
-            this.RefreshPlotCommand = new RelayCommand(this.RefreshPlot);
+            RefreshPlotCommand = new RelayCommand(RefreshPlot);
 
             // erste navigation: selected dyno wird requested
-            this.Dyno = Messenger.Send<CurrentDynoRequestMessage>();
+            Dyno = Messenger.Send<CurrentDynoRequestMessage>();
             // bei dyno änderung (viewmodel schon geladen)
             Messenger.Register<DynoDiagnosisViewModel, DynoChangedMessage>(this, (r, m) => r.Dyno = m.Value);
 
@@ -53,8 +53,8 @@ namespace SimTuning.Maui.UI.ViewModels
         {
             if (helperVehicle.Gewicht != null)
             {
-                this.DynoVehicleGewicht = helperVehicle.Gewicht;
-                this.OnPropertyChanged(nameof(this.DynoVehicleGewicht));
+                DynoVehicleGewicht = helperVehicle.Gewicht;
+                OnPropertyChanged(nameof(DynoVehicleGewicht));
             }
         }
 
@@ -63,7 +63,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// </summary>
         protected void RefreshPlot()
         {
-            if (!this.CheckDynoData())
+            if (!CheckDynoData())
             {
                 return;
             }
@@ -104,12 +104,12 @@ namespace SimTuning.Maui.UI.ViewModels
                         Fill = null,
                     });
 
-                this.Dyno.DynoPS = new List<DynoPsModel>();
+                Dyno.DynoPS = new List<DynoPsModel>();
                 foreach (var item in values)
                 {
-                    this.Dyno.DynoPS.Add(item.ToDynoPSModel());
+                    Dyno.DynoPS.Add(item.ToDynoPSModel());
                 }
-                _vehicleService.UpdateOne(this.Dyno);
+                _vehicleService.UpdateOne(Dyno);
             }
             catch (Exception exc)
             {
@@ -122,7 +122,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// </summary>
         private bool CheckDynoData()
         {
-            if (this.Dyno == null)
+            if (Dyno == null)
             {
                 Functions.ShowSnackbarDialog(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_NODATA"));
 
@@ -160,12 +160,12 @@ namespace SimTuning.Maui.UI.ViewModels
             get => Dyno?.Environment?.LuftdruckP;
             set
             {
-                if (this.Dyno?.Environment == null)
+                if (Dyno?.Environment == null)
                 {
                     return;
                 }
 
-                this.Dyno.Environment.LuftdruckP = value;
+                Dyno.Environment.LuftdruckP = value;
             }
         }
 
@@ -189,30 +189,30 @@ namespace SimTuning.Maui.UI.ViewModels
 
         public double? DynoVehicleGewicht
         {
-            get => this.Dyno?.Vehicle?.Gewicht;
+            get => Dyno?.Vehicle?.Gewicht;
             set
             {
-                if (this.Dyno?.Vehicle == null)
+                if (Dyno?.Vehicle == null)
                 {
                     return;
                 }
 
-                this.Dyno.Vehicle.Gewicht = value;
+                Dyno.Vehicle.Gewicht = value;
             }
         }
 
         public UnitListItem DynoVehicleGewichtUnit
         {
-            get => this.MassQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(this.Dyno?.Vehicle?.GewichtUnit));
+            get => MassQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Dyno?.Vehicle?.GewichtUnit));
             set
             {
-                if (this.Dyno?.Vehicle == null)
+                if (Dyno?.Vehicle == null)
                 {
                     return;
                 }
 
-                this.Dyno.Vehicle.GewichtUnit = (UnitsNet.Units.MassUnit)value?.UnitEnumValue;
-                this.OnPropertyChanged(nameof(this.DynoVehicleGewicht));
+                Dyno.Vehicle.GewichtUnit = (UnitsNet.Units.MassUnit)value?.UnitEnumValue;
+                OnPropertyChanged(nameof(DynoVehicleGewicht));
             }
         }
 

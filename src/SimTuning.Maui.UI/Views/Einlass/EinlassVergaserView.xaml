@@ -1,9 +1,8 @@
 ﻿<ContentView
     x:Class="SimTuning.Maui.UI.Views.Einlass.EinlassVergaserView"
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns="http://schemas.microsoft.com/dotnet/maui/global"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
-    x:DataType="vm:EinlassVergaserViewModel"
+    x:DataType="EinlassVergaserViewModel"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
     <ContentView.Resources>
         <Style
@@ -18,8 +17,8 @@
     <ScrollView>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <!--  Vergasergröße  -->
@@ -28,7 +27,7 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
                         <Label
@@ -46,11 +45,11 @@
 
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
                         <!--Hubraum Volumen-->
@@ -62,7 +61,7 @@
 
                             <Entry
                                 Keyboard="Numeric"
-                                Text="{Binding Mode=TwoWay, Path=Hubvolumen}"
+                                Text="{Binding Hubvolumen}"
                                 WidthRequest="200"
                                 VerticalOptions="Center">
                                 <Entry.Behaviors>
@@ -89,7 +88,7 @@
 
                             <Entry
                                 Keyboard="Numeric"
-                                Text="{Binding Mode=TwoWay, Path=Resonanzdrehzahl}"
+                                Text="{Binding Resonanzdrehzahl}"
                                 WidthRequest="200"
                                 VerticalOptions="Center">
                                 <Entry.Behaviors>
@@ -116,7 +115,7 @@
 
                             <Entry
                                 Keyboard="Numeric"
-                                Text="{Binding Mode=TwoWay, Path=Vergasergroeße}"
+                                Text="{Binding Vergasergroeße}"
                                 WidthRequest="200"
                                 IsEnabled="False"
                                 IsReadOnly="True"
@@ -145,7 +144,7 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
                         <Label
@@ -163,14 +162,14 @@
 
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
                         <!--Vergasergroeße-->
@@ -182,7 +181,7 @@
 
                             <Entry
                                 Keyboard="Numeric"
-                                Text="{Binding Mode=TwoWay, Path=Vergasergroeße}"
+                                Text="{Binding Vergasergroeße}"
                                 WidthRequest="200"
                                 VerticalOptions="Center">
                                 <Entry.Behaviors>
@@ -211,7 +210,7 @@
 
                             <Entry
                                 Keyboard="Numeric"
-                                Text="{Binding Mode=TwoWay, Path=HauptdueseD}"
+                                Text="{Binding HauptdueseD}"
                                 WidthRequest="200"
                                 IsEnabled="False"
                                 IsReadOnly="True"

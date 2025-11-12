@@ -1,14 +1,12 @@
 ﻿<ContentPage
     x:Class="SimTuning.Maui.UI.Views.Einlass.EinlassMainView"
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns="http://schemas.microsoft.com/dotnet/maui/global"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:tabs="http://sharpnado.com"
-    xmlns:local="clr-namespace:SimTuning.Maui.UI.Views.Einlass"
-    xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
-    x:DataType="vm:EinlassMainViewModel">
+    x:DataType="EinlassMainViewModel">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -30,17 +28,9 @@
             x:Name="Switcher"
             Animate="True"
             Grid.Row="1"
-            SelectedIndex="{Binding EinlassTabIndex, Mode=TwoWay}">
-            <local:EinlassKanalView />
-            <local:EinlassVergaserView />
-            <!--<tabs:DelayedView x:TypeArguments="local:EinlassKanalView"
-                                  BindingContext="{Binding KanalViewModel}"
-                                  Animate="True"
-                                  UseActivityIndicator="True" />
-                <tabs:DelayedView x:TypeArguments="local:EinlassVergaserView"
-                                  BindingContext="{Binding VergaserViewModel}"
-                                  Animate="True"
-                                  UseActivityIndicator="True" />-->
+            SelectedIndex="{Binding EinlassTabIndex}">
+            <EinlassKanalView />
+            <EinlassVergaserView />
         </tabs:ViewSwitcher>
     </Grid>
 </ContentPage>

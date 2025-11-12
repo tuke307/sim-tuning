@@ -21,14 +21,14 @@ namespace SimTuning.Maui.UI.ViewModels
             INavigationService navigationService,
             IVehicleService vehicleService)
         {
-            this._logger = logger;
-            this._vehicleService = vehicleService;
+            _logger = logger;
+            _vehicleService = vehicleService;
 
-            this.VolumeQuantityUnits = new VolumeQuantity();
-            this.LengthQuantityUnits = new LengthQuantity();
+            VolumeQuantityUnits = new VolumeQuantity();
+            LengthQuantityUnits = new LengthQuantity();
 
-            this.Vehicle = new VehiclesModel();
-            this.Vehicle.Motor = new MotorModel();
+            Vehicle = new VehiclesModel();
+            Vehicle.Motor = new MotorModel();
         }
 
         #region Methods
@@ -43,20 +43,20 @@ namespace SimTuning.Maui.UI.ViewModels
         {
             if (helperVehicle.Motor.HubraumV.HasValue)
             {
-                this.VehicleMotorHubraumV = helperVehicle.Motor.HubraumV;
-                this.OnPropertyChanged(nameof(this.VehicleMotorHubraumV));
+                VehicleMotorHubraumV = helperVehicle.Motor.HubraumV;
+                OnPropertyChanged(nameof(VehicleMotorHubraumV));
             }
 
             if (helperVehicle.Motor.BrennraumV.HasValue)
             {
-                this.VehicleMotorBrennraumV = helperVehicle.Motor.BrennraumV;
-                this.OnPropertyChanged(nameof(this.VehicleMotorBrennraumV));
+                VehicleMotorBrennraumV = helperVehicle.Motor.BrennraumV;
+                OnPropertyChanged(nameof(VehicleMotorBrennraumV));
             }
 
             if (helperVehicle.Motor.BohrungD.HasValue)
             {
-                this.VehicleMotorBohrungD = helperVehicle.Motor.BohrungD;
-                this.OnPropertyChanged(nameof(this.VehicleMotorBohrungD));
+                VehicleMotorBohrungD = helperVehicle.Motor.BohrungD;
+                OnPropertyChanged(nameof(VehicleMotorBohrungD));
             }
         }
 
@@ -65,22 +65,22 @@ namespace SimTuning.Maui.UI.ViewModels
         /// </summary>
         private void Refresh_zielverdichtung()
         {
-            if (this.VehicleMotorHubraumV.HasValue && this.VehicleMotorBrennraumV.HasValue && this.VehicleMotorBohrungD.HasValue && this.Zielverdichtung != 0)
+            if (VehicleMotorHubraumV.HasValue && VehicleMotorBrennraumV.HasValue && VehicleMotorBohrungD.HasValue && Zielverdichtung != 0)
             {
-                this.AbdrehenLength = EngineLogic.GetToDecreasingLength(
+                AbdrehenLength = EngineLogic.GetToDecreasingLength(
                     UnitsNet.UnitConverter.Convert(
-                        this.VehicleMotorHubraumV.Value,
-                        this.VehicleMotorHubraumVUnit.UnitEnumValue,
+                        VehicleMotorHubraumV.Value,
+                        VehicleMotorHubraumVUnit.UnitEnumValue,
                         MotorModel.HubraumVBaseUnit),
                     UnitsNet.UnitConverter.Convert(
-                        this.VehicleMotorBrennraumV.Value,
-                        this.VehicleMotorBrennraumVUnit.UnitEnumValue,
+                        VehicleMotorBrennraumV.Value,
+                        VehicleMotorBrennraumVUnit.UnitEnumValue,
                         MotorModel.BrennraumVBaseUnit),
                     UnitsNet.UnitConverter.Convert(
-                        this.VehicleMotorBohrungD.Value,
-                        this.VehicleMotorBohrungDUnit.UnitEnumValue,
+                        VehicleMotorBohrungD.Value,
+                        VehicleMotorBohrungDUnit.UnitEnumValue,
                         MotorModel.BohrungDBaseUnit),
-                    this.Zielverdichtung.Value);
+                    Zielverdichtung.Value);
             }
         }
 
@@ -89,20 +89,20 @@ namespace SimTuning.Maui.UI.ViewModels
         /// </summary>
         private void RefreshVerdichtung()
         {
-            if (this.VehicleMotorHubraumV.HasValue && this.VehicleMotorBrennraumV.HasValue && this.VehicleMotorBohrungD.HasValue)
+            if (VehicleMotorHubraumV.HasValue && VehicleMotorBrennraumV.HasValue && VehicleMotorBohrungD.HasValue)
             {
-                this.DerzeitigeVerdichtung = EngineLogic.GetCompression(
+                DerzeitigeVerdichtung = EngineLogic.GetCompression(
                     UnitsNet.UnitConverter.Convert(
-                        this.VehicleMotorHubraumV.Value,
-                        this.VehicleMotorHubraumVUnit.UnitEnumValue,
+                        VehicleMotorHubraumV.Value,
+                        VehicleMotorHubraumVUnit.UnitEnumValue,
                         MotorModel.HubraumVBaseUnit),
                     UnitsNet.UnitConverter.Convert(
-                        this.VehicleMotorBrennraumV.Value,
-                        this.VehicleMotorBrennraumVUnit.UnitEnumValue,
+                        VehicleMotorBrennraumV.Value,
+                        VehicleMotorBrennraumVUnit.UnitEnumValue,
                         MotorModel.BrennraumVBaseUnit),
                     UnitsNet.UnitConverter.Convert(
-                        this.VehicleMotorBohrungD.Value,
-                        this.VehicleMotorBohrungDUnit.UnitEnumValue,
+                        VehicleMotorBohrungD.Value,
+                        VehicleMotorBohrungDUnit.UnitEnumValue,
                         MotorModel.BohrungDBaseUnit));
             }
         }
@@ -131,8 +131,8 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The length of the abdrehen.</value>
         public double? AbdrehenLength
         {
-            get => this._abdrehenLength;
-            set => this.SetProperty(ref this._abdrehenLength, value);
+            get => _abdrehenLength;
+            set => SetProperty(ref _abdrehenLength, value);
         }
 
         /// <summary>
@@ -141,12 +141,12 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The abdrehen length unit.</value>
         public UnitListItem AbdrehenLengthUnit
         {
-            get => this._abdrehenLengthUnit ?? this.LengthQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(AbdrehenLengthBaseUnit));
+            get => _abdrehenLengthUnit ?? LengthQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(AbdrehenLengthBaseUnit));
             set
             {
-                this.AbdrehenLength = Core.Helpers.Functions.UpdateValue(this.AbdrehenLength, this._abdrehenLengthUnit, value);
+                AbdrehenLength = Core.Helpers.Functions.UpdateValue(AbdrehenLength, _abdrehenLengthUnit, value);
 
-                this.SetProperty(ref this._abdrehenLengthUnit, value);
+                SetProperty(ref _abdrehenLengthUnit, value);
             }
         }
 
@@ -156,8 +156,8 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The derzeitige verdichtung.</value>
         public double? DerzeitigeVerdichtung
         {
-            get => this._derzeitigeVerdichtung;
-            set => this.SetProperty(ref this._derzeitigeVerdichtung, value);
+            get => _derzeitigeVerdichtung;
+            set => SetProperty(ref _derzeitigeVerdichtung, value);
         }
 
         /// <summary>
@@ -172,8 +172,8 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle.</value>
         public VehiclesModel Vehicle
         {
-            get => this._vehicle;
-            set => this.SetProperty(ref this._vehicle, value);
+            get => _vehicle;
+            set => SetProperty(ref _vehicle, value);
         }
 
         /// <summary>
@@ -182,16 +182,16 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle motor bohrung d.</value>
         public double? VehicleMotorBohrungD
         {
-            get => this.Vehicle?.Motor?.BohrungD;
+            get => Vehicle?.Motor?.BohrungD;
             set
             {
-                if (this.Vehicle?.Motor == null)
+                if (Vehicle?.Motor == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.BohrungD = value;
-                this.RefreshVerdichtung();
+                Vehicle.Motor.BohrungD = value;
+                RefreshVerdichtung();
             }
         }
 
@@ -201,16 +201,16 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle motor bohrung d unit.</value>
         public UnitListItem VehicleMotorBohrungDUnit
         {
-            get => this.LengthQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(this.Vehicle?.Motor?.BohrungDUnit));
+            get => LengthQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.BohrungDUnit));
             set
             {
-                if (this.Vehicle?.Motor == null)
+                if (Vehicle?.Motor == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.BohrungDUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
-                this.OnPropertyChanged(nameof(this.VehicleMotorBohrungD));
+                Vehicle.Motor.BohrungDUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
+                OnPropertyChanged(nameof(VehicleMotorBohrungD));
             }
         }
 
@@ -220,16 +220,16 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle motor brennraum v.</value>
         public double? VehicleMotorBrennraumV
         {
-            get => this.Vehicle?.Motor?.BrennraumV;
+            get => Vehicle?.Motor?.BrennraumV;
             set
             {
-                if (this.Vehicle?.Motor == null)
+                if (Vehicle?.Motor == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.BrennraumV = value;
-                this.RefreshVerdichtung();
+                Vehicle.Motor.BrennraumV = value;
+                RefreshVerdichtung();
             }
         }
 
@@ -239,16 +239,16 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle motor ueberstroemer hoehe h unit.</value>
         public UnitListItem VehicleMotorBrennraumVUnit
         {
-            get => this.VolumeQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(this.Vehicle?.Motor?.BrennraumVUnit));
+            get => VolumeQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.BrennraumVUnit));
             set
             {
-                if (this.Vehicle?.Motor == null)
+                if (Vehicle?.Motor == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.BrennraumVUnit = (UnitsNet.Units.VolumeUnit)value?.UnitEnumValue;
-                this.OnPropertyChanged(nameof(this.VehicleMotorBrennraumV));
+                Vehicle.Motor.BrennraumVUnit = (UnitsNet.Units.VolumeUnit)value?.UnitEnumValue;
+                OnPropertyChanged(nameof(VehicleMotorBrennraumV));
             }
         }
 
@@ -258,16 +258,16 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle motor hubraum v.</value>
         public double? VehicleMotorHubraumV
         {
-            get => this.Vehicle?.Motor?.HubraumV;
+            get => Vehicle?.Motor?.HubraumV;
             set
             {
-                if (this.Vehicle?.Motor == null)
+                if (Vehicle?.Motor == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.HubraumV = value;
-                this.RefreshVerdichtung();
+                Vehicle.Motor.HubraumV = value;
+                RefreshVerdichtung();
             }
         }
 
@@ -277,16 +277,16 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle motor hubraum v unit.</value>
         public UnitListItem VehicleMotorHubraumVUnit
         {
-            get => this.VolumeQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(this.Vehicle?.Motor?.HubraumVUnit));
+            get => VolumeQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.HubraumVUnit));
             set
             {
-                if (this.Vehicle?.Motor == null)
+                if (Vehicle?.Motor == null)
                 {
                     return;
                 }
 
-                this.Vehicle.Motor.HubraumVUnit = (UnitsNet.Units.VolumeUnit)value?.UnitEnumValue;
-                this.OnPropertyChanged(nameof(this.VehicleMotorHubraumV));
+                Vehicle.Motor.HubraumVUnit = (UnitsNet.Units.VolumeUnit)value?.UnitEnumValue;
+                OnPropertyChanged(nameof(VehicleMotorHubraumV));
             }
         }
 
@@ -302,11 +302,11 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The zielverdichtung.</value>
         public double? Zielverdichtung
         {
-            get => this._zielverdichtung;
+            get => _zielverdichtung;
             set
             {
-                this.SetProperty(ref this._zielverdichtung, value);
-                this.Refresh_zielverdichtung();
+                SetProperty(ref _zielverdichtung, value);
+                Refresh_zielverdichtung();
             }
         }
 

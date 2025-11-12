@@ -88,13 +88,8 @@ namespace SimTuning.Core.Helpers
         /// <param name="cutFromEnd">The cut from end.</param>
         public static void TrimWavFile(TimeSpan cutFromStart, TimeSpan cutFromEnd, ref Stream outStream, string inPath = null, string outPath = null, Stream inStream = null)
         {
-            WaveFileReader reader;
-            if (inPath != null) { reader = new WaveFileReader(inPath); }
-            else { reader = new WaveFileReader(inStream); }
-
-            WaveFileWriter writer;
-            if (outPath != null) { writer = new WaveFileWriter(outPath, reader.WaveFormat); }
-            else { writer = new WaveFileWriter(outStream, reader.WaveFormat); }
+            WaveFileReader reader = inPath != null ? new WaveFileReader(inPath) : new WaveFileReader(inStream);
+            WaveFileWriter writer = outPath != null ? new WaveFileWriter(outPath, reader.WaveFormat) : new WaveFileWriter(outStream, reader.WaveFormat);
 
             int bytesPerMillisecond = reader.WaveFormat.AverageBytesPerSecond / 1000;
 

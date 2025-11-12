@@ -241,7 +241,6 @@ namespace SimTuning.Test
             vm.OpenDonateCommand.Execute(null);
             vm.OpenEmailCommand.Execute(null);
             vm.OpenInstagramCommand.Execute(null);
-            vm.OpenTutorialCommand.Execute(null);
             vm.OpenTwitterCommand.Execute(null);
             vm.OpenWebsiteCommand.Execute(null);
         }

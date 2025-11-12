@@ -1,26 +1,24 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <mct:Popup
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns="http://schemas.microsoft.com/dotnet/maui/global"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:mct="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
-    xmlns:models="clr-namespace:SimTuning.Data.Models;assembly=SimTuning.Data"
-    xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
     x:Class="SimTuning.Maui.UI.Views.Popups.PortTimingPopup"
-    x:DataType="vm:PortTimingViewModel"
+    x:DataType="PortTimingViewModel"
     Color="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}"
     Size="500, 700">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Picker
             Grid.Row="0"
             ItemsSource="{Binding Engines}"
-            SelectedItem="{Binding Mode=TwoWay, Path=Engine}"
+            SelectedItem="{Binding Engine}"
             ItemDisplayBinding="{Binding Name}"
             HorizontalOptions="CenterAndExpand"
             Margin="5">
@@ -49,7 +47,7 @@
                                     <ColumnDefinition Width="100" />
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
 
                                 <!--#region VehicleMotorEinlassSteuerzeitSZ-->
@@ -57,7 +55,7 @@
 
                                 <Entry
                                     Placeholder="Steuerzeit"
-                                    Text="{Binding Mode=TwoWay, Path=VehicleMotorEinlassSteuerzeitSZ}"
+                                    Text="{Binding VehicleMotorEinlassSteuerzeitSZ}"
                                     Grid.ColumnSpan="2"
                                     Grid.Row="4"
                                     Keyboard="Numeric">
@@ -87,7 +85,7 @@
                                     <ColumnDefinition Width="100" />
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
 
                                 <!--#region VehicleMotorAuslassSteuerzeitSZ-->
@@ -95,7 +93,7 @@
 
                                 <Entry
                                     Placeholder="Steuerzeit"
-                                    Text="{Binding Mode=TwoWay, Path=VehicleMotorAuslassSteuerzeitSZ}"
+                                    Text="{Binding VehicleMotorAuslassSteuerzeitSZ}"
                                     Grid.ColumnSpan="2"
                                     Grid.Row="4"
                                     Keyboard="Numeric">
@@ -125,7 +123,7 @@
                                 <ColumnDefinition Width="100" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
 
                             <!--#region VehicleMotorUeberstroemerSteuerzeitSZ-->
@@ -133,7 +131,7 @@
 
                             <Entry
                                 Placeholder="Steuerzeit"
-                                Text="{Binding Mode=TwoWay, Path=VehicleMotorUeberstroemerSteuerzeitSZ}"
+                                Text="{Binding VehicleMotorUeberstroemerSteuerzeitSZ}"
                                 Grid.ColumnSpan="2"
                                 Grid.Row="4"
                                 Keyboard="Numeric">

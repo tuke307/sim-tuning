@@ -1,16 +1,15 @@
 ﻿<ContentView
     x:Class="SimTuning.Maui.UI.Views.Motor.MotorHubraumView"
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns="http://schemas.microsoft.com/dotnet/maui/global"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:vm="clr-namespace:SimTuning.Maui.UI.ViewModels"
-    x:DataType="vm:MotorHubraumViewModel">
+    x:DataType="MotorHubraumViewModel">
     <ScrollView>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <!--  GRUNDLEGENDES  -->
@@ -19,7 +18,7 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
                         <Label
@@ -39,7 +38,7 @@
                         <Entry
                             Keyboard="Numeric"
                             Placeholder="Hub"
-                            Text="{Binding Mode=TwoWay, Path=Hub}"
+                            Text="{Binding Hub}"
                             WidthRequest="250" />
 
                         <Picker
@@ -55,7 +54,7 @@
                         <Entry
                             Keyboard="Numeric"
                             Placeholder="Hubraum Volumen"
-                            Text="{Binding Mode=TwoWay, Path=HubraumV}"
+                            Text="{Binding HubraumV}"
                             WidthRequest="250" />
 
                         <Picker
