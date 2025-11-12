@@ -30,8 +30,8 @@
             Grid.Row="1"
             Animate="True"
             SelectedIndex="{Binding AuslassTabIndex}">
-            AuslassAnwendungView />
-            AuslassTheorieView />
+            <AuslassAnwendungView />
+            <AuslassTheorieView />
         </tabs:ViewSwitcher>
     </Grid>
 </ContentPage>
