@@ -34,9 +34,9 @@
             Grid.Row="1"
             SelectedIndex="{Binding DynoTabIndex}"
             Animate="True">
-            DynoDataView />
-            DynoAudioView />
-            DynoDiagnosisView />
+            <DynoDataView />
+            <DynoAudioView />
+            <DynoDiagnosisView />
         </tabs:ViewSwitcher>
     </Grid>
 </ContentPage>

@@ -35,10 +35,10 @@
             x:Name="Switcher"
             Animate="True"
             SelectedIndex="{Binding MotorTabIndex}">
-            MotorUmrechnungView />
-            MotorSteuerdiagrammView />
-            MotorVerdichtungView />
-            MotorHubraumView />
+            <MotorUmrechnungView />
+            <MotorSteuerdiagrammView />
+            <MotorVerdichtungView />
+            <MotorHubraumView />
         </tabs:ViewSwitcher>
     </Grid>
 </ContentPage>
