@@ -51,18 +51,11 @@ namespace SimTuning.Data
             {
                 if (string.IsNullOrEmpty(_fileDirectory))
                 {
-                    if (DeviceInfo.Idiom == DeviceIdiom.Phone)
-                    {
-                        // android: "/data/user/0/com.tuke_productions.SimTuning/files/"
-                        _fileDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-                    }
-                    else
-                    {
-                        // AppData\Roaming\SimTuning
-                        _fileDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SimTuning");
-                    }
+                    // Use FileSystem.AppDataDirectory for proper cross-platform support
+                    // This works correctly on Android, iOS, macOS (Mac Catalyst), and Windows
+                    _fileDirectory = FileSystem.AppDataDirectory;
 
-                    // ist evtl. anfangs nicht da
+                    // Ensure directory exists
                     if (!Directory.Exists(_fileDirectory))
                     {
                         Directory.CreateDirectory(_fileDirectory);

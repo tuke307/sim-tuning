@@ -107,6 +107,13 @@ namespace SimTuning.Data
         /// </summary>
         public DatabaseContext()
         {
+            // Ensure the directory exists before attempting to create the database file
+            var dbDirectory = Path.GetDirectoryName(Data.DatabaseSettings.DatabasePath);
+            if (!string.IsNullOrEmpty(dbDirectory) && !Directory.Exists(dbDirectory))
+            {
+                Directory.CreateDirectory(dbDirectory);
+            }
+
             // since android 10, database has to be created at the first time
             if (!File.Exists(Data.DatabaseSettings.DatabasePath))
             {
