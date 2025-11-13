@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ResourceDictionary
-    x:Class="SimTuning.Maui.UI.Themes.Base.Dark"
-    xmlns="http://schemas.microsoft.com/dotnet/maui/global"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+	x:Class="SimTuning.Maui.UI.Themes.Base.Dark"
+	xmlns="http://schemas.microsoft.com/dotnet/maui/global"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
     <Color x:Key="ValidationErrorColor">#f44336</Color>
     
     <Color x:Key="BackgroundDark">#FF303030</Color>

@@ -1,16 +1,16 @@
 ﻿<ContentView
-    x:Class="SimTuning.Maui.UI.Views.Einlass.EinlassKanalView"
-    xmlns="http://schemas.microsoft.com/dotnet/maui/global"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:DataType="EinlassKanalViewModel"
-    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
+	x:Class="SimTuning.Maui.UI.Views.Einlass.EinlassKanalView"
+	xmlns="http://schemas.microsoft.com/dotnet/maui/global"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	x:DataType="EinlassKanalViewModel"
+	xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
     <ContentView.Resources>
         <Style
-            x:Key="InvalidEntryStyle"
-            TargetType="Entry">
+			x:Key="InvalidEntryStyle"
+			TargetType="Entry">
             <Setter
-                Property="BackgroundColor"
-                Value="#bf9494" />
+				Property="BackgroundColor"
+				Value="#bf9494" />
         </Style>
     </ContentView.Resources>
 
@@ -30,14 +30,14 @@
                         </Grid.ColumnDefinitions>
 
                         <Label
-                            Grid.Column="0"
-                            Style="{StaticResource LabelTitleStyle}"
-                            Text="Einlass-Resonanzlänge" />
+							Grid.Column="0"
+							Style="{StaticResource LabelTitleStyle}"
+							Text="Einlass-Resonanzlänge" />
 
                         <ImageButton
-                            Grid.Column="1"
-                            Clicked="HelperVehiclesButton_Clicked"
-                            Source="{StaticResource IconAtvMedium}" />
+							Grid.Column="1"
+							Clicked="HelperVehiclesButton_Clicked"
+							Source="{StaticResource IconAtvMedium}" />
                     </Grid>
 
                     <BoxView Style="{StaticResource DividerBoxViewStyle}" />
@@ -55,45 +55,45 @@
                         <!--Einlass-Fläche-->
                         <HorizontalStackLayout Grid.Row="0">
                             <Label
-                                Text="Einlass-Fläche"
-                                WidthRequest="60"
-                                VerticalOptions="Center" />
+								Text="Einlass-Fläche"
+								WidthRequest="60"
+								VerticalOptions="Center" />
 
                             <Entry
-                                VerticalOptions="Center"
-                                Keyboard="Numeric"
-                                Text="{Binding VehicleMotorEinlassFlaecheA}"
-                                WidthRequest="200">
+								VerticalOptions="Center"
+								Keyboard="Numeric"
+								Text="{Binding VehicleMotorEinlassFlaecheA}"
+								WidthRequest="200">
                                 <Entry.Behaviors>
                                     <toolkit:TextValidationBehavior
-                                        MinimumLength="1"
-                                        InvalidStyle="{StaticResource InvalidEntryStyle}" />
+										MinimumLength="1"
+										InvalidStyle="{StaticResource InvalidEntryStyle}" />
                                 </Entry.Behaviors>
                             </Entry>
 
                             <Picker
-                                VerticalOptions="Center"
-                                ItemsSource="{Binding Path=AreaQuantityUnits, Mode=OneTime}"
-                                ItemDisplayBinding="{Binding Abbreviation}"
-                                SelectedItem="{Binding VehicleMotorEinlassFlaecheAUnit}" />
+								VerticalOptions="Center"
+								ItemsSource="{Binding Path=AreaQuantityUnits, Mode=OneTime}"
+								ItemDisplayBinding="{Binding Abbreviation}"
+								SelectedItem="{Binding VehicleMotorEinlassFlaecheAUnit}" />
                         </HorizontalStackLayout>
 
                         <!--Einlass-Steuerwinkel-->
                         <HorizontalStackLayout Grid.Row="1">
                             <Label
-                                Text="Einlass- Steuerwinkel"
-                                WidthRequest="60"
-                                VerticalOptions="Center" />
+								Text="Einlass- Steuerwinkel"
+								WidthRequest="60"
+								VerticalOptions="Center" />
 
                             <Entry
-                                VerticalOptions="Center"
-                                Keyboard="Numeric"
-                                Text="{Binding Einlasssteuerwinkel}"
-                                WidthRequest="200">
+								VerticalOptions="Center"
+								Keyboard="Numeric"
+								Text="{Binding Einlasssteuerwinkel}"
+								WidthRequest="200">
                                 <Entry.Behaviors>
                                     <toolkit:TextValidationBehavior
-                                        MinimumLength="1"
-                                        InvalidStyle="{StaticResource InvalidEntryStyle}" />
+										MinimumLength="1"
+										InvalidStyle="{StaticResource InvalidEntryStyle}" />
                                 </Entry.Behaviors>
                             </Entry>
 
@@ -105,25 +105,25 @@
                         <!--Resonanzdrehzahl-->
                         <HorizontalStackLayout Grid.Row="2">
                             <Label
-                                Text="Resonanzdrehzahl"
-                                WidthRequest="60"
-                                VerticalOptions="Center" />
+								Text="Resonanzdrehzahl"
+								WidthRequest="60"
+								VerticalOptions="Center" />
 
                             <Entry
-                                VerticalOptions="Center"
-                                Keyboard="Numeric"
-                                Text="{Binding VehicleMotorResonanzU}"
-                                WidthRequest="200">
+								VerticalOptions="Center"
+								Keyboard="Numeric"
+								Text="{Binding VehicleMotorResonanzU}"
+								WidthRequest="200">
                                 <Entry.Behaviors>
                                     <toolkit:TextValidationBehavior
-                                        MinimumLength="1"
-                                        InvalidStyle="{StaticResource InvalidEntryStyle}" />
+										MinimumLength="1"
+										InvalidStyle="{StaticResource InvalidEntryStyle}" />
                                 </Entry.Behaviors>
                             </Entry>
 
                             <Label
-                                Margin="5,0,0,0"
-                                VerticalOptions="Center">
+								Margin="5,0,0,0"
+								VerticalOptions="Center">
                                 1/min
                             </Label>
                         </HorizontalStackLayout>
@@ -131,77 +131,77 @@
                         <!--Kurbelgehäusevolumen-->
                         <HorizontalStackLayout Grid.Row="3">
                             <Label
-                                Text="Kurbelgehäusevolumen"
-                                WidthRequest="60"
-                                VerticalOptions="Center" />
+								Text="Kurbelgehäusevolumen"
+								WidthRequest="60"
+								VerticalOptions="Center" />
 
                             <Entry
-                                VerticalOptions="Center"
-                                Keyboard="Numeric"
-                                Text="{Binding VehicleMotorKurbelgehaeuseV}"
-                                WidthRequest="200">
+								VerticalOptions="Center"
+								Keyboard="Numeric"
+								Text="{Binding VehicleMotorKurbelgehaeuseV}"
+								WidthRequest="200">
                                 <Entry.Behaviors>
                                     <toolkit:TextValidationBehavior
-                                        MinimumLength="1"
-                                        InvalidStyle="{StaticResource InvalidEntryStyle}" />
+										MinimumLength="1"
+										InvalidStyle="{StaticResource InvalidEntryStyle}" />
                                 </Entry.Behaviors>
                             </Entry>
 
                             <Picker
-                                VerticalOptions="Center"
-                                ItemsSource="{Binding Path=VolumeQuantityUnits, Mode=OneTime}"
-                                ItemDisplayBinding="{Binding Abbreviation}"
-                                SelectedItem="{Binding VehicleMotorKurbelgehaeuseVUnit}" />
+								VerticalOptions="Center"
+								ItemsSource="{Binding Path=VolumeQuantityUnits, Mode=OneTime}"
+								ItemDisplayBinding="{Binding Abbreviation}"
+								SelectedItem="{Binding VehicleMotorKurbelgehaeuseVUnit}" />
                         </HorizontalStackLayout>
 
                         <!--Ansaugleitung-->
                         <HorizontalStackLayout Grid.Row="4">
                             <Label
-                                Text="Ø Ansaugleitung"
-                                WidthRequest="60"
-                                VerticalOptions="Center" />
+								Text="Ø Ansaugleitung"
+								WidthRequest="60"
+								VerticalOptions="Center" />
 
                             <Entry
-                                VerticalOptions="Center"
-                                Keyboard="Numeric"
-                                Text="{Binding VehicleMotorEinlassDurchmesserD}"
-                                WidthRequest="200">
+								VerticalOptions="Center"
+								Keyboard="Numeric"
+								Text="{Binding VehicleMotorEinlassDurchmesserD}"
+								WidthRequest="200">
                                 <Entry.Behaviors>
                                     <toolkit:TextValidationBehavior
-                                        MinimumLength="1"
-                                        InvalidStyle="{StaticResource InvalidEntryStyle}" />
+										MinimumLength="1"
+										InvalidStyle="{StaticResource InvalidEntryStyle}" />
                                 </Entry.Behaviors>
                             </Entry>
 
                             <Picker
-                                VerticalOptions="Center"
-                                ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
-                                ItemDisplayBinding="{Binding Abbreviation}"
-                                SelectedItem="{Binding VehicleMotorEinlassDurchmesserDUnit}" />
+								VerticalOptions="Center"
+								ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+								ItemDisplayBinding="{Binding Abbreviation}"
+								SelectedItem="{Binding VehicleMotorEinlassDurchmesserDUnit}" />
                         </HorizontalStackLayout>
 
                         <!--Einlass-Resonanzlänge-->
                         <HorizontalStackLayout
-                            Grid.Row="5"
-                            Margin="0,30,0,0">
+							Grid.Row="5"
+							Margin="0,30,0,0">
                             <Label
-                                Text="Einlass- Resonanzlänge"
-                                WidthRequest="60"
-                                VerticalOptions="Center" />
+								Text="Einlass- Resonanzlänge"
+								WidthRequest="60"
+								VerticalOptions="Center" />
 
                             <Entry
-                                VerticalOptions="Center"
-                                Keyboard="Numeric"
-                                IsEnabled="False"
-                                IsReadOnly="True"
-                                Text="{Binding Resonanzlaenge}"
-                                WidthRequest="200" />
+								VerticalOptions="Center"
+								Keyboard="Numeric"
+								IsEnabled="False"
+								IsReadOnly="True"
+								Text="{Binding Resonanzlaenge}"
+								WidthRequest="200" />
 
                             <Picker
-                                VerticalOptions="Center"
-                                ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
-                                ItemDisplayBinding="{Binding Abbreviation}"
-                                SelectedItem="{Binding ResonanzlaengeUnit}" />
+								VerticalOptions="Center"
+								ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+								ItemDisplayBinding="{Binding Abbreviation}"
+								SelectedItem="{Binding ResonanzlaengeUnit}" />
                         </HorizontalStackLayout>
                     </Grid>
                 </StackLayout>

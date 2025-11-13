@@ -1,9 +1,9 @@
 ﻿<ContentPage
-    x:Class="SimTuning.Maui.UI.Views.Einlass.EinlassMainView"
-    xmlns="http://schemas.microsoft.com/dotnet/maui/global"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:tabs="http://sharpnado.com"
-    x:DataType="EinlassMainViewModel">
+	x:Class="SimTuning.Maui.UI.Views.Einlass.EinlassMainView"
+	xmlns="http://schemas.microsoft.com/dotnet/maui/global"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:tabs="http://sharpnado.com"
+	x:DataType="EinlassMainViewModel">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -11,24 +11,24 @@
         </Grid.RowDefinitions>
 
         <tabs:TabHostView
-            Grid.Row="0"
-            SelectedIndex="{Binding Source={x:Reference Switcher}, Path=SelectedIndex, Mode=TwoWay}">
+			Grid.Row="0"
+			SelectedIndex="{Binding Source={x:Reference Switcher}, Path=SelectedIndex, Mode=TwoWay}">
             <tabs:TabHostView.Tabs>
                 <tabs:UnderlinedTabItem
-                    Label="Kanal"
-                    Style="{StaticResource UnderlinedTabItemStyle}" />
+					Label="Kanal"
+					Style="{StaticResource UnderlinedTabItemStyle}" />
                 <tabs:UnderlinedTabItem
-                    Label="Vergaser"
-                    Style="{StaticResource UnderlinedTabItemStyle}" />
+					Label="Vergaser"
+					Style="{StaticResource UnderlinedTabItemStyle}" />
             </tabs:TabHostView.Tabs>
         </tabs:TabHostView>
 
         <!--  swipable views  -->
         <tabs:ViewSwitcher
-            x:Name="Switcher"
-            Animate="True"
-            Grid.Row="1"
-            SelectedIndex="{Binding EinlassTabIndex}">
+			x:Name="Switcher"
+			Animate="True"
+			Grid.Row="1"
+			SelectedIndex="{Binding EinlassTabIndex}">
             <EinlassKanalView />
             <EinlassVergaserView />
         </tabs:ViewSwitcher>

@@ -1,16 +1,16 @@
 ﻿<ContentView
-    x:Class="SimTuning.Maui.UI.Views.Einlass.EinlassVergaserView"
-    xmlns="http://schemas.microsoft.com/dotnet/maui/global"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:DataType="EinlassVergaserViewModel"
-    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
+	x:Class="SimTuning.Maui.UI.Views.Einlass.EinlassVergaserView"
+	xmlns="http://schemas.microsoft.com/dotnet/maui/global"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	x:DataType="EinlassVergaserViewModel"
+	xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
     <ContentView.Resources>
         <Style
-            x:Key="InvalidEntryStyle"
-            TargetType="Entry">
+			x:Key="InvalidEntryStyle"
+			TargetType="Entry">
             <Setter
-                Property="BackgroundColor"
-                Value="#FFC182" />
+				Property="BackgroundColor"
+				Value="#FFC182" />
         </Style>
     </ContentView.Resources>
 
@@ -31,14 +31,14 @@
                         </Grid.ColumnDefinitions>
 
                         <Label
-                            Grid.Column="0"
-                            Style="{StaticResource LabelTitleStyle}"
-                            Text="Vergasergröße" />
+							Grid.Column="0"
+							Style="{StaticResource LabelTitleStyle}"
+							Text="Vergasergröße" />
 
                         <ImageButton
-                            Grid.Column="1"
-                            Clicked="HelperVehiclesButton_Clicked"
-                            Source="{StaticResource IconAtvMedium}" />
+							Grid.Column="1"
+							Clicked="HelperVehiclesButton_Clicked"
+							Source="{StaticResource IconAtvMedium}" />
                     </Grid>
 
                     <BoxView Style="{StaticResource DividerBoxViewStyle}" />
@@ -55,45 +55,45 @@
                         <!--Hubraum Volumen-->
                         <HorizontalStackLayout Grid.Row="0">
                             <Label
-                                Text="Hubraum- Volumen"
-                                WidthRequest="60"
-                                VerticalOptions="Center" />
+								Text="Hubraum- Volumen"
+								WidthRequest="60"
+								VerticalOptions="Center" />
 
                             <Entry
-                                Keyboard="Numeric"
-                                Text="{Binding Hubvolumen}"
-                                WidthRequest="200"
-                                VerticalOptions="Center">
+								Keyboard="Numeric"
+								Text="{Binding Hubvolumen}"
+								WidthRequest="200"
+								VerticalOptions="Center">
                                 <Entry.Behaviors>
                                     <toolkit:TextValidationBehavior
-                                        MinimumLength="1"
-                                        InvalidStyle="{StaticResource InvalidEntryStyle}" />
+										MinimumLength="1"
+										InvalidStyle="{StaticResource InvalidEntryStyle}" />
                                 </Entry.Behaviors>
                             </Entry>
 
                             <Picker
-                                VerticalOptions="Center"
-                                ItemsSource="{Binding Path=VolumeQuantityUnits, Mode=OneTime}"
-                                ItemDisplayBinding="{Binding Abbreviation}"
-                                SelectedItem="{Binding UnitHubvolumen}" />
+								VerticalOptions="Center"
+								ItemsSource="{Binding Path=VolumeQuantityUnits, Mode=OneTime}"
+								ItemDisplayBinding="{Binding Abbreviation}"
+								SelectedItem="{Binding UnitHubvolumen}" />
                         </HorizontalStackLayout>
 
                         <!--Resonanzdrehzahl-->
                         <HorizontalStackLayout Grid.Row="1">
                             <Label
-                                Text="Resonanzdrehzahl"
-                                WidthRequest="60"
-                                VerticalOptions="Center" />
+								Text="Resonanzdrehzahl"
+								WidthRequest="60"
+								VerticalOptions="Center" />
 
                             <Entry
-                                Keyboard="Numeric"
-                                Text="{Binding Resonanzdrehzahl}"
-                                WidthRequest="200"
-                                VerticalOptions="Center">
+								Keyboard="Numeric"
+								Text="{Binding Resonanzdrehzahl}"
+								WidthRequest="200"
+								VerticalOptions="Center">
                                 <Entry.Behaviors>
                                     <toolkit:TextValidationBehavior
-                                        MinimumLength="1"
-                                        InvalidStyle="{StaticResource InvalidEntryStyle}" />
+										MinimumLength="1"
+										InvalidStyle="{StaticResource InvalidEntryStyle}" />
                                 </Entry.Behaviors>
                             </Entry>
 
@@ -104,32 +104,32 @@
 
                         <!--Vergasergroeße-->
                         <HorizontalStackLayout
-                            Grid.Row="2"
-                            Margin="0,30,0,0">
+							Grid.Row="2"
+							Margin="0,30,0,0">
                             <Label
-                                Text="Ø Vergaser"
-                                WidthRequest="60"
-                                VerticalOptions="Center" />
+								Text="Ø Vergaser"
+								WidthRequest="60"
+								VerticalOptions="Center" />
 
                             <Entry
-                                Keyboard="Numeric"
-                                Text="{Binding Vergasergroeße}"
-                                WidthRequest="200"
-                                IsEnabled="False"
-                                IsReadOnly="True"
-                                VerticalOptions="Center">
+								Keyboard="Numeric"
+								Text="{Binding Vergasergroeße}"
+								WidthRequest="200"
+								IsEnabled="False"
+								IsReadOnly="True"
+								VerticalOptions="Center">
                                 <Entry.Behaviors>
                                     <toolkit:TextValidationBehavior
-                                        MinimumLength="1"
-                                        InvalidStyle="{StaticResource InvalidEntryStyle}" />
+										MinimumLength="1"
+										InvalidStyle="{StaticResource InvalidEntryStyle}" />
                                 </Entry.Behaviors>
                             </Entry>
 
                             <Picker
-                                VerticalOptions="Center"
-                                ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
-                                ItemDisplayBinding="{Binding Abbreviation}"
-                                SelectedItem="{Binding UnitVergasergroeße}" />
+								VerticalOptions="Center"
+								ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+								ItemDisplayBinding="{Binding Abbreviation}"
+								SelectedItem="{Binding UnitVergasergroeße}" />
                         </HorizontalStackLayout>
                     </Grid>
                 </StackLayout>
@@ -145,14 +145,14 @@
                         </Grid.ColumnDefinitions>
 
                         <Label
-                            Grid.Column="0"
-                            Style="{StaticResource LabelTitleStyle}"
-                            Text="Hauptdüsendurchmesser" />
+							Grid.Column="0"
+							Style="{StaticResource LabelTitleStyle}"
+							Text="Hauptdüsendurchmesser" />
 
                         <ImageButton
-                            Grid.Column="1"
-                            Clicked="HelperVehiclesButton_Clicked"
-                            Source="{StaticResource IconAtvMedium}" />
+							Grid.Column="1"
+							Clicked="HelperVehiclesButton_Clicked"
+							Source="{StaticResource IconAtvMedium}" />
                     </Grid>
 
                     <BoxView Style="{StaticResource DividerBoxViewStyle}" />
@@ -172,57 +172,57 @@
                         <!--Vergasergroeße-->
                         <HorizontalStackLayout Grid.Row="0">
                             <Label
-                                Text="Ø Vergaser"
-                                WidthRequest="60"
-                                VerticalOptions="Center" />
+								Text="Ø Vergaser"
+								WidthRequest="60"
+								VerticalOptions="Center" />
 
                             <Entry
-                                Keyboard="Numeric"
-                                Text="{Binding Vergasergroeße}"
-                                WidthRequest="200"
-                                VerticalOptions="Center">
+								Keyboard="Numeric"
+								Text="{Binding Vergasergroeße}"
+								WidthRequest="200"
+								VerticalOptions="Center">
                                 <Entry.Behaviors>
                                     <toolkit:TextValidationBehavior
-                                        MinimumLength="1"
-                                        InvalidStyle="{StaticResource InvalidEntryStyle}" />
+										MinimumLength="1"
+										InvalidStyle="{StaticResource InvalidEntryStyle}" />
                                 </Entry.Behaviors>
                             </Entry>
 
                             <Picker
-                                VerticalOptions="Center"
-                                ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
-                                ItemDisplayBinding="{Binding Abbreviation}"
-                                SelectedItem="{Binding UnitVergasergroeße}" />
+								VerticalOptions="Center"
+								ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+								ItemDisplayBinding="{Binding Abbreviation}"
+								SelectedItem="{Binding UnitVergasergroeße}" />
                         </HorizontalStackLayout>
 
                         <!--HauptdueseD-->
                         <HorizontalStackLayout
-                            Grid.Row="2"
-                            Margin="0,30,0,0">
+							Grid.Row="2"
+							Margin="0,30,0,0">
                             <Label
-                                Text="Ø Hauptdüse"
-                                WidthRequest="60"
-                                VerticalOptions="Center" />
+								Text="Ø Hauptdüse"
+								WidthRequest="60"
+								VerticalOptions="Center" />
 
                             <Entry
-                                Keyboard="Numeric"
-                                Text="{Binding HauptdueseD}"
-                                WidthRequest="200"
-                                IsEnabled="False"
-                                IsReadOnly="True"
-                                VerticalOptions="Center">
+								Keyboard="Numeric"
+								Text="{Binding HauptdueseD}"
+								WidthRequest="200"
+								IsEnabled="False"
+								IsReadOnly="True"
+								VerticalOptions="Center">
                                 <Entry.Behaviors>
                                     <toolkit:TextValidationBehavior
-                                        MinimumLength="1"
-                                        InvalidStyle="{StaticResource InvalidEntryStyle}" />
+										MinimumLength="1"
+										InvalidStyle="{StaticResource InvalidEntryStyle}" />
                                 </Entry.Behaviors>
                             </Entry>
 
                             <Picker
-                                VerticalOptions="Center"
-                                ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
-                                ItemDisplayBinding="{Binding Abbreviation}"
-                                SelectedItem="{Binding UnitHauptdueseD}" />
+								VerticalOptions="Center"
+								ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+								ItemDisplayBinding="{Binding Abbreviation}"
+								SelectedItem="{Binding UnitHauptdueseD}" />
                         </HorizontalStackLayout>
                     </Grid>
                 </StackLayout>

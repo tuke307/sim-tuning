@@ -1,8 +1,8 @@
 ﻿<ContentView
-    x:Class="SimTuning.Maui.UI.Views.Motor.MotorHubraumView"
-    xmlns="http://schemas.microsoft.com/dotnet/maui/global"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:DataType="MotorHubraumViewModel">
+	x:Class="SimTuning.Maui.UI.Views.Motor.MotorHubraumView"
+	xmlns="http://schemas.microsoft.com/dotnet/maui/global"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	x:DataType="MotorHubraumViewModel">
     <ScrollView>
         <Grid>
             <Grid.RowDefinitions>
@@ -22,48 +22,48 @@
                         </Grid.ColumnDefinitions>
 
                         <Label
-                            Grid.Column="0"
-                            Style="{StaticResource LabelTitleStyle}"
-                            Text="Grundlegende Daten" />
+							Grid.Column="0"
+							Style="{StaticResource LabelTitleStyle}"
+							Text="Grundlegende Daten" />
 
                         <ImageButton
-                            Grid.Column="1"
-                            Clicked="HelperVehiclesButton_Clicked"
-                            Source="{StaticResource IconAtvMedium}" />
+							Grid.Column="1"
+							Clicked="HelperVehiclesButton_Clicked"
+							Source="{StaticResource IconAtvMedium}" />
                     </Grid>
 
                     <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
                     <StackLayout Orientation="Horizontal">
                         <Entry
-                            Keyboard="Numeric"
-                            Placeholder="Hub"
-                            Text="{Binding Hub}"
-                            WidthRequest="250" />
+							Keyboard="Numeric"
+							Placeholder="Hub"
+							Text="{Binding Hub}"
+							WidthRequest="250" />
 
                         <Picker
-                            Margin="5,0,0,0"
-                            ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
-                            ItemDisplayBinding="{Binding Abbreviation}"
-                            HorizontalOptions="StartAndExpand"
-                            SelectedItem="{Binding UnitHub}"
-                            VerticalOptions="CenterAndExpand" />
+							Margin="5,0,0,0"
+							ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+							ItemDisplayBinding="{Binding Abbreviation}"
+							HorizontalOptions="StartAndExpand"
+							SelectedItem="{Binding UnitHub}"
+							VerticalOptions="CenterAndExpand" />
                     </StackLayout>
 
                     <StackLayout Orientation="Horizontal">
                         <Entry
-                            Keyboard="Numeric"
-                            Placeholder="Hubraum Volumen"
-                            Text="{Binding HubraumV}"
-                            WidthRequest="250" />
+							Keyboard="Numeric"
+							Placeholder="Hubraum Volumen"
+							Text="{Binding HubraumV}"
+							WidthRequest="250" />
 
                         <Picker
-                            Margin="5,0,0,0"
-                            ItemsSource="{Binding Path=VolumeQuantityUnits, Mode=OneTime}"
-                            ItemDisplayBinding="{Binding Abbreviation}"
-                            HorizontalOptions="StartAndExpand"
-                            SelectedItem="{Binding UnitHubraumV}"
-                            VerticalOptions="CenterAndExpand" />
+							Margin="5,0,0,0"
+							ItemsSource="{Binding Path=VolumeQuantityUnits, Mode=OneTime}"
+							ItemDisplayBinding="{Binding Abbreviation}"
+							HorizontalOptions="StartAndExpand"
+							SelectedItem="{Binding UnitHubraumV}"
+							VerticalOptions="CenterAndExpand" />
                         <!--<Label  Margin="5, 0, 0, 0"
                                VerticalOptions="Center">
                             cm³
@@ -76,26 +76,26 @@
             <Border Grid.Row="1">
                 <StackLayout>
                     <Label
-                        Style="{StaticResource LabelTitleStyle}"
-                        Text="Bohrung" />
+						Style="{StaticResource LabelTitleStyle}"
+						Text="Bohrung" />
 
                     <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
                     <StackLayout Orientation="Horizontal">
                         <Entry
-                            Keyboard="Numeric"
-                            IsEnabled="False"
-                            Placeholder="Durchmesser"
-                            Text="{Binding Mode=OneWay, Path=BohrungD}"
-                            WidthRequest="250" />
+							Keyboard="Numeric"
+							IsEnabled="False"
+							Placeholder="Durchmesser"
+							Text="{Binding Mode=OneWay, Path=BohrungD}"
+							WidthRequest="250" />
 
                         <Picker
-                            Margin="5,0,0,0"
-                            ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
-                            ItemDisplayBinding="{Binding Abbreviation}"
-                            HorizontalOptions="StartAndExpand"
-                            SelectedItem="{Binding UnitBohrungD}"
-                            VerticalOptions="CenterAndExpand" />
+							Margin="5,0,0,0"
+							ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+							ItemDisplayBinding="{Binding Abbreviation}"
+							HorizontalOptions="StartAndExpand"
+							SelectedItem="{Binding UnitBohrungD}"
+							VerticalOptions="CenterAndExpand" />
                         <!--<Label  Margin="5, 0, 0, 0"
                                VerticalOptions="Center">
                             cm
@@ -108,8 +108,8 @@
             <Border Grid.Row="2">
                 <StackLayout>
                     <Label
-                        Style="{StaticResource LabelTitleStyle}"
-                        Text="Kolben" />
+						Style="{StaticResource LabelTitleStyle}"
+						Text="Kolben" />
 
                     <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
@@ -121,29 +121,29 @@
                                 WidthRequest="250" />-->
 
                         <Picker
-                            Margin="5,0,0,0"
-                            ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
-                            ItemDisplayBinding="{Binding Abbreviation}"
-                            HorizontalOptions="StartAndExpand"
-                            SelectedItem="{Binding UnitEinbauspiel}"
-                            VerticalOptions="CenterAndExpand" />
+							Margin="5,0,0,0"
+							ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+							ItemDisplayBinding="{Binding Abbreviation}"
+							HorizontalOptions="StartAndExpand"
+							SelectedItem="{Binding UnitEinbauspiel}"
+							VerticalOptions="CenterAndExpand" />
                     </StackLayout>
 
                     <StackLayout Orientation="Horizontal">
                         <Entry
-                            Keyboard="Numeric"
-                            IsEnabled="False"
-                            Placeholder="Durchmesser"
-                            Text="{Binding Mode=OneWay, Path=KolbenD}"
-                            WidthRequest="250" />
+							Keyboard="Numeric"
+							IsEnabled="False"
+							Placeholder="Durchmesser"
+							Text="{Binding Mode=OneWay, Path=KolbenD}"
+							WidthRequest="250" />
 
                         <Picker
-                            Margin="5,0,0,0"
-                            ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
-                            ItemDisplayBinding="{Binding Abbreviation}"
-                            HorizontalOptions="StartAndExpand"
-                            SelectedItem="{Binding UnitKolbenD}"
-                            VerticalOptions="CenterAndExpand" />
+							Margin="5,0,0,0"
+							ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+							ItemDisplayBinding="{Binding Abbreviation}"
+							HorizontalOptions="StartAndExpand"
+							SelectedItem="{Binding UnitKolbenD}"
+							VerticalOptions="CenterAndExpand" />
                         <!--<Label  Margin="5, 0, 0, 0"
                                VerticalOptions="Center">
                             cm

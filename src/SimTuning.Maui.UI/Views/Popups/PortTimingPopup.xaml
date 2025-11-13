@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <mct:Popup
-    x:TypeArguments="models:MotorModel"
-    xmlns="http://schemas.microsoft.com/dotnet/maui/global"
-    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:mct="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
-    xmlns:models="clr-namespace:SimTuning.Data.Models;assembly=SimTuning.Data"
-    x:Class="SimTuning.Maui.UI.Views.Popups.PortTimingPopup"
-    x:DataType="PortTimingViewModel"
-    Color="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}"
-    Size="500, 700">
+	x:TypeArguments="models:MotorModel"
+	xmlns="http://schemas.microsoft.com/dotnet/maui/global"
+	xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:mct="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
+	xmlns:models="clr-namespace:SimTuning.Data.Models;assembly=SimTuning.Data"
+	x:Class="SimTuning.Maui.UI.Views.Popups.PortTimingPopup"
+	x:DataType="PortTimingViewModel"
+	Color="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}"
+	Size="500, 700">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -18,12 +18,12 @@
         </Grid.RowDefinitions>
 
         <Picker
-            Grid.Row="0"
-            ItemsSource="{Binding Engines}"
-            SelectedItem="{Binding Engine}"
-            ItemDisplayBinding="{Binding Name}"
-            HorizontalOptions="CenterAndExpand"
-            Margin="5">
+			Grid.Row="0"
+			ItemsSource="{Binding Engines}"
+			SelectedItem="{Binding Engine}"
+			ItemDisplayBinding="{Binding Name}"
+			HorizontalOptions="CenterAndExpand"
+			Margin="5">
         </Picker>
 
         <ScrollView Grid.Row="1">
@@ -56,11 +56,11 @@
                                 <!--ohne Unit-->
 
                                 <Entry
-                                    Placeholder="Steuerzeit"
-                                    Text="{Binding VehicleMotorEinlassSteuerzeitSZ}"
-                                    Grid.ColumnSpan="2"
-                                    Grid.Row="4"
-                                    Keyboard="Numeric">
+									Placeholder="Steuerzeit"
+									Text="{Binding VehicleMotorEinlassSteuerzeitSZ}"
+									Grid.ColumnSpan="2"
+									Grid.Row="4"
+									Keyboard="Numeric">
                                 </Entry>
 
                                 <!--#endregion VehicleMotorEinlassSteuerzeitSZ-->
@@ -94,11 +94,11 @@
                                 <!--ohne Unit-->
 
                                 <Entry
-                                    Placeholder="Steuerzeit"
-                                    Text="{Binding VehicleMotorAuslassSteuerzeitSZ}"
-                                    Grid.ColumnSpan="2"
-                                    Grid.Row="4"
-                                    Keyboard="Numeric">
+									Placeholder="Steuerzeit"
+									Text="{Binding VehicleMotorAuslassSteuerzeitSZ}"
+									Grid.ColumnSpan="2"
+									Grid.Row="4"
+									Keyboard="Numeric">
                                 </Entry>
 
                                 <!--#endregion VehicleMotorAuslassSteuerzeitSZ-->
@@ -132,11 +132,11 @@
                             <!--ohne Unit-->
 
                             <Entry
-                                Placeholder="Steuerzeit"
-                                Text="{Binding VehicleMotorUeberstroemerSteuerzeitSZ}"
-                                Grid.ColumnSpan="2"
-                                Grid.Row="4"
-                                Keyboard="Numeric">
+								Placeholder="Steuerzeit"
+								Text="{Binding VehicleMotorUeberstroemerSteuerzeitSZ}"
+								Grid.ColumnSpan="2"
+								Grid.Row="4"
+								Keyboard="Numeric">
                             </Entry>
 
                             <!--#endregion VehicleMotorUeberstroemerSteuerzeitSZ-->
@@ -149,9 +149,9 @@
         </ScrollView>
 
         <ImageButton
-            Grid.Row="2"
-            Clicked="Button_Clicked"
-            Margin="5"
-            Source="{StaticResource IconChevronRightMedium}" />
+			Grid.Row="2"
+			Clicked="Button_Clicked"
+			Margin="5"
+			Source="{StaticResource IconChevronRightMedium}" />
     </Grid>
 </mct:Popup>
