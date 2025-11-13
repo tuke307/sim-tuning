@@ -74,7 +74,7 @@ namespace SimTuning.Maui.UI.ViewModels
             }
             catch (Exception exc)
             {
-                _logger.LogError(exc, "Fehler bei ReloadData");
+                _logger.LogError(exc, "Fehler bei ReloadData: {Message}", exc.Message);
             }
         }
 
@@ -101,7 +101,7 @@ namespace SimTuning.Maui.UI.ViewModels
             }
             catch (Exception exc)
             {
-                _logger.LogError(exc, "Fehler beim Laden der Plots");
+                _logger.LogError(exc, "Fehler beim Laden der Plots: {Message}", exc.Message);
             }
         }
 

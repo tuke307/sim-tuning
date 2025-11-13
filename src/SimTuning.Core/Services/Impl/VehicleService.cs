@@ -276,7 +276,7 @@ namespace SimTuning.Core.Services
             }
             catch (Exception exc)
             {
-                _logger.LogError(exc, "Error retrieving vehicles");
+                _logger.LogError(exc, "Error retrieving vehicles: {Message}", exc.Message);
                 return null;
             }
         }
