@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="SimTuning.Maui.UI.Views.Dyno.DynoMainView"
-    xmlns="http://schemas.microsoft.com/dotnet/maui/global"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:tabs="http://sharpnado.com"
-    x:DataType="DynoMainViewModel"
-    Title="{Binding PageTitle, Mode=TwoWay}">
+	x:Class="SimTuning.Maui.UI.Views.Dyno.DynoMainView"
+	xmlns="http://schemas.microsoft.com/dotnet/maui/global"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:tabs="http://sharpnado.com"
+	x:DataType="DynoMainViewModel"
+	Title="{Binding PageTitle, Mode=TwoWay}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -14,26 +14,26 @@
 
         <!--  swipable views  -->
         <tabs:TabHostView
-            Grid.Row="0"
-            SelectedIndex="{Binding Source={x:Reference Switcher}, Path=SelectedIndex, Mode=TwoWay}">
+			Grid.Row="0"
+			SelectedIndex="{Binding Source={x:Reference Switcher}, Path=SelectedIndex, Mode=TwoWay}">
             <tabs:TabHostView.Tabs>
                 <tabs:UnderlinedTabItem
-                    Style="{StaticResource UnderlinedTabItemStyle}"
-                    Label="Datensatz" />
+					Style="{StaticResource UnderlinedTabItemStyle}"
+					Label="Datensatz" />
                 <tabs:UnderlinedTabItem
-                    Style="{StaticResource UnderlinedTabItemStyle}"
-                    Label="Audio" />
+					Style="{StaticResource UnderlinedTabItemStyle}"
+					Label="Audio" />
                 <tabs:UnderlinedTabItem
-                    Style="{StaticResource UnderlinedTabItemStyle}"
-                    Label="Diagnose" />
+					Style="{StaticResource UnderlinedTabItemStyle}"
+					Label="Diagnose" />
             </tabs:TabHostView.Tabs>
         </tabs:TabHostView>
 
         <tabs:ViewSwitcher
-            x:Name="Switcher"
-            Grid.Row="1"
-            SelectedIndex="{Binding DynoTabIndex}"
-            Animate="True">
+			x:Name="Switcher"
+			Grid.Row="1"
+			SelectedIndex="{Binding DynoTabIndex}"
+			Animate="True">
             <DynoDataView />
             <DynoAudioView />
             <DynoDiagnosisView />

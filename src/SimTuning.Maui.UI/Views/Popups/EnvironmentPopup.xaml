@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <mct:Popup
-    x:TypeArguments="models:MotorModel"
-    xmlns="http://schemas.microsoft.com/dotnet/maui/global"
-    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:mct="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
-    xmlns:models="clr-namespace:SimTuning.Data.Models;assembly=SimTuning.Data"
-    x:Class="SimTuning.Maui.UI.Views.Popups.EnvironmentPopup"
-    x:DataType="EnvironmentViewModel"
-    Color="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}"
-    Size="500, 700">
+	x:TypeArguments="models:MotorModel"
+	xmlns="http://schemas.microsoft.com/dotnet/maui/global"
+	xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:mct="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
+	xmlns:models="clr-namespace:SimTuning.Data.Models;assembly=SimTuning.Data"
+	x:Class="SimTuning.Maui.UI.Views.Popups.EnvironmentPopup"
+	x:DataType="EnvironmentViewModel"
+	Color="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}"
+	Size="500, 700">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -96,9 +96,9 @@
         </ScrollView>-->
 
         <ImageButton
-            Grid.Row="2"
-            Clicked="Button_Clicked"
-            Margin="5"
-            Source="{StaticResource IconChevronRightMedium}" />
+			Grid.Row="2"
+			Clicked="Button_Clicked"
+			Margin="5"
+			Source="{StaticResource IconChevronRightMedium}" />
     </Grid>
 </mct:Popup>

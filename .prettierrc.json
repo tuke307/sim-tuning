@@ -1,26 +1,26 @@
 {
-    "useTabs": false,
-    "tabWidth": 4,
-    "singleQuote": true,
-    "trailingComma": "es5",
-    "semi": false,
-    "bracketSpacing": true,
-    "bracketSameLine": true,
-    "arrowParens": "always",
-    "proseWrap": "preserve",
-    "endOfLine": "lf",
-    "singleAttributePerLine": true,
-    "overrides": [
-        {
-            "files": ["**/*.xaml"],
-            "options": {
-                "parser": "xml",
-                "xmlQuoteAttributes": "preserve",
-                "xmlSelfClosingSpace": true,
-                "xmlSortAttributesByKey": false,
-                "xmlWhitespaceSensitivity": "strict"
-            }
-        }
-    ],
-    "plugins": ["@prettier/plugin-xml"]
+	"useTabs": true,
+	"tabWidth": 4,
+	"singleQuote": true,
+	"trailingComma": "es5",
+	"semi": false,
+	"bracketSpacing": true,
+	"bracketSameLine": true,
+	"arrowParens": "always",
+	"proseWrap": "preserve",
+	"endOfLine": "lf",
+	"singleAttributePerLine": true,
+	"overrides": [
+		{
+			"files": ["**/*.xaml"],
+			"options": {
+				"parser": "xml",
+				"xmlQuoteAttributes": "preserve",
+				"xmlSelfClosingSpace": true,
+				"xmlSortAttributesByKey": false,
+				"xmlWhitespaceSensitivity": "strict"
+			}
+		}
+	],
+	"plugins": ["@prettier/plugin-xml"]
 }

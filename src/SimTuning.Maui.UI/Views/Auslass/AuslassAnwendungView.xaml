@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentView
-    x:Class="SimTuning.Maui.UI.Views.Auslass.AuslassAnwendungView"
-    xmlns="http://schemas.microsoft.com/dotnet/maui/global"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:behaviors="clr-namespace:SimTuning.Maui.UI.Behaviors"
-    x:DataType="AuslassAnwendungViewModel">
+	x:Class="SimTuning.Maui.UI.Views.Auslass.AuslassAnwendungView"
+	xmlns="http://schemas.microsoft.com/dotnet/maui/global"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:behaviors="clr-namespace:SimTuning.Maui.UI.Behaviors"
+	x:DataType="AuslassAnwendungViewModel">
 
     <ContentView.Resources>
         <behaviors:InvertedBoolConverter x:Key="Inverter" />
@@ -32,107 +32,107 @@
                         </Grid.ColumnDefinitions>
 
                         <Label
-                            Grid.Column="0"
-                            Style="{StaticResource LabelTitleStyle}"
-                            Text="Daten" />
+							Grid.Column="0"
+							Style="{StaticResource LabelTitleStyle}"
+							Text="Daten" />
 
                         <ImageButton
-                            Grid.Column="1"
-                            Clicked="HelperVehiclesButton_Clicked"
-                            Source="{StaticResource IconAtvMedium}" />
+							Grid.Column="1"
+							Clicked="HelperVehiclesButton_Clicked"
+							Source="{StaticResource IconAtvMedium}" />
                     </Grid>
 
                     <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
                     <StackLayout Orientation="Horizontal">
                         <Entry
-                            Keyboard="Numeric"
-                            Placeholder="Schallgeschwindigkeit"
-                            Text="{Binding VehicleMotorAuslassAuspuffAbgasV}"
-                            WidthRequest="250" />
+							Keyboard="Numeric"
+							Placeholder="Schallgeschwindigkeit"
+							Text="{Binding VehicleMotorAuslassAuspuffAbgasV}"
+							WidthRequest="250" />
 
                         <Picker
-                            Margin="5,0,0,0"
-                            ItemsSource="{Binding Path=SpeedQuantityUnits, Mode=OneTime}"
-                            ItemDisplayBinding="{Binding Abbreviation}"
-                            HorizontalOptions="StartAndExpand"
-                            SelectedItem="{Binding VehicleMotorAuslassAuspuffAbgasVUnit}"
-                            VerticalOptions="CenterAndExpand" />
+							Margin="5,0,0,0"
+							ItemsSource="{Binding Path=SpeedQuantityUnits, Mode=OneTime}"
+							ItemDisplayBinding="{Binding Abbreviation}"
+							HorizontalOptions="StartAndExpand"
+							SelectedItem="{Binding VehicleMotorAuslassAuspuffAbgasVUnit}"
+							VerticalOptions="CenterAndExpand" />
                     </StackLayout>
 
                     <StackLayout Orientation="Horizontal">
                         <Entry
-                            Keyboard="Numeric"
-                            Placeholder="Resonanzdrehzahl"
-                            Text="{Binding VehicleMotorResonanzU}"
-                            WidthRequest="250" />
+							Keyboard="Numeric"
+							Placeholder="Resonanzdrehzahl"
+							Text="{Binding VehicleMotorResonanzU}"
+							WidthRequest="250" />
 
                         <Label
-                            Margin="5,0,0,0"
-                            VerticalOptions="Center">
+							Margin="5,0,0,0"
+							VerticalOptions="Center">
                             1/min
                         </Label>
                     </StackLayout>
 
                     <StackLayout Orientation="Horizontal">
                         <Entry
-                            Keyboard="Numeric"
-                            Placeholder="Auslass Durchmesser"
-                            Text="{Binding VehicleMotorAuslassDurchmesserD}"
-                            WidthRequest="250" />
+							Keyboard="Numeric"
+							Placeholder="Auslass Durchmesser"
+							Text="{Binding VehicleMotorAuslassDurchmesserD}"
+							WidthRequest="250" />
 
                         <Picker
-                            Margin="5,0,0,0"
-                            ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
-                            ItemDisplayBinding="{Binding Abbreviation}"
-                            HorizontalOptions="StartAndExpand"
-                            SelectedItem="{Binding VehicleMotorAuslassDurchmesserDUnit}" />
+							Margin="5,0,0,0"
+							ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+							ItemDisplayBinding="{Binding Abbreviation}"
+							HorizontalOptions="StartAndExpand"
+							SelectedItem="{Binding VehicleMotorAuslassDurchmesserDUnit}" />
                     </StackLayout>
 
                     <StackLayout Orientation="Horizontal">
                         <Entry
-                            Keyboard="Numeric"
-                            Placeholder="Auslass-Kanal Länge"
-                            Text="{Binding VehicleMotorAuslassLaengeL}"
-                            WidthRequest="250" />
+							Keyboard="Numeric"
+							Placeholder="Auslass-Kanal Länge"
+							Text="{Binding VehicleMotorAuslassLaengeL}"
+							WidthRequest="250" />
 
                         <Picker
-                            Margin="5,0,0,0"
-                            ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
-                            ItemDisplayBinding="{Binding Abbreviation}"
-                            HorizontalOptions="StartAndExpand"
-                            SelectedItem="{Binding VehicleMotorAuslassLaengeLUnit}"
-                            VerticalOptions="CenterAndExpand" />
+							Margin="5,0,0,0"
+							ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+							ItemDisplayBinding="{Binding Abbreviation}"
+							HorizontalOptions="StartAndExpand"
+							SelectedItem="{Binding VehicleMotorAuslassLaengeLUnit}"
+							VerticalOptions="CenterAndExpand" />
                     </StackLayout>
 
                     <StackLayout Orientation="Horizontal">
                         <Entry
-                            Keyboard="Numeric"
-                            Placeholder="Auslass-Steuerzeit"
-                            Text="{Binding VehicleMotorAuslassSteuerzeitSZ}"
-                            WidthRequest="250" />
+							Keyboard="Numeric"
+							Placeholder="Auslass-Steuerzeit"
+							Text="{Binding VehicleMotorAuslassSteuerzeitSZ}"
+							WidthRequest="250" />
 
                         <Label
-                            Margin="5,0,0,0"
-                            VerticalOptions="Center">
+							Margin="5,0,0,0"
+							VerticalOptions="Center">
                             °KW
                         </Label>
                     </StackLayout>
 
                     <StackLayout Orientation="Horizontal">
                         <Entry
-                            Keyboard="Numeric"
-                            Placeholder="Auslass-Fläche"
-                            Text="{Binding VehicleMotorAuslassFlaecheA}"
-                            WidthRequest="250" />
+							Keyboard="Numeric"
+							Placeholder="Auslass-Fläche"
+							Text="{Binding VehicleMotorAuslassFlaecheA}"
+							WidthRequest="250" />
 
                         <Picker
-                            Margin="5,0,0,0"
-                            ItemsSource="{Binding Path=AreaQuantityUnits, Mode=OneTime}"
-                            ItemDisplayBinding="{Binding Abbreviation}"
-                            HorizontalOptions="StartAndExpand"
-                            SelectedItem="{Binding VehicleMotorAuslassFlaecheAUnit}"
-                            VerticalOptions="CenterAndExpand" />
+							Margin="5,0,0,0"
+							ItemsSource="{Binding Path=AreaQuantityUnits, Mode=OneTime}"
+							ItemDisplayBinding="{Binding Abbreviation}"
+							HorizontalOptions="StartAndExpand"
+							SelectedItem="{Binding VehicleMotorAuslassFlaecheAUnit}"
+							VerticalOptions="CenterAndExpand" />
                     </StackLayout>
                 </StackLayout>
             </Border>
@@ -141,14 +141,14 @@
             <Border Grid.Row="1">
                 <StackLayout>
                     <Label
-                        Style="{StaticResource LabelTitleStyle}"
-                        Text="Krümmer" />
+						Style="{StaticResource LabelTitleStyle}"
+						Text="Krümmer" />
 
                     <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
                     <Label
-                        Margin="0,10,0,0"
-                        Text="Drehmoment(Krümmer)- Faktor" />
+						Margin="0,10,0,0"
+						Text="Drehmoment(Krümmer)- Faktor" />
 
                     <Grid HorizontalOptions="FillAndExpand">
                         <Grid.ColumnDefinitions>
@@ -158,35 +158,35 @@
                         </Grid.ColumnDefinitions>
 
                         <Label
-                            Grid.Column="0"
-                            Margin="5,0,0,0"
-                            HorizontalTextAlignment="Start"
-                            Text="spitz" />
+							Grid.Column="0"
+							Margin="5,0,0,0"
+							HorizontalTextAlignment="Start"
+							Text="spitz" />
 
                         <Label
-                            Grid.Column="2"
-                            Margin="0,0,0,5"
-                            HorizontalTextAlignment="End"
-                            Text="flach" />
+							Grid.Column="2"
+							Margin="0,0,0,5"
+							HorizontalTextAlignment="End"
+							Text="flach" />
                     </Grid>
 
                     <Slider
-                        Margin="0,-10,0,10"
-                        HorizontalOptions="FillAndExpand"
-                        Maximum="12"
-                        Minimum="6"
-                        Value="{Binding VehicleMotorAuslassAuspuffKruemmerF}" />
+						Margin="0,-10,0,10"
+						HorizontalOptions="FillAndExpand"
+						Maximum="12"
+						Minimum="6"
+						Value="{Binding VehicleMotorAuslassAuspuffKruemmerF}" />
 
                     <StackLayout Orientation="Horizontal">
                         <Entry
-                            Keyboard="Numeric"
-                            Placeholder="Krümmer Winkel"
-                            Text="{Binding VehicleMotorAuslassAuspuffKruemmerW}"
-                            WidthRequest="250" />
+							Keyboard="Numeric"
+							Placeholder="Krümmer Winkel"
+							Text="{Binding VehicleMotorAuslassAuspuffKruemmerW}"
+							WidthRequest="250" />
 
                         <Label
-                            Margin="5,0,0,0"
-                            VerticalOptions="Center">
+							Margin="5,0,0,0"
+							VerticalOptions="Center">
                             mm²
                         </Label>
                     </StackLayout>
@@ -197,14 +197,14 @@
             <Border Grid.Row="2">
                 <StackLayout>
                     <Label
-                        Style="{StaticResource LabelTitleStyle}"
-                        Text="Mittelteil" />
+						Style="{StaticResource LabelTitleStyle}"
+						Text="Mittelteil" />
 
                     <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
                     <Label
-                        Margin="0,10,0,0"
-                        Text="Drehmoment(Mitelteil)- Faktor" />
+						Margin="0,10,0,0"
+						Text="Drehmoment(Mitelteil)- Faktor" />
 
                     <Grid HorizontalOptions="FillAndExpand">
                         <Grid.ColumnDefinitions>
@@ -214,23 +214,23 @@
                         </Grid.ColumnDefinitions>
 
                         <Label
-                            Grid.Column="0"
-                            Margin="5,0,0,0"
-                            HorizontalTextAlignment="Start"
-                            Text="spitz" />
+							Grid.Column="0"
+							Margin="5,0,0,0"
+							HorizontalTextAlignment="Start"
+							Text="spitz" />
 
                         <Label
-                            Grid.Column="2"
-                            Margin="0,0,0,5"
-                            HorizontalTextAlignment="End"
-                            Text="flach" />
+							Grid.Column="2"
+							Margin="0,0,0,5"
+							HorizontalTextAlignment="End"
+							Text="flach" />
                     </Grid>
                     <Slider
-                        Margin="0,-10,0,10"
-                        HorizontalOptions="FillAndExpand"
-                        Maximum="12"
-                        Minimum="6"
-                        Value="{Binding VehicleMotorAuslassAuspuffMittelteilF}" />
+						Margin="0,-10,0,10"
+						HorizontalOptions="FillAndExpand"
+						Maximum="12"
+						Minimum="6"
+						Value="{Binding VehicleMotorAuslassAuspuffMittelteilF}" />
                 </StackLayout>
             </Border>
 
@@ -238,22 +238,22 @@
             <Border Grid.Row="3">
                 <StackLayout>
                     <Label
-                        Style="{StaticResource LabelTitleStyle}"
-                        Text="Gegenkonus" />
+						Style="{StaticResource LabelTitleStyle}"
+						Text="Gegenkonus" />
 
                     <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
                     <StackLayout Orientation="Horizontal">
 
                         <Entry
-                            Keyboard="Numeric"
-                            Placeholder="GegenKonus Winkel"
-                            Text="{Binding VehicleMotorAuslassAuspuffGegenKonusW}"
-                            WidthRequest="250" />
+							Keyboard="Numeric"
+							Placeholder="GegenKonus Winkel"
+							Text="{Binding VehicleMotorAuslassAuspuffGegenKonusW}"
+							WidthRequest="250" />
 
                         <Label
-                            Margin="5,0,0,0"
-                            VerticalOptions="Center">
+							Margin="5,0,0,0"
+							VerticalOptions="Center">
                             °
                         </Label>
                     </StackLayout>
@@ -264,43 +264,43 @@
             <Border Grid.Row="4">
                 <StackLayout>
                     <Label
-                        Style="{StaticResource LabelTitleStyle}"
-                        Text="Winkel" />
+						Style="{StaticResource LabelTitleStyle}"
+						Text="Winkel" />
 
                     <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
                     <StackLayout Orientation="Horizontal">
 
                         <Entry
-                            Keyboard="Numeric"
-                            Placeholder="Endrohr Durchmesser"
-                            Text="{Binding VehicleMotorAuslassAuspuffEndrohrD}"
-                            WidthRequest="250" />
+							Keyboard="Numeric"
+							Placeholder="Endrohr Durchmesser"
+							Text="{Binding VehicleMotorAuslassAuspuffEndrohrD}"
+							WidthRequest="250" />
 
                         <Picker
-                            Margin="5,0,0,0"
-                            ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
-                            ItemDisplayBinding="{Binding Abbreviation}"
-                            HorizontalOptions="StartAndExpand"
-                            SelectedItem="{Binding VehicleMotorAuslassAuspuffEndrohrDUnit}"
-                            VerticalOptions="CenterAndExpand" />
+							Margin="5,0,0,0"
+							ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+							ItemDisplayBinding="{Binding Abbreviation}"
+							HorizontalOptions="StartAndExpand"
+							SelectedItem="{Binding VehicleMotorAuslassAuspuffEndrohrDUnit}"
+							VerticalOptions="CenterAndExpand" />
                     </StackLayout>
 
                     <StackLayout Orientation="Horizontal">
 
                         <Entry
-                            Keyboard="Numeric"
-                            Placeholder="Endrohr Länge"
-                            Text="{Binding VehicleMotorAuslassAuspuffEndrohrL}"
-                            WidthRequest="250" />
+							Keyboard="Numeric"
+							Placeholder="Endrohr Länge"
+							Text="{Binding VehicleMotorAuslassAuspuffEndrohrL}"
+							WidthRequest="250" />
 
                         <Picker
-                            Margin="5,0,0,0"
-                            ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
-                            ItemDisplayBinding="{Binding Abbreviation}"
-                            HorizontalOptions="StartAndExpand"
-                            SelectedItem="{Binding VehicleMotorAuslassAuspuffEndrohrLUnit}"
-                            VerticalOptions="CenterAndExpand" />
+							Margin="5,0,0,0"
+							ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+							ItemDisplayBinding="{Binding Abbreviation}"
+							HorizontalOptions="StartAndExpand"
+							SelectedItem="{Binding VehicleMotorAuslassAuspuffEndrohrLUnit}"
+							VerticalOptions="CenterAndExpand" />
                     </StackLayout>
                 </StackLayout>
             </Border>
@@ -310,8 +310,8 @@
                 <StackLayout>
 
                     <Label
-                        Style="{StaticResource LabelTitleStyle}"
-                        Text="Diffusor" />
+						Style="{StaticResource LabelTitleStyle}"
+						Text="Diffusor" />
 
                     <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
@@ -322,19 +322,19 @@
                     <StackLayout IsVisible="false">
                         <StackLayout.Triggers>
                             <DataTrigger
-                                Binding="{Binding VehicleMotorAuslassAuspuffDiffusorStage}"
-                                TargetType="StackLayout"
-                                Value="1">
+								Binding="{Binding VehicleMotorAuslassAuspuffDiffusorStage}"
+								TargetType="StackLayout"
+								Value="1">
                                 <Setter
-                                    Property="IsVisible"
-                                    Value="true" />
+									Property="IsVisible"
+									Value="true" />
                             </DataTrigger>
                         </StackLayout.Triggers>
 
                         <Label
-                            Margin="0,0,0,10"
-                            FontSize="Subtitle"
-                            Text="Two Stage" />
+							Margin="0,0,0,10"
+							FontSize="Subtitle"
+							Text="Two Stage" />
 
                         <StackLayout>
                             <Label>1. Stage</Label>
@@ -350,13 +350,13 @@
                             </StackLayout>-->
 
                             <StackLayout
-                                Grid.Row="3"
-                                Grid.Column="0"
-                                Orientation="Horizontal">
+								Grid.Row="3"
+								Grid.Column="0"
+								Orientation="Horizontal">
                                 <Entry
-                                    Placeholder="Winkel"
-                                    Text="{Binding VehicleMotorAuslassAuspuffDiffusorW1}"
-                                    WidthRequest="50" />
+									Placeholder="Winkel"
+									Text="{Binding VehicleMotorAuslassAuspuffDiffusorW1}"
+									WidthRequest="50" />
 
                                 <Label Margin="5,0,0,0">
                                     °
@@ -368,12 +368,12 @@
                     <Grid IsVisible="false">
                         <Grid.Triggers>
                             <DataTrigger
-                                Binding="{Binding VehicleMotorAuslassAuspuffDiffusorStage}"
-                                TargetType="Grid"
-                                Value="2">
+								Binding="{Binding VehicleMotorAuslassAuspuffDiffusorStage}"
+								TargetType="Grid"
+								Value="2">
                                 <Setter
-                                    Property="IsVisible"
-                                    Value="true" />
+									Property="IsVisible"
+									Value="true" />
                             </DataTrigger>
                         </Grid.Triggers>
 
@@ -387,15 +387,15 @@
                         </Grid.RowDefinitions>
 
                         <Label
-                            Grid.Row="0"
-                            Grid.ColumnSpan="2"
-                            Margin="0,0,0,10"
-                            FontSize="Caption"
-                            Text="Two Stage" />
+							Grid.Row="0"
+							Grid.ColumnSpan="2"
+							Margin="0,0,0,10"
+							FontSize="Caption"
+							Text="Two Stage" />
 
                         <StackLayout
-                            Grid.Row="1"
-                            Grid.Column="0">
+							Grid.Row="1"
+							Grid.Column="0">
                             <Label>1. Stage</Label>
 
                             <!--<StackLayout Orientation="Horizontal">
@@ -410,9 +410,9 @@
 
                             <StackLayout Orientation="Horizontal">
                                 <Entry
-                                    Placeholder="Winkel"
-                                    Text="{Binding VehicleMotorAuslassAuspuffDiffusorW1}"
-                                    WidthRequest="50" />
+									Placeholder="Winkel"
+									Text="{Binding VehicleMotorAuslassAuspuffDiffusorW1}"
+									WidthRequest="50" />
 
                                 <Label Margin="5,0,0,0">
                                     °
@@ -421,9 +421,9 @@
                         </StackLayout>
 
                         <StackLayout
-                            Grid.Row="1"
-                            Grid.Column="1"
-                            Margin="30,0,0,0">
+							Grid.Row="1"
+							Grid.Column="1"
+							Margin="30,0,0,0">
                             <Label>2. Stage</Label>
 
                             <!--<StackLayout Orientation="Horizontal">
@@ -438,9 +438,9 @@
 
                             <StackLayout Orientation="Horizontal">
                                 <Entry
-                                    Placeholder="Winkel"
-                                    Text="{Binding VehicleMotorAuslassAuspuffDiffusorW2}"
-                                    WidthRequest="50" />
+									Placeholder="Winkel"
+									Text="{Binding VehicleMotorAuslassAuspuffDiffusorW2}"
+									WidthRequest="50" />
 
                                 <Label Margin="5,0,0,0">
                                     °
@@ -452,12 +452,12 @@
                     <Grid IsVisible="false">
                         <Grid.Triggers>
                             <DataTrigger
-                                Binding="{Binding VehicleMotorAuslassAuspuffDiffusorStage}"
-                                TargetType="Grid"
-                                Value="3">
+								Binding="{Binding VehicleMotorAuslassAuspuffDiffusorStage}"
+								TargetType="Grid"
+								Value="3">
                                 <Setter
-                                    Property="IsVisible"
-                                    Value="true" />
+									Property="IsVisible"
+									Value="true" />
                             </DataTrigger>
                         </Grid.Triggers>
 
@@ -472,15 +472,15 @@
                         </Grid.RowDefinitions>
 
                         <Label
-                            Grid.Row="0"
-                            Grid.ColumnSpan="3"
-                            Margin="0,0,0,10"
-                            FontSize="Caption"
-                            Text="Three Stage" />
+							Grid.Row="0"
+							Grid.ColumnSpan="3"
+							Margin="0,0,0,10"
+							FontSize="Caption"
+							Text="Three Stage" />
 
                         <StackLayout
-                            Grid.Row="1"
-                            Grid.Column="0">
+							Grid.Row="1"
+							Grid.Column="0">
                             <Label>1. Stage</Label>
 
                             <!--<StackLayout Orientation="Horizontal">
@@ -495,9 +495,9 @@
 
                             <StackLayout Orientation="Horizontal">
                                 <Entry
-                                    Placeholder="Winkel"
-                                    Text="{Binding VehicleMotorAuslassAuspuffDiffusorW1}"
-                                    WidthRequest="50" />
+									Placeholder="Winkel"
+									Text="{Binding VehicleMotorAuslassAuspuffDiffusorW1}"
+									WidthRequest="50" />
 
                                 <Label Margin="5,0,0,0">
                                     °
@@ -506,9 +506,9 @@
                         </StackLayout>
 
                         <StackLayout
-                            Grid.Row="1"
-                            Grid.Column="1"
-                            Margin="30,0,0,0">
+							Grid.Row="1"
+							Grid.Column="1"
+							Margin="30,0,0,0">
                             <Label>2. Stage</Label>
 
                             <!--<StackLayout Orientation="Horizontal">
@@ -523,9 +523,9 @@
 
                             <StackLayout Orientation="Horizontal">
                                 <Entry
-                                    Placeholder="Winkel"
-                                    Text="{Binding VehicleMotorAuslassAuspuffDiffusorW2}"
-                                    WidthRequest="50" />
+									Placeholder="Winkel"
+									Text="{Binding VehicleMotorAuslassAuspuffDiffusorW2}"
+									WidthRequest="50" />
 
                                 <Label Margin="5,0,0,0">
                                     °
@@ -534,9 +534,9 @@
                         </StackLayout>
 
                         <StackLayout
-                            Grid.Row="1"
-                            Grid.Column="2"
-                            Margin="30,0,0,0">
+							Grid.Row="1"
+							Grid.Column="2"
+							Margin="30,0,0,0">
                             <Label>3. Stage</Label>
 
                             <!--<StackLayout Orientation="Horizontal">
@@ -551,9 +551,9 @@
 
                             <StackLayout Orientation="Horizontal">
                                 <Entry
-                                    Placeholder="Winkel"
-                                    Text="{Binding VehicleMotorAuslassAuspuffDiffusorW3}"
-                                    WidthRequest="50" />
+									Placeholder="Winkel"
+									Text="{Binding VehicleMotorAuslassAuspuffDiffusorW3}"
+									WidthRequest="50" />
 
                                 <Label Margin="5,0,0,0">
                                     °
@@ -569,15 +569,15 @@
                 <StackLayout>
 
                     <Label
-                        Style="{StaticResource LabelTitleStyle}"
-                        Text="Ergebnis" />
+						Style="{StaticResource LabelTitleStyle}"
+						Text="Ergebnis" />
 
                     <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
                     <Button
-                        Margin="10"
-                        Command="{Binding CalculateCommand}"
-                        Text="Calculate" />
+						Margin="10"
+						Command="{Binding CalculateCommand}"
+						Text="Calculate" />
 
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -588,139 +588,139 @@
                         <StackLayout Grid.Column="0">
                             <StackLayout Orientation="Horizontal">
                                 <Entry
-                                    Keyboard="Numeric"
-                                    IsEnabled="False"
-                                    Placeholder="D1"
-                                    Text="{Binding VehicleMotorAuslassAuspuffKruemmerD}"
-                                    WidthRequest="100" />
+									Keyboard="Numeric"
+									IsEnabled="False"
+									Placeholder="D1"
+									Text="{Binding VehicleMotorAuslassAuspuffKruemmerD}"
+									WidthRequest="100" />
 
                                 <Label
-                                    Margin="5,0,0,0"
-                                    VerticalOptions="Center">
+									Margin="5,0,0,0"
+									VerticalOptions="Center">
                                     mm
                                 </Label>
                             </StackLayout>
 
                             <StackLayout Orientation="Horizontal">
                                 <Entry
-                                    Keyboard="Numeric"
-                                    IsEnabled="False"
-                                    Placeholder="D2"
-                                    Text="{Binding VehicleMotorAuslassAuspuffDiffusorD}"
-                                    WidthRequest="100" />
+									Keyboard="Numeric"
+									IsEnabled="False"
+									Placeholder="D2"
+									Text="{Binding VehicleMotorAuslassAuspuffDiffusorD}"
+									WidthRequest="100" />
 
                                 <Label
-                                    Margin="5,0,0,0"
-                                    VerticalOptions="Center">
+									Margin="5,0,0,0"
+									VerticalOptions="Center">
                                     mm
                                 </Label>
                             </StackLayout>
 
                             <StackLayout Orientation="Horizontal">
                                 <Entry
-                                    Keyboard="Numeric"
-                                    IsEnabled="False"
-                                    Placeholder="D3"
-                                    Text="{Binding VehicleMotorAuslassAuspuffMittelteilD}"
-                                    WidthRequest="100" />
+									Keyboard="Numeric"
+									IsEnabled="False"
+									Placeholder="D3"
+									Text="{Binding VehicleMotorAuslassAuspuffMittelteilD}"
+									WidthRequest="100" />
 
                                 <Label
-                                    Margin="5,0,0,0"
-                                    VerticalOptions="Center">
+									Margin="5,0,0,0"
+									VerticalOptions="Center">
                                     mm
                                 </Label>
                             </StackLayout>
 
                             <StackLayout Orientation="Horizontal">
                                 <Entry
-                                    Keyboard="Numeric"
-                                    IsEnabled="False"
-                                    Placeholder="D4"
-                                    Text="{Binding VehicleMotorAuslassAuspuffGegenkonusD}"
-                                    WidthRequest="100" />
+									Keyboard="Numeric"
+									IsEnabled="False"
+									Placeholder="D4"
+									Text="{Binding VehicleMotorAuslassAuspuffGegenkonusD}"
+									WidthRequest="100" />
 
                                 <Label
-                                    Margin="5,0,0,0"
-                                    VerticalOptions="Center">
+									Margin="5,0,0,0"
+									VerticalOptions="Center">
                                     mm
                                 </Label>
                             </StackLayout>
                         </StackLayout>
 
                         <StackLayout
-                            Grid.Column="1"
-                            HorizontalOptions="End">
+							Grid.Column="1"
+							HorizontalOptions="End">
                             <StackLayout Orientation="Horizontal">
                                 <Entry
-                                    Keyboard="Numeric"
-                                    IsEnabled="False"
-                                    Placeholder="LK"
-                                    Text="{Binding VehicleMotorAuslassAuspuffKruemmerL}"
-                                    WidthRequest="100" />
+									Keyboard="Numeric"
+									IsEnabled="False"
+									Placeholder="LK"
+									Text="{Binding VehicleMotorAuslassAuspuffKruemmerL}"
+									WidthRequest="100" />
 
                                 <Label
-                                    Margin="5,0,0,0"
-                                    VerticalOptions="Center">
+									Margin="5,0,0,0"
+									VerticalOptions="Center">
                                     mm
                                 </Label>
                             </StackLayout>
 
                             <StackLayout Orientation="Horizontal">
                                 <Entry
-                                    Keyboard="Numeric"
-                                    IsEnabled="False"
-                                    Placeholder="LD"
-                                    Text="{Binding VehicleMotorAuslassAuspuffDiffusorL}"
-                                    WidthRequest="100" />
+									Keyboard="Numeric"
+									IsEnabled="False"
+									Placeholder="LD"
+									Text="{Binding VehicleMotorAuslassAuspuffDiffusorL}"
+									WidthRequest="100" />
 
                                 <Label
-                                    Margin="5,0,0,0"
-                                    VerticalOptions="Center">
+									Margin="5,0,0,0"
+									VerticalOptions="Center">
                                     mm
                                 </Label>
                             </StackLayout>
 
                             <StackLayout Orientation="Horizontal">
                                 <Entry
-                                    Keyboard="Numeric"
-                                    IsEnabled="False"
-                                    Placeholder="LM"
-                                    Text="{Binding VehicleMotorAuslassAuspuffMittelteilL}"
-                                    WidthRequest="100" />
+									Keyboard="Numeric"
+									IsEnabled="False"
+									Placeholder="LM"
+									Text="{Binding VehicleMotorAuslassAuspuffMittelteilL}"
+									WidthRequest="100" />
 
                                 <Label
-                                    Margin="5,0,0,0"
-                                    VerticalOptions="Center">
+									Margin="5,0,0,0"
+									VerticalOptions="Center">
                                     mm
                                 </Label>
                             </StackLayout>
 
                             <StackLayout Orientation="Horizontal">
                                 <Entry
-                                    Keyboard="Numeric"
-                                    IsEnabled="False"
-                                    Placeholder="LG"
-                                    Text="{Binding VehicleMotorAuslassAuspuffGegenkonusL}"
-                                    WidthRequest="100" />
+									Keyboard="Numeric"
+									IsEnabled="False"
+									Placeholder="LG"
+									Text="{Binding VehicleMotorAuslassAuspuffGegenkonusL}"
+									WidthRequest="100" />
 
                                 <Label
-                                    Margin="5,0,0,0"
-                                    VerticalOptions="Center">
+									Margin="5,0,0,0"
+									VerticalOptions="Center">
                                     mm
                                 </Label>
                             </StackLayout>
 
                             <StackLayout Orientation="Horizontal">
                                 <Entry
-                                    Keyboard="Numeric"
-                                    IsEnabled="False"
-                                    Placeholder="LE"
-                                    Text="{Binding VehicleMotorAuslassAuspuffEndrohrL}"
-                                    WidthRequest="100" />
+									Keyboard="Numeric"
+									IsEnabled="False"
+									Placeholder="LE"
+									Text="{Binding VehicleMotorAuslassAuspuffEndrohrL}"
+									WidthRequest="100" />
 
                                 <Label
-                                    Margin="5,0,0,0"
-                                    VerticalOptions="Center">
+									Margin="5,0,0,0"
+									VerticalOptions="Center">
                                     mm
                                 </Label>
                             </StackLayout>
@@ -728,35 +728,35 @@
                     </Grid>
 
                     <Image
-                        HeightRequest="300"
-                        Source="{Binding Mode=OneWay, Path=Auspuff}" />
+						HeightRequest="300"
+						Source="{Binding Mode=OneWay, Path=Auspuff}" />
 
                     <StackLayout Orientation="Horizontal">
                         <Entry
-                            Keyboard="Numeric"
-                            IsEnabled="False"
-                            Placeholder="Gesamtlänge"
-                            Text="{Binding VehicleMotorAuslassAuspuffGesamtL}"
-                            WidthRequest="250" />
+							Keyboard="Numeric"
+							IsEnabled="False"
+							Placeholder="Gesamtlänge"
+							Text="{Binding VehicleMotorAuslassAuspuffGesamtL}"
+							WidthRequest="250" />
 
                         <Label
-                            Margin="5,0,0,0"
-                            VerticalOptions="Center">
+							Margin="5,0,0,0"
+							VerticalOptions="Center">
                             mm
                         </Label>
                     </StackLayout>
 
                     <StackLayout Orientation="Horizontal">
                         <Entry
-                            Keyboard="Numeric"
-                            IsEnabled="False"
-                            Placeholder="Resonanzlänge"
-                            Text="{Binding VehicleMotorAuslassAuspuffResonanzL}"
-                            WidthRequest="250" />
+							Keyboard="Numeric"
+							IsEnabled="False"
+							Placeholder="Resonanzlänge"
+							Text="{Binding VehicleMotorAuslassAuspuffResonanzL}"
+							WidthRequest="250" />
 
                         <Label
-                            Margin="5,0,0,0"
-                            VerticalOptions="Center">
+							Margin="5,0,0,0"
+							VerticalOptions="Center">
                             mm
                         </Label>
                     </StackLayout>

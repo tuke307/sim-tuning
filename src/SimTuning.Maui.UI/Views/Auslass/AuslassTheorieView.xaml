@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentView
-    x:Class="SimTuning.Maui.UI.Views.Auslass.AuslassTheorieView"
-    xmlns="http://schemas.microsoft.com/dotnet/maui/global"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:DataType="AuslassTheorieViewModel">
+	x:Class="SimTuning.Maui.UI.Views.Auslass.AuslassTheorieView"
+	xmlns="http://schemas.microsoft.com/dotnet/maui/global"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	x:DataType="AuslassTheorieViewModel">
     <ScrollView>
         <Grid>
             <Grid.RowDefinitions>
@@ -19,8 +19,8 @@
                 <StackLayout>
 
                     <Label
-                        Style="{StaticResource LabelTitleStyle}"
-                        Text="Krümmer-Länge" />
+						Style="{StaticResource LabelTitleStyle}"
+						Text="Krümmer-Länge" />
 
                     <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
@@ -29,23 +29,23 @@
                         <StackLayout Orientation="Horizontal">
 
                             <Entry
-                                Keyboard="Numeric"
-                                Placeholder="Ø Krümmer"
-                                Text="{Binding VehicleMotorAuslassAuspuffKruemmerD}"
-                                WidthRequest="250" />
+								Keyboard="Numeric"
+								Placeholder="Ø Krümmer"
+								Text="{Binding VehicleMotorAuslassAuspuffKruemmerD}"
+								WidthRequest="250" />
 
                             <Picker
-                                Margin="5,0,0,0"
-                                ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
-                                ItemDisplayBinding="{Binding Abbreviation}"
-                                HorizontalOptions="StartAndExpand"
-                                SelectedItem="{Binding Path=VehicleMotorAuslassAuspuffKruemmerDUnit}"
-                                VerticalOptions="CenterAndExpand" />
+								Margin="5,0,0,0"
+								ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+								ItemDisplayBinding="{Binding Abbreviation}"
+								HorizontalOptions="StartAndExpand"
+								SelectedItem="{Binding Path=VehicleMotorAuslassAuspuffKruemmerDUnit}"
+								VerticalOptions="CenterAndExpand" />
                         </StackLayout>
 
                         <Label
-                            Margin="0,10,0,0"
-                            Text="Drehmoment(Krümmer)- Faktor" />
+							Margin="0,10,0,0"
+							Text="Drehmoment(Krümmer)- Faktor" />
 
                         <Grid HorizontalOptions="FillAndExpand">
                             <Grid.ColumnDefinitions>
@@ -55,40 +55,40 @@
                             </Grid.ColumnDefinitions>
 
                             <Label
-                                Grid.Column="0"
-                                Margin="5,0,0,0"
-                                HorizontalTextAlignment="Start"
-                                Text="spitz" />
+								Grid.Column="0"
+								Margin="5,0,0,0"
+								HorizontalTextAlignment="Start"
+								Text="spitz" />
 
                             <Label
-                                Grid.Column="2"
-                                Margin="0,0,0,5"
-                                HorizontalTextAlignment="End"
-                                Text="flach" />
+								Grid.Column="2"
+								Margin="0,0,0,5"
+								HorizontalTextAlignment="End"
+								Text="flach" />
                         </Grid>
 
                         <Slider
-                            Margin="0,-10,0,10"
-                            HorizontalOptions="FillAndExpand"
-                            Maximum="12"
-                            Minimum="6"
-                            Value="{Binding VehicleMotorAuslassAuspuffKruemmerF}" />
+							Margin="0,-10,0,10"
+							HorizontalOptions="FillAndExpand"
+							Maximum="12"
+							Minimum="6"
+							Value="{Binding VehicleMotorAuslassAuspuffKruemmerF}" />
 
                         <StackLayout Orientation="Horizontal">
                             <Entry
-                                Keyboard="Numeric"
-                                IsEnabled="False"
-                                Placeholder="Krümmerlänge"
-                                Text="{Binding VehicleMotorAuslassAuspuffKruemmerL}"
-                                WidthRequest="250" />
+								Keyboard="Numeric"
+								IsEnabled="False"
+								Placeholder="Krümmerlänge"
+								Text="{Binding VehicleMotorAuslassAuspuffKruemmerL}"
+								WidthRequest="250" />
 
                             <Picker
-                                Margin="5,0,0,0"
-                                ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
-                                ItemDisplayBinding="{Binding Abbreviation}"
-                                HorizontalOptions="StartAndExpand"
-                                SelectedItem="{Binding Path=VehicleMotorAuslassAuspuffKruemmerLUnit}"
-                                VerticalOptions="CenterAndExpand" />
+								Margin="5,0,0,0"
+								ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+								ItemDisplayBinding="{Binding Abbreviation}"
+								HorizontalOptions="StartAndExpand"
+								SelectedItem="{Binding Path=VehicleMotorAuslassAuspuffKruemmerLUnit}"
+								VerticalOptions="CenterAndExpand" />
                             <!--<Label  Margin="5, 0, 0, 0"
                                    VerticalOptions="Center">
                                 cm
@@ -108,45 +108,45 @@
                         </Grid.ColumnDefinitions>
 
                         <Label
-                            Grid.Column="0"
-                            Style="{StaticResource LabelTitleStyle}"
-                            Text="Krümmer-Durchmesser" />
+							Grid.Column="0"
+							Style="{StaticResource LabelTitleStyle}"
+							Text="Krümmer-Durchmesser" />
 
                         <ImageButton
-                            Grid.Column="1"
-                            Clicked="HelperVehiclesButton_Clicked"
-                            Source="{StaticResource IconAtvMedium}" />
+							Grid.Column="1"
+							Clicked="HelperVehiclesButton_Clicked"
+							Source="{StaticResource IconAtvMedium}" />
                     </Grid>
 
                     <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
                     <StackLayout Orientation="Horizontal">
                         <Entry
-                            Keyboard="Numeric"
-                            Placeholder="Auslassfläche"
-                            Text="{Binding Path=VehicleMotorAuslassFlaecheA, Mode=TwoWay}"
-                            WidthRequest="250" />
+							Keyboard="Numeric"
+							Placeholder="Auslassfläche"
+							Text="{Binding Path=VehicleMotorAuslassFlaecheA, Mode=TwoWay}"
+							WidthRequest="250" />
 
                         <Picker
-                            Margin="5,0,0,0"
-                            ItemsSource="{Binding Path=AreaQuantityUnits, Mode=OneTime}"
-                            ItemDisplayBinding="{Binding Abbreviation}"
-                            HorizontalOptions="StartAndExpand"
-                            SelectedItem="{Binding VehicleMotorAuslassFlaecheAUnit}"
-                            VerticalOptions="CenterAndExpand" />
+							Margin="5,0,0,0"
+							ItemsSource="{Binding Path=AreaQuantityUnits, Mode=OneTime}"
+							ItemDisplayBinding="{Binding Abbreviation}"
+							HorizontalOptions="StartAndExpand"
+							SelectedItem="{Binding VehicleMotorAuslassFlaecheAUnit}"
+							VerticalOptions="CenterAndExpand" />
                     </StackLayout>
 
                     <StackLayout Orientation="Horizontal">
                         <Entry
-                            Keyboard="Numeric"
-                            IsEnabled="False"
-                            Placeholder="Ø Krümmer"
-                            Text="{Binding Path=KruemmerSpannneD, Mode=TwoWay}"
-                            WidthRequest="250" />
+							Keyboard="Numeric"
+							IsEnabled="False"
+							Placeholder="Ø Krümmer"
+							Text="{Binding Path=KruemmerSpannneD, Mode=TwoWay}"
+							WidthRequest="250" />
 
                         <Label
-                            Margin="5,0,0,0"
-                            VerticalOptions="Center">
+							Margin="5,0,0,0"
+							VerticalOptions="Center">
                             mm
                         </Label>
                     </StackLayout>
@@ -157,42 +157,42 @@
                 <StackLayout>
 
                     <Label
-                        Style="{StaticResource LabelTitleStyle}"
-                        Text="Abgastemperatur" />
+						Style="{StaticResource LabelTitleStyle}"
+						Text="Abgastemperatur" />
 
                     <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
                     <StackLayout Orientation="Horizontal">
                         <Entry
-                            Keyboard="Numeric"
-                            Placeholder="Temperatur"
-                            Text="{Binding Path=ModAuspuffAbgasT, Mode=TwoWay}"
-                            WidthRequest="250" />
+							Keyboard="Numeric"
+							Placeholder="Temperatur"
+							Text="{Binding Path=ModAuspuffAbgasT, Mode=TwoWay}"
+							WidthRequest="250" />
 
                         <Picker
-                            Margin="5,0,0,0"
-                            ItemsSource="{Binding Path=TemperatureQuantityUnits, Mode=OneTime}"
-                            ItemDisplayBinding="{Binding Abbreviation}"
-                            HorizontalOptions="StartAndExpand"
-                            SelectedItem="{Binding Path=ModAuspuffAbgasTUnit}"
-                            VerticalOptions="CenterAndExpand" />
+							Margin="5,0,0,0"
+							ItemsSource="{Binding Path=TemperatureQuantityUnits, Mode=OneTime}"
+							ItemDisplayBinding="{Binding Abbreviation}"
+							HorizontalOptions="StartAndExpand"
+							SelectedItem="{Binding Path=ModAuspuffAbgasTUnit}"
+							VerticalOptions="CenterAndExpand" />
                     </StackLayout>
 
                     <StackLayout Orientation="Horizontal">
                         <Entry
-                            Keyboard="Numeric"
-                            IsEnabled="False"
-                            Placeholder="Geschwindigkeit"
-                            Text="{Binding Path=ModAuspuffAbgasV, Mode=TwoWay}"
-                            WidthRequest="250" />
+							Keyboard="Numeric"
+							IsEnabled="False"
+							Placeholder="Geschwindigkeit"
+							Text="{Binding Path=ModAuspuffAbgasV, Mode=TwoWay}"
+							WidthRequest="250" />
 
                         <Picker
-                            Margin="5,0,0,0"
-                            ItemsSource="{Binding Path=SpeedQuantityUnits, Mode=OneTime}"
-                            ItemDisplayBinding="{Binding Abbreviation}"
-                            HorizontalOptions="StartAndExpand"
-                            SelectedItem="{Binding ModAuspuffAbgasVUnit}"
-                            VerticalOptions="CenterAndExpand" />
+							Margin="5,0,0,0"
+							ItemsSource="{Binding Path=SpeedQuantityUnits, Mode=OneTime}"
+							ItemDisplayBinding="{Binding Abbreviation}"
+							HorizontalOptions="StartAndExpand"
+							SelectedItem="{Binding ModAuspuffAbgasVUnit}"
+							VerticalOptions="CenterAndExpand" />
                     </StackLayout>
                 </StackLayout>
             </Border>
@@ -206,77 +206,77 @@
                         </Grid.ColumnDefinitions>
 
                         <Label
-                            Grid.Column="0"
-                            Style="{StaticResource LabelTitleStyle}"
-                            Text="Resonanzlänge" />
+							Grid.Column="0"
+							Style="{StaticResource LabelTitleStyle}"
+							Text="Resonanzlänge" />
 
                         <ImageButton
-                            Grid.Column="1"
-                            Clicked="HelperVehiclesButton_Clicked"
-                            Source="{StaticResource IconAtvMedium}" />
+							Grid.Column="1"
+							Clicked="HelperVehiclesButton_Clicked"
+							Source="{StaticResource IconAtvMedium}" />
                     </Grid>
 
                     <BoxView Style="{StaticResource DividerBoxViewStyle}" />
 
                     <StackLayout Orientation="Horizontal">
                         <Entry
-                            Keyboard="Numeric"
-                            Placeholder="Ausslass Steuerwinkel"
-                            Text="{Binding Path=VehicleMotorAuslassSteuerzeitSZ, Mode=TwoWay}"
-                            WidthRequest="250" />
+							Keyboard="Numeric"
+							Placeholder="Ausslass Steuerwinkel"
+							Text="{Binding Path=VehicleMotorAuslassSteuerzeitSZ, Mode=TwoWay}"
+							WidthRequest="250" />
 
                         <Label
-                            Margin="5,0,0,0"
-                            VerticalOptions="Center">
+							Margin="5,0,0,0"
+							VerticalOptions="Center">
                             °KW
                         </Label>
                     </StackLayout>
 
                     <StackLayout Orientation="Horizontal">
                         <Entry
-                            Keyboard="Numeric"
-                            Placeholder="Abgastemperatur"
-                            Text="{Binding Path=VehicleMotorAuslassAuspuffAbgasT, Mode=TwoWay}"
-                            WidthRequest="250" />
+							Keyboard="Numeric"
+							Placeholder="Abgastemperatur"
+							Text="{Binding Path=VehicleMotorAuslassAuspuffAbgasT, Mode=TwoWay}"
+							WidthRequest="250" />
 
                         <Picker
-                            Margin="5,0,0,0"
-                            ItemsSource="{Binding Path=TemperatureQuantityUnits, Mode=OneTime}"
-                            ItemDisplayBinding="{Binding Abbreviation}"
-                            HorizontalOptions="StartAndExpand"
-                            SelectedItem="{Binding Path=VehicleMotorAuslassAuspuffAbgasTUnit}"
-                            VerticalOptions="CenterAndExpand" />
+							Margin="5,0,0,0"
+							ItemsSource="{Binding Path=TemperatureQuantityUnits, Mode=OneTime}"
+							ItemDisplayBinding="{Binding Abbreviation}"
+							HorizontalOptions="StartAndExpand"
+							SelectedItem="{Binding Path=VehicleMotorAuslassAuspuffAbgasTUnit}"
+							VerticalOptions="CenterAndExpand" />
                     </StackLayout>
 
                     <StackLayout Orientation="Horizontal">
                         <Entry
-                            Keyboard="Numeric"
-                            Placeholder="Resonanzdrehzahl"
-                            Text="{Binding Path=VehicleMotorResonanzU, Mode=TwoWay}"
-                            WidthRequest="250" />
+							Keyboard="Numeric"
+							Placeholder="Resonanzdrehzahl"
+							Text="{Binding Path=VehicleMotorResonanzU, Mode=TwoWay}"
+							WidthRequest="250" />
 
                         <Label
-                            Margin="5,0,0,0"
-                            VerticalOptions="Center">
+							Margin="5,0,0,0"
+							VerticalOptions="Center">
                             1/min
                         </Label>
                     </StackLayout>
 
                     <StackLayout Orientation="Horizontal">
                         <Entry
-                            Keyboard="Numeric"
-                            IsEnabled="False"
-                            Placeholder="Resonanzlänge"
-                            Text="{Binding Path=VehicleMotorAuslassAuspuffResonanzL, Mode=TwoWay}"
-                            WidthRequest="250" />
+							Keyboard="Numeric"
+							IsEnabled="False"
+							Placeholder="Resonanzlänge"
+							Text="{Binding Path=VehicleMotorAuslassAuspuffResonanzL, Mode=TwoWay}"
+							WidthRequest="250" />
 
                         <Picker
-                            Margin="5,0,0,0"
-                            ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
-                            ItemDisplayBinding="{Binding Abbreviation}"
-                            HorizontalOptions="StartAndExpand"
-                            SelectedItem="{Binding Path=VehicleMotorAuslassAuspuffResonanzLUnit}"
-                            VerticalOptions="CenterAndExpand" />
+							Margin="5,0,0,0"
+							ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+							ItemDisplayBinding="{Binding Abbreviation}"
+							HorizontalOptions="StartAndExpand"
+							SelectedItem="{Binding Path=VehicleMotorAuslassAuspuffResonanzLUnit}"
+							VerticalOptions="CenterAndExpand" />
                     </StackLayout>
                 </StackLayout>
             </Border>

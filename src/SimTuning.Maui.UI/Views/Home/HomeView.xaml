@@ -1,8 +1,8 @@
 ﻿<ContentPage
-    x:Class="SimTuning.Maui.UI.Views.Home.HomeView"
-    xmlns="http://schemas.microsoft.com/dotnet/maui/global"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:DataType="HomeViewModel">
+	x:Class="SimTuning.Maui.UI.Views.Home.HomeView"
+	xmlns="http://schemas.microsoft.com/dotnet/maui/global"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	x:DataType="HomeViewModel">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -25,51 +25,51 @@
                 </Grid.ColumnDefinitions>
 
                 <Label
-                    Grid.Row="0"
-                    Grid.ColumnSpan="2"
-                    Style="{StaticResource LabelTitleStyle}">
+					Grid.Row="0"
+					Grid.ColumnSpan="2"
+					Style="{StaticResource LabelTitleStyle}">
                     Bleib auf dem Laufenden
                 </Label>
 
                 <BoxView
-                    Grid.Row="1"
-                    Grid.ColumnSpan="2"
-                    Style="{StaticResource DividerBoxViewStyle}" />
+					Grid.Row="1"
+					Grid.ColumnSpan="2"
+					Style="{StaticResource DividerBoxViewStyle}" />
 
                 <Label
-                    Grid.Row="2"
-                    Grid.ColumnSpan="2"
-                    LineBreakMode="CharacterWrap">
+					Grid.Row="2"
+					Grid.ColumnSpan="2"
+					LineBreakMode="CharacterWrap">
                     Schreib eine Nachricht, verfolge Updates oder stöber etwas herum, hier findest du alles:
                 </Label>
 
                 <Button
-                    Grid.Row="3"
-                    Grid.Column="0"
-                    Text="Website"
-                    Command="{Binding OpenWebsiteCommand}"
-                    ImageSource="{StaticResource IconWebMedium}" />
+					Grid.Row="3"
+					Grid.Column="0"
+					Text="Website"
+					Command="{Binding OpenWebsiteCommand}"
+					ImageSource="{StaticResource IconWebMedium}" />
 
                 <Button
-                    Grid.Row="3"
-                    Grid.Column="1"
-                    Text="Twitter"
-                    Command="{Binding OpenTwitterCommand}"
-                    ImageSource="{StaticResource IconTwitterMedium}" />
+					Grid.Row="3"
+					Grid.Column="1"
+					Text="Twitter"
+					Command="{Binding OpenTwitterCommand}"
+					ImageSource="{StaticResource IconTwitterMedium}" />
 
                 <Button
-                    Grid.Row="4"
-                    Grid.Column="0"
-                    Command="{Binding OpenInstagramCommand}"
-                    ImageSource="{StaticResource IconInstagramMedium}"
-                    Text="Instagram" />
+					Grid.Row="4"
+					Grid.Column="0"
+					Command="{Binding OpenInstagramCommand}"
+					ImageSource="{StaticResource IconInstagramMedium}"
+					Text="Instagram" />
 
                 <Button
-                    Grid.Row="4"
-                    Grid.Column="1"
-                    Text="Email"
-                    Command="{Binding OpenEmailCommand}"
-                    ImageSource="{StaticResource IconEmailMedium}" />
+					Grid.Row="4"
+					Grid.Column="1"
+					Text="Email"
+					Command="{Binding OpenEmailCommand}"
+					ImageSource="{StaticResource IconEmailMedium}" />
 
             </Grid>
         </Border>
@@ -85,26 +85,26 @@
                 </Grid.RowDefinitions>
 
                 <Label
-                    Grid.Row="0"
-                    Style="{StaticResource LabelTitleStyle}">
+					Grid.Row="0"
+					Style="{StaticResource LabelTitleStyle}">
                     Das Projekt
                 </Label>
 
                 <BoxView
-                    Grid.Row="1"
-                    Style="{StaticResource DividerBoxViewStyle}" />
+					Grid.Row="1"
+					Style="{StaticResource DividerBoxViewStyle}" />
 
                 <Label
-                    Grid.Row="2"
-                    LineBreakMode="CharacterWrap">
+					Grid.Row="2"
+					LineBreakMode="CharacterWrap">
                     Dieses Projekt wurde von mir allein ins Leben gerufen. Ich hatte keinen Sponsor oder ähnliches. Ich würde mich sehr über eine kleine Spende freuen
                 </Label>
 
                 <Button
-                    Grid.Row="3"
-                    Text="Unterstützen"
-                    Command="{Binding OpenDonateCommand}"
-                    ImageSource="{StaticResource IconWalletGiftcardMedium}" />
+					Grid.Row="3"
+					Text="Unterstützen"
+					Command="{Binding OpenDonateCommand}"
+					ImageSource="{StaticResource IconWalletGiftcardMedium}" />
             </Grid>
         </Border>
     </Grid>

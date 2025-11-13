@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    xmlns="http://schemas.microsoft.com/dotnet/maui/global"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Title="Allgemein"
-    x:Class="SimTuning.Maui.UI.Views.Einstellungen.EinstellungenView"
-    x:DataType="EinstellungenViewModel">
+	xmlns="http://schemas.microsoft.com/dotnet/maui/global"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	Title="Allgemein"
+	x:Class="SimTuning.Maui.UI.Views.Einstellungen.EinstellungenView"
+	x:DataType="EinstellungenViewModel">
     <Grid Margin="20">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.25*" />
@@ -16,20 +16,20 @@
         </Grid.RowDefinitions>
 
         <Label
-            VerticalOptions="Center"
-            Text="Runden beim Einheiten Wechsel" />
+			VerticalOptions="Center"
+			Text="Runden beim Einheiten Wechsel" />
 
         <CheckBox
-            Grid.Column="1"
-            VerticalOptions="Center"
-            Margin="10"
-            IsChecked="{Binding Path=RoundOnUnitChange, Mode=TwoWay}" />
+			Grid.Column="1"
+			VerticalOptions="Center"
+			Margin="10"
+			IsChecked="{Binding Path=RoundOnUnitChange, Mode=TwoWay}" />
 
         <Entry
-            Grid.Row="1"
-            Grid.ColumnSpan="2"
-            IsEnabled="{Binding Path=RoundOnUnitChange, Mode=OneWay}"
-            Text="{Binding Path=RoundingAccuracy, Mode=TwoWay}"
-            Placeholder="Kommastellen" />
+			Grid.Row="1"
+			Grid.ColumnSpan="2"
+			IsEnabled="{Binding Path=RoundOnUnitChange, Mode=OneWay}"
+			Text="{Binding Path=RoundingAccuracy, Mode=TwoWay}"
+			Placeholder="Kommastellen" />
     </Grid>
 </ContentPage>

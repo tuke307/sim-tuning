@@ -1,9 +1,9 @@
 ﻿<ContentPage
-    x:Class="SimTuning.Maui.UI.Views.Motor.MotorMainView"
-    xmlns="http://schemas.microsoft.com/dotnet/maui/global"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:tabs="http://sharpnado.com"
-    x:DataType="MotorMainViewModel">
+	x:Class="SimTuning.Maui.UI.Views.Motor.MotorMainView"
+	xmlns="http://schemas.microsoft.com/dotnet/maui/global"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:tabs="http://sharpnado.com"
+	x:DataType="MotorMainViewModel">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -12,29 +12,29 @@
 
         <!--swipable views-->
         <tabs:TabHostView
-            SelectedIndex="{Binding Source={x:Reference Switcher}, Path=SelectedIndex, Mode=TwoWay}"
-            Grid.Row="0">
+			SelectedIndex="{Binding Source={x:Reference Switcher}, Path=SelectedIndex, Mode=TwoWay}"
+			Grid.Row="0">
             <tabs:TabHostView.Tabs>
                 <tabs:UnderlinedTabItem
-                    Label="Umrechnungen"
-                    Style="{StaticResource UnderlinedTabItemStyle}" />
+					Label="Umrechnungen"
+					Style="{StaticResource UnderlinedTabItemStyle}" />
                 <tabs:UnderlinedTabItem
-                    Label="Steuerdiagramm"
-                    Style="{StaticResource UnderlinedTabItemStyle}" />
+					Label="Steuerdiagramm"
+					Style="{StaticResource UnderlinedTabItemStyle}" />
                 <tabs:UnderlinedTabItem
-                    Label="Verdichtung"
-                    Style="{StaticResource UnderlinedTabItemStyle}" />
+					Label="Verdichtung"
+					Style="{StaticResource UnderlinedTabItemStyle}" />
                 <tabs:UnderlinedTabItem
-                    Label="Hubraum"
-                    Style="{StaticResource UnderlinedTabItemStyle}" />
+					Label="Hubraum"
+					Style="{StaticResource UnderlinedTabItemStyle}" />
             </tabs:TabHostView.Tabs>
         </tabs:TabHostView>
 
         <tabs:ViewSwitcher
-            Grid.Row="1"
-            x:Name="Switcher"
-            Animate="True"
-            SelectedIndex="{Binding MotorTabIndex}">
+			Grid.Row="1"
+			x:Name="Switcher"
+			Animate="True"
+			SelectedIndex="{Binding MotorTabIndex}">
             <MotorUmrechnungView />
             <MotorSteuerdiagrammView />
             <MotorVerdichtungView />

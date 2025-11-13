@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="SimTuning.Maui.UI.Views.Auslass.AuslassMainView"
-    xmlns="http://schemas.microsoft.com/dotnet/maui/global"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:tabs="http://sharpnado.com"
-    x:DataType="AuslassMainViewModel">
+	x:Class="SimTuning.Maui.UI.Views.Auslass.AuslassMainView"
+	xmlns="http://schemas.microsoft.com/dotnet/maui/global"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:tabs="http://sharpnado.com"
+	x:DataType="AuslassMainViewModel">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -13,23 +13,23 @@
 
         <!--  swipable views  -->
         <tabs:TabHostView
-            Grid.Row="0"
-            SelectedIndex="{Binding Source={x:Reference Switcher}, Path=SelectedIndex, Mode=TwoWay}">
+			Grid.Row="0"
+			SelectedIndex="{Binding Source={x:Reference Switcher}, Path=SelectedIndex, Mode=TwoWay}">
             <tabs:TabHostView.Tabs>
                 <tabs:UnderlinedTabItem
-                    Style="{StaticResource UnderlinedTabItemStyle}"
-                    Label="Anwendung" />
+					Style="{StaticResource UnderlinedTabItemStyle}"
+					Label="Anwendung" />
                 <tabs:UnderlinedTabItem
-                    Style="{StaticResource UnderlinedTabItemStyle}"
-                    Label="Theorie" />
+					Style="{StaticResource UnderlinedTabItemStyle}"
+					Label="Theorie" />
             </tabs:TabHostView.Tabs>
         </tabs:TabHostView>
 
         <tabs:ViewSwitcher
-            x:Name="Switcher"
-            Grid.Row="1"
-            Animate="True"
-            SelectedIndex="{Binding AuslassTabIndex}">
+			x:Name="Switcher"
+			Grid.Row="1"
+			Animate="True"
+			SelectedIndex="{Binding AuslassTabIndex}">
             <AuslassAnwendungView />
             <AuslassTheorieView />
         </tabs:ViewSwitcher>
