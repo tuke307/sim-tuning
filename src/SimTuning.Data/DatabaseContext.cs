@@ -107,6 +107,21 @@ namespace SimTuning.Data
         /// </summary>
         public DatabaseContext()
         {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DatabaseContext" /> class with options.
+        /// </summary>
+        /// <param name="options">The options for this context.</param>
+        public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
+        {
+        }
+
+        /// <summary>
+        /// Ensures the database is created and migrated.
+        /// </summary>
+        public void EnsureDatabaseCreated()
+        {
             // Ensure the directory exists before attempting to create the database file
             var dbDirectory = Path.GetDirectoryName(Data.DatabaseSettings.DatabasePath);
             if (!string.IsNullOrEmpty(dbDirectory) && !Directory.Exists(dbDirectory))

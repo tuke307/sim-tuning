@@ -1,13 +1,16 @@
 ﻿// Copyright (c) 2025 tuke productions. All rights reserved.
 namespace SimTuning.Data
 {
-    using Microsoft.Maui.Devices;
     using Microsoft.Maui.Storage;
-    using System;
     using System.IO;
 
+#pragma warning disable CS8305
+    using FileSystem = Microsoft.Maui.Storage.FileSystem;
+    using Preferences = Microsoft.Maui.Storage.Preferences;
+#pragma warning restore CS8305
+
     /// <summary>
-    /// Konstanten für die Datenbank-Abwicklung.
+    /// Database configuration and path management.
     /// </summary>
     public static class DatabaseSettings
     {
@@ -22,7 +25,6 @@ namespace SimTuning.Data
         /// <summary>
         /// Gets or sets the database path.
         /// </summary>
-        /// <value>The database path.</value>
         public static string DatabasePath
         {
             get
@@ -30,46 +32,82 @@ namespace SimTuning.Data
                 if (string.IsNullOrEmpty(_databasePath))
                 {
                     _databasePath = Path.Combine(FileDirectory, DatabaseName);
-                    DatabasePath = _databasePath;
                 }
 
-                return Preferences.Default.Get(nameof(DatabasePath), _databasePath);
+                return GetPreference(nameof(DatabasePath), _databasePath);
             }
             set
             {
-                Preferences.Default.Set(nameof(DatabasePath), value);
+                _databasePath = value;
+                SetPreference(nameof(DatabasePath), value);
             }
         }
 
         /// <summary>
         /// Gets or sets the file directory.
         /// </summary>
-        /// <value>The file directory.</value>
         public static string FileDirectory
         {
             get
             {
                 if (string.IsNullOrEmpty(_fileDirectory))
                 {
-                    // Use FileSystem.AppDataDirectory for proper cross-platform support
-                    // This works correctly on Android, iOS, macOS (Mac Catalyst), and Windows
-                    _fileDirectory = FileSystem.AppDataDirectory;
-
-                    // Ensure directory exists
-                    if (!Directory.Exists(_fileDirectory))
-                    {
-                        Directory.CreateDirectory(_fileDirectory);
-                    }
-
-                    FileDirectory = _fileDirectory;
+                    _fileDirectory = GetAppDataDirectory();
+                    EnsureDirectoryExists(_fileDirectory);
                 }
 
-                return Preferences.Default.Get(nameof(FileDirectory), _fileDirectory);
+                return GetPreference(nameof(FileDirectory), _fileDirectory);
             }
-
             set
             {
-                Preferences.Default.Set(nameof(FileDirectory), value);
+                _fileDirectory = value;
+                SetPreference(nameof(FileDirectory), value);
+            }
+        }
+
+        private static string GetAppDataDirectory()
+        {
+            try
+            {
+                return FileSystem.AppDataDirectory;
+            }
+            catch
+            {
+                // Fallback for design-time when FileSystem is not available
+                return Path.GetTempPath();
+            }
+        }
+
+        private static void EnsureDirectoryExists(string directory)
+        {
+            if (!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+        }
+
+        private static string GetPreference(string key, string defaultValue)
+        {
+            try
+            {
+                return Preferences.Default.Get(key, defaultValue);
+            }
+            catch
+            {
+                // Fallback for design-time when Preferences is not available
+                return defaultValue;
+            }
+        }
+
+        private static void SetPreference(string key, string value)
+        {
+            try
+            {
+                Preferences.Default.Set(key, value);
+            }
+            catch
+            {
+                // Ignore at design-time when Preferences is not available
             }
         }
     }

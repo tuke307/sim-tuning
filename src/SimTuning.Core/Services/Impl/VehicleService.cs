@@ -31,6 +31,10 @@ namespace SimTuning.Core.Services
             Vehicles = new List<VehiclesModel>();
             Environments = new List<EnvironmentModel>();
             Motoren = new List<MotorModel>();
+
+            // Ensure database is created on first use
+            using var db = new DatabaseContext();
+            db.EnsureDatabaseCreated();
         }
 
         /// <inheritdoc />
