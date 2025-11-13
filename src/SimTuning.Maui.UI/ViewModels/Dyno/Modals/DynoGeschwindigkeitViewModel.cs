@@ -73,7 +73,7 @@ namespace SimTuning.Maui.UI.ViewModels
             }
             catch (Exception exc)
             {
-                _logger.LogError("Fehler bei ReloadData: ", exc);
+                _logger.LogError(exc, "Fehler bei ReloadData");
             }
         }
 
