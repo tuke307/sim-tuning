@@ -2117,7 +2117,6 @@ namespace SimTuning.Maui.UI.Styles
         public const string VideoInputSvideo = "\U000f0842";
         public const string ViewDashboardVariant = "\U000f0843";
         public const string Vuejs = "\U000f0844";
-        public const string Xamarin = "\U000f0845";
         public const string HumanMaleBoardPoll = "\U000f0846";
         public const string YoutubeStudio = "\U000f0847";
         public const string YoutubeGaming = "\U000f0848";
