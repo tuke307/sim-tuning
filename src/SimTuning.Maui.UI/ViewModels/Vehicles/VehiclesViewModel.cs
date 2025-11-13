@@ -46,7 +46,7 @@ namespace SimTuning.Maui.UI.ViewModels
             }
             catch (Exception exc)
             {
-                _logger.LogError(exc, exc.Message);
+                _logger.LogError(exc, "Error deleting vehicle: {Message}", exc.Message);
             }
         }
 
@@ -70,7 +70,7 @@ namespace SimTuning.Maui.UI.ViewModels
             }
             catch (Exception exc)
             {
-                _logger.LogError(exc, exc.Message);
+                _logger.LogError(exc, "Error creating new vehicle: {Message}", exc.Message);
             }
         }
 

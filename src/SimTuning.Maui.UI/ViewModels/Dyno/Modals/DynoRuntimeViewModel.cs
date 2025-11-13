@@ -232,7 +232,7 @@ namespace SimTuning.Maui.UI.ViewModels
             }
             catch (Exception exc)
             {
-                _logger.LogError(exc, "Fehler bei ResetBeschleunigung");
+                _logger.LogError(exc, "Fehler bei ResetBeschleunigung: {Message}", exc.Message);
             }
         }
 
@@ -266,7 +266,7 @@ namespace SimTuning.Maui.UI.ViewModels
             }
             catch (Exception exc)
             {
-                _logger.LogError(exc, "Fehler bei StartAusrollen");
+                _logger.LogError(exc, "Fehler bei StartAusrollen: {Message}", exc.Message);
             }
         }
 
@@ -313,7 +313,7 @@ namespace SimTuning.Maui.UI.ViewModels
             }
             catch (Exception exc)
             {
-                _logger.LogError(exc, "Fehler bei StartBeschleunigung");
+                _logger.LogError(exc, "Fehler bei StartBeschleunigung: {Message}", exc.Message);
             }
         }
 

@@ -113,7 +113,7 @@ namespace SimTuning.Maui.UI.ViewModels
             }
             catch (Exception exc)
             {
-                _logger.LogError(exc, "Fehler bei RefreshPlot");
+                _logger.LogError(exc, "Fehler bei RefreshPlot: {Message}", exc.Message);
             }
         }
 
