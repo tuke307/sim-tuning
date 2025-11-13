@@ -1,4 +1,6 @@
 ﻿// Copyright (c) 2025 tuke productions. All rights reserved.
+using CommunityToolkit.Maui;
+using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -13,21 +15,26 @@ using SimTuning.Data.Models;
 using SimTuning.Maui.UI.Services;
 using System.Collections.ObjectModel;
 using System.IO.Compression;
+using System.Threading.Tasks;
 
 namespace SimTuning.Maui.UI.ViewModels
 {
 
-    public class DynoDataViewModel : ViewModelBase
+    public partial class DynoDataViewModel : ViewModelBase
     {
+        private readonly IPopupService _popupService;
+
         public DynoDataViewModel(
             ILogger<DynoDataViewModel> logger,
             INavigationService navigationService,
             IVehicleService vehicleService,
-            IBrowserService browserService)
+            IBrowserService browserService,
+            IPopupService popupService)
         {
             _logger = logger;
             _navigationService = navigationService;
             _vehicleService = vehicleService;
+            _popupService = popupService;
             _browserService = browserService;
 
             DeleteDynoCommand = new RelayCommand(DeleteDyno);
@@ -126,6 +133,16 @@ namespace SimTuning.Maui.UI.ViewModels
             catch (Exception exc)
             {
                 _logger.LogError(exc, "Error creating new dyno: {Message}", exc.Message);
+            }
+        }
+
+        [RelayCommand]
+        private async Task ShowNewDynoAsync()
+        {
+            var result = await _popupService.ShowPopupAsync<VehiclesViewModel>(Shell.Current);
+            if (result is VehiclesModel vehicleModel)
+            {
+                NewDyno(vehicleModel);
             }
         }
 

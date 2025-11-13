@@ -1,4 +1,6 @@
 ﻿// Copyright (c) 2025 tuke productions. All rights reserved.
+using CommunityToolkit.Maui;
+using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using SimTuning.Core;
@@ -7,18 +9,23 @@ using SimTuning.Core.ModuleLogic;
 using SimTuning.Core.Services;
 using SimTuning.Data.Models;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using UnitsNet.Units;
 
 namespace SimTuning.Maui.UI.ViewModels
 {
-    public class EinlassKanalViewModel : ViewModelBase
+    public partial class EinlassKanalViewModel : ViewModelBase
     {
+        private readonly IPopupService _popupService;
+
         public EinlassKanalViewModel(
             ILogger<EinlassKanalViewModel> logger,
-            IVehicleService vehicleService)
+            IVehicleService vehicleService,
+            IPopupService popupService)
         {
             _logger = logger;
             _vehicleService = vehicleService;
+            _popupService = popupService;
 
             AreaQuantityUnits = new AreaQuantity();
             VolumeQuantityUnits = new VolumeQuantity();
@@ -62,6 +69,16 @@ namespace SimTuning.Maui.UI.ViewModels
             if (helperVehicle.Motor.Einlass.DurchmesserD.HasValue)
             {
                 VehicleMotorEinlassDurchmesserD = helperVehicle.Motor.Einlass.DurchmesserD;
+            }
+        }
+
+        [RelayCommand]
+        private async Task ShowHelperVehiclesAsync()
+        {
+            var result = await _popupService.ShowPopupAsync<VehiclesViewModel>(Shell.Current);
+            if (result is VehiclesModel vehicleModel)
+            {
+                InsertHelperVehicle(vehicleModel);
             }
         }
 

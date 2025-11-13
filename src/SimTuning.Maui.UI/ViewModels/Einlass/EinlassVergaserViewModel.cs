@@ -1,4 +1,6 @@
 ﻿// Copyright (c) 2025 tuke productions. All rights reserved.
+using CommunityToolkit.Maui;
+using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using SimTuning.Core;
@@ -7,18 +9,23 @@ using SimTuning.Core.ModuleLogic;
 using SimTuning.Core.Services;
 using SimTuning.Data.Models;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using UnitsNet.Units;
 
 namespace SimTuning.Maui.UI.ViewModels
 {
-    public class EinlassVergaserViewModel : ViewModelBase
+    public partial class EinlassVergaserViewModel : ViewModelBase
     {
+        private readonly IPopupService _popupService;
+
         public EinlassVergaserViewModel(
             ILogger<EinlassVergaserViewModel> logger,
-            IVehicleService vehicleService)
+            IVehicleService vehicleService,
+            IPopupService popupService)
         {
             _logger = logger;
             _vehicleService = vehicleService;
+            _popupService = popupService;
 
             VolumeQuantityUnits = new VolumeQuantity();
             LengthQuantityUnits = new LengthQuantity();
@@ -37,6 +44,16 @@ namespace SimTuning.Maui.UI.ViewModels
 
             if (helperVehicle.Motor.ResonanzU.HasValue)
                 Resonanzdrehzahl = helperVehicle.Motor.ResonanzU;
+        }
+
+        [RelayCommand]
+        private async Task ShowHelperVehiclesAsync()
+        {
+            var result = await _popupService.ShowPopupAsync<VehiclesViewModel>(Shell.Current);
+            if (result is VehiclesModel vehicleModel)
+            {
+                InsertHelperVehicle(vehicleModel);
+            }
         }
 
         private void Refresh_Hauptduesendurchmesser()

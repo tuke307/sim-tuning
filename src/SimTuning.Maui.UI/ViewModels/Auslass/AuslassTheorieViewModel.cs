@@ -1,4 +1,6 @@
 ﻿// Copyright (c) 2025 tuke productions. All rights reserved.
+using CommunityToolkit.Maui;
+using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using SimTuning.Core;
@@ -9,18 +11,23 @@ using SimTuning.Core.Services;
 using SimTuning.Data.Models;
 using SimTuning.Maui.UI.Services;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using UnitsNet.Units;
 
 namespace SimTuning.Maui.UI.ViewModels
 {
-    public class AuslassTheorieViewModel : ViewModelBase
+    public partial class AuslassTheorieViewModel : ViewModelBase
     {
+        private readonly IPopupService _popupService;
+
         public AuslassTheorieViewModel(
             ILogger<AuslassTheorieViewModel> logger,
-            IVehicleService vehicleService)
+            IVehicleService vehicleService,
+            IPopupService popupService)
         {
             _logger = logger;
             _vehicleService = vehicleService;
+            _popupService = popupService;
 
             AreaQuantityUnits = new AreaQuantity();
             LengthQuantityUnits = new LengthQuantity();
@@ -59,6 +66,16 @@ namespace SimTuning.Maui.UI.ViewModels
             if (helperVehicle.Motor.Auslass.SteuerzeitSZ.HasValue)
             {
                 VehicleMotorAuslassSteuerzeitSZ = helperVehicle.Motor.Auslass.SteuerzeitSZ;
+            }
+        }
+
+        [RelayCommand]
+        private async Task ShowHelperVehiclesAsync()
+        {
+            var result = await _popupService.ShowPopupAsync<VehiclesViewModel>(Shell.Current);
+            if (result is VehiclesModel vehicleModel)
+            {
+                InsertHelperVehicle(vehicleModel);
             }
         }
 
