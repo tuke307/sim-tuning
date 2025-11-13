@@ -1,6 +1,8 @@
 ﻿// Copyright (c) 2025 tuke productions. All rights reserved.
 namespace SimTuning.Maui.UI.ViewModels
 {
+    using CommunityToolkit.Maui;
+	using CommunityToolkit.Maui.Views;
     using CommunityToolkit.Mvvm.Input;
     using Microsoft.Extensions.Logging;
     using SimTuning.Core;
@@ -16,15 +18,19 @@ namespace SimTuning.Maui.UI.ViewModels
     /// <summary>
     /// UmrechnungViewModel.
     /// </summary>
-    public class MotorUmrechnungViewModel : ViewModelBase
+    public partial class MotorUmrechnungViewModel : ViewModelBase
     {
+        private readonly IPopupService _popupService;
+
         public MotorUmrechnungViewModel(
             ILogger<MotorUmrechnungViewModel> logger,
             INavigationService navigationService,
-            IVehicleService vehicleService)
+            IVehicleService vehicleService,
+            IPopupService popupService)
         {
             _logger = logger;
             _vehicleService = vehicleService;
+            _popupService = popupService;
 
             VolumeQuantityUnits = new VolumeQuantity();
             LengthQuantityUnits = new LengthQuantity();
@@ -63,6 +69,16 @@ namespace SimTuning.Maui.UI.ViewModels
             {
                 VehicleMotorDeachsierungL = helperVehicle.Motor.DeachsierungL;
                 OnPropertyChanged(nameof(VehicleMotorDeachsierungL));
+            }
+        }
+
+        [RelayCommand]
+        private async Task ShowHelperVehiclesAsync()
+        {
+            var result = await _popupService.ShowPopupAsync<VehiclesViewModel>(Shell.Current);
+            if (result is VehiclesModel vehicleModel)
+            {
+                InsertHelperVehicle(vehicleModel);
             }
         }
 

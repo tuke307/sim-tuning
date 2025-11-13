@@ -73,7 +73,7 @@
 						Grid.Column="0"
 						MinimumWidthRequest="50"
 						Source="{StaticResource IconPlusCircleMultipleOutlineMedium}"
-						Clicked="NewDynoButton_Clicked">
+						Command="{Binding ShowNewDynoCommand}">
                     </ImageButton>
 
                     <ImageButton

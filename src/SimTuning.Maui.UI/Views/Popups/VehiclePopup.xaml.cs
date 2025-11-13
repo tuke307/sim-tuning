@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Maui.Views;
-using CommunityToolkit.Mvvm.DependencyInjection;
 using SimTuning.Data.Models;
 using SimTuning.Maui.UI.ViewModels;
 
@@ -9,11 +8,11 @@ namespace SimTuning.Maui.UI.Views.Popups
     {
         public VehiclesViewModel ViewModel => (VehiclesViewModel)BindingContext;
 
-        public VehiclePopup()
+        public VehiclePopup(VehiclesViewModel viewModel)
         {
             InitializeComponent();
 
-            BindingContext = Ioc.Default.GetRequiredService<VehiclesViewModel>();
+            BindingContext = viewModel;
         }
 
         private async void Button_Clicked(object sender, EventArgs e)

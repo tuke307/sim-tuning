@@ -1,6 +1,8 @@
 ﻿// Copyright (c) 2025 tuke productions. All rights reserved.
 namespace SimTuning.Maui.UI.ViewModels
 {
+    using CommunityToolkit.Maui;
+    using CommunityToolkit.Maui.Views;
     using CommunityToolkit.Mvvm.ComponentModel;
     using CommunityToolkit.Mvvm.Input;
     using Microsoft.EntityFrameworkCore;
@@ -17,8 +19,10 @@ namespace SimTuning.Maui.UI.ViewModels
     using System.Linq;
     using System.Threading.Tasks;
 
-    public class MotorSteuerdiagrammViewModel : ViewModelBase
+    public partial class MotorSteuerdiagrammViewModel : ViewModelBase
     {
+        private readonly IPopupService _popupService;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MotorSteuerdiagrammViewModel" /> class.
         /// </summary>
@@ -28,10 +32,12 @@ namespace SimTuning.Maui.UI.ViewModels
         public MotorSteuerdiagrammViewModel(
             ILogger<MotorSteuerdiagrammViewModel> logger,
             INavigationService navigationService,
-            IVehicleService vehicleService)
+            IVehicleService vehicleService,
+            IPopupService popupService)
         {
             _logger = logger;
             _vehicleService = vehicleService;
+            _popupService = popupService;
         }
 
         #region Methods
@@ -75,6 +81,26 @@ namespace SimTuning.Maui.UI.ViewModels
             if (helperVehicle.Motor.Ueberstroemer.SteuerzeitSZ.HasValue)
             {
                 SteuerzeitUeberstroemer = helperVehicle.Motor.Ueberstroemer.SteuerzeitSZ;
+            }
+        }
+
+        [RelayCommand]
+        private async Task ShowHelperVehiclesAsync()
+        {
+            var result = await _popupService.ShowPopupAsync<VehiclesViewModel>(Shell.Current);
+            if (result is VehiclesModel vehicleModel)
+            {
+                InsertHelperVehicle(vehicleModel);
+            }
+        }
+
+        [RelayCommand]
+        private async Task ShowHelperEnginesAsync()
+        {
+            var result = await _popupService.ShowPopupAsync<PortTimingViewModel>(Shell.Current);
+            if (result is MotorModel motorModel)
+            {
+                InsertHelperEngines(motorModel);
             }
         }
 

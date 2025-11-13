@@ -1,6 +1,8 @@
 ﻿// Copyright (c) 2025 tuke productions. All rights reserved.
 namespace SimTuning.Maui.UI.ViewModels
 {
+    using CommunityToolkit.Maui;
+	using CommunityToolkit.Maui.Views;
     using CommunityToolkit.Mvvm.Input;
     using Microsoft.Extensions.Logging;
     using SimTuning.Core;
@@ -14,15 +16,19 @@ namespace SimTuning.Maui.UI.ViewModels
     using System.Linq;
     using UnitsNet.Units;
 
-    public class MotorVerdichtungViewModel : ViewModelBase
+    public partial class MotorVerdichtungViewModel : ViewModelBase
     {
+        private readonly IPopupService _popupService;
+
         public MotorVerdichtungViewModel(
             ILogger<MotorVerdichtungViewModel> logger,
             INavigationService navigationService,
-            IVehicleService vehicleService)
+            IVehicleService vehicleService,
+            IPopupService popupService)
         {
             _logger = logger;
             _vehicleService = vehicleService;
+            _popupService = popupService;
 
             VolumeQuantityUnits = new VolumeQuantity();
             LengthQuantityUnits = new LengthQuantity();
@@ -57,6 +63,16 @@ namespace SimTuning.Maui.UI.ViewModels
             {
                 VehicleMotorBohrungD = helperVehicle.Motor.BohrungD;
                 OnPropertyChanged(nameof(VehicleMotorBohrungD));
+            }
+        }
+
+        [RelayCommand]
+        private async Task ShowHelperVehiclesAsync()
+        {
+            var result = await _popupService.ShowPopupAsync<VehiclesViewModel>(Shell.Current);
+            if (result is VehiclesModel vehicleModel)
+            {
+                InsertHelperVehicle(vehicleModel);
             }
         }
 

@@ -1,5 +1,8 @@
 ﻿// Copyright (c) 2025 tuke productions. All rights reserved.
+using CommunityToolkit.Maui;
+using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SimTuning.Core;
@@ -17,15 +20,19 @@ using UnitsNet.Units;
 
 namespace SimTuning.Maui.UI.ViewModels
 {
-    public class MotorHubraumViewModel : ViewModelBase
+    public partial class MotorHubraumViewModel : ViewModelBase
     {
+        private readonly IPopupService _popupService;
+
         public MotorHubraumViewModel(
             ILogger<MotorHubraumViewModel> logger,
             INavigationService navigationService,
-            IVehicleService vehicleService)
+            IVehicleService vehicleService,
+            IPopupService popupService)
         {
             _logger = logger;
             _vehicleService = vehicleService;
+            _popupService = popupService;
 
             VolumeQuantityUnits = new VolumeQuantity();
             LengthQuantityUnits = new LengthQuantity();
@@ -45,6 +52,16 @@ namespace SimTuning.Maui.UI.ViewModels
             {
                 Hub = helperVehicle.Motor.HubL;
                 //GrindingDiameters = EngineLogic.GetGrindingDiameters(helperVehicle.Motor.BohrungD.Value);
+            }
+        }
+
+        [RelayCommand]
+        private async Task ShowHelperVehiclesAsync()
+        {
+            var result = await _popupService.ShowPopupAsync<VehiclesViewModel>(Shell.Current);
+            if (result is VehiclesModel vehicleModel)
+            {
+                InsertHelperVehicle(vehicleModel);
             }
         }
 

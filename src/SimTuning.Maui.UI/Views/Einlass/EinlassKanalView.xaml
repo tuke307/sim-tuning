@@ -36,7 +36,7 @@
 
                         <ImageButton
 							Grid.Column="1"
-							Clicked="HelperVehiclesButton_Clicked"
+							Command="{Binding ShowHelperVehiclesCommand}"
 							Source="{StaticResource IconAtvMedium}" />
                     </Grid>
 
