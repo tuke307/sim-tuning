@@ -64,7 +64,11 @@ namespace SimTuning.Maui.App
                     .BuildServiceProvider());
             }
 
-            MainPage = new SimTuning.Maui.UI.Views.MainPage();
+        }
+
+        protected override Window CreateWindow(IActivationState? activationState)
+        {
+            return new Window(new SimTuning.Maui.UI.Views.MainPage());
         }
     }
 }
