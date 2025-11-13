@@ -1,4 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <!-- Clear TargetFrameworks from parent Directory.Build.props -->
+    <TargetFrameworks></TargetFrameworks>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <!-- Override the global UseMaui setting from Directory.Build.props -->
+    <UseMaui>false</UseMaui>
+    <EnableDefaultCompileItems>true</EnableDefaultCompileItems>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.0" />
@@ -6,5 +16,8 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <!-- Inherited from Directory.Build.props but use latest version -->
+    <PackageReference Update="Microsoft.Maui.Controls" Version="10.0.10" />
+    <PackageReference Update="UnitsNet" Version="5.75.0" />
   </ItemGroup>
 </Project>
