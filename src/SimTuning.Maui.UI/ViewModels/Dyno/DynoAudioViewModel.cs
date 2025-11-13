@@ -150,7 +150,7 @@ namespace SimTuning.Maui.UI.ViewModels
             }
             catch (Exception exc)
             {
-                _logger.LogError("LoadRotationalSpeed: ", exc.Message);
+                _logger.LogError(exc, "LoadRotationalSpeed failed");
             }
         }
 
@@ -191,7 +191,7 @@ namespace SimTuning.Maui.UI.ViewModels
             }
             catch (Exception exc)
             {
-                _logger.LogError("Fehler bei LoadClusters: ", exc.Message);
+                _logger.LogError(exc, "Fehler bei LoadClusters");
             }
         }
 
@@ -242,7 +242,7 @@ namespace SimTuning.Maui.UI.ViewModels
             }
             catch (Exception exc)
             {
-                _logger.LogError("Fehler bei LoadSpecificCluster: ", exc.Message);
+                _logger.LogError(exc, "Fehler bei LoadSpecificCluster");
             }
         }
 

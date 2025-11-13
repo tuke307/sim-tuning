@@ -70,7 +70,7 @@ namespace SimTuning.Maui.UI.ViewModels
             }
             catch (Exception exc)
             {
-                _logger.LogError(exc, exc.Message, null);
+                _logger.LogError(exc, exc.Message);
             }
         }
 

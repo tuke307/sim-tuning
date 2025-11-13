@@ -44,7 +44,7 @@ namespace SimTuning.Core.Services
             catch (Exception ex)
             {
                 // An unexpected error occurred. No browser may be installed on the device.
-                _logger.LogError(ex, ex.Message, null);
+                _logger.LogError(ex, ex.Message);
             }
         }
 
