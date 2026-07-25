@@ -4,6 +4,9 @@
     <!-- DSP helper library, not a MAUI app: opt out of the inherited UseMaui=true (Phase 1 finding)
          and expose a base net11.0 target so SimTuning.Core / SimTuning.Test can reference us headlessly. -->
     <UseMaui>false</UseMaui>
+    <!-- Vendored legacy DSP source (slated for NuGet replacement in Phase 17): disable nullable
+         to silence the inherited Nullable=enable annotation flood on code we won't hand-annotate. -->
+    <Nullable>disable</Nullable>
     <TargetFrameworks>$(TargetFrameworks);net11.0</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>

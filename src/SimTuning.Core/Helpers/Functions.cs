@@ -1,9 +1,4 @@
 ﻿// Copyright (c) 2025 tuke productions. All rights reserved.
-using CommunityToolkit.Maui.Alerts;
-using Microsoft.Maui.ApplicationModel;
-using Microsoft.Maui.Devices;
-using SimTuning.Core.Converters;
-using SkiaSharp;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,9 +8,13 @@ using System.IO.Compression;
 using System.Linq;
 using System.Resources;
 using System.Security;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Maui.Alerts;
+using Microsoft.Maui.ApplicationModel;
+using Microsoft.Maui.Devices;
+using SimTuning.Core.Converters;
+using SkiaSharp;
 using static Microsoft.Maui.ApplicationModel.Permissions;
 
 namespace SimTuning.Core.Helpers
@@ -101,13 +100,13 @@ namespace SimTuning.Core.Helpers
         private static void ShowPermissionDeniedMessage<TPermission>()
             where TPermission : BasePermission
         {
-            string messageKey = typeof(TPermission).Name switch
+            string? messageKey = typeof(TPermission).Name switch
             {
                 nameof(Permissions.StorageRead) => "ERR_STORAGEREAD",
                 nameof(Permissions.StorageWrite) => "ERR_STORAGEWRITE",
                 nameof(Permissions.LocationWhenInUse) => "ERR_LOCATION",
                 nameof(Permissions.Microphone) => "ERR_MICROPHONE",
-                _ => null
+                _ => null,
             };
 
             if (messageKey != null)
@@ -191,19 +190,13 @@ namespace SimTuning.Core.Helpers
 
                 foreach (var message in messages)
                 {
-                    await Snackbar
-                        .Make(
-                        message: message,
-                        duration: TimeSpan.FromSeconds(3))
-                        .Show();
+                    await Snackbar.Make(message: message, duration: TimeSpan.FromSeconds(3)).Show();
                 }
             }
             else
             {
                 await Snackbar
-                    .Make(
-                    message: content.ToString(),
-                    duration: TimeSpan.FromSeconds(3))
+                    .Make(message: content.ToString() ?? string.Empty, duration: TimeSpan.FromSeconds(3))
                     .Show();
             }
         }
@@ -226,22 +219,10 @@ namespace SimTuning.Core.Helpers
                 UnitsNet.UnitConverter.Convert(
                     value.Value,
                     selectedFromUnit.UnitEnumValue,
-                    selectedToUnit.UnitEnumValue), 2);
-        }
-
-        /// <summary>
-        /// Generate128s the bits of random entropy.
-        /// </summary>
-        /// <returns></returns>
-        private static byte[] Generate128BitsOfRandomEntropy()
-        {
-            var randomBytes = new byte[16]; // 16 Bytes will give us 128 bits.
-            using (var rngCsp = new RNGCryptoServiceProvider())
-            {
-                // Fill the array with cryptographically secure random bytes.
-                rngCsp.GetBytes(randomBytes);
-            }
-            return randomBytes;
+                    selectedToUnit.UnitEnumValue
+                ),
+                2
+            );
         }
     }
 }

@@ -120,8 +120,12 @@ namespace SimTuning.Core.ModuleLogic
                 Color = SKColors.Black,
                 StrokeWidth = 3,
                 IsAntialias = true,
-                TextSize = 25,
             };
+
+            // SkiaSharp 3.x moved text metrics off SKPaint onto SKFont: SKPaint.TextSize and
+            // DrawText(string,float,float,SKPaint) are obsolete. One label font (default
+            // typeface, size 25) replaces the former blackPen.TextSize for all labels below.
+            using SKFont labelFont = new SKFont { Size = 25 };
 
             SKPaint blackDoubleArrowPen = new SKPaint
             {
@@ -402,7 +406,7 @@ namespace SimTuning.Core.ModuleLogic
              */
 
             // Längen
-            graphic_auspuff.DrawText(/*kruemmerL.ToString()*/"LK", xstart1 + (width1 / 2) - 15, ymiddle + 200, blackPen);
+            graphic_auspuff.DrawText(/*kruemmerL.ToString()*/"LK", xstart1 + (width1 / 2) - 15, ymiddle + 200, SKTextAlign.Left, labelFont, blackPen);
 
             // ONE-Stage Diffusor
             if (vehicle.Motor.Auslass.Auspuff.DiffusorL1 != 0)
@@ -413,35 +417,35 @@ namespace SimTuning.Core.ModuleLogic
                     // THREE-Stage Diffusor
                     if (vehicle.Motor.Auslass.Auspuff.DiffusorL3 != 0)
                     {
-                        graphic_auspuff.DrawText(/*konus1L.ToString()*/"LD1", xstart2 + (width2 / 2) - 15, ymiddle + 150, blackPen);
-                        graphic_auspuff.DrawText(/*konus2L.ToString()*/"LD2", xstart3 + (width3 / 2) - 15, ymiddle + 150, blackPen);
-                        graphic_auspuff.DrawText(/*konus3L.ToString()*/"LD3", xstart4 + (width4 / 2) - 15, ymiddle + 150, blackPen);
+                        graphic_auspuff.DrawText(/*konus1L.ToString()*/"LD1", xstart2 + (width2 / 2) - 15, ymiddle + 150, SKTextAlign.Left, labelFont, blackPen);
+                        graphic_auspuff.DrawText(/*konus2L.ToString()*/"LD2", xstart3 + (width3 / 2) - 15, ymiddle + 150, SKTextAlign.Left, labelFont, blackPen);
+                        graphic_auspuff.DrawText(/*konus3L.ToString()*/"LD3", xstart4 + (width4 / 2) - 15, ymiddle + 150, SKTextAlign.Left, labelFont, blackPen);
                     }
                     else
                     {
-                        graphic_auspuff.DrawText(/*konus1L.ToString()*/"LD1", xstart2 + (width2 / 2) - 15, ymiddle + 150, blackPen);
-                        graphic_auspuff.DrawText(/*konus2L.ToString()*/"LD2", xstart3 + (width3 / 2) - 15, ymiddle + 150, blackPen);
+                        graphic_auspuff.DrawText(/*konus1L.ToString()*/"LD1", xstart2 + (width2 / 2) - 15, ymiddle + 150, SKTextAlign.Left, labelFont, blackPen);
+                        graphic_auspuff.DrawText(/*konus2L.ToString()*/"LD2", xstart3 + (width3 / 2) - 15, ymiddle + 150, SKTextAlign.Left, labelFont, blackPen);
                     }
                 }
                 else
                 {
-                    graphic_auspuff.DrawText(/*konus1L.ToString()*/"LD", xstart2 + (width2 / 2) - 15, ymiddle + 200, blackPen);
+                    graphic_auspuff.DrawText(/*konus1L.ToString()*/"LD", xstart2 + (width2 / 2) - 15, ymiddle + 200, SKTextAlign.Left, labelFont, blackPen);
                 }
             }
 
-            graphic_auspuff.DrawText(/*mittelteilL.ToString()*/"LM", xstart5 + (width5 / 2) - 15, ymiddle + 200, blackPen);
-            graphic_auspuff.DrawText(/*gegenkonusL.ToString()*/"LG", xstart6 + (width6 / 2) - 15, ymiddle + 200, blackPen);
-            graphic_auspuff.DrawText(/*endrohrL.ToString()*/"LE", xstart7 + (width7 / 2) - 15, ymiddle + 200, blackPen);
+            graphic_auspuff.DrawText(/*mittelteilL.ToString()*/"LM", xstart5 + (width5 / 2) - 15, ymiddle + 200, SKTextAlign.Left, labelFont, blackPen);
+            graphic_auspuff.DrawText(/*gegenkonusL.ToString()*/"LG", xstart6 + (width6 / 2) - 15, ymiddle + 200, SKTextAlign.Left, labelFont, blackPen);
+            graphic_auspuff.DrawText(/*endrohrL.ToString()*/"LE", xstart7 + (width7 / 2) - 15, ymiddle + 200, SKTextAlign.Left, labelFont, blackPen);
 
             // Durchmesser
             graphic_auspuff.DrawText(
                 "D1",
                 xstart1 - 90, ymiddle - 15,
-                blackPen);
+                SKTextAlign.Left, labelFont, blackPen);
             graphic_auspuff.DrawText(
                 "D2",
                 xstart7 + width7 + 65, ymiddle - 15,
-                blackPen);
+                SKTextAlign.Left, labelFont, blackPen);
             // graphic_auspuff.DrawString("D3", drawFont, drawBrushblack, Xstart7 + width7
             // + 65, Ymiddle - 15); graphic_auspuff.DrawString("D4", drawFont,
             // drawBrushblack, Xstart7 + width7 + 65, Ymiddle - 15);
@@ -450,27 +454,26 @@ namespace SimTuning.Core.ModuleLogic
 
             #region TeilBezeichnung
 
-            blackPen.TextSize = 25;
             graphic_auspuff.DrawText(
                 "Krümmer",
                 xstart1 + 20, ymiddle,
-                blackPen);
+                SKTextAlign.Left, labelFont, blackPen);
             graphic_auspuff.DrawText(
                 "Konus",
                 xstart2 + 20, ymiddle,
-                blackPen);
+                SKTextAlign.Left, labelFont, blackPen);
             graphic_auspuff.DrawText(
                 "Mittelteil",
                 xstart5 + 20, ymiddle,
-                blackPen);
+                SKTextAlign.Left, labelFont, blackPen);
             graphic_auspuff.DrawText(
                 "Gegenkonus",
                 xstart6 + 20, ymiddle,
-                blackPen);
+                SKTextAlign.Left, labelFont, blackPen);
             graphic_auspuff.DrawText(
                 "Endrohr",
                 xstart7 + 20, ymiddle,
-                blackPen);
+                SKTextAlign.Left, labelFont, blackPen);
 
             #endregion TeilBezeichnung
 
