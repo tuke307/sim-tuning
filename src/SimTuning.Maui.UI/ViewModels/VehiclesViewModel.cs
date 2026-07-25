@@ -34,9 +34,9 @@ namespace SimTuning.Maui.UI.ViewModels
         /// </summary>
         private void ReloadData()
         {
-            Vehicles = new ObservableCollection<Data.Models.VehiclesModel>(_vehicleService.RetrieveVehicles());
+            Vehicles = new ObservableCollection<Data.Models.VehiclesModel>(_vehicleService.RetrieveVehicles() ?? new List<Data.Models.VehiclesModel>());
 
-            Engines = new ObservableCollection<Data.Models.MotorModel>(_vehicleService.RetrieveMotoren());
+            Engines = new ObservableCollection<Data.Models.MotorModel>(_vehicleService.RetrieveMotoren() ?? new List<Data.Models.MotorModel>());
         }
 
         #endregion Methods
@@ -46,12 +46,12 @@ namespace SimTuning.Maui.UI.ViewModels
         protected readonly IVehicleService _vehicleService;
 
         private readonly ILogger<VehiclesViewModelBase> _logger;
-        private Data.Models.MotorModel _engine;
+        private Data.Models.MotorModel? _engine;
 
-        private ObservableCollection<Data.Models.MotorModel> _engines;
-        private Data.Models.VehiclesModel _vehicle;
+        private ObservableCollection<Data.Models.MotorModel> _engines = new ObservableCollection<Data.Models.MotorModel>();
+        private Data.Models.VehiclesModel? _vehicle;
 
-        private ObservableCollection<Data.Models.VehiclesModel> _vehicles;
+        private ObservableCollection<Data.Models.VehiclesModel> _vehicles = new ObservableCollection<Data.Models.VehiclesModel>();
 
         public ObservableCollection<UnitListItem> AreaQuantityUnits { get; }
 
@@ -59,7 +59,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the engine.
         /// </summary>
         /// <value>The engine.</value>
-        public Data.Models.MotorModel Engine
+        public Data.Models.MotorModel? Engine
         {
             get => _engine;
             set
@@ -121,7 +121,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the vehicle.
         /// </summary>
         /// <value>The vehicle.</value>
-        public Data.Models.VehiclesModel Vehicle
+        public Data.Models.VehiclesModel? Vehicle
         {
             get => _vehicle;
             set
@@ -154,7 +154,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the vehicle beschreibung.
         /// </summary>
         /// <value>The vehicle beschreibung.</value>
-        public string VehicleBeschreibung
+        public string? VehicleBeschreibung
         {
             get => Vehicle?.Beschreibung;
             set
@@ -174,14 +174,14 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle dyno audio.</value>
         public ObservableCollection<Data.Models.DrehzahlModel> VehicleDynoAudio
         {
-            get => Vehicle?.Dyno?.Drehzahl == null ? new ObservableCollection<Data.Models.DrehzahlModel>() : new ObservableCollection<Data.Models.DrehzahlModel>(Vehicle.Dyno.Drehzahl);
+            get => Vehicle?.Dyno?.Drehzahl is ObservableCollection<Data.Models.DrehzahlModel> drehzahl ? new ObservableCollection<Data.Models.DrehzahlModel>(drehzahl) : new ObservableCollection<Data.Models.DrehzahlModel>();
         }
 
         /// <summary>
         /// Gets or sets the vehicle dyno beschreibung.
         /// </summary>
         /// <value>The vehicle dyno beschreibung.</value>
-        public string VehicleDynoBeschreibung
+        public string? VehicleDynoBeschreibung
         {
             get => Vehicle?.Dyno?.Beschreibung;
             set
@@ -201,14 +201,14 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The vehicle dyno dyno ps.</value>
         public ObservableCollection<Data.Models.DynoPsModel> VehicleDynoDynoPS
         {
-            get => Vehicle?.Dyno?.DynoPS == null ? new ObservableCollection<Data.Models.DynoPsModel>() : new ObservableCollection<Data.Models.DynoPsModel>(Vehicle?.Dyno?.DynoPS);
+            get => Vehicle?.Dyno?.DynoPS is ObservableCollection<Data.Models.DynoPsModel> dynoPS ? new ObservableCollection<Data.Models.DynoPsModel>(dynoPS) : new ObservableCollection<Data.Models.DynoPsModel>();
         }
 
         /// <summary>
         /// Gets or sets the name of the vehicle dyno.
         /// </summary>
         /// <value>The name of the vehicle dyno.</value>
-        public string VehicleDynoName
+        public string? VehicleDynoName
         {
             get => Vehicle?.Dyno?.Name;
             set
@@ -244,7 +244,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the vehicle gewicht unit.
         /// </summary>
         /// <value>The vehicle gewicht unit.</value>
-        public UnitListItem VehicleGewichtUnit
+        public UnitListItem? VehicleGewichtUnit
         {
             get => MassQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.GewichtUnit));
             set
@@ -254,7 +254,7 @@ namespace SimTuning.Maui.UI.ViewModels
                     return;
                 }
 
-                Vehicle.GewichtUnit = (UnitsNet.Units.MassUnit)value?.UnitEnumValue;
+                Vehicle.GewichtUnit = (UnitsNet.Units.MassUnit?)value?.UnitEnumValue;
                 OnPropertyChanged(nameof(VehicleGewicht));
             }
         }
@@ -292,7 +292,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the vehicle motor auslass breite b unit.
         /// </summary>
         /// <value>The vehicle motor auslass breite b unit.</value>
-        public UnitListItem VehicleMotorAuslassBreiteBUnit
+        public UnitListItem? VehicleMotorAuslassBreiteBUnit
         {
             get => LengthQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.Auslass?.BreiteBUnit));
             set
@@ -301,7 +301,7 @@ namespace SimTuning.Maui.UI.ViewModels
                 {
                     return;
                 }
-                Vehicle.Motor.Auslass.BreiteBUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
+                Vehicle.Motor.Auslass.BreiteBUnit = (UnitsNet.Units.LengthUnit?)value?.UnitEnumValue;
                 OnPropertyChanged(nameof(VehicleMotorAuslassBreiteB));
             }
         }
@@ -327,7 +327,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the vehicle motor auslass flaeche a unit.
         /// </summary>
         /// <value>The vehicle motor auslass flaeche a unit.</value>
-        public UnitListItem VehicleMotorAuslassFlaecheAUnit
+        public UnitListItem? VehicleMotorAuslassFlaecheAUnit
         {
             get => AreaQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.Auslass?.FlaecheAUnit));
             set
@@ -336,7 +336,7 @@ namespace SimTuning.Maui.UI.ViewModels
                 {
                     return;
                 }
-                Vehicle.Motor.Auslass.FlaecheAUnit = (UnitsNet.Units.AreaUnit)value?.UnitEnumValue;
+                Vehicle.Motor.Auslass.FlaecheAUnit = ((UnitsNet.Units.AreaUnit?)value?.UnitEnumValue).GetValueOrDefault();
                 OnPropertyChanged(nameof(VehicleMotorAuslassFlaecheA));
             }
         }
@@ -362,7 +362,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the vehicle motor auslass hoehe h unit.
         /// </summary>
         /// <value>The vehicle motor auslass hoehe h unit.</value>
-        public UnitListItem VehicleMotorAuslassHoeheHUnit
+        public UnitListItem? VehicleMotorAuslassHoeheHUnit
         {
             get => LengthQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.Auslass?.HoeheHUnit));
             set
@@ -371,7 +371,7 @@ namespace SimTuning.Maui.UI.ViewModels
                 {
                     return;
                 }
-                Vehicle.Motor.Auslass.HoeheHUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
+                Vehicle.Motor.Auslass.HoeheHUnit = ((UnitsNet.Units.LengthUnit?)value?.UnitEnumValue).GetValueOrDefault();
                 OnPropertyChanged(nameof(VehicleMotorAuslassHoeheH));
             }
         }
@@ -397,7 +397,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the vehicle motor auslass laenge l unit.
         /// </summary>
         /// <value>The vehicle motor auslass laenge l unit.</value>
-        public UnitListItem VehicleMotorAuslassLaengeLUnit
+        public UnitListItem? VehicleMotorAuslassLaengeLUnit
         {
             get => LengthQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.Auslass?.LaengeLUnit));
             set
@@ -406,7 +406,7 @@ namespace SimTuning.Maui.UI.ViewModels
                 {
                     return;
                 }
-                Vehicle.Motor.Auslass.LaengeLUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
+                Vehicle.Motor.Auslass.LaengeLUnit = ((UnitsNet.Units.LengthUnit?)value?.UnitEnumValue).GetValueOrDefault();
                 OnPropertyChanged(nameof(VehicleMotorAuslassLaengeL));
             }
         }
@@ -449,7 +449,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the vehicle motor bohrung d unit.
         /// </summary>
         /// <value>The vehicle motor bohrung d unit.</value>
-        public UnitListItem VehicleMotorBohrungDUnit
+        public UnitListItem? VehicleMotorBohrungDUnit
         {
             get => LengthQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.BohrungDUnit));
             set
@@ -458,7 +458,7 @@ namespace SimTuning.Maui.UI.ViewModels
                 {
                     return;
                 }
-                Vehicle.Motor.BohrungDUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
+                Vehicle.Motor.BohrungDUnit = (UnitsNet.Units.LengthUnit?)value?.UnitEnumValue;
                 OnPropertyChanged(nameof(VehicleMotorBohrungD));
             }
         }
@@ -484,7 +484,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the vehicle motor brennraum v unit.
         /// </summary>
         /// <value>The vehicle motor brennraum v unit.</value>
-        public UnitListItem VehicleMotorBrennraumVUnit
+        public UnitListItem? VehicleMotorBrennraumVUnit
         {
             get => VolumeQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.BrennraumVUnit));
             set
@@ -493,7 +493,7 @@ namespace SimTuning.Maui.UI.ViewModels
                 {
                     return;
                 }
-                Vehicle.Motor.BrennraumVUnit = (UnitsNet.Units.VolumeUnit)value?.UnitEnumValue;
+                Vehicle.Motor.BrennraumVUnit = (UnitsNet.Units.VolumeUnit?)value?.UnitEnumValue;
                 OnPropertyChanged(nameof(VehicleMotorBrennraumV));
             }
         }
@@ -519,7 +519,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the vehicle motor deachsierung l unit.
         /// </summary>
         /// <value>The vehicle motor deachsierung l unit.</value>
-        public UnitListItem VehicleMotorDeachsierungLUnit
+        public UnitListItem? VehicleMotorDeachsierungLUnit
         {
             get => LengthQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.DeachsierungLUnit));
             set
@@ -528,7 +528,7 @@ namespace SimTuning.Maui.UI.ViewModels
                 {
                     return;
                 }
-                Vehicle.Motor.DeachsierungLUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
+                Vehicle.Motor.DeachsierungLUnit = (UnitsNet.Units.LengthUnit?)value?.UnitEnumValue;
                 OnPropertyChanged(nameof(VehicleMotorDeachsierungL));
             }
         }
@@ -554,7 +554,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the vehicle motor einlass breite b unit.
         /// </summary>
         /// <value>The vehicle motor einlass breite b unit.</value>
-        public UnitListItem VehicleMotorEinlassBreiteBUnit
+        public UnitListItem? VehicleMotorEinlassBreiteBUnit
         {
             get => LengthQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.Einlass?.BreiteBUnit));
             set
@@ -563,7 +563,7 @@ namespace SimTuning.Maui.UI.ViewModels
                 {
                     return;
                 }
-                Vehicle.Motor.Einlass.BreiteBUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
+                Vehicle.Motor.Einlass.BreiteBUnit = (UnitsNet.Units.LengthUnit?)value?.UnitEnumValue;
                 OnPropertyChanged(nameof(VehicleMotorEinlassBreiteB));
             }
         }
@@ -581,7 +581,7 @@ namespace SimTuning.Maui.UI.ViewModels
             }
         }
 
-        public UnitListItem VehicleMotorEinlassDurchmesserDUnit
+        public UnitListItem? VehicleMotorEinlassDurchmesserDUnit
         {
             get => LengthQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.Einlass?.DurchmesserDUnit));
             set
@@ -590,7 +590,7 @@ namespace SimTuning.Maui.UI.ViewModels
                 {
                     return;
                 }
-                Vehicle.Motor.Einlass.DurchmesserDUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
+                Vehicle.Motor.Einlass.DurchmesserDUnit = (UnitsNet.Units.LengthUnit?)value?.UnitEnumValue;
                 OnPropertyChanged(nameof(VehicleMotorEinlassDurchmesserD));
             }
         }
@@ -616,7 +616,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the vehicle motor einlass flaeche a unit.
         /// </summary>
         /// <value>The vehicle motor einlass flaeche a unit.</value>
-        public UnitListItem VehicleMotorEinlassFlaecheAUnit
+        public UnitListItem? VehicleMotorEinlassFlaecheAUnit
         {
             get => AreaQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.Einlass?.FlaecheAUnit));
             set
@@ -625,7 +625,7 @@ namespace SimTuning.Maui.UI.ViewModels
                 {
                     return;
                 }
-                Vehicle.Motor.Einlass.FlaecheAUnit = (UnitsNet.Units.AreaUnit)value?.UnitEnumValue;
+                Vehicle.Motor.Einlass.FlaecheAUnit = (UnitsNet.Units.AreaUnit?)value?.UnitEnumValue;
                 OnPropertyChanged(nameof(VehicleMotorEinlassFlaecheA));
             }
         }
@@ -651,7 +651,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the vehicle motor einlass hoehe h unit.
         /// </summary>
         /// <value>The vehicle motor einlass hoehe h unit.</value>
-        public UnitListItem VehicleMotorEinlassHoeheHUnit
+        public UnitListItem? VehicleMotorEinlassHoeheHUnit
         {
             get => LengthQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.Einlass?.HoeheHUnit));
             set
@@ -660,7 +660,7 @@ namespace SimTuning.Maui.UI.ViewModels
                 {
                     return;
                 }
-                Vehicle.Motor.Einlass.HoeheHUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
+                Vehicle.Motor.Einlass.HoeheHUnit = (UnitsNet.Units.LengthUnit?)value?.UnitEnumValue;
                 OnPropertyChanged(nameof(VehicleMotorEinlassHoeheH));
             }
         }
@@ -686,7 +686,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the vehicle motor einlass laenge l unit.
         /// </summary>
         /// <value>The vehicle motor einlass laenge l unit.</value>
-        public UnitListItem VehicleMotorEinlassLaengeLUnit
+        public UnitListItem? VehicleMotorEinlassLaengeLUnit
         {
             get => LengthQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.Einlass?.LaengeLUnit));
             set
@@ -695,7 +695,7 @@ namespace SimTuning.Maui.UI.ViewModels
                 {
                     return;
                 }
-                Vehicle.Motor.Einlass.LaengeLUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
+                Vehicle.Motor.Einlass.LaengeLUnit = (UnitsNet.Units.LengthUnit?)value?.UnitEnumValue;
                 OnPropertyChanged(nameof(VehicleMotorEinlassLaengeL));
             }
         }
@@ -772,7 +772,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the vehicle motor einlass vergaser durchmesser d unit.
         /// </summary>
         /// <value>The vehicle motor einlass vergaser durchmesser d unit.</value>
-        public UnitListItem VehicleMotorEinlassVergaserDurchmesserDUnit
+        public UnitListItem? VehicleMotorEinlassVergaserDurchmesserDUnit
         {
             get => LengthQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.Einlass?.Vergaser?.DurchmesserDUnit));
             set
@@ -782,7 +782,7 @@ namespace SimTuning.Maui.UI.ViewModels
                     return;
                 }
 
-                Vehicle.Motor.Einlass.Vergaser.DurchmesserDUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
+                Vehicle.Motor.Einlass.Vergaser.DurchmesserDUnit = (UnitsNet.Units.LengthUnit?)value?.UnitEnumValue;
                 OnPropertyChanged(nameof(VehicleMotorEinlassVergaserDurchmesserD));
             }
         }
@@ -826,7 +826,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the vehicle motor hub l unit.
         /// </summary>
         /// <value>The vehicle motor hub l unit.</value>
-        public UnitListItem VehicleMotorHubLUnit
+        public UnitListItem? VehicleMotorHubLUnit
         {
             get => LengthQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.HubLUnit));
             set
@@ -836,7 +836,7 @@ namespace SimTuning.Maui.UI.ViewModels
                     return;
                 }
 
-                Vehicle.Motor.HubLUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
+                Vehicle.Motor.HubLUnit = (UnitsNet.Units.LengthUnit?)value?.UnitEnumValue;
                 OnPropertyChanged(nameof(VehicleMotorHubL));
             }
         }
@@ -862,7 +862,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the vehicle motor hubraum v unit.
         /// </summary>
         /// <value>The vehicle motor hubraum v unit.</value>
-        public UnitListItem VehicleMotorHubraumVUnit
+        public UnitListItem? VehicleMotorHubraumVUnit
         {
             get => VolumeQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.HubraumVUnit));
             set
@@ -871,7 +871,7 @@ namespace SimTuning.Maui.UI.ViewModels
                 {
                     return;
                 }
-                Vehicle.Motor.HubraumVUnit = (UnitsNet.Units.VolumeUnit)value?.UnitEnumValue;
+                Vehicle.Motor.HubraumVUnit = (UnitsNet.Units.VolumeUnit?)value?.UnitEnumValue;
                 OnPropertyChanged(nameof(VehicleMotorHubraumV));
             }
         }
@@ -897,7 +897,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the vehicle motor kolben g unit.
         /// </summary>
         /// <value>The vehicle motor kolben g unit.</value>
-        public UnitListItem VehicleMotorKolbenGUnit
+        public UnitListItem? VehicleMotorKolbenGUnit
         {
             get => SpeedQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.KolbenGUnit));
             set
@@ -906,7 +906,7 @@ namespace SimTuning.Maui.UI.ViewModels
                 {
                     return;
                 }
-                Vehicle.Motor.KolbenGUnit = (UnitsNet.Units.SpeedUnit)value?.UnitEnumValue;
+                Vehicle.Motor.KolbenGUnit = (UnitsNet.Units.SpeedUnit?)value?.UnitEnumValue;
                 OnPropertyChanged(nameof(VehicleMotorKolbenG));
             }
         }
@@ -932,7 +932,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the vehicle motor kurbelgehaeuse v unit.
         /// </summary>
         /// <value>The vehicle motor kurbelgehaeuse v unit.</value>
-        public UnitListItem VehicleMotorKurbelgehaeuseVUnit
+        public UnitListItem? VehicleMotorKurbelgehaeuseVUnit
         {
             get => VolumeQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.KurbelgehaeuseVUnit));
 
@@ -942,7 +942,7 @@ namespace SimTuning.Maui.UI.ViewModels
                 {
                     return;
                 }
-                Vehicle.Motor.KurbelgehaeuseVUnit = (UnitsNet.Units.VolumeUnit)value?.UnitEnumValue;
+                Vehicle.Motor.KurbelgehaeuseVUnit = (UnitsNet.Units.VolumeUnit?)value?.UnitEnumValue;
                 OnPropertyChanged(nameof(VehicleMotorKurbelgehaeuseV));
             }
         }
@@ -951,7 +951,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the name of the vehicle motor.
         /// </summary>
         /// <value>The name of the vehicle motor.</value>
-        public string VehicleMotorName
+        public string? VehicleMotorName
         {
             get => Vehicle?.Motor?.Name;
             set
@@ -985,7 +985,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the vehicle motor pleul l unit.
         /// </summary>
         /// <value>The vehicle motor pleul l unit.</value>
-        public UnitListItem VehicleMotorPleulLUnit
+        public UnitListItem? VehicleMotorPleulLUnit
         {
             get => LengthQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.PleulLUnit));
             set
@@ -994,7 +994,7 @@ namespace SimTuning.Maui.UI.ViewModels
                 {
                     return;
                 }
-                Vehicle.Motor.PleulLUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
+                Vehicle.Motor.PleulLUnit = (UnitsNet.Units.LengthUnit?)value?.UnitEnumValue;
                 OnPropertyChanged(nameof(VehicleMotorPleulL));
             }
         }
@@ -1054,7 +1054,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the vehicle motor ueberstroemer breite b unit.
         /// </summary>
         /// <value>The vehicle motor ueberstroemer breite b unit.</value>
-        public UnitListItem VehicleMotorUeberstroemerBreiteBUnit
+        public UnitListItem? VehicleMotorUeberstroemerBreiteBUnit
         {
             get => LengthQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.Ueberstroemer?.BreiteBUnit));
 
@@ -1064,7 +1064,7 @@ namespace SimTuning.Maui.UI.ViewModels
                 {
                     return;
                 }
-                Vehicle.Motor.Ueberstroemer.BreiteBUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
+                Vehicle.Motor.Ueberstroemer.BreiteBUnit = (UnitsNet.Units.LengthUnit?)value?.UnitEnumValue;
                 OnPropertyChanged(nameof(VehicleMotorUeberstroemerBreiteB));
             }
         }
@@ -1090,7 +1090,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the vehicle motor ueberstroemer flaeche a unit.
         /// </summary>
         /// <value>The vehicle motor ueberstroemer flaeche a unit.</value>
-        public UnitListItem VehicleMotorUeberstroemerFlaecheAUnit
+        public UnitListItem? VehicleMotorUeberstroemerFlaecheAUnit
         {
             get => AreaQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.Ueberstroemer?.FlaecheAUnit));
             set
@@ -1099,7 +1099,7 @@ namespace SimTuning.Maui.UI.ViewModels
                 {
                     return;
                 }
-                Vehicle.Motor.Ueberstroemer.FlaecheAUnit = (UnitsNet.Units.AreaUnit)value?.UnitEnumValue;
+                Vehicle.Motor.Ueberstroemer.FlaecheAUnit = (UnitsNet.Units.AreaUnit?)value?.UnitEnumValue;
                 OnPropertyChanged(nameof(VehicleMotorUeberstroemerFlaecheA));
             }
         }
@@ -1125,7 +1125,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the vehicle motor ueberstroemer hoehe h unit.
         /// </summary>
         /// <value>The vehicle motor ueberstroemer hoehe h unit.</value>
-        public UnitListItem VehicleMotorUeberstroemerHoeheHUnit
+        public UnitListItem? VehicleMotorUeberstroemerHoeheHUnit
         {
             get => LengthQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.Ueberstroemer?.HoeheHUnit));
             set
@@ -1134,7 +1134,7 @@ namespace SimTuning.Maui.UI.ViewModels
                 {
                     return;
                 }
-                Vehicle.Motor.Ueberstroemer.HoeheHUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
+                Vehicle.Motor.Ueberstroemer.HoeheHUnit = (UnitsNet.Units.LengthUnit?)value?.UnitEnumValue;
                 OnPropertyChanged(nameof(VehicleMotorUeberstroemerHoeheH));
             }
         }
@@ -1211,7 +1211,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the name of the vehicle.
         /// </summary>
         /// <value>The name of the vehicle.</value>
-        public string VehicleName
+        public string? VehicleName
         {
             get => Vehicle?.Name;
             set

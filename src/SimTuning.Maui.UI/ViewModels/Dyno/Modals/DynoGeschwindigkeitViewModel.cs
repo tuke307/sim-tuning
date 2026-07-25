@@ -37,19 +37,19 @@ namespace SimTuning.Maui.UI.ViewModels
         protected readonly INavigationService _navigationService;
         protected readonly IVehicleService _vehicleService;
         private readonly ILogger<DynoGeschwindigkeitViewModel> _logger;
-        private DynoModel _dyno;
+        private DynoModel? _dyno;
 
         /// <summary>
         /// Gets or sets the dyno.
         /// </summary>
         /// <value>The dyno.</value>
-        public DynoModel Dyno
+        public DynoModel? Dyno
         {
             get => _dyno;
             set => SetProperty(ref _dyno, value);
         }
 
-        public ISeries PlotGeschwindigkeit
+        public ISeries? PlotGeschwindigkeit
         {
             get => null;//DynoLogic.PlotGeschwindigkeit;
         }

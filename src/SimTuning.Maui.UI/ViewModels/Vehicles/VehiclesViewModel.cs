@@ -33,16 +33,19 @@ namespace SimTuning.Maui.UI.ViewModels
         {
             try
             {
-                if (Vehicle.Deletable)
+                var vehicle = Vehicle;
+                if (vehicle is null || !vehicle.Deletable)
                 {
-                    // in Datenbank löschen
-                    _vehicleService.DeleteOne(Vehicle);
-
-                    // in lokaler liste löschen
-                    Vehicles.Remove(Vehicle);
-
-                    Vehicle = null;
+                    return;
                 }
+
+                // in Datenbank löschen
+                _vehicleService.DeleteOne(vehicle);
+
+                // in lokaler liste löschen
+                Vehicles.Remove(vehicle);
+
+                Vehicle = null;
             }
             catch (Exception exc)
             {
@@ -79,7 +82,13 @@ namespace SimTuning.Maui.UI.ViewModels
         /// </summary>
         protected void SaveVehicle()
         {
-            _vehicleService.UpdateOne(Vehicle);
+            var vehicle = Vehicle;
+            if (vehicle is null)
+            {
+                return;
+            }
+
+            _vehicleService.UpdateOne(vehicle);
         }
 
         #endregion Methods

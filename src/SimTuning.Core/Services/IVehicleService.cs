@@ -13,14 +13,14 @@ namespace SimTuning.Core.Services
         /// Updates the one.
         /// </summary>
         /// <param name="dyno">The dyno.</param>
-        DynoModel CreateOne(DynoModel dyno);
+        DynoModel? CreateOne(DynoModel dyno);
 
         /// <summary>
         /// Creates the one.
         /// </summary>
         /// <param name="vehicle">The vehicle.</param>
         /// <returns></returns>
-        VehiclesModel CreateOne(VehiclesModel vehicle);
+        VehiclesModel? CreateOne(VehiclesModel vehicle);
 
         /// <summary>
         /// Deletes the specified ausrollen.
@@ -50,41 +50,41 @@ namespace SimTuning.Core.Services
         /// Retrieves this instance.
         /// </summary>
         /// <returns>Eine Liste von <see cref="DynoModel" />.</returns>
-        List<DynoModel> RetrieveDynos(bool forceupdate = false);
+        List<DynoModel>? RetrieveDynos(bool forceupdate = false);
 
         /// <summary>
         /// Retrieves the environments.
         /// </summary>
         /// <param name="forceupdate">if set to <c>true</c> [forceupdate].</param>
         /// <returns>Eine Liste von <see cref="EnvironmentModel" />.</returns>
-        List<EnvironmentModel> RetrieveEnvironments(bool forceupdate = false);
+        List<EnvironmentModel>? RetrieveEnvironments(bool forceupdate = false);
 
         /// <summary>
         /// Retrieves the motoren.
         /// </summary>
         /// <param name="forceupdate">if set to <c>true</c> [forceupdate].</param>
         /// <returns>Eine Liste von <see cref="MotorModel" />.</returns>
-        List<MotorModel> RetrieveMotoren(bool forceupdate = false);
+        List<MotorModel>? RetrieveMotoren(bool forceupdate = false);
 
         /// <summary>
         /// Retrieves the one.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns>Ein <see cref="VehiclesModel" />.</returns>
-        VehiclesModel RetrieveOne(int? id);
+        VehiclesModel? RetrieveOne(int? id);
 
         /// <summary>
         /// Retrieves the one active.
         /// </summary>
         /// <returns>Ein <see cref="DynoModel" />.</returns>
-        DynoModel RetrieveOneActive();
+        DynoModel? RetrieveOneActive();
 
         /// <summary>
         /// Retrieves the vehicles.
         /// </summary>
         /// <param name="forceupdate">if set to <c>true</c> [forceupdate].</param>
         /// <returns>Eine Liste von <see cref="VehiclesModel" />.</returns>
-        List<VehiclesModel> RetrieveVehicles(bool forceupdate = false);
+        List<VehiclesModel>? RetrieveVehicles(bool forceupdate = false);
 
         /// <summary>
         /// Updates the one.

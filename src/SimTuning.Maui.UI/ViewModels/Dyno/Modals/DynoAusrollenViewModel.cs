@@ -35,13 +35,13 @@ namespace SimTuning.Maui.UI.ViewModels
         protected readonly INavigationService _navigationService;
         protected readonly IVehicleService _vehicleService;
         private readonly ILogger<DynoAusrollenViewModel> _logger;
-        private DynoModel _dyno;
+        private DynoModel? _dyno;
 
         /// <summary>
         /// Gets or sets the dyno.
         /// </summary>
         /// <value>The dyno.</value>
-        public DynoModel Dyno
+        public DynoModel? Dyno
         {
             get => _dyno;
             set => SetProperty(ref _dyno, value);
@@ -50,14 +50,14 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <summary>
         /// PlotAusrollen.
         /// </summary>
-        public ISeries PlotAusrollen
+        public ISeries? PlotAusrollen
         {
             get => null;//DynoLogic.PlotAusrollen;
         }
 
         public IAsyncRelayCommand RefreshPlotCommand { get; set; }
 
-        public IAsyncRelayCommand ShowDiagnosisCommand { get; set; }
+        public IAsyncRelayCommand? ShowDiagnosisCommand { get; set; }
 
         #endregion Values
 

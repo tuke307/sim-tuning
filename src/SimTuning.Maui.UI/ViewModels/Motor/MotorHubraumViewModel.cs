@@ -67,7 +67,7 @@ namespace SimTuning.Maui.UI.ViewModels
 
         private void Refresh_all()
         {
-            if (Hub.HasValue && HubraumV.HasValue)
+            if (Hub.HasValue && HubraumV.HasValue && UnitHubraumV != null && UnitHub != null && UnitBohrungD != null && UnitEinbauspiel != null)
             {
                 if (!Einbauspiel.HasValue)
                     Einbauspiel = 0.03;
@@ -108,7 +108,7 @@ namespace SimTuning.Maui.UI.ViewModels
 
         private double? _einbauspiel;
 
-        private GrindingDiametersModel _grindingDiameters;
+        private GrindingDiametersModel? _grindingDiameters;
 
         private double? _hub;
 
@@ -116,15 +116,15 @@ namespace SimTuning.Maui.UI.ViewModels
 
         private double? _kolbenD;
 
-        private UnitListItem _unitBohrungD;
+        private UnitListItem? _unitBohrungD;
 
-        private UnitListItem _unitEinbauspiel;
+        private UnitListItem? _unitEinbauspiel;
 
-        private UnitListItem _unitHub;
+        private UnitListItem? _unitHub;
 
-        private UnitListItem _unitHubraumV;
+        private UnitListItem? _unitHubraumV;
 
-        private UnitListItem _unitKolbenD;
+        private UnitListItem? _unitKolbenD;
 
         public double? BohrungD
         {
@@ -142,7 +142,7 @@ namespace SimTuning.Maui.UI.ViewModels
             }
         }
 
-        public GrindingDiametersModel GrindingDiameters
+        public GrindingDiametersModel? GrindingDiameters
         {
             get => _grindingDiameters;
             set { SetProperty(ref _grindingDiameters, value); }
@@ -176,7 +176,7 @@ namespace SimTuning.Maui.UI.ViewModels
 
         public ObservableCollection<UnitListItem> LengthQuantityUnits { get; }
 
-        public UnitListItem UnitBohrungD
+        public UnitListItem? UnitBohrungD
         {
             get => _unitBohrungD;
             set
@@ -187,7 +187,7 @@ namespace SimTuning.Maui.UI.ViewModels
             }
         }
 
-        public UnitListItem UnitEinbauspiel
+        public UnitListItem? UnitEinbauspiel
         {
             get => _unitEinbauspiel;
             set
@@ -198,7 +198,7 @@ namespace SimTuning.Maui.UI.ViewModels
             }
         }
 
-        public UnitListItem UnitHub
+        public UnitListItem? UnitHub
         {
             get => _unitHub;
             set
@@ -209,7 +209,7 @@ namespace SimTuning.Maui.UI.ViewModels
             }
         }
 
-        public UnitListItem UnitHubraumV
+        public UnitListItem? UnitHubraumV
         {
             get => _unitHubraumV;
             set
@@ -220,7 +220,7 @@ namespace SimTuning.Maui.UI.ViewModels
             }
         }
 
-        public UnitListItem UnitKolbenD
+        public UnitListItem? UnitKolbenD
         {
             get => _unitKolbenD;
             set

@@ -66,10 +66,10 @@ namespace SimTuning.Maui.UI.ViewModels
 
         private readonly ILogger<PortTimingViewModel> _logger;
 
-        private Data.Models.MotorModel _engine;
-        private ObservableCollection<Data.Models.MotorModel> _engines;
+        private Data.Models.MotorModel? _engine;
+        private ObservableCollection<Data.Models.MotorModel>? _engines;
 
-        public MotorModel Engine
+        public MotorModel? Engine
         {
             get => _engine;
             set
@@ -83,7 +83,7 @@ namespace SimTuning.Maui.UI.ViewModels
             }
         }
 
-        public ObservableCollection<MotorModel> Engines
+        public ObservableCollection<MotorModel>? Engines
         {
             get => _engines;
             set => SetProperty(ref _engines, value);

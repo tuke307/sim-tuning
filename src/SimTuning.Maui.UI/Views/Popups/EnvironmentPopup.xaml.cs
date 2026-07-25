@@ -17,7 +17,7 @@ namespace SimTuning.Maui.UI.Views.Popups
 
         private async void Button_Clicked(object sender, EventArgs e)
         {
-            await CloseAsync(ViewModel.Engine);
+            await CloseAsync(ViewModel.Engine!); // justified: popup result — null propagates to the ShowAsync() caller as before
         }
     }
 }

@@ -87,7 +87,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// </summary>
         private void RefreshDifference()
         {
-            if (SteuerzeitVorher.HasValue && SteuerzeitNachher.HasValue && VehicleMotorPleulL.HasValue && VehicleMotorHubR.HasValue && VehicleMotorDeachsierungL.HasValue && (KolbenoberkanteChecked || KolbenunterkanteChecked))
+            if (SteuerzeitVorher.HasValue && SteuerzeitNachher.HasValue && VehicleMotorPleulL.HasValue && VehicleMotorHubR.HasValue && VehicleMotorDeachsierungL.HasValue && VehicleMotorPleulLUnit != null && VehicleMotorHubRUnit != null && VehicleMotorDeachsierungLUnit != null && (KolbenoberkanteChecked || KolbenunterkanteChecked))
             {
                 (SteuerwinkelVorherOeffnet, SteuerwinkelVorherSchließt, SteuerwinkelNachherOeffnet, SteuerwinkelNachherSchließt) =
                 EngineLogic.GetSteuerwinkel(SteuerzeitVorher.Value, SteuerzeitNachher.Value, KolbenoberkanteChecked, KolbenunterkanteChecked);
@@ -119,7 +119,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// </summary>
         private void RefreshDifferenceToOT()
         {
-            if (VehicleMotorPleulL.HasValue && VehicleMotorHubR.HasValue && VehicleMotorDeachsierungL.HasValue && DegreeDifferenceToOT.HasValue)
+            if (VehicleMotorPleulL.HasValue && VehicleMotorHubR.HasValue && VehicleMotorDeachsierungL.HasValue && DegreeDifferenceToOT.HasValue && VehicleMotorPleulLUnit != null && VehicleMotorHubRUnit != null && VehicleMotorDeachsierungLUnit != null)
             {
                 LengthDifferenceToOT = EngineLogic.GetDistanceToOT(
                       UnitsNet.UnitConverter.Convert(
@@ -143,7 +143,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// </summary>
         private void RefreshHubradius()
         {
-            if (VehicleMotorHubL.HasValue && VehicleMotorPleulL.HasValue && VehicleMotorDeachsierungL.HasValue)
+            if (VehicleMotorHubL.HasValue && VehicleMotorPleulL.HasValue && VehicleMotorDeachsierungL.HasValue && VehicleMotorHubLUnit != null && VehicleMotorPleulLUnit != null && VehicleMotorDeachsierungLUnit != null)
             {
                 VehicleMotorHubR = EngineLogic.GetHubRadius(
                      UnitsNet.UnitConverter.Convert(
@@ -170,21 +170,21 @@ namespace SimTuning.Maui.UI.ViewModels
         private double? _degreeDifferenceToOT;
         private double? _differenceDegree;
         private double? _differenceLength;
-        private UnitListItem _differenceLengthUnit;
+        private UnitListItem? _differenceLengthUnit;
         private bool _kolbenoberkanteChecked;
         private bool _kolbenunterkanteChecked;
         private double? _lengthDifferenceToOT;
-        private UnitListItem _lengthDifferenceToOTUnit;
+        private UnitListItem? _lengthDifferenceToOTUnit;
         private double? _steuerwinkelNachherOeffnet;
         private double? _steuerwinkelNachherSchließt;
         private double? _steuerwinkelVorherOeffnet;
         private double? _steuerwinkelVorherSchließt;
         private double? _steuerzeitNachher;
         private double? _steuerzeitVorher;
-        private UnitListItem _unitAbstandOTlength;
-        private VehiclesModel _vehicle;
+        private UnitListItem? _unitAbstandOTlength;
+        private VehiclesModel? _vehicle;
         private double? _vehicleMotorHubR;
-        private UnitListItem _vehicleMotorHubRUnit;
+        private UnitListItem? _vehicleMotorHubRUnit;
 
         #endregion private
 
@@ -230,7 +230,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the unit hub r.
         /// </summary>
         /// <value>The unit hub r.</value>
-        public UnitListItem DifferenceLengthUnit
+        public UnitListItem? DifferenceLengthUnit
         {
             get => _differenceLengthUnit;
             set
@@ -279,7 +279,7 @@ namespace SimTuning.Maui.UI.ViewModels
             set => SetProperty(ref _lengthDifferenceToOT, value);
         }
 
-        public UnitListItem LengthDifferenceToOTUnit
+        public UnitListItem? LengthDifferenceToOTUnit
         {
             get => _lengthDifferenceToOTUnit;
             set
@@ -368,7 +368,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the unit abstand o tlength.
         /// </summary>
         /// <value>The unit abstand o tlength.</value>
-        public UnitListItem UnitAbstandOTlength
+        public UnitListItem? UnitAbstandOTlength
         {
             get => _unitAbstandOTlength;
             set
@@ -379,7 +379,7 @@ namespace SimTuning.Maui.UI.ViewModels
             }
         }
 
-        public VehiclesModel Vehicle
+        public VehiclesModel? Vehicle
         {
             get => _vehicle;
             set => SetProperty(ref _vehicle, value);
@@ -400,7 +400,7 @@ namespace SimTuning.Maui.UI.ViewModels
             }
         }
 
-        public UnitListItem VehicleMotorDeachsierungLUnit
+        public UnitListItem? VehicleMotorDeachsierungLUnit
         {
             get => LengthQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.DeachsierungLUnit));
             set
@@ -410,7 +410,7 @@ namespace SimTuning.Maui.UI.ViewModels
                     return;
                 }
 
-                Vehicle.Motor.DeachsierungLUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
+                Vehicle.Motor.DeachsierungLUnit = (UnitsNet.Units.LengthUnit?)value?.UnitEnumValue;
                 OnPropertyChanged(nameof(VehicleMotorDeachsierungL));
             }
         }
@@ -430,7 +430,7 @@ namespace SimTuning.Maui.UI.ViewModels
             }
         }
 
-        public UnitListItem VehicleMotorHubLUnit
+        public UnitListItem? VehicleMotorHubLUnit
         {
             get => LengthQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.HubLUnit));
             set
@@ -440,7 +440,7 @@ namespace SimTuning.Maui.UI.ViewModels
                     return;
                 }
 
-                Vehicle.Motor.HubLUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
+                Vehicle.Motor.HubLUnit = (UnitsNet.Units.LengthUnit?)value?.UnitEnumValue;
                 OnPropertyChanged(nameof(VehicleMotorHubL));
             }
         }
@@ -459,7 +459,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the unit hub r.
         /// </summary>
         /// <value>The unit hub r.</value>
-        public UnitListItem VehicleMotorHubRUnit
+        public UnitListItem? VehicleMotorHubRUnit
         {
             get => _vehicleMotorHubRUnit;
             set
@@ -485,7 +485,7 @@ namespace SimTuning.Maui.UI.ViewModels
             }
         }
 
-        public UnitListItem VehicleMotorPleulLUnit
+        public UnitListItem? VehicleMotorPleulLUnit
         {
             get => LengthQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.PleulLUnit));
             set
@@ -495,7 +495,7 @@ namespace SimTuning.Maui.UI.ViewModels
                     return;
                 }
 
-                Vehicle.Motor.PleulLUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
+                Vehicle.Motor.PleulLUnit = (UnitsNet.Units.LengthUnit?)value?.UnitEnumValue;
                 OnPropertyChanged(nameof(VehicleMotorPleulL));
             }
         }
