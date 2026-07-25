@@ -8,8 +8,9 @@
 	x:Class="SimTuning.Maui.UI.Views.Popups.VehiclePopup"
 	xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
 	x:DataType="VehiclesViewModel"
-	Color="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}"
-	Size="300, 700">
+	BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}"
+	WidthRequest="300"
+	HeightRequest="700">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

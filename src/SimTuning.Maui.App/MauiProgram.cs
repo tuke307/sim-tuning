@@ -25,7 +25,7 @@ namespace SimTuning.Maui.App
                 .UseSkiaSharp()
                 .UseSharpnadoTabs(loggerEnable: true, debugLogEnable: true)
                 .UseMauiCommunityToolkit()
-                .UseMauiCommunityToolkitMediaElement()
+                .UseMauiCommunityToolkitMediaElement(isAndroidForegroundServiceEnabled: false)
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont(filename: "materialdesignicons-webfont.ttf", alias: "MaterialDesignIcons");

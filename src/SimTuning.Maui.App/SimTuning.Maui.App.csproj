@@ -22,7 +22,7 @@
 		<!-- .NET 11 raised the minimum SupportedOSPlatformVersion floors (iOS 12.2->13.0, MacCatalyst 15.0->17.0). -->
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">13.0</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">17.0</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">24.0</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 		<!--<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>-->
@@ -60,6 +60,11 @@
   <ItemGroup>
     <Folder Include="Resources\Images\" />
     <Folder Include="Resources\Styles\" />
+  </ItemGroup>
+
+  <!-- Windows-only: toast notifications (deprecated CommunityToolkit package; migrate to AppNotificationManager later). -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'net11.0-windows10.0.19041.0'">
+    <PackageReference Include="CommunityToolkit.WinUI.Notifications" Version="7.1.2" />
   </ItemGroup>
 </Project>
 
