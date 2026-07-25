@@ -45,9 +45,9 @@
 							Margin="5,0,0,0"
 							ItemsSource="{Binding Path=VolumeQuantityUnits, Mode=OneTime}"
 							ItemDisplayBinding="{Binding Abbreviation}"
-							HorizontalOptions="StartAndExpand"
+							HorizontalOptions="Start"
 							SelectedItem="{Binding VehicleMotorBrennraumVUnit}"
-							VerticalOptions="CenterAndExpand"
+							VerticalOptions="Center"
 							WidthRequest="100" />
                     </StackLayout>
 
@@ -62,9 +62,9 @@
 							Margin="5,0,0,0"
 							ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
 							ItemDisplayBinding="{Binding Abbreviation}"
-							HorizontalOptions="StartAndExpand"
+							HorizontalOptions="Start"
 							SelectedItem="{Binding VehicleMotorBohrungDUnit}"
-							VerticalOptions="CenterAndExpand"
+							VerticalOptions="Center"
 							WidthRequest="100" />
                     </StackLayout>
 
@@ -136,7 +136,7 @@
 
                     <Grid
 						Margin="0,10,0,0"
-						HorizontalOptions="FillAndExpand">
+						HorizontalOptions="Fill">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
@@ -161,9 +161,9 @@
 							Margin="5,0,0,0"
 							ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
 							ItemDisplayBinding="{Binding Abbreviation}"
-							HorizontalOptions="StartAndExpand"
+							HorizontalOptions="Start"
 							SelectedItem="{Binding AbdrehenLengthUnit}"
-							VerticalOptions="CenterAndExpand" />
+							VerticalOptions="Center" />
                         <!--<Label  Grid.Column="2"
                                VerticalOptions="Center"
                                Margin="5, 0, 0, 0">

@@ -16,7 +16,7 @@
             <StackLayout>
                 <Label
 					Text="Auswahl"
-					FontSize="Medium"
+					FontSize="14"
 					FontAttributes="Bold" />
 
                 <BoxView Style="{StaticResource DividerBoxViewStyle}" />
@@ -92,7 +92,7 @@
             <StackLayout>
                 <Label
 					Text="Daten"
-					FontSize="Medium"
+					FontSize="14"
 					FontAttributes="Bold" />
 
                 <BoxView Style="{StaticResource DividerBoxViewStyle}" />
@@ -130,7 +130,7 @@
 						Grid.Column="1"
 						Grid.Row="0"
 						VerticalOptions="Center"
-						HorizontalOptions="FillAndExpand"
+						HorizontalOptions="Fill"
 						ImageSource="{StaticResource IconContentSaveMedium}"
 						Command="{Binding SaveDynoCommand}"
 						HeightRequest="60">
@@ -141,7 +141,7 @@
 						Grid.Column="1"
 						Grid.Row="1"
 						VerticalOptions="Center"
-						HorizontalOptions="FillAndExpand"
+						HorizontalOptions="Fill"
 						ImageSource="{StaticResource IconBackupRestoreMedium}"
 						Command="{Binding ExportDynoCommand}"
 						HeightRequest="60">
@@ -152,7 +152,7 @@
 						Grid.Column="1"
 						Grid.Row="2"
 						VerticalOptions="Center"
-						HorizontalOptions="FillAndExpand"
+						HorizontalOptions="Fill"
 						ImageSource="{StaticResource IconFileImportOutlineMedium}"
 						Command="{Binding ImportDynoCommand}"
 						HeightRequest="60">

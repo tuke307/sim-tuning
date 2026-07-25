@@ -22,7 +22,7 @@
                 ItemsSource="{Binding Engines}"
                 SelectedItem="{Binding Engine}"
                 ItemDisplayBinding="{Binding Name}"
-                HorizontalOptions="CenterAndExpand"
+                HorizontalOptions="Center"
                 Margin="5">
         </Picker>
 
@@ -30,7 +30,7 @@
             <Border  Margin="10">
                 <StackLayout>
                     <Label  Text="Hilfe"
-                            FontSize="Medium"
+                            FontSize="14"
                             FontAttributes="Bold" />
 
                     <BoxView Color="{DynamicResource DesignDivider}"

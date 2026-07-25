@@ -55,9 +55,9 @@
 							Margin="5,0,0,0"
 							ItemsSource="{Binding Path=SpeedQuantityUnits, Mode=OneTime}"
 							ItemDisplayBinding="{Binding Abbreviation}"
-							HorizontalOptions="StartAndExpand"
+							HorizontalOptions="Start"
 							SelectedItem="{Binding VehicleMotorAuslassAuspuffAbgasVUnit}"
-							VerticalOptions="CenterAndExpand" />
+							VerticalOptions="Center" />
                     </StackLayout>
 
                     <StackLayout Orientation="Horizontal">
@@ -85,7 +85,7 @@
 							Margin="5,0,0,0"
 							ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
 							ItemDisplayBinding="{Binding Abbreviation}"
-							HorizontalOptions="StartAndExpand"
+							HorizontalOptions="Start"
 							SelectedItem="{Binding VehicleMotorAuslassDurchmesserDUnit}" />
                     </StackLayout>
 
@@ -100,9 +100,9 @@
 							Margin="5,0,0,0"
 							ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
 							ItemDisplayBinding="{Binding Abbreviation}"
-							HorizontalOptions="StartAndExpand"
+							HorizontalOptions="Start"
 							SelectedItem="{Binding VehicleMotorAuslassLaengeLUnit}"
-							VerticalOptions="CenterAndExpand" />
+							VerticalOptions="Center" />
                     </StackLayout>
 
                     <StackLayout Orientation="Horizontal">
@@ -130,9 +130,9 @@
 							Margin="5,0,0,0"
 							ItemsSource="{Binding Path=AreaQuantityUnits, Mode=OneTime}"
 							ItemDisplayBinding="{Binding Abbreviation}"
-							HorizontalOptions="StartAndExpand"
+							HorizontalOptions="Start"
 							SelectedItem="{Binding VehicleMotorAuslassFlaecheAUnit}"
-							VerticalOptions="CenterAndExpand" />
+							VerticalOptions="Center" />
                     </StackLayout>
                 </StackLayout>
             </Border>
@@ -150,7 +150,7 @@
 						Margin="0,10,0,0"
 						Text="Drehmoment(Krümmer)- Faktor" />
 
-                    <Grid HorizontalOptions="FillAndExpand">
+                    <Grid HorizontalOptions="Fill">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="2*" />
@@ -172,7 +172,7 @@
 
                     <Slider
 						Margin="0,-10,0,10"
-						HorizontalOptions="FillAndExpand"
+						HorizontalOptions="Fill"
 						Maximum="12"
 						Minimum="6"
 						Value="{Binding VehicleMotorAuslassAuspuffKruemmerF}" />
@@ -206,7 +206,7 @@
 						Margin="0,10,0,0"
 						Text="Drehmoment(Mitelteil)- Faktor" />
 
-                    <Grid HorizontalOptions="FillAndExpand">
+                    <Grid HorizontalOptions="Fill">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="2*" />
@@ -227,7 +227,7 @@
                     </Grid>
                     <Slider
 						Margin="0,-10,0,10"
-						HorizontalOptions="FillAndExpand"
+						HorizontalOptions="Fill"
 						Maximum="12"
 						Minimum="6"
 						Value="{Binding VehicleMotorAuslassAuspuffMittelteilF}" />
@@ -281,9 +281,9 @@
 							Margin="5,0,0,0"
 							ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
 							ItemDisplayBinding="{Binding Abbreviation}"
-							HorizontalOptions="StartAndExpand"
+							HorizontalOptions="Start"
 							SelectedItem="{Binding VehicleMotorAuslassAuspuffEndrohrDUnit}"
-							VerticalOptions="CenterAndExpand" />
+							VerticalOptions="Center" />
                     </StackLayout>
 
                     <StackLayout Orientation="Horizontal">
@@ -298,9 +298,9 @@
 							Margin="5,0,0,0"
 							ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
 							ItemDisplayBinding="{Binding Abbreviation}"
-							HorizontalOptions="StartAndExpand"
+							HorizontalOptions="Start"
 							SelectedItem="{Binding VehicleMotorAuslassAuspuffEndrohrLUnit}"
-							VerticalOptions="CenterAndExpand" />
+							VerticalOptions="Center" />
                     </StackLayout>
                 </StackLayout>
             </Border>
@@ -333,7 +333,7 @@
 
                         <Label
 							Margin="0,0,0,10"
-							FontSize="Subtitle"
+							FontSize="16"
 							Text="Two Stage" />
 
                         <StackLayout>
@@ -390,7 +390,7 @@
 							Grid.Row="0"
 							Grid.ColumnSpan="2"
 							Margin="0,0,0,10"
-							FontSize="Caption"
+							FontSize="12"
 							Text="Two Stage" />
 
                         <StackLayout
@@ -475,7 +475,7 @@
 							Grid.Row="0"
 							Grid.ColumnSpan="3"
 							Margin="0,0,0,10"
-							FontSize="Caption"
+							FontSize="12"
 							Text="Three Stage" />
 
                         <StackLayout
