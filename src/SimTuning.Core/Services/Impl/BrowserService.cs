@@ -51,16 +51,10 @@ namespace SimTuning.Core.Services
         /// <inheritdoc />
         public async Task DownloadDocumentAsync(string fileToDownload, string fileSave)
         {
-            using (var client = new HttpClient())
-            {
-                using (var s = await client.GetStreamAsync(fileToDownload))
-                {
-                    using (var fs = new FileStream(fileSave, FileMode.OpenOrCreate))
-                    {
-                        await s.CopyToAsync(fs);
-                    }
-                }
-            }
+            using var client = new HttpClient();
+            using var s = await client.GetStreamAsync(fileToDownload);
+            using var fs = new FileStream(fileSave, FileMode.OpenOrCreate);
+            await s.CopyToAsync(fs);
         }
     }
 }
