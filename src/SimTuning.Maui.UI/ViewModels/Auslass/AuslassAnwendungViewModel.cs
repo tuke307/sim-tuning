@@ -128,7 +128,6 @@ namespace SimTuning.Maui.UI.ViewModels
         private readonly ILogger<AuslassAnwendungViewModel> _logger;
         private readonly IVehicleService _vehicleService;
         private ImageSource? _auspuff;
-        private VehiclesModel? _helperVehicle;
 
         private VehiclesModel? _vehicle;
 
