@@ -23,7 +23,7 @@
 			ItemsSource="{Binding Engines}"
 			SelectedItem="{Binding Engine}"
 			ItemDisplayBinding="{Binding Name}"
-			HorizontalOptions="CenterAndExpand"
+			HorizontalOptions="Center"
 			Margin="5">
         </Picker>
 

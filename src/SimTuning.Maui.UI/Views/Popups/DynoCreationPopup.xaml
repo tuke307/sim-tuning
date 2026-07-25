@@ -21,7 +21,7 @@
         <Label
 			Grid.Row="0"
 			Margin="5"
-			HorizontalOptions="CenterAndExpand">
+			HorizontalOptions="Center">
             Für welches Fahrzeug willst du eine Leistungsmessung durchführen?
         </Label>
 
@@ -30,7 +30,7 @@
 			ItemsSource="{Binding Vehicles}"
 			SelectedItem="{Binding Vehicle}"
 			ItemDisplayBinding="{Binding Name}"
-			HorizontalOptions="CenterAndExpand"
+			HorizontalOptions="Center"
 			Margin="5">
         </Picker>
 
