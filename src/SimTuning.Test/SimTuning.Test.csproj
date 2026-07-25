@@ -1,4 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <!-- Unit-test project: build as a plain net11.0 library (NOT a MAUI/iOS app bundle).
+         Core/Maui.UI/Spectrogram now expose a net11.0 base target so this reference resolves.
+         Test contents (assertions, cross-platform paths) are Phase 15 work. -->
+    <TargetFrameworks></TargetFrameworks>
+    <TargetFramework>net11.0</TargetFramework>
+    <UseMaui>false</UseMaui>
+    <IsPackable>false</IsPackable>
+    <!-- Consume types from Core/Maui.UI, which are compiled with EnablePreviewFeatures=true. -->
+    <EnablePreviewFeatures>true</EnablePreviewFeatures>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
     <PackageReference Include="Moq" Version="4.20.72" />
