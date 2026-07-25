@@ -15,7 +15,7 @@ public partial class DynoCreationPopup : Popup<VehiclesModel>
 
     private async void Button_Clicked(object sender, EventArgs e)
     {
-        await CloseAsync(ViewModel.Vehicle);
+        await CloseAsync(ViewModel.Vehicle!); // justified: popup result — null propagates to the ShowAsync() caller as before
     }
 
     public VehiclesViewModel ViewModel => (VehiclesViewModel)BindingContext;

@@ -208,7 +208,7 @@ namespace SimTuning.Core.Helpers
         /// <param name="selectedFromUnit">The selected from unit.</param>
         /// <param name="selectedToUnit">The selected to unit.</param>
         /// <returns></returns>
-        public static double? UpdateValue(double? value, UnitListItem selectedFromUnit, UnitListItem selectedToUnit)
+        public static double? UpdateValue(double? value, UnitListItem? selectedFromUnit, UnitListItem? selectedToUnit)
         {
             if (value == null || selectedFromUnit == null || selectedToUnit == null)
             {

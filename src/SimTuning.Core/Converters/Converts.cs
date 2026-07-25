@@ -20,7 +20,7 @@ namespace SimTuning.Core.Converters
             try
             {
                 valuePtr = Marshal.SecureStringToGlobalAllocUnicode(value);
-                return Marshal.PtrToStringUni(valuePtr);
+                return Marshal.PtrToStringUni(valuePtr) ?? string.Empty;
             }
             finally
             {
@@ -50,7 +50,7 @@ namespace SimTuning.Core.Converters
         /// </summary>
         /// <param name="password">The password.</param>
         /// <returns></returns>
-        public static SecureString StringToSecureString(string password)
+        public static SecureString? StringToSecureString(string password)
         {
             if (string.IsNullOrEmpty(password) || password.Length == 0)
             {

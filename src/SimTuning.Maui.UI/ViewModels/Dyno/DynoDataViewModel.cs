@@ -44,8 +44,8 @@ namespace SimTuning.Maui.UI.ViewModels
 
             ExportDynoCommand = new AsyncRelayCommand(ExportDynoAsync);
 
-            Dynos = new ObservableCollection<DynoModel>(_vehicleService.RetrieveDynos());
-            Messenger.Register<DynoDataViewModel, CurrentDynoRequestMessage>(this, (r, m) => m.Reply(r.Dyno));
+            Dynos = new ObservableCollection<DynoModel>(_vehicleService.RetrieveDynos() ?? new List<DynoModel>());
+            Messenger.Register<DynoDataViewModel, CurrentDynoRequestMessage>(this, (r, m) => m.Reply(r.Dyno!)); // justified: preserves prior behavior — reply carries the current dyno (incl. null when none selected)
         }
 
         #region Methods
@@ -58,10 +58,10 @@ namespace SimTuning.Maui.UI.ViewModels
             try
             {
                 // in Datenbank löschen
-                _vehicleService.DeleteOne(Dyno);
+                _vehicleService.DeleteOne(Dyno!); // justified: preserves prior behavior — Dyno could already be null; service call is wrapped in try/catch
 
                 // in lokaler liste löschen
-                Dynos.Remove(Dyno);
+                Dynos!.Remove(Dyno!); // justified: Dynos reliably initialized in ctor; Dyno preserved-as-before (see above)
 
                 Dyno = null;
             }
@@ -122,13 +122,13 @@ namespace SimTuning.Maui.UI.ViewModels
                 {
                     Name = "Dyno-Durchgang",
                     Beschreibung = $"Erstellt am {DateTime.Now} über Dyno-Modul",
-                    VehicleId = (int)vehicle.Id,
+                    VehicleId = vehicle.Id.GetValueOrDefault(),
                 };
-                dyno = _vehicleService.CreateOne(dyno);
+                dyno = _vehicleService.CreateOne(dyno)!; // justified: on DB failure CreateOne returns null -> NRE here lands in the surrounding catch (preserves prior error logging)
                 dyno.Vehicle = vehicle;
 
-                Dynos.Add(dyno);
-                Dyno = Dynos.Last();
+                Dynos!.Add(dyno); // justified: Dynos reliably initialized in ctor
+                Dyno = Dynos!.Last(); // justified: Dynos reliably initialized in ctor
             }
             catch (Exception exc)
             {
@@ -153,7 +153,7 @@ namespace SimTuning.Maui.UI.ViewModels
         {
             try
             {
-                _vehicleService.UpdateOne(Dyno);
+                _vehicleService.UpdateOne(Dyno!); // justified: preserves prior behavior — Dyno could already be null; service call is wrapped in try/catch
             }
             catch (Exception exc)
             {
@@ -229,11 +229,11 @@ namespace SimTuning.Maui.UI.ViewModels
         private readonly IBrowserService _browserService;
         private readonly ILogger<DynoDataViewModel> _logger;
         private readonly IVehicleService _vehicleService;
-        private DynoModel _dyno;
-        private ObservableCollection<DynoModel> _dynos;
-        private VehiclesModel _vehicle;
+        private DynoModel? _dyno;
+        private ObservableCollection<DynoModel>? _dynos;
+        private VehiclesModel? _vehicle;
 
-        public DynoModel Dyno
+        public DynoModel? Dyno
         {
             get => _dyno;
             set
@@ -241,9 +241,10 @@ namespace SimTuning.Maui.UI.ViewModels
                 if (value == null)
                 {
                     // Just deleted => load last dyno
-                    if (Dynos.Count > 0)
+                    var dynos = Dynos;
+                    if (dynos != null && dynos.Count > 0)
                     {
-                        value = Dynos.Last();
+                        value = dynos.Last();
                     }
                 }
 
@@ -251,7 +252,7 @@ namespace SimTuning.Maui.UI.ViewModels
 
                 raiseAllPropertyChanged();
 
-                Messenger.Send(new DynoChangedMessage(Dyno));
+                Messenger.Send(new DynoChangedMessage(Dyno!)); // justified: preserves prior behavior — subscribers historically receive the current dyno (incl. null when none selected)
             }
         }
 
@@ -261,7 +262,7 @@ namespace SimTuning.Maui.UI.ViewModels
             OnPropertyChanged(nameof(DynoName));
         }
 
-        public string DynoBeschreibung
+        public string? DynoBeschreibung
         {
             get => Dyno?.Beschreibung;
             set
@@ -275,7 +276,7 @@ namespace SimTuning.Maui.UI.ViewModels
             }
         }
 
-        public string DynoName
+        public string? DynoName
         {
             get => Dyno?.Name;
             set
@@ -289,13 +290,13 @@ namespace SimTuning.Maui.UI.ViewModels
             }
         }
 
-        public ObservableCollection<DynoModel> Dynos
+        public ObservableCollection<DynoModel>? Dynos
         {
             get => _dynos;
             set => SetProperty(ref _dynos, value);
         }
 
-        public VehiclesModel Vehicle
+        public VehiclesModel? Vehicle
         {
             get => _vehicle;
             set => SetProperty(ref _vehicle, value);

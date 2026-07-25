@@ -28,10 +28,10 @@ namespace SimTuning.Maui.UI.ViewModels
             _popupService = popupService;
 
             // Vehicle Creation
-            Vehicle = new VehiclesModel();
-            Vehicle.Motor = new MotorModel();
-            Vehicle.Motor.Auslass = new AuslassModel();
-            Vehicle.Motor.Auslass.Auspuff = new AuspuffModel();
+            _vehicle = new VehiclesModel();
+            _vehicle.Motor = new MotorModel();
+            _vehicle.Motor.Auslass = new AuslassModel();
+            _vehicle.Motor.Auslass.Auspuff = new AuspuffModel();
 
             AreaQuantityUnits = new AreaQuantity();
             VolumeQuantityUnits = new VolumeQuantity();
@@ -52,7 +52,13 @@ namespace SimTuning.Maui.UI.ViewModels
         /// </summary>
         public void DiffusorStage(int stage)
         {
-            Vehicle.Motor.Auslass.Auspuff.DiffusorStage = stage;
+            var auspuff = Vehicle?.Motor?.Auslass?.Auspuff;
+            if (auspuff == null)
+            {
+                return;
+            }
+
+            auspuff.DiffusorStage = stage;
         }
 
         /// <summary>
@@ -92,7 +98,11 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <returns>Auspuff-Bild als Stream.</returns>
         protected void Calculate()
         {
-            VehiclesModel vehicle = Vehicle;
+            if (Vehicle is not VehiclesModel vehicle)
+            {
+                return;
+            }
+
             Stream stream = SimTuning.Core.Converters.Converts.SKBitmapToStream(AuslassLogic.Auspuff(ref vehicle));
             Vehicle = vehicle;
 
@@ -117,10 +127,10 @@ namespace SimTuning.Maui.UI.ViewModels
 
         private readonly ILogger<AuslassAnwendungViewModel> _logger;
         private readonly IVehicleService _vehicleService;
-        private ImageSource _auspuff;
-        private VehiclesModel _helperVehicle;
+        private ImageSource? _auspuff;
+        private VehiclesModel? _helperVehicle;
 
-        private VehiclesModel _vehicle;
+        private VehiclesModel? _vehicle;
 
         /// <summary>
         /// Gets or sets the area quantity units.
@@ -128,7 +138,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <value>The area quantity units.</value>
         public ObservableCollection<UnitListItem> AreaQuantityUnits { get; protected set; }
 
-        public ImageSource Auspuff
+        public ImageSource? Auspuff
         {
             get => _auspuff;
             private set => SetProperty(ref _auspuff, value);
@@ -168,7 +178,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the vehicle.
         /// </summary>
         /// <value>The vehicle.</value>
-        public VehiclesModel Vehicle
+        public VehiclesModel? Vehicle
         {
             get => _vehicle;
             set => SetProperty(ref _vehicle, value);
@@ -196,17 +206,17 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the vehicle motor auslass auspuff abgas v unit.
         /// </summary>
         /// <value>The vehicle motor auslass auspuff abgas v unit.</value>
-        public UnitListItem VehicleMotorAuslassAuspuffAbgasVUnit
+        public UnitListItem? VehicleMotorAuslassAuspuffAbgasVUnit
         {
             get => SpeedQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.Auslass?.Auspuff?.AbgasVUnit));
             set
             {
-                if (Vehicle?.Motor?.Auslass?.Auspuff == null)
+                if (Vehicle?.Motor?.Auslass?.Auspuff == null || value == null)
                 {
                     return;
                 }
 
-                Vehicle.Motor.Auslass.Auspuff.AbgasVUnit = (UnitsNet.Units.SpeedUnit)value?.UnitEnumValue;
+                Vehicle.Motor.Auslass.Auspuff.AbgasVUnit = (UnitsNet.Units.SpeedUnit)value.UnitEnumValue;
                 OnPropertyChanged(nameof(VehicleMotorAuslassAuspuffAbgasV));
             }
         }
@@ -323,17 +333,17 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the vehicle motor auslass auspuff endrohr d unit.
         /// </summary>
         /// <value>The vehicle motor auslass auspuff endrohr d unit.</value>
-        public UnitListItem VehicleMotorAuslassAuspuffEndrohrDUnit
+        public UnitListItem? VehicleMotorAuslassAuspuffEndrohrDUnit
         {
             get => LengthQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.Auslass?.Auspuff?.EndrohrDUnit));
             set
             {
-                if (Vehicle?.Motor?.Auslass?.Auspuff == null)
+                if (Vehicle?.Motor?.Auslass?.Auspuff == null || value == null)
                 {
                     return;
                 }
 
-                Vehicle.Motor.Auslass.Auspuff.EndrohrDUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
+                Vehicle.Motor.Auslass.Auspuff.EndrohrDUnit = (UnitsNet.Units.LengthUnit)value.UnitEnumValue;
                 OnPropertyChanged(nameof(VehicleMotorAuslassAuspuffEndrohrD));
             }
         }
@@ -360,17 +370,17 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the vehicle motor auslass auspuff endrohr l unit.
         /// </summary>
         /// <value>The vehicle motor auslass auspuff endrohr l unit.</value>
-        public UnitListItem VehicleMotorAuslassAuspuffEndrohrLUnit
+        public UnitListItem? VehicleMotorAuslassAuspuffEndrohrLUnit
         {
             get => LengthQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.Auslass?.Auspuff?.EndrohrLUnit));
             set
             {
-                if (Vehicle?.Motor?.Auslass?.Auspuff == null)
+                if (Vehicle?.Motor?.Auslass?.Auspuff == null || value == null)
                 {
                     return;
                 }
 
-                Vehicle.Motor.Auslass.Auspuff.EndrohrLUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
+                Vehicle.Motor.Auslass.Auspuff.EndrohrLUnit = (UnitsNet.Units.LengthUnit)value.UnitEnumValue;
                 OnPropertyChanged(nameof(VehicleMotorAuslassAuspuffEndrohrL));
             }
         }
@@ -613,17 +623,17 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the vehicle motor auslass durchmesser d unit.
         /// </summary>
         /// <value>The vehicle motor auslass durchmesser d unit.</value>
-        public UnitListItem VehicleMotorAuslassDurchmesserDUnit
+        public UnitListItem? VehicleMotorAuslassDurchmesserDUnit
         {
             get => LengthQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.Auslass?.DurchmesserDUnit));
             set
             {
-                if (Vehicle?.Motor?.Auslass == null)
+                if (Vehicle?.Motor?.Auslass == null || value == null)
                 {
                     return;
                 }
 
-                Vehicle.Motor.Auslass.DurchmesserDUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
+                Vehicle.Motor.Auslass.DurchmesserDUnit = (UnitsNet.Units.LengthUnit)value.UnitEnumValue;
                 OnPropertyChanged(nameof(VehicleMotorAuslassDurchmesserD));
             }
         }
@@ -651,17 +661,17 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the vehicle motor auslass flaeche a unit.
         /// </summary>
         /// <value>The vehicle motor auslass flaeche a unit.</value>
-        public UnitListItem VehicleMotorAuslassFlaecheAUnit
+        public UnitListItem? VehicleMotorAuslassFlaecheAUnit
         {
             get => AreaQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.Auslass?.FlaecheAUnit));
             set
             {
-                if (Vehicle?.Motor?.Auslass == null)
+                if (Vehicle?.Motor?.Auslass == null || value == null)
                 {
                     return;
                 }
 
-                Vehicle.Motor.Auslass.FlaecheAUnit = (UnitsNet.Units.AreaUnit)value?.UnitEnumValue;
+                Vehicle.Motor.Auslass.FlaecheAUnit = (UnitsNet.Units.AreaUnit)value.UnitEnumValue;
                 OnPropertyChanged(nameof(VehicleMotorAuslassFlaecheA));
             }
         }
@@ -688,17 +698,17 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the vehicle motor auslass laenge l unit.
         /// </summary>
         /// <value>The vehicle motor auslass laenge l unit.</value>
-        public UnitListItem VehicleMotorAuslassLaengeLUnit
+        public UnitListItem? VehicleMotorAuslassLaengeLUnit
         {
             get => LengthQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.Auslass?.LaengeLUnit));
             set
             {
-                if (Vehicle?.Motor?.Auslass == null)
+                if (Vehicle?.Motor?.Auslass == null || value == null)
                 {
                     return;
                 }
 
-                Vehicle.Motor.Auslass.LaengeLUnit = (UnitsNet.Units.LengthUnit)value?.UnitEnumValue;
+                Vehicle.Motor.Auslass.LaengeLUnit = (UnitsNet.Units.LengthUnit)value.UnitEnumValue;
                 OnPropertyChanged(nameof(VehicleMotorAuslassLaengeL));
             }
         }

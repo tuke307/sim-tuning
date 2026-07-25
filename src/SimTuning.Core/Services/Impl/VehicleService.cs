@@ -38,7 +38,7 @@ namespace SimTuning.Core.Services
         }
 
         /// <inheritdoc />
-        public DynoModel CreateOne(DynoModel dyno)
+        public DynoModel? CreateOne(DynoModel dyno)
         {
             try
             {
@@ -59,7 +59,7 @@ namespace SimTuning.Core.Services
         }
 
         /// <inheritdoc />
-        public VehiclesModel CreateOne(VehiclesModel vehicle)
+        public VehiclesModel? CreateOne(VehiclesModel vehicle)
         {
             try
             {
@@ -161,7 +161,7 @@ namespace SimTuning.Core.Services
         }
 
         /// <inheritdoc />
-        public List<DynoModel> RetrieveDynos(bool forceupdate = false)
+        public List<DynoModel>? RetrieveDynos(bool forceupdate = false)
         {
             try
             {
@@ -188,7 +188,7 @@ namespace SimTuning.Core.Services
         }
 
         /// <inheritdoc />
-        public List<EnvironmentModel> RetrieveEnvironments(bool forceupdate = false)
+        public List<EnvironmentModel>? RetrieveEnvironments(bool forceupdate = false)
         {
             try
             {
@@ -209,7 +209,7 @@ namespace SimTuning.Core.Services
         }
 
         /// <inheritdoc />
-        public List<MotorModel> RetrieveMotoren(bool forceupdate = false)
+        public List<MotorModel>? RetrieveMotoren(bool forceupdate = false)
         {
             try
             {
@@ -231,7 +231,7 @@ namespace SimTuning.Core.Services
         }
 
         /// <inheritdoc />
-        public VehiclesModel RetrieveOne(int? id)
+        public VehiclesModel? RetrieveOne(int? id)
         {
             if (!id.HasValue)
                 return null;
@@ -242,7 +242,7 @@ namespace SimTuning.Core.Services
         }
 
         /// <inheritdoc />
-        public DynoModel RetrieveOneActive()
+        public DynoModel? RetrieveOneActive()
         {
             _logger.LogInformation("retrieve active Vehicle.");
 
@@ -250,7 +250,7 @@ namespace SimTuning.Core.Services
         }
 
         /// <inheritdoc />
-        public List<VehiclesModel> RetrieveVehicles(bool forceupdate = false)
+        public List<VehiclesModel>? RetrieveVehicles(bool forceupdate = false)
         {
             try
             {
