@@ -11,6 +11,7 @@ Per the roadmap, docs are **seeded in Phase 1 and refreshed every phase** — no
 | [Phase-2-Migration.md](./Phase-2-Migration.md) | .NET 11 TFM migration log: changes, decisions, verification, environment setup |
 | [Phase-3-Migration.md](./Phase-3-Migration.md) | NuGet package upgrade log: version decisions, Popup v2 migration, NU1903 CVE clearance |
 | [Phase-4-Migration.md](./Phase-4-Migration.md) | Fix-compilation log: obsolete APIs, XAML deprecations, nullable-reference migration (484→24 warnings; production clean) |
+| [Phase-5-Migration.md](./Phase-5-Migration.md) | Modern-C# log: using-declarations applied; file-scoped namespaces / record / global-usings scoped/deferred with rationale |
 
 ## Phase 2 — ✅ Complete (migrate TFMs to .NET 11)
 
@@ -40,6 +41,14 @@ See [Phase-3-Migration.md](./Phase-3-Migration.md) for the full version table an
 
 ⚠️ **Visual review needed on device:** the `*AndExpand`→base XAML migration may shift layouts with extra space; the FontSize NamedSize→explicit-double change is a minor size delta vs the old platform-dynamic values.
 
+## Phase 5 — ✅ Complete (use modern C#)
+
+**Outcome:** deliberately scoped & low-churn. The codebase already has Nullable + ImplicitUsings + LangVersion=latest, and Phase 4 applied modern nullable idioms — so the remaining surface is small. See [Phase-5-Migration.md](./Phase-5-Migration.md).
+
+**Applied:** `using` declarations — `BrowserService.DownloadDocumentAsync` (3 nested blocks → 3 `using var`) and `VehicleService.DeleteOne(VehiclesModel)` (block → `using var`). Identical disposal scope, less nesting, no behavior change.
+
+**Deferred (with rationale):** file-scoped namespaces (180-file churn conflicting with P6/P12 → converge per-file); `global usings` (ImplicitUsings already on); `record`/`init`/`required` (EF entities + framework-message subclasses); target-typed `new()` (SA1000 blocks it); structural modernization (→ P6/P12).
+
 ## Environment setup (performed in Phase 2)
 
 - SDK: only `11.0.100-preview.6.26359.118` installed (no .NET 10 side-by-side).
@@ -55,6 +64,7 @@ See [Phase-3-Migration.md](./Phase-3-Migration.md) for the full version table an
 - [x] **Phase 2** — TFM migration done. Carried forward: iOS simulator runtime download; formatter install (Phase 4); Test-TFM restructure is done, test *contents* still Phase 15.
 - [x] **Phase 3** — package upgrades done; NU1903 CVEs cleared (80→0); Popup v2 migrated. Carried forward: NAudio→NLayer replacement (~Phase 13); SkiaSharp 3→4 when LiveCharts bumps; Sharpnado net11 watch; MediaElement/Mono→CoreCLR device retest; `WinUI.Notifications`→`AppNotificationManager`.
 - [x] **Phase 4** — ✅ done. 484→24 unique warnings; production code warning-clean; 0 non-iOS errors. Fixed: obsolete APIs (SkiaSharp `SKFont`, RNGCryptoServiceProvider, `Application.MainPage`), XAML (`*AndExpand`, FontSize NamedSize), nullable migration (Core + all VMs), formatter config (`useTabs:false`). 24 remaining all deferred to P6/7/15/16. **Carried forward:** device visual review of AndExpand/FontSize changes; `dotnet test` still 0-discovered (adapter missing, P15); cspell not a committed devDep.
+- [x] **Phase 5** — ✅ done (focused). `using` declarations (BrowserService, VehicleService). Deferred w/ rationale: file-scoped namespaces (converge per-file), record/init/required (not applicable), target-typed new (SA1000), structural (→P6/P12).
 - [ ] **Phase 6** — break up `VehiclesViewModelBase` (1,318 LOC) + `AuslassLogic.Auspuff` (460-LOC method); fix duplicate popup registration; standardize source generators.
 - [ ] **Phase 8** — `DatabaseContext` Singleton→Scoped; remove 22 `Ioc.Default` View call-sites; decouple `SimTuning.Data` from `Microsoft.Maui.Storage`.
 - [ ] **Phase 9** — drop Serilog `Verbose` floor in Release.
