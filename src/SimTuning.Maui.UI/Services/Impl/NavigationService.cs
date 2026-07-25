@@ -12,7 +12,10 @@ namespace SimTuning.Maui.UI.Services
         {
             get
             {
-                INavigation? navigation = Application.Current?.MainPage?.Navigation;
+                // Application.MainPage is deprecated in .NET 11 / MAUI 11; use the main
+                // window's page instead (single-window app). FirstOrDefault keeps this
+                // null-tolerant if no window exists yet.
+                INavigation? navigation = Application.Current?.Windows.FirstOrDefault()?.Page?.Navigation;
                 if (navigation is not null)
                 {
                     return navigation;

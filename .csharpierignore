@@ -1,0 +1,12 @@
+# Generated / vendored C# excluded from CSharpier formatting
+# (Phase 4: keep formatter runs small and reviewable; don't hand-format generated code.)
+
+# Build output
+**/obj/**
+**/bin/**
+
+# IconFont2Code-generated glyph constants (~7k lines)
+src/SimTuning.Maui.UI/Styles/MaterialDesignIcons.cs
+
+# .resx designer files
+**/*.Designer.cs

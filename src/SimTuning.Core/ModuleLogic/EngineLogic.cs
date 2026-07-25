@@ -190,8 +190,11 @@ namespace SimTuning.Core.ModuleLogic
                 Color = SKColors.Black,
                 StrokeWidth = 4,
                 IsAntialias = true,
-                TextSize = 22,
             };
+
+            // SkiaSharp 3.x: text metrics moved from SKPaint to SKFont (TextSize and
+            // DrawText with SKPaint are obsolete). Label font matches former blackPen.TextSize.
+            using SKFont labelFont = new SKFont { Size = 22 };
             SKPaint redPen = new SKPaint
             {
                 Style = SKPaintStyle.Stroke,
@@ -287,8 +290,8 @@ namespace SimTuning.Core.ModuleLogic
 
             // Textbezeichnung hinzufügen
             blackPen.PathEffect = null;
-            graphic_rad.DrawText("OT", mitte + 10, 30, blackPen);
-            graphic_rad.DrawText("UT", mitte - 40, 580, blackPen);
+            graphic_rad.DrawText("OT", mitte + 10, 30, SKTextAlign.Left, labelFont, blackPen);
+            graphic_rad.DrawText("UT", mitte - 40, 580, SKTextAlign.Left, labelFont, blackPen);
 
             return bmp_rad;
         }
