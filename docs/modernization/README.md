@@ -10,6 +10,7 @@ Per the roadmap, docs are **seeded in Phase 1 and refreshed every phase** — no
 | [Phase-1-Analysis.md](./Phase-1-Analysis.md) | Full project analysis: structure, per-project findings, security, .NET 11 risk register, TODO → phases |
 | [Phase-2-Migration.md](./Phase-2-Migration.md) | .NET 11 TFM migration log: changes, decisions, verification, environment setup |
 | [Phase-3-Migration.md](./Phase-3-Migration.md) | NuGet package upgrade log: version decisions, Popup v2 migration, NU1903 CVE clearance |
+| [Phase-4-Migration.md](./Phase-4-Migration.md) | Fix-compilation log: obsolete APIs, XAML deprecations, nullable-reference migration (**in progress** — resumable from doc) |
 
 ## Phase 2 — ✅ Complete (migrate TFMs to .NET 11)
 
@@ -27,6 +28,20 @@ See [Phase-2-Migration.md](./Phase-2-Migration.md) for the full change list and 
 
 See [Phase-3-Migration.md](./Phase-3-Migration.md) for the full version table and decisions.
 
+## Phase 4 — 🚧 In progress (fix compilation/analyzer warnings)
+
+**Goal:** resolve compiler/analyzer warnings properly — no new `<NoWarn>`, no blanket `!`/`#pragma`. **Baseline 484 unique warnings → in progress.** Resumable from [Phase-4-Migration.md](./Phase-4-Migration.md).
+
+**Done so far:**
+- ✅ Obsolete APIs (committed `72d8447`): SkiaSharp `SKFont` migration (AuslassLogic×19, EngineLogic×3), removed dead `RNGCryptoServiceProvider` (SYSLIB0023), `Application.MainPage`→`Windows` (NavigationService). Plus formatter setup — **`.csharpierrc.json useTabs true→false`** (the codebase is space-indented; `useTabs:true` caused a 362-warning SA1027 flood).
+- ✅ XAML deprecations (committed `3e42c01`): `*AndExpand`→base (168 tokens, 17 files); `FontSize` NamedSize shorthand→explicit doubles. CS0612 21→0.
+- ✅ Core nullable (uncommitted, **Core builds clean: 0 CS86xx**): Converts, AudioUtlis, AudioLogic, DynoLogic, AuslassLogic, VehicleService+IVehicleService (8 returns→nullable), Behaviors (BehaviorBase, EventToCommandBehavior), Styles SA1027.
+- ✅ VM nullable (subagents, uncommitted, **not yet build-verified**): Motor+Einlass, Auslass, Vehicles god-class done; Dyno batch still running.
+
+**Remaining:** central build + cascade mop-up (VehicleService nullable returns cascade to callers; subagent-flagged `.UnitEnumValue`/`?.`-chain CS8602 sites); dead-field removal (`_helperVehicle`, `_locationService`, `trackingStarted`); verify/format/docs/commit. **Deferred:** AsyncFixer02→P7, xUnit1008 + test CS8625→P15, ListView CS0618→P6/12, MAUIG2045→P6.
+
+⚠️ **Gotchas (see Phase-4 doc):** keep `.csharpierrc useTabs:false`; NEVER recursive `csharpier format` (phantom prettier); `dotnet` not on PATH; iOS build error is environmental.
+
 ## Environment setup (performed in Phase 2)
 
 - SDK: only `11.0.100-preview.6.26359.118` installed (no .NET 10 side-by-side).
@@ -41,7 +56,7 @@ See [Phase-3-Migration.md](./Phase-3-Migration.md) for the full version table an
 
 - [x] **Phase 2** — TFM migration done. Carried forward: iOS simulator runtime download; formatter install (Phase 4); Test-TFM restructure is done, test *contents* still Phase 15.
 - [x] **Phase 3** — package upgrades done; NU1903 CVEs cleared (80→0); Popup v2 migrated. Carried forward: NAudio→NLayer replacement (~Phase 13); SkiaSharp 3→4 when LiveCharts bumps; Sharpnado net11 watch; MediaElement/Mono→CoreCLR device retest; `WinUI.Notifications`→`AppNotificationManager`.
-- [ ] **Phase 4** — install csharpier+prettier; fix real analyzer hits (CS8618 ×300, CS8603 ×272, CS8605 ×168, CS0618 ×92, SA1027 ×48, …) — no new `NoWarn`.
+- [~] **Phase 4** — 🚧 in progress. Baseline 484 unique warnings. Done: obsolete APIs (SkiaSharp `SKFont`, RNGCryptoServiceProvider, `Application.MainPage`), XAML (`*AndExpand`, FontSize NamedSize), Core+Behaviors nullable, formatter config fix (`useTabs:false`). Remaining: central build, VM nullable cascade mop-up, dead-field removal, verify/commit. See [Phase-4-Migration.md](./Phase-4-Migration.md). (Real deduped counts were ~¼ of the raw Phase-2 estimates.)
 - [ ] **Phase 6** — break up `VehiclesViewModelBase` (1,318 LOC) + `AuslassLogic.Auspuff` (460-LOC method); fix duplicate popup registration; standardize source generators.
 - [ ] **Phase 8** — `DatabaseContext` Singleton→Scoped; remove 22 `Ioc.Default` View call-sites; decouple `SimTuning.Data` from `Microsoft.Maui.Storage`.
 - [ ] **Phase 9** — drop Serilog `Verbose` floor in Release.
