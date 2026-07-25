@@ -115,23 +115,21 @@ namespace SimTuning.Core.Services
                 return;
             }
 
-            using (var db = new DatabaseContext())
+            using var db = new DatabaseContext();
+            var existingVehicle = db.Vehicles.Find(vehicle.Id);
+            if (existingVehicle != null)
             {
-                var existingVehicle = db.Vehicles.Find(vehicle.Id);
-                if (existingVehicle != null)
-                {
-                    db.Vehicles.Remove(existingVehicle);
-                    db.SaveChanges();
+                db.Vehicles.Remove(existingVehicle);
+                db.SaveChanges();
 
-                    // Remove from local list
-                    Vehicles.Remove(Vehicles.Single(d => d.Id == vehicle.Id));
+                // Remove from local list
+                Vehicles.Remove(Vehicles.Single(d => d.Id == vehicle.Id));
 
-                    _logger.LogInformation("Vehicle: {0} (ID: {1}) deleted.", vehicle.Name, vehicle.Id);
-                }
-                else
-                {
-                    _logger.LogWarning("Vehicle with ID: {0} not found in database.", vehicle.Id);
-                }
+                _logger.LogInformation("Vehicle: {0} (ID: {1}) deleted.", vehicle.Name, vehicle.Id);
+            }
+            else
+            {
+                _logger.LogWarning("Vehicle with ID: {0} not found in database.", vehicle.Id);
             }
         }
 
