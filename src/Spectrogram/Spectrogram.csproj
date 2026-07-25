@@ -7,6 +7,6 @@
     <TargetFrameworks>$(TargetFrameworks);net11.0</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="FftSharp" Version="2.1.0" />
+    <PackageReference Include="FftSharp" Version="2.2.0" />
   </ItemGroup>
 </Project>
