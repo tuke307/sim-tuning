@@ -112,9 +112,9 @@ namespace SimTuning.Maui.UI.ViewModels
 
         private double? _resonanzlaenge;
 
-        private UnitListItem _resonanzlaengeUnit;
+        private UnitListItem? _resonanzlaengeUnit;
 
-        private VehiclesModel _vehicle;
+        private VehiclesModel? _vehicle;
 
         /// <summary>
         /// Gets the area quantity units.
@@ -144,7 +144,7 @@ namespace SimTuning.Maui.UI.ViewModels
             set { SetProperty(ref _resonanzlaenge, value); }
         }
 
-        public UnitListItem ResonanzlaengeUnit
+        public UnitListItem? ResonanzlaengeUnit
         {
             get => _resonanzlaengeUnit;
             set
@@ -159,7 +159,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the vehicle.
         /// </summary>
         /// <value>The vehicle.</value>
-        public VehiclesModel Vehicle
+        public VehiclesModel? Vehicle
         {
             get => _vehicle;
             set => SetProperty(ref _vehicle, value);

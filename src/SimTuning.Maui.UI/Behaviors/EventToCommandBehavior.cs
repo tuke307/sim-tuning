@@ -96,7 +96,7 @@ namespace SimTuning.Maui.UI.Behaviors
             }
             else if (Converter != null)
             {
-                resolvedParameter = Converter.Convert(eventArgs, typeof(object), null, null);
+                resolvedParameter = Converter.Convert(eventArgs, typeof(object), null!, null!); // converter parameter/culture are optional; null is the standard "none" value (analyzer false-positive on the optional params)
             }
             else
             {
@@ -128,7 +128,7 @@ namespace SimTuning.Maui.UI.Behaviors
                 throw new InvalidOperationException("EventToCommandBehavior: OnEvent method not found.");
             }
 
-            eventHandler = methodInfo.CreateDelegate(eventInfo.EventHandlerType, this);
+            eventHandler = methodInfo.CreateDelegate(eventInfo.EventHandlerType!, this); // EventHandlerType is non-null for a resolved EventInfo
             eventInfo.AddEventHandler(AssociatedObject, eventHandler);
         }
     }

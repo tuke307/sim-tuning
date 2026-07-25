@@ -1,8 +1,10 @@
 ﻿// Copyright (c) 2025 tuke productions. All rights reserved.
 namespace SimTuning.Maui.UI.ViewModels
 {
+    using System.Collections.ObjectModel;
+    using System.Linq;
     using CommunityToolkit.Maui;
-	using CommunityToolkit.Maui.Views;
+    using CommunityToolkit.Maui.Views;
     using CommunityToolkit.Mvvm.Input;
     using Microsoft.Extensions.Logging;
     using SimTuning.Core;
@@ -11,8 +13,6 @@ namespace SimTuning.Maui.UI.ViewModels
     using SimTuning.Core.Services;
     using SimTuning.Data.Models;
     using SimTuning.Maui.UI.Services;
-    using System.Collections.ObjectModel;
-    using System.Linq;
     using UnitsNet.Units;
 
     /// <summary>
@@ -26,7 +26,8 @@ namespace SimTuning.Maui.UI.ViewModels
             ILogger<MotorUmrechnungViewModel> logger,
             INavigationService navigationService,
             IVehicleService vehicleService,
-            IPopupService popupService)
+            IPopupService popupService
+        )
         {
             _logger = logger;
             _vehicleService = vehicleService;
@@ -37,9 +38,15 @@ namespace SimTuning.Maui.UI.ViewModels
 
             // vordefinieren der nicht model werte
             // TODO: den rest der unmodelt.units definieren! UnitAbstandOTlength = LengthQuantityUnits.Where(x => x.UnitEnumValue.Equals(LengthUnit.Millimeter)).First();
-            DifferenceLengthUnit = LengthQuantityUnits.Where(x => x.UnitEnumValue.Equals(LengthUnit.Millimeter)).First();
-            VehicleMotorHubRUnit = LengthQuantityUnits.Where(x => x.UnitEnumValue.Equals(LengthUnit.Millimeter)).First();
-            LengthDifferenceToOTUnit = LengthQuantityUnits.Where(x => x.UnitEnumValue.Equals(LengthUnit.Millimeter)).First();
+            DifferenceLengthUnit = LengthQuantityUnits
+                .Where(x => x.UnitEnumValue.Equals(LengthUnit.Millimeter))
+                .First();
+            VehicleMotorHubRUnit = LengthQuantityUnits
+                .Where(x => x.UnitEnumValue.Equals(LengthUnit.Millimeter))
+                .First();
+            LengthDifferenceToOTUnit = LengthQuantityUnits
+                .Where(x => x.UnitEnumValue.Equals(LengthUnit.Millimeter))
+                .First();
 
             // Vehicle Creation
             Vehicle = new VehiclesModel();
@@ -87,12 +94,35 @@ namespace SimTuning.Maui.UI.ViewModels
         /// </summary>
         private void RefreshDifference()
         {
-            if (SteuerzeitVorher.HasValue && SteuerzeitNachher.HasValue && VehicleMotorPleulL.HasValue && VehicleMotorHubR.HasValue && VehicleMotorDeachsierungL.HasValue && VehicleMotorPleulLUnit != null && VehicleMotorHubRUnit != null && VehicleMotorDeachsierungLUnit != null && (KolbenoberkanteChecked || KolbenunterkanteChecked))
+            if (
+                SteuerzeitVorher.HasValue
+                && SteuerzeitNachher.HasValue
+                && VehicleMotorPleulL.HasValue
+                && VehicleMotorHubR.HasValue
+                && VehicleMotorDeachsierungL.HasValue
+                && VehicleMotorPleulLUnit != null
+                && VehicleMotorHubRUnit != null
+                && VehicleMotorDeachsierungLUnit != null
+                && (KolbenoberkanteChecked || KolbenunterkanteChecked)
+            )
             {
-                (SteuerwinkelVorherOeffnet, SteuerwinkelVorherSchließt, SteuerwinkelNachherOeffnet, SteuerwinkelNachherSchließt) =
-                EngineLogic.GetSteuerwinkel(SteuerzeitVorher.Value, SteuerzeitNachher.Value, KolbenoberkanteChecked, KolbenunterkanteChecked);
+                (
+                    SteuerwinkelVorherOeffnet,
+                    SteuerwinkelVorherSchließt,
+                    SteuerwinkelNachherOeffnet,
+                    SteuerwinkelNachherSchließt
+                ) = EngineLogic.GetSteuerwinkel(
+                    SteuerzeitVorher.Value,
+                    SteuerzeitNachher.Value,
+                    KolbenoberkanteChecked,
+                    KolbenunterkanteChecked
+                );
 
-                DifferenceDegree = EngineLogic.GetPortTimingDifference(false, SteuerzeitVorher.Value, SteuerzeitNachher.Value);
+                DifferenceDegree = EngineLogic.GetPortTimingDifference(
+                    false,
+                    SteuerzeitVorher.Value,
+                    SteuerzeitNachher.Value
+                );
 
                 // TODO: verbessern und durschnitt aus öffnen und schließen bilden
                 DifferenceLength = EngineLogic.GetPortTimingDifference(
@@ -100,17 +130,21 @@ namespace SimTuning.Maui.UI.ViewModels
                     SteuerwinkelVorherOeffnet.Value,
                     SteuerwinkelNachherOeffnet.Value,
                     UnitsNet.UnitConverter.Convert(
-                         VehicleMotorPleulL.Value,
-                         VehicleMotorPleulLUnit.UnitEnumValue,
-                         MotorModel.PleulLBaseUnit),
+                        VehicleMotorPleulL.Value,
+                        VehicleMotorPleulLUnit.UnitEnumValue,
+                        MotorModel.PleulLBaseUnit
+                    ),
                     UnitsNet.UnitConverter.Convert(
-                         VehicleMotorHubR.Value,
-                         VehicleMotorHubRUnit.UnitEnumValue,
-                         LengthUnit.Millimeter),
+                        VehicleMotorHubR.Value,
+                        VehicleMotorHubRUnit.UnitEnumValue,
+                        LengthUnit.Millimeter
+                    ),
                     UnitsNet.UnitConverter.Convert(
-                         VehicleMotorDeachsierungL.Value,
-                         VehicleMotorDeachsierungLUnit.UnitEnumValue,
-                         MotorModel.DeachsierungLBaseUnit));
+                        VehicleMotorDeachsierungL.Value,
+                        VehicleMotorDeachsierungLUnit.UnitEnumValue,
+                        MotorModel.DeachsierungLBaseUnit
+                    )
+                );
             }
         }
 
@@ -119,22 +153,34 @@ namespace SimTuning.Maui.UI.ViewModels
         /// </summary>
         private void RefreshDifferenceToOT()
         {
-            if (VehicleMotorPleulL.HasValue && VehicleMotorHubR.HasValue && VehicleMotorDeachsierungL.HasValue && DegreeDifferenceToOT.HasValue && VehicleMotorPleulLUnit != null && VehicleMotorHubRUnit != null && VehicleMotorDeachsierungLUnit != null)
+            if (
+                VehicleMotorPleulL.HasValue
+                && VehicleMotorHubR.HasValue
+                && VehicleMotorDeachsierungL.HasValue
+                && DegreeDifferenceToOT.HasValue
+                && VehicleMotorPleulLUnit != null
+                && VehicleMotorHubRUnit != null
+                && VehicleMotorDeachsierungLUnit != null
+            )
             {
                 LengthDifferenceToOT = EngineLogic.GetDistanceToOT(
-                      UnitsNet.UnitConverter.Convert(
-                          VehicleMotorPleulL.Value,
-                          VehicleMotorPleulLUnit.UnitEnumValue,
-                          MotorModel.PleulLBaseUnit),
-                      UnitsNet.UnitConverter.Convert(
-                          VehicleMotorHubR.Value,
-                          VehicleMotorHubRUnit.UnitEnumValue,
-                          LengthUnit.Millimeter),
-                      UnitsNet.UnitConverter.Convert(
-                          VehicleMotorDeachsierungL.Value,
-                          VehicleMotorDeachsierungLUnit.UnitEnumValue,
-                          MotorModel.DeachsierungLBaseUnit),
-                      DegreeDifferenceToOT.Value);
+                    UnitsNet.UnitConverter.Convert(
+                        VehicleMotorPleulL.Value,
+                        VehicleMotorPleulLUnit.UnitEnumValue,
+                        MotorModel.PleulLBaseUnit
+                    ),
+                    UnitsNet.UnitConverter.Convert(
+                        VehicleMotorHubR.Value,
+                        VehicleMotorHubRUnit.UnitEnumValue,
+                        LengthUnit.Millimeter
+                    ),
+                    UnitsNet.UnitConverter.Convert(
+                        VehicleMotorDeachsierungL.Value,
+                        VehicleMotorDeachsierungLUnit.UnitEnumValue,
+                        MotorModel.DeachsierungLBaseUnit
+                    ),
+                    DegreeDifferenceToOT.Value
+                );
             }
         }
 
@@ -143,21 +189,32 @@ namespace SimTuning.Maui.UI.ViewModels
         /// </summary>
         private void RefreshHubradius()
         {
-            if (VehicleMotorHubL.HasValue && VehicleMotorPleulL.HasValue && VehicleMotorDeachsierungL.HasValue && VehicleMotorHubLUnit != null && VehicleMotorPleulLUnit != null && VehicleMotorDeachsierungLUnit != null)
+            if (
+                VehicleMotorHubL.HasValue
+                && VehicleMotorPleulL.HasValue
+                && VehicleMotorDeachsierungL.HasValue
+                && VehicleMotorHubLUnit != null
+                && VehicleMotorPleulLUnit != null
+                && VehicleMotorDeachsierungLUnit != null
+            )
             {
                 VehicleMotorHubR = EngineLogic.GetHubRadius(
-                     UnitsNet.UnitConverter.Convert(
-                         VehicleMotorHubL.Value,
-                         VehicleMotorHubLUnit.UnitEnumValue,
-                         MotorModel.HubLBaseUnit),
-                     UnitsNet.UnitConverter.Convert(
-                         VehicleMotorPleulL.Value,
-                         VehicleMotorPleulLUnit.UnitEnumValue,
-                         MotorModel.PleulLBaseUnit),
-                     UnitsNet.UnitConverter.Convert(
-                         VehicleMotorDeachsierungL.Value,
-                         VehicleMotorDeachsierungLUnit.UnitEnumValue,
-                         MotorModel.DeachsierungLBaseUnit));
+                    UnitsNet.UnitConverter.Convert(
+                        VehicleMotorHubL.Value,
+                        VehicleMotorHubLUnit.UnitEnumValue,
+                        MotorModel.HubLBaseUnit
+                    ),
+                    UnitsNet.UnitConverter.Convert(
+                        VehicleMotorPleulL.Value,
+                        VehicleMotorPleulLUnit.UnitEnumValue,
+                        MotorModel.PleulLBaseUnit
+                    ),
+                    UnitsNet.UnitConverter.Convert(
+                        VehicleMotorDeachsierungL.Value,
+                        VehicleMotorDeachsierungLUnit.UnitEnumValue,
+                        MotorModel.DeachsierungLBaseUnit
+                    )
+                );
             }
         }
 
@@ -284,7 +341,11 @@ namespace SimTuning.Maui.UI.ViewModels
             get => _lengthDifferenceToOTUnit;
             set
             {
-                LengthDifferenceToOT = Core.Helpers.Functions.UpdateValue(LengthDifferenceToOT, _lengthDifferenceToOTUnit, value);
+                LengthDifferenceToOT = Core.Helpers.Functions.UpdateValue(
+                    LengthDifferenceToOT,
+                    _lengthDifferenceToOTUnit,
+                    value
+                );
 
                 SetProperty(ref _lengthDifferenceToOTUnit, value);
             }
@@ -373,7 +434,11 @@ namespace SimTuning.Maui.UI.ViewModels
             get => _unitAbstandOTlength;
             set
             {
-                LengthDifferenceToOT = Core.Helpers.Functions.UpdateValue(LengthDifferenceToOT, _unitAbstandOTlength, value);
+                LengthDifferenceToOT = Core.Helpers.Functions.UpdateValue(
+                    LengthDifferenceToOT,
+                    _unitAbstandOTlength,
+                    value
+                );
 
                 SetProperty(ref _unitAbstandOTlength, value);
             }

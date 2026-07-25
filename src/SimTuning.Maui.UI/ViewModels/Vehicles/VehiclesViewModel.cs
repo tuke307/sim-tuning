@@ -66,9 +66,13 @@ namespace SimTuning.Maui.UI.ViewModels
                     Beschreibung = "Erstellt am " + DateTime.Now + " über Fahrzeug-Modul",
                     Deletable = true,
                 };
-                vehicle = _vehicleService.CreateOne(vehicle);
+                var saved = _vehicleService.CreateOne(vehicle);
+                if (saved is null)
+                {
+                    return;
+                }
 
-                Vehicles.Add(vehicle);
+                Vehicles.Add(saved);
                 Vehicle = Vehicles.Last();
             }
             catch (Exception exc)
