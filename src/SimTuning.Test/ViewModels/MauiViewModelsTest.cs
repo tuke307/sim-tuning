@@ -1,4 +1,5 @@
 ﻿// Copyright (c) 2025 tuke productions. All rights reserved.
+using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using Moq;
 using SimTuning.Core.Services;
@@ -17,6 +18,8 @@ namespace SimTuning.Test
 
         private readonly Mock<IVehicleService> vehicleServiceMock = new Mock<IVehicleService>();
 
+        private readonly Mock<IPopupService> popupServiceMock = new Mock<IPopupService>();
+
         /// <summary>
         /// AuslassAnwendungViewModelTest.
         /// </summary>
@@ -25,7 +28,7 @@ namespace SimTuning.Test
         {
             // Arrange
             var logger = new Mock<ILogger<AuslassAnwendungViewModel>>();
-            var vm = new AuslassAnwendungViewModel(logger.Object, vehicleServiceMock.Object);
+            var vm = new AuslassAnwendungViewModel(logger.Object, vehicleServiceMock.Object, popupServiceMock.Object);
 
             // Act
             vm.CalculateCommand.Execute(null);
@@ -51,7 +54,7 @@ namespace SimTuning.Test
         {
             // Arrange
             var logger = new Mock<ILogger<AuslassTheorieViewModel>>();
-            var vm = new AuslassTheorieViewModel(logger.Object, vehicleServiceMock.Object);
+            var vm = new AuslassTheorieViewModel(logger.Object, vehicleServiceMock.Object, popupServiceMock.Object);
         }
 
         /// <summary>
@@ -102,7 +105,8 @@ namespace SimTuning.Test
                 logger.Object,
                 navigationServiceMock.Object,
                 vehicleServiceMock.Object,
-                browserServiceMock.Object
+                browserServiceMock.Object,
+                popupServiceMock.Object
             );
 
             vm.NewDyno(null);
@@ -188,7 +192,7 @@ namespace SimTuning.Test
         {
             // Arrange
             var logger = new Mock<ILogger<EinlassKanalViewModel>>();
-            var vm = new EinlassKanalViewModel(logger.Object, vehicleServiceMock.Object);
+            var vm = new EinlassKanalViewModel(logger.Object, vehicleServiceMock.Object, popupServiceMock.Object);
         }
 
         /// <summary>
@@ -210,7 +214,7 @@ namespace SimTuning.Test
         {
             // Arrange
             var logger = new Mock<ILogger<EinlassVergaserViewModel>>();
-            var vm = new EinlassVergaserViewModel(logger.Object, vehicleServiceMock.Object);
+            var vm = new EinlassVergaserViewModel(logger.Object, vehicleServiceMock.Object, popupServiceMock.Object);
         }
 
         /// <summary>
@@ -270,7 +274,8 @@ namespace SimTuning.Test
             var vm = new MotorHubraumViewModel(
                 logger.Object,
                 navigationServiceMock.Object,
-                vehicleServiceMock.Object
+                vehicleServiceMock.Object,
+                popupServiceMock.Object
             );
         }
 
@@ -296,7 +301,8 @@ namespace SimTuning.Test
             var vm = new MotorSteuerdiagrammViewModel(
                 logger.Object,
                 navigationServiceMock.Object,
-                vehicleServiceMock.Object
+                vehicleServiceMock.Object,
+                popupServiceMock.Object
             );
 
             vm.InsertHelperEngines(null);
@@ -314,7 +320,8 @@ namespace SimTuning.Test
             var vm = new MotorUmrechnungViewModel(
                 logger.Object,
                 navigationServiceMock.Object,
-                vehicleServiceMock.Object
+                vehicleServiceMock.Object,
+                popupServiceMock.Object
             );
         }
 
@@ -329,7 +336,8 @@ namespace SimTuning.Test
             var vm = new MotorVerdichtungViewModel(
                 logger.Object,
                 navigationServiceMock.Object,
-                vehicleServiceMock.Object
+                vehicleServiceMock.Object,
+                popupServiceMock.Object
             );
 
             vm.InsertHelperVehicle(null);
