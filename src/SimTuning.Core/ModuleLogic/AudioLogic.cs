@@ -12,7 +12,7 @@ namespace SimTuning.Core.ModuleLogic
         #region variables
 
         private static double _epsilon;
-        private static string _audioFile;
+        private static string? _audioFile;
         private static int _fftSize;
         private static double _intensity;
         private static int _maxFreq;
@@ -23,26 +23,26 @@ namespace SimTuning.Core.ModuleLogic
         /// <summary>
         /// Punkte der Drehzahl.
         /// </summary>
-        public static List<DataPoint> RotationalSpeedPoints { get; private set; }
+        public static List<DataPoint> RotationalSpeedPoints { get; private set; } = new List<DataPoint>();
 
         /// <summary>
         /// 1. Liste = Custer,
         /// 2. Liste = Punkte des Custers.
         /// </summary>
-        public static List<List<DataPoint>> ClusterPoints { get; private set; }
+        public static List<List<DataPoint>> ClusterPoints { get; private set; } = new List<List<DataPoint>>();
 
         /// <summary>
         /// Gets the spectrogram audio.
         /// </summary>
         /// <value>The spectrogram audio.</value>
-        public static Spectrogram.Spectrogram SpectrogramAudio { get; private set; }
+        public static Spectrogram.Spectrogram? SpectrogramAudio { get; private set; }
 
         /// <summary>
         /// Gets fFT-Array-elements pro 1 Hertz.
         /// </summary>
         private static double HzPerFFT
         {
-            get => SpectrogramAudio.HzPerPx;
+            get => SpectrogramAudio?.HzPerPx ?? 0;
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace SimTuning.Core.ModuleLogic
         /// </summary>
         private static double SegmentsPerSecond
         {
-            get => SpectrogramAudio.SecPerPx;
+            get => SpectrogramAudio?.SecPerPx ?? 0;
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace SimTuning.Core.ModuleLogic
         /// </summary>
         private static List<double[]> SpecData
         {
-            get => SpectrogramAudio?.GetFFTs();
+            get => SpectrogramAudio?.GetFFTs() ?? new List<double[]>();
         }
 
         #endregion variables

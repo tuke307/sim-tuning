@@ -19,12 +19,12 @@ namespace SimTuning.Maui.UI.Views.Dyno
             BindingContext = Ioc.Default.GetRequiredService<DynoDataViewModel>();
         }
 
-        private void Button_Clicked(object sender, EventArgs e)
+        private void Button_Clicked(object? sender, EventArgs e)
         {
 #if __MOBILE__
             Navigation.PushModalAsync(new DynoRuntimeView());
 #else
-            Functions.ShowSnackbarDialog(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_ONLYMOBILE"));
+            _ = Functions.ShowSnackbarDialogAsync(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_ONLYMOBILE"));
 #endif
         }
 

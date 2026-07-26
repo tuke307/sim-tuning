@@ -45,9 +45,9 @@
 							Margin="5,0,0,0"
 							ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
 							ItemDisplayBinding="{Binding Abbreviation}"
-							HorizontalOptions="StartAndExpand"
+							HorizontalOptions="Start"
 							SelectedItem="{Binding Path=VehicleMotorHubLUnit}"
-							VerticalOptions="CenterAndExpand" />
+							VerticalOptions="Center" />
                     </StackLayout>
 
                     <StackLayout Orientation="Horizontal">
@@ -61,9 +61,9 @@
 							Margin="5,0,0,0"
 							ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
 							ItemDisplayBinding="{Binding Abbreviation}"
-							HorizontalOptions="StartAndExpand"
+							HorizontalOptions="Start"
 							SelectedItem="{Binding Path=VehicleMotorPleulLUnit}"
-							VerticalOptions="CenterAndExpand" />
+							VerticalOptions="Center" />
                         <!--<Label  Margin="5, 0, 0, 0"
                                VerticalOptions="Center">
                             mm
@@ -81,9 +81,9 @@
 							Margin="5,0,0,0"
 							ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
 							ItemDisplayBinding="{Binding Abbreviation}"
-							HorizontalOptions="StartAndExpand"
+							HorizontalOptions="Start"
 							SelectedItem="{Binding Path=VehicleMotorDeachsierungLUnit}"
-							VerticalOptions="CenterAndExpand" />
+							VerticalOptions="Center" />
                         <!--<Label  Margin="5, 0, 0, 0"
                                VerticalOptions="Center">
                             mm
@@ -102,9 +102,9 @@
 							Margin="5,0,0,0"
 							ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
 							ItemDisplayBinding="{Binding Abbreviation}"
-							HorizontalOptions="StartAndExpand"
+							HorizontalOptions="Start"
 							SelectedItem="{Binding Path=VehicleMotorHubRUnit}"
-							VerticalOptions="CenterAndExpand" />
+							VerticalOptions="Center" />
                         <!--<Label  Margin="5, 0, 0, 0"
                                VerticalOptions="Center">
                             mm
@@ -153,9 +153,9 @@
 							Margin="5,0,0,0"
 							ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
 							ItemDisplayBinding="{Binding Abbreviation}"
-							HorizontalOptions="StartAndExpand"
+							HorizontalOptions="Start"
 							SelectedItem="{Binding Path=LengthDifferenceToOTUnit}"
-							VerticalOptions="CenterAndExpand" />
+							VerticalOptions="Center" />
                         <!--<Label  Margin="5, 0, 0, 0"
                                VerticalOptions="Center">
                             mm
@@ -229,7 +229,7 @@
 						Margin="0,20,0,0"
 						Text="Steuerwinkel:" />
 
-                    <Grid HorizontalOptions="FillAndExpand">
+                    <Grid HorizontalOptions="Fill">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />

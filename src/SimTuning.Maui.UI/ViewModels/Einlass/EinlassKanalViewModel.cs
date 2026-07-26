@@ -88,7 +88,10 @@ namespace SimTuning.Maui.UI.ViewModels
                 Einlasssteuerwinkel.HasValue &&
                 VehicleMotorKurbelgehaeuseV.HasValue &&
                 VehicleMotorResonanzU.HasValue &&
-                VehicleMotorEinlassDurchmesserD.HasValue)
+                VehicleMotorEinlassDurchmesserD.HasValue &&
+                VehicleMotorEinlassFlaecheAUnit != null &&
+                VehicleMotorKurbelgehaeuseVUnit != null &&
+                VehicleMotorEinlassDurchmesserDUnit != null)
             {
                 Resonanzlaenge = EinlassLogic.GetResonanzLaenge(
                     UnitsNet.UnitConverter.Convert(VehicleMotorEinlassFlaecheA.Value, VehicleMotorEinlassFlaecheAUnit.UnitEnumValue, AreaUnit.SquareCentimeter),
@@ -109,9 +112,9 @@ namespace SimTuning.Maui.UI.ViewModels
 
         private double? _resonanzlaenge;
 
-        private UnitListItem _resonanzlaengeUnit;
+        private UnitListItem? _resonanzlaengeUnit;
 
-        private VehiclesModel _vehicle;
+        private VehiclesModel? _vehicle;
 
         /// <summary>
         /// Gets the area quantity units.
@@ -141,7 +144,7 @@ namespace SimTuning.Maui.UI.ViewModels
             set { SetProperty(ref _resonanzlaenge, value); }
         }
 
-        public UnitListItem ResonanzlaengeUnit
+        public UnitListItem? ResonanzlaengeUnit
         {
             get => _resonanzlaengeUnit;
             set
@@ -156,7 +159,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the vehicle.
         /// </summary>
         /// <value>The vehicle.</value>
-        public VehiclesModel Vehicle
+        public VehiclesModel? Vehicle
         {
             get => _vehicle;
             set => SetProperty(ref _vehicle, value);
@@ -178,7 +181,7 @@ namespace SimTuning.Maui.UI.ViewModels
             }
         }
 
-        public UnitListItem VehicleMotorEinlassDurchmesserDUnit
+        public UnitListItem? VehicleMotorEinlassDurchmesserDUnit
         {
             get => LengthQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.Einlass?.DurchmesserDUnit));
             set
@@ -209,7 +212,7 @@ namespace SimTuning.Maui.UI.ViewModels
             }
         }
 
-        public UnitListItem VehicleMotorEinlassFlaecheAUnit
+        public UnitListItem? VehicleMotorEinlassFlaecheAUnit
         {
             get => AreaQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.Einlass?.FlaecheAUnit));
             set
@@ -240,7 +243,7 @@ namespace SimTuning.Maui.UI.ViewModels
             }
         }
 
-        public UnitListItem VehicleMotorKurbelgehaeuseVUnit
+        public UnitListItem? VehicleMotorKurbelgehaeuseVUnit
         {
             get => VolumeQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Vehicle?.Motor?.KurbelgehaeuseVUnit));
             set

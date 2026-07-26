@@ -32,7 +32,7 @@ namespace SimTuning.Maui.UI.ViewModels
 
         private readonly ILogger<DynoMainViewModel> _logger;
         private int _dynoTabIndex;
-        private string _pageTitle;
+        private string? _pageTitle;
 
         public int DynoTabIndex
         {
@@ -40,7 +40,7 @@ namespace SimTuning.Maui.UI.ViewModels
             set => SetProperty(ref _dynoTabIndex, value);
         }
 
-        public string PageTitle
+        public string? PageTitle
         {
             get => _pageTitle;
             set => SetProperty(ref _pageTitle, value);

@@ -1,0 +1,9 @@
+name: sim-tuning
+version: 1.0.0
+description: Coding standards and AI agent instructions for Sim Tuning
+author: Tony Meissner
+license: MIT
+# Available targets: claude, copilot, copilot-app, cursor, windsurf, codex, opencode, gemini, vscode, kiro, intellij (mcp only), agents, all
+target: claude,agent-skills
+dependencies:
+  apm: []

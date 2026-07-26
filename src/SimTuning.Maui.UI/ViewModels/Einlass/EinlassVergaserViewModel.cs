@@ -58,7 +58,7 @@ namespace SimTuning.Maui.UI.ViewModels
 
         private void Refresh_Hauptduesendurchmesser()
         {
-            if (Vergasergroeße.HasValue)
+            if (Vergasergroeße.HasValue && UnitVergasergroeße != null)
             {
                 HauptdueseD = EinlassLogic.GetVergaserHauptduesenDurchmesser(
                     UnitsNet.UnitConverter.Convert(
@@ -70,7 +70,7 @@ namespace SimTuning.Maui.UI.ViewModels
 
         private void Refresh_Vergasergroeße()
         {
-            if (Hubvolumen.HasValue && Resonanzdrehzahl.HasValue)
+            if (Hubvolumen.HasValue && Resonanzdrehzahl.HasValue && UnitHubvolumen != null)
             {
                 Vergasergroeße = EinlassLogic.GetVergaserDurchmesser(
                     UnitsNet.UnitConverter.Convert(
@@ -93,11 +93,11 @@ namespace SimTuning.Maui.UI.ViewModels
 
         private double? _resonanzdrehzahl;
 
-        private UnitListItem _unitHauptdueseD;
+        private UnitListItem? _unitHauptdueseD;
 
-        private UnitListItem _unitHubvolumen;
+        private UnitListItem? _unitHubvolumen;
 
-        private UnitListItem _unitVergasergroeße;
+        private UnitListItem? _unitVergasergroeße;
 
         private double? _vergasergroeße;
 
@@ -129,7 +129,7 @@ namespace SimTuning.Maui.UI.ViewModels
             }
         }
 
-        public UnitListItem UnitHauptdueseD
+        public UnitListItem? UnitHauptdueseD
         {
             get => _unitHauptdueseD;
             set
@@ -140,7 +140,7 @@ namespace SimTuning.Maui.UI.ViewModels
             }
         }
 
-        public UnitListItem UnitHubvolumen
+        public UnitListItem? UnitHubvolumen
         {
             get => _unitHubvolumen;
             set
@@ -151,7 +151,7 @@ namespace SimTuning.Maui.UI.ViewModels
             }
         }
 
-        public UnitListItem UnitVergasergroeße
+        public UnitListItem? UnitVergasergroeße
         {
             get => _unitVergasergroeße;
             set

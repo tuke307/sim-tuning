@@ -21,7 +21,7 @@ using System.Collections.ObjectModel;
 
 namespace SimTuning.Maui.UI.ViewModels
 {
-    public class DynoDiagnosisViewModel : ViewModelBase
+    public partial class DynoDiagnosisViewModel : ViewModelBase
     {
         public DynoDiagnosisViewModel(
             ILogger<DynoDiagnosisViewModel> logger,
@@ -34,7 +34,7 @@ namespace SimTuning.Maui.UI.ViewModels
             AreaQuantityUnits = new AreaQuantity();
             MassQuantityUnits = new MassQuantity();
 
-            RefreshPlotCommand = new RelayCommand(RefreshPlot);
+            // RefreshPlotCommand is source-generated via [RelayCommand] on RefreshPlot().
 
             // erste navigation: selected dyno wird requested
             Dyno = Messenger.Send<CurrentDynoRequestMessage>();
@@ -61,9 +61,16 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <summary>
         /// Refreshes the plot.
         /// </summary>
+        [RelayCommand]
         protected void RefreshPlot()
         {
             if (!CheckDynoData())
+            {
+                return;
+            }
+
+            var dyno = Dyno;
+            if (dyno == null)
             {
                 return;
             }
@@ -72,8 +79,8 @@ namespace SimTuning.Maui.UI.ViewModels
             {
                 List<ObservablePoint> values = new List<ObservablePoint>();
 
-                var maxDrehzahl = Dyno.Drehzahl.Max(x => x.Drehzahl);
-                var rangeToMaxDrehzahl = Dyno.Drehzahl.Take(Dyno.Drehzahl.IndexOf(Dyno.Drehzahl.FirstOrDefault(x => x.Drehzahl == maxDrehzahl))).ToList();
+                var maxDrehzahl = dyno.Drehzahl.Max(x => x.Drehzahl);
+                var rangeToMaxDrehzahl = dyno.Drehzahl.Take(dyno.Drehzahl.IndexOf(dyno.Drehzahl.FirstOrDefault(x => x.Drehzahl == maxDrehzahl))).ToList();
                 rangeToMaxDrehzahl.RemoveAt(0);
 
                 foreach (var item in rangeToMaxDrehzahl)
@@ -84,13 +91,13 @@ namespace SimTuning.Maui.UI.ViewModels
                         item.Drehzahl,
                         item.Zeit / 1000,
                         1.2,
-                        Cw.Value,
-                        Gesamtübersetzung.Value,
+                        Cw.GetValueOrDefault(),
+                        Gesamtübersetzung.GetValueOrDefault(),
                         0.277,
-                        DynoVehicleGewicht.Value,
+                        DynoVehicleGewicht.GetValueOrDefault(),
                         0.005,
                         9.81,
-                        FrontA.Value,
+                        FrontA.GetValueOrDefault(),
                         0)));
                 }
 
@@ -104,12 +111,12 @@ namespace SimTuning.Maui.UI.ViewModels
                         Fill = null,
                     });
 
-                Dyno.DynoPS = new List<DynoPsModel>();
+                dyno.DynoPS = new List<DynoPsModel>();
                 foreach (var item in values)
                 {
-                    Dyno.DynoPS.Add(item.ToDynoPSModel());
+                    dyno.DynoPS.Add(item.ToDynoPSModel());
                 }
-                _vehicleService.UpdateOne(Dyno);
+                _vehicleService.UpdateOne(dyno);
             }
             catch (Exception exc)
             {
@@ -124,7 +131,7 @@ namespace SimTuning.Maui.UI.ViewModels
         {
             if (Dyno == null)
             {
-                Functions.ShowSnackbarDialog(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_NODATA"));
+                _ = Functions.ShowSnackbarDialogAsync(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_NODATA"));
 
                 return false;
             }
@@ -140,16 +147,16 @@ namespace SimTuning.Maui.UI.ViewModels
 
         protected readonly IVehicleService _vehicleService;
         private readonly ILogger<DynoDiagnosisViewModel> _logger;
-        private DynoModel _dyno;
-        private ObservableCollection<ISeries> _plotStrength;
+        private DynoModel? _dyno;
+        private ObservableCollection<ISeries>? _plotStrength;
         private double? _gesamtübersetzung;
-        private UnitListItem _frontAUnit;
+        private UnitListItem? _frontAUnit;
         private double? _cw;
         private double? _frontA;
 
         public ObservableCollection<UnitListItem> AreaQuantityUnits { get; }
 
-        public DynoModel Dyno
+        public DynoModel? Dyno
         {
             get => _dyno;
             set => SetProperty(ref _dyno, value);
@@ -181,7 +188,7 @@ namespace SimTuning.Maui.UI.ViewModels
             set => SetProperty(ref _frontA, value);
         }
 
-        public UnitListItem FrontAUnit
+        public UnitListItem? FrontAUnit
         {
             get => _frontAUnit;
             set => SetProperty(ref _frontAUnit, value);
@@ -201,17 +208,17 @@ namespace SimTuning.Maui.UI.ViewModels
             }
         }
 
-        public UnitListItem DynoVehicleGewichtUnit
+        public UnitListItem? DynoVehicleGewichtUnit
         {
             get => MassQuantityUnits.SingleOrDefault(x => x.UnitEnumValue.Equals(Dyno?.Vehicle?.GewichtUnit));
             set
             {
-                if (Dyno?.Vehicle == null)
+                if (Dyno?.Vehicle == null || value == null)
                 {
                     return;
                 }
 
-                Dyno.Vehicle.GewichtUnit = (UnitsNet.Units.MassUnit)value?.UnitEnumValue;
+                Dyno.Vehicle.GewichtUnit = (UnitsNet.Units.MassUnit)value.UnitEnumValue;
                 OnPropertyChanged(nameof(DynoVehicleGewicht));
             }
         }
@@ -224,17 +231,11 @@ namespace SimTuning.Maui.UI.ViewModels
 
         public ObservableCollection<UnitListItem> MassQuantityUnits { get; }
 
-        public ObservableCollection<ISeries> PlotStrength
+        public ObservableCollection<ISeries>? PlotStrength
         {
             get => _plotStrength;
             set => SetProperty(ref _plotStrength, value);
         }
-
-        /// <summary>
-        /// Gets or sets the refresh plot command.
-        /// </summary>
-        /// <value>The refresh plot command.</value>
-        public IRelayCommand RefreshPlotCommand { get; set; }
 
         public Axis[] XAxes { get; set; }
             = new Axis[]

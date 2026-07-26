@@ -234,24 +234,7 @@ namespace SimTuning.Data.Models
             get => this._AbgasTUnit ?? AbgasTBaseUnit;
             set
             {
-                if (this.AbgasT.HasValue)
-                {
-                    UnitsNet.UnitConverter.TryConvert(
-               this.AbgasT.Value,
-               this.AbgasTUnit,
-               value,
-               out double convertedValue);
-
-                    if (UnitSettings.RoundOnUnitChange)
-                    {
-                        this.AbgasT = Math.Round(convertedValue, UnitSettings.RoundingAccuracy);
-                    }
-                    else
-                    {
-                        this.AbgasT = convertedValue;
-                    }
-                }
-
+                this.AbgasT = ConvertValueForUnit(this.AbgasT, this.AbgasTUnit, value);
                 this._AbgasTUnit = value;
             }
         }
@@ -272,24 +255,7 @@ namespace SimTuning.Data.Models
             get => this._AbgasVUnit ?? AbgasVBaseUnit;
             set
             {
-                if (this.AbgasV.HasValue)
-                {
-                    UnitsNet.UnitConverter.TryConvert(
-                                    this.AbgasV.Value,
-                                    this.AbgasVUnit,
-                                    value,
-                                    out double convertedValue);
-
-                    if (UnitSettings.RoundOnUnitChange)
-                    {
-                        this.AbgasV = Math.Round(convertedValue, UnitSettings.RoundingAccuracy);
-                    }
-                    else
-                    {
-                        this.AbgasV = convertedValue;
-                    }
-                }
-
+                this.AbgasV = ConvertValueForUnit(this.AbgasV, this.AbgasVUnit, value);
                 this._AbgasVUnit = value;
             }
         }
@@ -329,24 +295,7 @@ namespace SimTuning.Data.Models
             get => this._DiffusorD1Unit ?? DiffusorD1BaseUnit;
             set
             {
-                if (this.DiffusorD1.HasValue)
-                {
-                    UnitsNet.UnitConverter.TryConvert(
-                this.DiffusorD1.Value,
-                this.DiffusorD1Unit,
-                value,
-                out double convertedValue);
-
-                    if (UnitSettings.RoundOnUnitChange)
-                    {
-                        this.DiffusorD1 = Math.Round(convertedValue, UnitSettings.RoundingAccuracy);
-                    }
-                    else
-                    {
-                        this.DiffusorD1 = convertedValue;
-                    }
-                }
-
+                this.DiffusorD1 = ConvertValueForUnit(this.DiffusorD1, this.DiffusorD1Unit, value);
                 this._DiffusorD1Unit = value;
             }
         }
@@ -367,24 +316,7 @@ namespace SimTuning.Data.Models
             get => this._DiffusorD2Unit ?? DiffusorD2BaseUnit;
             set
             {
-                if (this.DiffusorD2.HasValue)
-                {
-                    UnitsNet.UnitConverter.TryConvert(
-               this.DiffusorD2.Value,
-               this.DiffusorD2Unit,
-               value,
-               out double convertedValue);
-
-                    if (UnitSettings.RoundOnUnitChange)
-                    {
-                        this.DiffusorD2 = Math.Round(convertedValue, UnitSettings.RoundingAccuracy);
-                    }
-                    else
-                    {
-                        this.DiffusorD2 = convertedValue;
-                    }
-                }
-
+                this.DiffusorD2 = ConvertValueForUnit(this.DiffusorD2, this.DiffusorD2Unit, value);
                 this._DiffusorD2Unit = value;
             }
         }
@@ -405,24 +337,7 @@ namespace SimTuning.Data.Models
             get => this._DiffusorD3Unit ?? DiffusorD3BaseUnit;
             set
             {
-                if (this.DiffusorD3.HasValue)
-                {
-                    UnitsNet.UnitConverter.TryConvert(
-                this.DiffusorD3.Value,
-                this.DiffusorD3Unit,
-                value,
-                out double convertedValue);
-
-                    if (UnitSettings.RoundOnUnitChange)
-                    {
-                        this.DiffusorD3 = Math.Round(convertedValue, UnitSettings.RoundingAccuracy);
-                    }
-                    else
-                    {
-                        this.DiffusorD3 = convertedValue;
-                    }
-                }
-
+                this.DiffusorD3 = ConvertValueForUnit(this.DiffusorD3, this.DiffusorD3Unit, value);
                 this._DiffusorD3Unit = value;
             }
         }
@@ -437,24 +352,7 @@ namespace SimTuning.Data.Models
             get => this._DiffusorDUnit ?? DiffusorDBaseUnit;
             set
             {
-                if (this.DiffusorD.HasValue)
-                {
-                    UnitsNet.UnitConverter.TryConvert(
-                                    this.DiffusorD.Value,
-                                    this.DiffusorDUnit,
-                                    value,
-                                    out double convertedValue);
-
-                    if (UnitSettings.RoundOnUnitChange)
-                    {
-                        this.DiffusorD = Math.Round(convertedValue, UnitSettings.RoundingAccuracy);
-                    }
-                    else
-                    {
-                        this.DiffusorD = convertedValue;
-                    }
-                }
-
+                this.DiffusorD = ConvertValueForUnit(this.DiffusorD, this.DiffusorDUnit, value);
                 this._DiffusorDUnit = value;
             }
         }
@@ -481,24 +379,7 @@ namespace SimTuning.Data.Models
             get => this._DiffusorL1Unit ?? DiffusorL1BaseUnit;
             set
             {
-                if (this.DiffusorL1.HasValue)
-                {
-                    UnitsNet.UnitConverter.TryConvert(
-                this.DiffusorL1.Value,
-                this.DiffusorL1Unit,
-                value,
-                out double convertedValue);
-
-                    if (UnitSettings.RoundOnUnitChange)
-                    {
-                        this.DiffusorL1 = Math.Round(convertedValue, UnitSettings.RoundingAccuracy);
-                    }
-                    else
-                    {
-                        this.DiffusorL1 = convertedValue;
-                    }
-                }
-
+                this.DiffusorL1 = ConvertValueForUnit(this.DiffusorL1, this.DiffusorL1Unit, value);
                 this._DiffusorL1Unit = value;
             }
         }
@@ -519,24 +400,7 @@ namespace SimTuning.Data.Models
             get => this._DiffusorL2Unit ?? DiffusorL2BaseUnit;
             set
             {
-                if (this.DiffusorL2.HasValue)
-                {
-                    UnitsNet.UnitConverter.TryConvert(
-                this.DiffusorL2.Value,
-                this.DiffusorL2Unit,
-                value,
-                out double convertedValue);
-
-                    if (UnitSettings.RoundOnUnitChange)
-                    {
-                        this.DiffusorL2 = Math.Round(convertedValue, UnitSettings.RoundingAccuracy);
-                    }
-                    else
-                    {
-                        this.DiffusorL2 = convertedValue;
-                    }
-                }
-
+                this.DiffusorL2 = ConvertValueForUnit(this.DiffusorL2, this.DiffusorL2Unit, value);
                 this._DiffusorL2Unit = value;
             }
         }
@@ -557,24 +421,7 @@ namespace SimTuning.Data.Models
             get => this._DiffusorL3Unit ?? DiffusorL3BaseUnit;
             set
             {
-                if (this.DiffusorL3.HasValue)
-                {
-                    UnitsNet.UnitConverter.TryConvert(
-               this.DiffusorL3.Value,
-               this.DiffusorL3Unit,
-               value,
-               out double convertedValue);
-
-                    if (UnitSettings.RoundOnUnitChange)
-                    {
-                        this.DiffusorL3 = Math.Round(convertedValue, UnitSettings.RoundingAccuracy);
-                    }
-                    else
-                    {
-                        this.DiffusorL3 = convertedValue;
-                    }
-                }
-
+                this.DiffusorL3 = ConvertValueForUnit(this.DiffusorL3, this.DiffusorL3Unit, value);
                 this._DiffusorL3Unit = value;
             }
         }
@@ -589,24 +436,7 @@ namespace SimTuning.Data.Models
             get => this._DiffusorLUnit ?? DiffusorLBaseUnit;
             set
             {
-                if (this.DiffusorL.HasValue)
-                {
-                    UnitsNet.UnitConverter.TryConvert(
-               this.DiffusorL.Value,
-               this.DiffusorLUnit,
-               value,
-               out double convertedValue);
-
-                    if (UnitSettings.RoundOnUnitChange)
-                    {
-                        this.DiffusorL = Math.Round(convertedValue, UnitSettings.RoundingAccuracy);
-                    }
-                    else
-                    {
-                        this.DiffusorL = convertedValue;
-                    }
-                }
-
+                this.DiffusorL = ConvertValueForUnit(this.DiffusorL, this.DiffusorLUnit, value);
                 this._DiffusorLUnit = value;
             }
         }
@@ -657,24 +487,7 @@ namespace SimTuning.Data.Models
             get => this._EndrohrDUnit ?? EndrohrDBaseUnit;
             set
             {
-                if (this.EndrohrD.HasValue)
-                {
-                    UnitsNet.UnitConverter.TryConvert(
-                this.EndrohrD.Value,
-                this.EndrohrDUnit,
-                value,
-                out double convertedValue);
-
-                    if (UnitSettings.RoundOnUnitChange)
-                    {
-                        this.EndrohrD = Math.Round(convertedValue, UnitSettings.RoundingAccuracy);
-                    }
-                    else
-                    {
-                        this.EndrohrD = convertedValue;
-                    }
-                }
-
+                this.EndrohrD = ConvertValueForUnit(this.EndrohrD, this.EndrohrDUnit, value);
                 this._EndrohrDUnit = value;
             }
         }
@@ -695,24 +508,7 @@ namespace SimTuning.Data.Models
             get => this._EndrohrLUnit ?? EndrohrLBaseUnit;
             set
             {
-                if (this.EndrohrL.HasValue)
-                {
-                    UnitsNet.UnitConverter.TryConvert(
-                                    this.EndrohrL.Value,
-                                    this.EndrohrLUnit,
-                                    value,
-                                    out double convertedValue);
-
-                    if (UnitSettings.RoundOnUnitChange)
-                    {
-                        this.EndrohrL = Math.Round(convertedValue, UnitSettings.RoundingAccuracy);
-                    }
-                    else
-                    {
-                        this.EndrohrL = convertedValue;
-                    }
-                }
-
+                this.EndrohrL = ConvertValueForUnit(this.EndrohrL, this.EndrohrLUnit, value);
                 this._EndrohrLUnit = value;
             }
         }
@@ -733,24 +529,7 @@ namespace SimTuning.Data.Models
             get => this._GegenkonusDUnit ?? GegenkonusDBaseUnit;
             set
             {
-                if (this.GegenkonusD.HasValue)
-                {
-                    UnitsNet.UnitConverter.TryConvert(
-                this.GegenkonusD.Value,
-                this.GegenkonusDUnit,
-                value,
-                out double convertedValue);
-
-                    if (UnitSettings.RoundOnUnitChange)
-                    {
-                        this.GegenkonusD = Math.Round(convertedValue, UnitSettings.RoundingAccuracy);
-                    }
-                    else
-                    {
-                        this.GegenkonusD = convertedValue;
-                    }
-                }
-
+                this.GegenkonusD = ConvertValueForUnit(this.GegenkonusD, this.GegenkonusDUnit, value);
                 this._GegenkonusDUnit = value;
             }
         }
@@ -771,24 +550,7 @@ namespace SimTuning.Data.Models
             get => this._GegenkonusLUnit ?? GegenkonusLBaseUnit;
             set
             {
-                if (this.GegenkonusL.HasValue)
-                {
-                    UnitsNet.UnitConverter.TryConvert(
-                                    this.GegenkonusL.Value,
-                                    this.GegenkonusLUnit,
-                                    value,
-                                    out double convertedValue);
-
-                    if (UnitSettings.RoundOnUnitChange)
-                    {
-                        this.GegenkonusL = Math.Round(convertedValue, UnitSettings.RoundingAccuracy);
-                    }
-                    else
-                    {
-                        this.GegenkonusL = convertedValue;
-                    }
-                }
-
+                this.GegenkonusL = ConvertValueForUnit(this.GegenkonusL, this.GegenkonusLUnit, value);
                 this._GegenkonusLUnit = value;
             }
         }
@@ -815,24 +577,7 @@ namespace SimTuning.Data.Models
             get => this._GesamtLUnit ?? GesamtLBaseUnit;
             set
             {
-                if (this.GesamtL.HasValue)
-                {
-                    UnitsNet.UnitConverter.TryConvert(
-               this.GesamtL.Value,
-               this.GesamtLUnit,
-               value,
-               out double convertedValue);
-
-                    if (UnitSettings.RoundOnUnitChange)
-                    {
-                        this.GesamtL = Math.Round(convertedValue, UnitSettings.RoundingAccuracy);
-                    }
-                    else
-                    {
-                        this.GesamtL = convertedValue;
-                    }
-                }
-
+                this.GesamtL = ConvertValueForUnit(this.GesamtL, this.GesamtLUnit, value);
                 this._GesamtLUnit = value;
             }
         }
@@ -853,24 +598,7 @@ namespace SimTuning.Data.Models
             get => this._KruemmerDUnit ?? KruemmerDBaseUnit;
             set
             {
-                if (this.KruemmerD.HasValue)
-                {
-                    UnitsNet.UnitConverter.TryConvert(
-                    this.KruemmerD.Value,
-                    this.KruemmerDUnit,
-                    value,
-                    out double convertedValue);
-
-                    if (UnitSettings.RoundOnUnitChange)
-                    {
-                        this.KruemmerD = Math.Round(convertedValue, UnitSettings.RoundingAccuracy);
-                    }
-                    else
-                    {
-                        this.KruemmerD = convertedValue;
-                    }
-                }
-
+                this.KruemmerD = ConvertValueForUnit(this.KruemmerD, this.KruemmerDUnit, value);
                 this._KruemmerDUnit = value;
             }
         }
@@ -897,24 +625,7 @@ namespace SimTuning.Data.Models
             get => this._KruemmerLUnit ?? KruemmerLBaseUnit;
             set
             {
-                if (this.KruemmerL.HasValue)
-                {
-                    UnitsNet.UnitConverter.TryConvert(
-               this.KruemmerL.Value,
-               this.KruemmerLUnit,
-               value,
-               out double convertedValue);
-
-                    if (UnitSettings.RoundOnUnitChange)
-                    {
-                        this.KruemmerL = Math.Round(convertedValue, UnitSettings.RoundingAccuracy);
-                    }
-                    else
-                    {
-                        this.KruemmerL = convertedValue;
-                    }
-                }
-
+                this.KruemmerL = ConvertValueForUnit(this.KruemmerL, this.KruemmerLUnit, value);
                 this._KruemmerLUnit = value;
             }
         }
@@ -941,24 +652,7 @@ namespace SimTuning.Data.Models
             get => this._MittelteilDUnit ?? MittelteilDBaseUnit;
             set
             {
-                if (this.MittelteilD.HasValue)
-                {
-                    UnitsNet.UnitConverter.TryConvert(
-               this.MittelteilD.Value,
-               this.MittelteilDUnit,
-               value,
-               out double convertedValue);
-
-                    if (UnitSettings.RoundOnUnitChange)
-                    {
-                        this.MittelteilD = Math.Round(convertedValue, UnitSettings.RoundingAccuracy);
-                    }
-                    else
-                    {
-                        this.MittelteilD = convertedValue;
-                    }
-                }
-
+                this.MittelteilD = ConvertValueForUnit(this.MittelteilD, this.MittelteilDUnit, value);
                 this._MittelteilDUnit = value;
             }
         }
@@ -985,24 +679,7 @@ namespace SimTuning.Data.Models
             get => this._MittelteilLUnit ?? MittelteilLBaseUnit;
             set
             {
-                if (this.MittelteilL.HasValue)
-                {
-                    UnitsNet.UnitConverter.TryConvert(
-                this.MittelteilL.Value,
-                this.MittelteilLUnit,
-                value,
-                out double convertedValue);
-
-                    if (UnitSettings.RoundOnUnitChange)
-                    {
-                        this.MittelteilL = Math.Round(convertedValue, UnitSettings.RoundingAccuracy);
-                    }
-                    else
-                    {
-                        this.MittelteilL = convertedValue;
-                    }
-                }
-
+                this.MittelteilL = ConvertValueForUnit(this.MittelteilL, this.MittelteilLUnit, value);
                 this._MittelteilLUnit = value;
             }
         }
@@ -1023,24 +700,7 @@ namespace SimTuning.Data.Models
             get => this._ResonanzLUnit ?? ResonanzLBaseUnit;
             set
             {
-                if (this.ResonanzL.HasValue)
-                {
-                    UnitsNet.UnitConverter.TryConvert(
-                this.ResonanzL.Value,
-                this.ResonanzLUnit,
-                value,
-                out double convertedValue);
-
-                    if (UnitSettings.RoundOnUnitChange)
-                    {
-                        this.ResonanzL = Math.Round(convertedValue, UnitSettings.RoundingAccuracy);
-                    }
-                    else
-                    {
-                        this.ResonanzL = convertedValue;
-                    }
-                }
-
+                this.ResonanzL = ConvertValueForUnit(this.ResonanzL, this.ResonanzLUnit, value);
                 this._ResonanzLUnit = value;
             }
         }

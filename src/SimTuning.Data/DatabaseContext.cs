@@ -113,7 +113,8 @@ namespace SimTuning.Data
         /// Initializes a new instance of the <see cref="DatabaseContext" /> class with options.
         /// </summary>
         /// <param name="options">The options for this context.</param>
-        public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
+        public DatabaseContext(DbContextOptions<DatabaseContext> options)
+            : base(options)
         {
         }
 

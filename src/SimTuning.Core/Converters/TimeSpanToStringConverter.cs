@@ -9,18 +9,13 @@ namespace SimTuning.Core.Converters
     {
         private const string DEFAULT_FORMAT = @"mm\:ss";
 
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo? culture)
         {
-            if (!(parameter is string format))
-            {
-                format = DEFAULT_FORMAT;
-            }
-
-            var timeSpan = (TimeSpan)value;
-            return timeSpan.ToString(format);
+            var format = parameter as string ?? DEFAULT_FORMAT;
+            return value is TimeSpan timeSpan ? timeSpan.ToString(format) : string.Empty;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo? culture)
         {
             throw new NotImplementedException();
         }

@@ -88,25 +88,7 @@ namespace SimTuning.Data.Models
             get => this._GewichtUnit ?? GewichtBaseUnit;
             set
             {
-                if (this.Gewicht.HasValue)
-                {
-
-                    UnitsNet.UnitConverter.TryConvert(
-                       this.Gewicht.Value,
-                       this.GewichtUnit,
-                       value,
-                       out double convertedValue);
-
-                    if (UnitSettings.RoundOnUnitChange)
-                    {
-                        this.Gewicht = Math.Round(convertedValue, UnitSettings.RoundingAccuracy);
-                    }
-                    else
-                    {
-                        this.Gewicht = convertedValue;
-                    }
-                }
-
+                this.Gewicht = ConvertValueForUnit(this.Gewicht, this.GewichtUnit, value);
                 this._GewichtUnit = value;
             }
         }

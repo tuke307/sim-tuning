@@ -1,4 +1,5 @@
 ﻿// Copyright (c) 2025 tuke productions. All rights reserved.
+using Microsoft.Extensions.Logging;
 using SimTuning.Maui.UI.ViewModels;
 using System.Diagnostics;
 
@@ -7,12 +8,16 @@ namespace SimTuning.Maui.UI.Services
     public class NavigationService : INavigationService
     {
         private readonly IServiceProvider _services;
+        private readonly ILogger<NavigationService> _logger;
 
         protected INavigation Navigation
         {
             get
             {
-                INavigation? navigation = Application.Current?.MainPage?.Navigation;
+                // Application.MainPage is deprecated in .NET 11 / MAUI 11; use the main
+                // window's page instead (single-window app). FirstOrDefault keeps this
+                // null-tolerant if no window exists yet.
+                INavigation? navigation = Application.Current?.Windows.FirstOrDefault()?.Page?.Navigation;
                 if (navigation is not null)
                 {
                     return navigation;
@@ -22,12 +27,15 @@ namespace SimTuning.Maui.UI.Services
                     // This is not good!
                     if (Debugger.IsAttached)
                         Debugger.Break();
-                    throw new Exception();
+                    throw new InvalidOperationException("No active navigation stack is available.");
                 }
             }
         }
-        public NavigationService(IServiceProvider services)
-            => _services = services;
+        public NavigationService(IServiceProvider services, ILogger<NavigationService> logger)
+        {
+            _services = services;
+            _logger = logger;
+        }
 
         public Task NavigateBack()
         {
@@ -67,20 +75,28 @@ namespace SimTuning.Maui.UI.Services
 
         private async void Page_NavigatedFrom(object? sender, NavigatedFromEventArgs e)
         {
-            // To determine forward navigation, we look at the 2nd to last item on the NavigationStack
-            // If that entry equals the sender, it means we navigated forward from the sender to another page
-            bool isForwardNavigation = Navigation.NavigationStack.Count > 1
-                && Navigation.NavigationStack[^2] == sender;
-
-            if (sender is Page thisPage)
+            try
             {
-                if (!isForwardNavigation)
-                {
-                    thisPage.NavigatedTo -= Page_NavigatedTo;
-                    thisPage.NavigatedFrom -= Page_NavigatedFrom;
-                }
+                // To determine forward navigation, we look at the 2nd to last item on the NavigationStack
+                // If that entry equals the sender, it means we navigated forward from the sender to another page
+                bool isForwardNavigation = Navigation.NavigationStack.Count > 1
+                    && Navigation.NavigationStack[^2] == sender;
 
-                await CallNavigatedFrom(thisPage, isForwardNavigation);
+                if (sender is Page thisPage)
+                {
+                    if (!isForwardNavigation)
+                    {
+                        thisPage.NavigatedTo -= Page_NavigatedTo;
+                        thisPage.NavigatedFrom -= Page_NavigatedFrom;
+                    }
+
+                    await CallNavigatedFrom(thisPage, isForwardNavigation);
+                }
+            }
+            catch (Exception exc)
+            {
+                // async void: an unhandled exception here would terminate the process.
+                _logger.LogError(exc, "Page_NavigatedFrom handler failed: {Message}", exc.Message);
             }
         }
 
@@ -94,7 +110,17 @@ namespace SimTuning.Maui.UI.Services
         }
 
         private async void Page_NavigatedTo(object? sender, NavigatedToEventArgs e)
-            => await CallNavigatedTo(sender as Page);
+        {
+            try
+            {
+                await CallNavigatedTo(sender as Page);
+            }
+            catch (Exception exc)
+            {
+                // async void: an unhandled exception here would terminate the process.
+                _logger.LogError(exc, "Page_NavigatedTo handler failed: {Message}", exc.Message);
+            }
+        }
 
         private Task CallNavigatedTo(Page? p)
         {

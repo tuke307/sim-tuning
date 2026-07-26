@@ -154,7 +154,7 @@ namespace SimTuning.Maui.UI.ViewModels
         private double? _einlass_Steuerwinkel_oeffnen;
         private double? _einlass_Steuerwinkel_schließen;
 
-        private ImageSource _portTimingCircle;
+        private ImageSource? _portTimingCircle;
 
         private double? _steuerzeitAuslass;
 
@@ -192,7 +192,7 @@ namespace SimTuning.Maui.UI.ViewModels
             set => SetProperty(ref _einlass_Steuerwinkel_schließen, value);
         }
 
-        public ImageSource PortTimingCircle
+        public ImageSource? PortTimingCircle
         {
             get => _portTimingCircle;
             private set => SetProperty(ref _portTimingCircle, value);
