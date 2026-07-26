@@ -222,28 +222,6 @@ namespace SimTuning.Maui.UI.ViewModels
                 }
             }
 #pragma warning restore AsyncFixer02
-
-            /*
-
-            using var stream = await FileSystem.OpenAppPackageFileAsync(GeneralSettings.AudioAccelerationFile);
-            using var reader = new StreamReader(stream);
-
-            var contents = reader.ReadToEnd();
-            */
-
-            // wenn Datei ausgewählt using (FileStream sourceStream = File.Open(fileName, FileMode.OpenOrCreate)) { status =
-            // SimTuning.Core.Helpers.AudioUtils.AudioCopy(SimTuning.Core.GeneralSettings.AudioFile, sourceStream); }
-
-            // if (status) { await RefreshAudioFileAsync().ConfigureAwait(true); }
-
-            // TODO: only for testing
-            /*
-            if (File.Exists(SimTuning.Core.GeneralSettings.DataExportFilePath))
-            {
-                string json = await File.ReadAllTextAsync(SimTuning.Core.GeneralSettings.DataExportFilePath);
-                DynoModel dyno = JsonSerializer.Deserialize<DynoModel>(json, ExportJsonOptions)!;
-            }
-            */
         }
 
         #endregion Methods

@@ -97,59 +97,6 @@ namespace SimTuning.Maui.UI.ViewModels
 
         // if (Dyno.Geschwindigkeit == null) { Dyno.Geschwindigkeit = new List<GeschwindigkeitModel>(); }
         /// <summary>
-        /// Called when [location updated].
-        /// </summary>
-        /// <param name="obj">The object.</param>
-        protected void OnLocationUpdated(/*MvxLocationMessage obj*/)
-        {
-            //Speed = obj.Speed;
-
-            //if (!trackingStarted)
-            //{
-            //    return;
-            //}
-
-            //List<double?> lastSpeedValues;
-
-            //if (CurrentState == AccelerationState)
-            //{
-            //    // TODO: verbessern bei keiner Veränderung der Maximalgeschwindigkeit
-            //    // StartAusrollen() beginnen.
-
-            // using (var db = new Data.DatabaseContext()) { lastSpeedValues = db.Geschwindigkeit.OrderByDescending(x => x.CreatedDate).Select(x => x.Speed).Take(10).ToList(); }
-
-            // if (lastSpeedValues != null && lastSpeedValues.Count == 10) { var max = lastSpeedValues.Max(); var min = lastSpeedValues.Min(); var avg = lastSpeedValues.Average();
-
-            // // im Bereich von 2 km/h if ((avg - min) <= 2 && (max - avg) <= 2) { Task.Run(() => StartAusrollen()); return; } }
-
-            // // asynchrones speichern der Beschlenugigungswerte Task.Run(async () => { GeschwindigkeitModel beschleunigung = new GeschwindigkeitModel() { Latitude = obj.Latitude, Longitude =
-            // obj.Longitude, Altitude = obj.Altitude, Speed = obj.Speed, };
-
-            //    Dyno.Geschwindigkeit.Add(beschleunigung);
-            //    _vehicleService.UpdateOne(Dyno);
-            //    // });
-            //}
-
-            //if (CurrentState == RolloutState)
-            //{
-            //    using (var db = new Data.DatabaseContext())
-            //    {
-            //        lastSpeedValues = db.Ausrollen.OrderByDescending(x => x.CreatedDate).Select(x => x.Speed).Take(5).ToList();
-            //    }
-
-            // if (lastSpeedValues != null && lastSpeedValues.Count == 5) { // var max = lastSpeedValues.Max(); var min = lastSpeedValues.Min(); var avg = lastSpeedValues.Average();
-
-            // // im Bereich unter 1 km/h if (avg < 1) { Task.Run(() => EndRunAsync()); return; } }
-
-            // // Task.Run(async () => { AusrollenModel ausrollen = new AusrollenModel() { Latitude = obj.Latitude, Longitude = obj.Longitude, Altitude = obj.Altitude, Speed = obj.Speed, };
-
-            //    Dyno.Ausrollen.Add(ausrollen);
-            //    _vehicleService.UpdateOne(Dyno);
-            //    // });
-            //}
-        }
-
-        /// <summary>
         /// Reloads the data.
         /// </summary>
         /// <param name="mvxReloaderMessage">The MVX reloader message.</param>
@@ -384,30 +331,6 @@ namespace SimTuning.Maui.UI.ViewModels
 
             return true;
         }
-
-        /// <summary>
-        /// Starts the recording.
-        /// </summary>
-        //protected Task StartRecording()
-        //{
-        // Recorder
-        //recorder = new AudioRecorderService();
-
-        //// audio datei zum schreiben auswählen
-        //if (CurrentState == AccelerationState)
-        //{
-        //    recorder.FilePath = GeneralSettings.AudioAccelerationFilePath;
-        //}
-        //else if (CurrentState == RolloutState)
-        //{
-        //    recorder.FilePath = GeneralSettings.AudioRolloutFilePath;
-        //}
-
-        //recorder.PreferredSampleRate = 44100;
-
-        //// start recording audio
-        //return recorder.StartRecording();
-        //}
 
         #endregion Methods
 
