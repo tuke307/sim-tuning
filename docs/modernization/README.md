@@ -20,6 +20,7 @@ Per the roadmap, docs are **seeded in Phase 1 and refreshed every phase** — no
 | [Phase-12-Migration.md](./Phase-12-Migration.md) | DRY log: 45 UnitsNet `*Unit` setters → `ConvertValueForUnit` helper in `BaseEntityModel` (−737 LOC; AuspuffModel 1047→~670); 0 errors, 0 new warnings |
 | [Phase-17-Migration.md](./Phase-17-Migration.md) | Spectrogram log: NuGet rejected (Windows-only/unmaintained); vendored copy trimmed 995→318 LOC (deleted SFF/Image/Colormap/Tools; trimmed Spectrogram.cs; dropped AllowUnsafeBlocks + SkiaSharp; AudioLogicTest repointed to GetFFTs) |
 | [Phase-14-Migration.md](./Phase-14-Migration.md) | Security log: Zip-Slip defense in ImportDyno (A01); dead `SecureString` methods removed (A02); Newtonsoft→System.Text.Json + dependency dropped (A08); path canonicalization + encrypt-at-rest deferred |
+| [Phase-16-Migration.md](./Phase-16-Migration.md) | Dead-code log: deleted Tizen platform + all-stub `TuningLogic` + commented blocks in ImportDyno/`DynoRuntimeViewModel` (OnLocationUpdated/StartRecording); ~150 LOC removed |
 
 ## Phase 2 — ✅ Complete (migrate TFMs to .NET 11)
 
@@ -144,6 +145,18 @@ See [Phase-3-Migration.md](./Phase-3-Migration.md) for the full version table an
 - **2 transient StyleCop warnings** (SA1000/SA1204 from target-typed `new()`) caught + fixed.
 
 ⚠️ **Deferred:** path canonicalization (intertwined with Phase-8b static-settings decoupling); **encrypt-at-rest** (needs a threat-model + key-management decision — does the team want AES-at-rest on the SQLite, and where's the key?).
+
+## Phase 16 — ✅ Complete (dead-code deletion)
+
+**Outcome:** deleted the Tizen platform, the all-stub `TuningLogic`, and the large commented-out blocks in `DynoDataViewModel.ImportDyno` + `DynoRuntimeViewModel` (`OnLocationUpdated`, `StartRecording`). **~150 LOC of dead code removed.** MacCatalyst green, **0 errors, 0 new warnings;** Test compiles. See [Phase-16-Migration.md](./Phase-16-Migration.md).
+
+**Highlights:**
+- **Tizen** — `Platforms/Tizen/` deleted (TFM was commented out → never built).
+- **`TuningLogic`** — deleted (3 all-TODO-stub methods, 0 refs in prod/tests).
+- **Commented blocks** — `ImportDyno` tail cleaned (ends after the validated extraction); `DynoRuntimeViewModel.OnLocationUpdated` (~53 commented lines) + `StartRecording` removed (both unreferenced).
+- Spectrogram dead surface already removed in P17.
+
+⚠️ **Deferred:** broader commented-code sweep across VMs/Logic (scattered/cosmetic); `IViewModelTest` empty contract → P15.
 
 ## Environment setup (performed in Phase 2)
 
