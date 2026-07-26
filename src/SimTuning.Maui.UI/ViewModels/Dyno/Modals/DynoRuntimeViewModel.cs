@@ -50,9 +50,6 @@ namespace SimTuning.Maui.UI.ViewModels
         /// </summary>
         protected async Task EndRunAsync()
         {
-            // Stop tracking
-            trackingStarted = false;
-
             // Update UI
             ShowAudioButtonVis = true;
             StopwatchVis = false;
@@ -85,8 +82,6 @@ namespace SimTuning.Maui.UI.ViewModels
                     t.Stop();
                 }
                 CountdownVis = false;
-
-                trackingStarted = true;
 
                 // StopAccelerationButtonVis = true;
 
@@ -169,10 +164,6 @@ namespace SimTuning.Maui.UI.ViewModels
                     timer.Stop();
                 }
 
-                // tracking und recording stoppen
-                //await recorder.StopRecording();
-                trackingStarted = false;
-
                 // UI aktualisieren
                 OnPropertyChanged(nameof(Stopwatch));
                 PageBackColor = System.Drawing.Color.White;
@@ -207,9 +198,6 @@ namespace SimTuning.Maui.UI.ViewModels
                 CurrentState = RolloutState;
                 PageBackColor = deepSkyBlue;
                 SpeedBackColor = skyBlue;
-                trackingStarted = true;
-
-                //await StartRecording().ConfigureAwait(true);
 
                 // trigger bei jeder 1/100 sekunde
                 timer = CreateDispatcherTimer(10, OnCountdownTimedEvent);
@@ -249,8 +237,6 @@ namespace SimTuning.Maui.UI.ViewModels
 
                 // es kann nun nicht mehr weiter navigiert werden
                 ShowAudioButtonVis = false;
-
-                //await StartRecording().ConfigureAwait(true);
 
                 StartAccelerationButtonVis = false;
 
@@ -371,7 +357,6 @@ namespace SimTuning.Maui.UI.ViewModels
         private static System.Drawing.Color seaGreen = System.Drawing.Color.SeaGreen;
         private static System.Drawing.Color skyBlue = System.Drawing.Color.SkyBlue;
 
-        private readonly ILocationService? _locationService;
         private readonly ILogger<DynoRuntimeViewModel> _logger;
         private readonly IVehicleService _vehicleService;
         private bool _countdownVis;
@@ -392,7 +377,6 @@ namespace SimTuning.Maui.UI.ViewModels
         private System.Diagnostics.Stopwatch? stopwatch;
 
         private IDispatcherTimer? timer;
-        private bool trackingStarted;
 
         /// <summary>
         /// Gets the countdown.

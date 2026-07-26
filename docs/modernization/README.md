@@ -20,7 +20,7 @@ Per the roadmap, docs are **seeded in Phase 1 and refreshed every phase** — no
 | [Phase-12-Migration.md](./Phase-12-Migration.md) | DRY log: 45 UnitsNet `*Unit` setters → `ConvertValueForUnit` helper in `BaseEntityModel` (−737 LOC; AuspuffModel 1047→~670); 0 errors, 0 new warnings |
 | [Phase-17-Migration.md](./Phase-17-Migration.md) | Spectrogram log: NuGet rejected (Windows-only/unmaintained); vendored copy trimmed 995→318 LOC (deleted SFF/Image/Colormap/Tools; trimmed Spectrogram.cs; dropped AllowUnsafeBlocks + SkiaSharp; AudioLogicTest repointed to GetFFTs) |
 | [Phase-14-Migration.md](./Phase-14-Migration.md) | Security log: Zip-Slip defense in ImportDyno (A01); dead `SecureString` methods removed (A02); Newtonsoft→System.Text.Json + dependency dropped (A08); path canonicalization + encrypt-at-rest deferred |
-| [Phase-16-Migration.md](./Phase-16-Migration.md) | Dead-code log: deleted Tizen platform + all-stub `TuningLogic` + commented blocks in ImportDyno/`DynoRuntimeViewModel` (OnLocationUpdated/StartRecording); ~150 LOC removed |
+| [Phase-16-Migration.md](./Phase-16-Migration.md) | Dead-code log: deleted Tizen platform + all-stub `TuningLogic` + commented blocks in ImportDyno/`DynoRuntimeViewModel` (OnLocationUpdated/StartRecording); ~150 LOC removed. **Completion pass:** removed 2 dangling `StartRecording` comments + the 2 Phase-4-deferred dead fields (`_locationService`/`trackingStarted`) — baseline 12→10 |
 | [Phase-15-Migration.md](./Phase-15-Migration.md) | Test log: `xunit.runner.visualstudio` + coverlet added (in `2ddc1fc`); `dotnet test` 0-discovered → **47 discovered, 46 passed / 1 skipped / 0 failed**; fixed `AudioLogicTest(65536)` window count; skipped `DynoAudio` (→P8b); redesigned `DynoRuntime` integration path; deleted dead `IViewModelTest` |
 
 ## Phase 2 — ✅ Complete (migrate TFMs to .NET 11)
@@ -158,6 +158,8 @@ See [Phase-3-Migration.md](./Phase-3-Migration.md) for the full version table an
 - Spectrogram dead surface already removed in P17.
 
 ⚠️ **Deferred:** broader commented-code sweep across VMs/Logic (scattered/cosmetic); `IViewModelTest` empty contract → P15.
+
+> **Completion pass:** closed the two carry-forward items (the dangling `//await StartRecording()` comments) **and** the Phase-4 "dead fields ×2" deferral (`_locationService` CS0169 + `trackingStarted` CS0414 in `DynoRuntimeViewModel` — orphaned when the original pass deleted their consumers). Warning baseline **12 → 10**. `IViewModelTest` resolved in Phase 15.
 
 ## Phase 15 — ✅ Complete (test project modernization)
 
