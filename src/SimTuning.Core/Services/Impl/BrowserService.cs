@@ -7,6 +7,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SimTuning.Core.Services
@@ -49,12 +50,12 @@ namespace SimTuning.Core.Services
         }
 
         /// <inheritdoc />
-        public async Task DownloadDocumentAsync(string fileToDownload, string fileSave)
+        public async Task DownloadDocumentAsync(string fileToDownload, string fileSave, CancellationToken cancellationToken = default)
         {
             using var client = new HttpClient();
-            using var s = await client.GetStreamAsync(fileToDownload);
+            using var s = await client.GetStreamAsync(fileToDownload, cancellationToken);
             using var fs = new FileStream(fileSave, FileMode.OpenOrCreate);
-            await s.CopyToAsync(fs);
+            await s.CopyToAsync(fs, cancellationToken);
         }
     }
 }
