@@ -17,7 +17,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Timers;
+using Microsoft.Maui.Dispatching;
 
 namespace SimTuning.Maui.UI.ViewModels
 {
@@ -69,10 +69,9 @@ namespace SimTuning.Maui.UI.ViewModels
             if (timer != null)
             {
                 timer.Stop();
-                timer.Dispose();
             }
         }
-        protected void OnCountdownTimedEvent(object? sender, ElapsedEventArgs e)
+        protected void OnCountdownTimedEvent(object? sender, EventArgs e)
         {
             countdownMilliseconds -= 10;
             OnPropertyChanged(nameof(Countdown));
@@ -84,7 +83,6 @@ namespace SimTuning.Maui.UI.ViewModels
                 if (t != null)
                 {
                     t.Stop();
-                    t.Dispose();
                 }
                 CountdownVis = false;
 
@@ -164,8 +162,8 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Called when [stopwatch timed event].
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="ElapsedEventArgs" /> instance containing the event data.</param>
-        protected void OnStopwatchTimedEvent(object? sender, ElapsedEventArgs e)
+        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
+        protected void OnStopwatchTimedEvent(object? sender, EventArgs e)
         {
             var sw = stopwatch;
             var t = timer;
@@ -177,7 +175,6 @@ namespace SimTuning.Maui.UI.ViewModels
             if (!sw.IsRunning)
             {
                 t.Stop();
-                t.Dispose();
             }
             else
             {
@@ -223,7 +220,6 @@ namespace SimTuning.Maui.UI.ViewModels
                 if (timer != null)
                 {
                     timer.Stop();
-                    timer.Dispose();
                 }
 
                 // tracking und recording stoppen
@@ -268,11 +264,8 @@ namespace SimTuning.Maui.UI.ViewModels
 
                 //await StartRecording().ConfigureAwait(true);
 
-                timer = new System.Timers.Timer();
-
                 // trigger bei jeder 1/100 sekunde
-                timer.Interval = 10;
-                timer.Elapsed += OnCountdownTimedEvent;
+                timer = CreateDispatcherTimer(10, OnCountdownTimedEvent);
 
                 // count down from 5000 ms
                 countdownMilliseconds = 5000;
@@ -314,11 +307,8 @@ namespace SimTuning.Maui.UI.ViewModels
 
                 StartAccelerationButtonVis = false;
 
-                timer = new System.Timers.Timer();
-
                 // trigger bei jeder 1/100 sekunde
-                timer.Interval = 10;
-                timer.Elapsed += OnCountdownTimedEvent;
+                timer = CreateDispatcherTimer(10, OnCountdownTimedEvent);
 
                 // count down from 10000 ms / 10s
                 countdownMilliseconds = 10000;
@@ -346,14 +336,26 @@ namespace SimTuning.Maui.UI.ViewModels
                 StopwatchVis = true;
                 stopwatch.Start();
 
-                timer = new System.Timers.Timer();
-
                 // Trigger nei 1/10 s bzw aller 100 ms
-                timer.Interval = 100;
-                timer.Elapsed += OnStopwatchTimedEvent;
+                timer = CreateDispatcherTimer(100, OnStopwatchTimedEvent);
 
                 timer.Start();
             }
+        }
+
+        /// <summary>
+        /// Creates a UI-thread (<see cref="IDispatcherTimer"/>) timer. Replaces the former
+        /// <see cref="System.Timers.Timer"/>, whose <c>Elapsed</c> fired on a thread-pool thread and
+        /// mutated bound properties off the UI thread. <see cref="Application.Current" />.Dispatcher is
+        /// always available in the running app — the only context these commands execute in.
+        /// </summary>
+        private static IDispatcherTimer CreateDispatcherTimer(double intervalMilliseconds, EventHandler tick)
+        {
+            var t = Application.Current!.Dispatcher.CreateTimer();
+            t.Interval = TimeSpan.FromMilliseconds(intervalMilliseconds);
+            t.Tick += tick;
+
+            return t;
         }
 
         /// <summary>
@@ -375,7 +377,7 @@ namespace SimTuning.Maui.UI.ViewModels
 
             if (Dyno == null)
             {
-                Functions.ShowSnackbarDialog(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_NODATA"));
+                _ = Functions.ShowSnackbarDialogAsync(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_NODATA"));
 
                 return false;
             }
@@ -466,7 +468,7 @@ namespace SimTuning.Maui.UI.ViewModels
         //private AudioRecorderService recorder;
         private System.Diagnostics.Stopwatch? stopwatch;
 
-        private System.Timers.Timer? timer;
+        private IDispatcherTimer? timer;
         private bool trackingStarted;
 
         /// <summary>

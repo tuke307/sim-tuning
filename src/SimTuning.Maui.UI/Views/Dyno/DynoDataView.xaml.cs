@@ -24,7 +24,7 @@ namespace SimTuning.Maui.UI.Views.Dyno
 #if __MOBILE__
             Navigation.PushModalAsync(new DynoRuntimeView());
 #else
-            Functions.ShowSnackbarDialog(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_ONLYMOBILE"));
+            _ = Functions.ShowSnackbarDialogAsync(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_ONLYMOBILE"));
 #endif
         }
 

@@ -111,7 +111,7 @@ namespace SimTuning.Core.Helpers
 
             if (messageKey != null)
             {
-                ShowSnackbarDialog(GetLocalisedRes(typeof(resources), messageKey));
+                _ = ShowSnackbarDialogAsync(GetLocalisedRes(typeof(resources), messageKey));
             }
         }
 
@@ -177,7 +177,7 @@ namespace SimTuning.Core.Helpers
         /// Shows the snackbar dialog.
         /// </summary>
         /// <param name="content">The content.</param>
-        public static async void ShowSnackbarDialog(object content)
+        public static async Task ShowSnackbarDialogAsync(object content)
         {
             if (content == null)
             {

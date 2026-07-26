@@ -84,7 +84,7 @@ namespace SimTuning.Maui.UI.ViewModels
                     PreserveReferencesHandling = PreserveReferencesHandling.Objects,
                 });
 
-                File.WriteAllText(GeneralSettings.DataExportFilePath, json);
+                await File.WriteAllTextAsync(GeneralSettings.DataExportFilePath, json);
 
                 // Dateien die gepackt werden sollen
                 var list = new List<string>()
@@ -183,7 +183,11 @@ namespace SimTuning.Maui.UI.ViewModels
                 File.Delete(SimTuning.Core.GeneralSettings.AudioAccelerationFilePath);
             }
 
-            ZipFile.ExtractToDirectory(SimTuning.Core.GeneralSettings.DataExportArchivePath, Data.DatabaseSettings.FileDirectory);
+            // Async extraction (clears AsyncFixer02). Per-entry zip validation + System.Text.Json
+            // migration remain Phase 14 (security hardening, separate concern).
+            await ZipFile.ExtractToDirectoryAsync(
+                SimTuning.Core.GeneralSettings.DataExportArchivePath,
+                Data.DatabaseSettings.FileDirectory);
 
             /*
 

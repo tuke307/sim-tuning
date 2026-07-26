@@ -13,6 +13,7 @@ Per the roadmap, docs are **seeded in Phase 1 and refreshed every phase** — no
 | [Phase-4-Migration.md](./Phase-4-Migration.md) | Fix-compilation log: obsolete APIs, XAML deprecations, nullable-reference migration (484→24 warnings; production clean) |
 | [Phase-5-Migration.md](./Phase-5-Migration.md) | Modern-C# log: using-declarations applied; file-scoped namespaces / record / global-usings scoped/deferred with rationale |
 | [Phase-6-Migration.md](./Phase-6-Migration.md) | Structural log: popup-reg fix (Phase-1 direction corrected); `AuslassLogic.Auspuff` extracted; `VehiclesViewModelBase` split + mirrors collapsed; 24 commands → `[RelayCommand]` |
+| [Phase-7-Migration.md](./Phase-7-Migration.md) | Async log: AsyncFixer02 sync-IO cleared (2→0); `System.Timers.Timer`→`IDispatcherTimer`; `ShowSnackbarDialog` `async void`→`Task`; NavigationService handlers hardened; `CancellationToken` on download |
 
 ## Phase 2 — ✅ Complete (migrate TFMs to .NET 11)
 
@@ -62,6 +63,19 @@ See [Phase-3-Migration.md](./Phase-3-Migration.md) for the full version table an
 
 ⚠️ **Corrections surfaced:** (1) Phase-1 popup shadow direction was wrong (first-wins, not last-wins) — fixed in `Phase-1-Analysis.md`. (2) A U+FEFF a Plan agent flagged as "load-bearing" on `VehicleMotorDeachsierungL` was proven (hexdump) to be plain-ASCII on the property declaration (it lived only inside the now-deleted `nameof`) — **no latent XAML binding bug**. (3) The Auspuff extraction introduced 24 false-positive CS8629 (splitting calc/geometry across methods lost HEAD's intra-method non-null proof); suppressed locally with a documented pragma — identical cast IL.
 
+## Phase 7 — ✅ Complete (async/await modernization)
+
+**Outcome:** AsyncFixer02 sync-IO **2 → 0** (unique warnings **14 → 12**); MacCatalyst builds green, **0 errors, 0 new warnings** (no AsyncFixer03/04 or CS4014 introduced). See [Phase-7-Migration.md](./Phase-7-Migration.md).
+
+**Highlights:**
+- **AsyncFixer02 cleared** — `DynoDataViewModel`: `File.WriteAllText`→`WriteAllTextAsync`, `ZipFile.ExtractToDirectory`→`ExtractToDirectoryAsync` (the 2 warnings Phase 4 deferred to P7). Security hardening of `ImportDyno` stays Phase 14.
+- **`DynoRuntimeViewModel` timer → `IDispatcherTimer`** — `System.Timers.Timer.Elapsed` fired on a thread-pool thread and mutated bound properties off-thread; the UI-thread `IDispatcherTimer` fixes that. `CreateDispatcherTimer` helper (via `Application.Current.Dispatcher.CreateTimer()`); `.Dispose()` calls removed (`IDispatcherTimer` isn't `IDisposable`); handler sigs `ElapsedEventArgs`→`EventArgs`. No constructor change → test still compiles.
+- **`Functions.ShowSnackbarDialog` `async void` → `async Task`** (`ShowSnackbarDialogAsync`) — the one non-event-handler async void; 9 call sites → `_ =` fire-and-forget (preserves semantics, suppresses CS4014, no AsyncFixer04).
+- **NavigationService `async void` handlers hardened** — `Page_Navigated{To,From}` wrapped in try/catch + logged (injected `ILogger<NavigationService>`); an unhandled throw no longer crashes the process.
+- **`CancellationToken`** — `IBrowserService.DownloadDocumentAsync` (+ impl) takes an optional `CancellationToken` (flowed to `GetStreamAsync`/`CopyToAsync`); caller unchanged.
+
+⚠️ **Deferred (with rationale):** `DynoAudioViewModel` CPU offload (needs thread-marshaling + `AudioLogic` static-state thread-safety; no tests yet → Phase-15 follow-up); popup `Button_Clicked` try/catch (Phase 11); `ConfigureAwait(false)` sweep (AsyncFixer03 not firing; MAUI guidance says *don't* add it in VMs).
+
 ## Environment setup (performed in Phase 2)
 
 - SDK: only `11.0.100-preview.6.26359.118` installed (no .NET 10 side-by-side).
@@ -79,6 +93,7 @@ See [Phase-3-Migration.md](./Phase-3-Migration.md) for the full version table an
 - [x] **Phase 4** — ✅ done. 484→24 unique warnings; production code warning-clean; 0 non-iOS errors. Fixed: obsolete APIs (SkiaSharp `SKFont`, RNGCryptoServiceProvider, `Application.MainPage`), XAML (`*AndExpand`, FontSize NamedSize), nullable migration (Core + all VMs), formatter config (`useTabs:false`). 24 remaining all deferred to P6/7/15/16. **Carried forward:** device visual review of AndExpand/FontSize changes; `dotnet test` still 0-discovered (adapter missing, P15); cspell not a committed devDep.
 - [x] **Phase 5** — ✅ done (focused). `using` declarations (BrowserService, VehicleService). Deferred w/ rationale: file-scoped namespaces (converge per-file), record/init/required (not applicable), target-typed new (SA1000), structural (→P6/P12).
 - [x] **Phase 6** — ✅ done. Broke up `VehiclesViewModelBase` (→ 6 partials, ~60 mirrors collapsed via `SetMirror`, `raiseAllPropertyChanged`→`OnPropertyChanged(string.Empty)`) and `AuslassLogic.Auspuff` (→ `Calculate`/`ComputeGeometry`/`Draw*` + `AuspuffGeometry` record); fixed duplicate popup reg (deleted dead `DynoCreationPopup`/`EnvironmentPopup` — Phase-1 direction corrected to first-wins); standardized 24 commands → `[RelayCommand]`. **0 errors, 0 new warnings**; public-surface + command-name invariants verified. **Carried forward:** device smoke test; AuslassLogic CS8629 pragma removal (P12); `[ObservableProperty]` sweep (P12).
+- [x] **Phase 7** — ✅ done. AsyncFixer02 sync-IO cleared (2→0; unique warnings 14→12); `DynoRuntimeViewModel` `System.Timers.Timer`→`IDispatcherTimer` (cross-thread fix); `ShowSnackbarDialog` `async void`→`Task` (9 call sites `_ =`); `NavigationService` async-void handlers try/catch+log; `CancellationToken` on `DownloadDocumentAsync`. **0 errors, 0 new warnings.** **Carried forward:** device smoke test (dyno run + import/export); `DynoAudioViewModel` CPU offload (after AudioLogic thread-safety + P15 tests); popup `async void` try/catch (P11).
 - [ ] **Phase 8** — `DatabaseContext` Singleton→Scoped; remove 22 `Ioc.Default` View call-sites; decouple `SimTuning.Data` from `Microsoft.Maui.Storage`.
 - [ ] **Phase 9** — drop Serilog `Verbose` floor in Release.
 - [ ] **Phase 14** — zip-entry validation + System.Text.Json; path canonicalization; encrypt-at-rest decision; remove `RNGCryptoServiceProvider`/`SecureString`.
