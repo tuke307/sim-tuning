@@ -54,24 +54,7 @@ namespace SimTuning.Data.Models
             get => this._BreiteBUnit ?? BreiteBBaseUnit;
             set
             {
-                if (this.BreiteB.HasValue)
-                {
-                    UnitsNet.UnitConverter.TryConvert(
-                this.BreiteB.Value,
-                this.BreiteBUnit,
-                value,
-                out double convertedValue);
-
-                    if (UnitSettings.RoundOnUnitChange)
-                    {
-                        this.BreiteB = Math.Round(convertedValue, UnitSettings.RoundingAccuracy);
-                    }
-                    else
-                    {
-                        this.BreiteB = convertedValue;
-                    }
-                }
-
+                this.BreiteB = ConvertValueForUnit(this.BreiteB, this.BreiteBUnit, value);
                 this._BreiteBUnit = value;
             }
         }
@@ -92,24 +75,7 @@ namespace SimTuning.Data.Models
             get => this._FlaecheAUnit ?? FlaecheABaseUnit;
             set
             {
-                if (this.FlaecheA.HasValue)
-                {
-                    UnitsNet.UnitConverter.TryConvert(
-                this.FlaecheA.Value,
-                this.FlaecheAUnit,
-                value,
-                out double convertedValue);
-
-                    if (UnitSettings.RoundOnUnitChange)
-                    {
-                        this.FlaecheA = Math.Round(convertedValue, UnitSettings.RoundingAccuracy);
-                    }
-                    else
-                    {
-                        this.FlaecheA = convertedValue;
-                    }
-                }
-
+                this.FlaecheA = ConvertValueForUnit(this.FlaecheA, this.FlaecheAUnit, value);
                 this._FlaecheAUnit = value;
             }
         }
@@ -130,24 +96,7 @@ namespace SimTuning.Data.Models
             get => this._HoeheHUnit ?? HoeheHBaseUnit;
             set
             {
-                if (this.HoeheH.HasValue)
-                {
-                    UnitsNet.UnitConverter.TryConvert(
-               this.HoeheH.Value,
-               this.HoeheHUnit,
-               value,
-               out double convertedValue);
-
-                    if (UnitSettings.RoundOnUnitChange)
-                    {
-                        this.HoeheH = Math.Round(convertedValue, UnitSettings.RoundingAccuracy);
-                    }
-                    else
-                    {
-                        this.HoeheH = convertedValue;
-                    }
-                }
-
+                this.HoeheH = ConvertValueForUnit(this.HoeheH, this.HoeheHUnit, value);
                 this._HoeheHUnit = value;
             }
         }

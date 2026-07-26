@@ -17,6 +17,7 @@ Per the roadmap, docs are **seeded in Phase 1 and refreshed every phase** — no
 | [Phase-8-Migration.md](./Phase-8-Migration.md) | DI log: `DatabaseContext`→`AddDbContextFactory` + `IDbContextFactory` in `VehicleService` (replaces dead Singleton + 15 `new`); View `Ioc.Default` + Data↔MAUI.Storage decoupling deferred w/ rationale |
 | [Phase-9-Migration.md](./Phase-9-Migration.md) | Logging log: Serilog `Verbose` floor → per-config (`#if DEBUG` Debug/`#else` Warning); 3 message-as-template sites fixed |
 | [Phase-11-Migration.md](./Phase-11-Migration.md) | Exceptions log: `throw new Exception()`→`InvalidOperationException` (NavigationService §7.7); 3 bare `catch`→`catch (Exception)` (DatabaseSettings); SFF/AudioUtlis catches deferred to P13/P17 |
+| [Phase-12-Migration.md](./Phase-12-Migration.md) | DRY log: 45 UnitsNet `*Unit` setters → `ConvertValueForUnit` helper in `BaseEntityModel` (−737 LOC; AuspuffModel 1047→~670); 0 errors, 0 new warnings |
 
 ## Phase 2 — ✅ Complete (migrate TFMs to .NET 11)
 
@@ -107,6 +108,17 @@ See [Phase-3-Migration.md](./Phase-3-Migration.md) for the full version table an
 - **VM/service catches left as-is** — already proper (`catch (Exception exc) + LogError(exc, "... {Message}", exc.Message)`; `{Message}` is a named template + arg, not the Phase-9 anti-pattern). Narrowing them risks behavior change for no clear gain.
 - **Deferred:** `SFF.cs:101` empty catch (vendored Spectrogram → P17); `AudioUtlis.cs` empty catches (NAudio → P13).
 
+## Phase 12 — ✅ Complete (DRY UnitsNet `*Unit` boilerplate)
+
+**Outcome:** the ~46× duplicated unit-conversion setter boilerplate collapsed into one `ConvertValueForUnit` helper in `BaseEntityModel`. **811 deletions / 74 insertions (net −737 LOC);** MacCatalyst green, **0 errors, 0 new warnings;** Test compiles. See [Phase-12-Migration.md](./Phase-12-Migration.md).
+
+**Highlights:**
+- **`ConvertValueForUnit(double?, Enum, Enum)`** in `BaseEntityModel` — reproduces the inlined `UnitConverter.TryConvert` + `RoundOnUnitChange` logic verbatim. `Enum` params (not a generic) so the nullable `XUnit?` types box exactly as before; the underlying `TryConvert` call is byte-identical.
+- **45 live setters** across 8 model files collapsed (~13 lines → ~2 each) via a conservative regex script (backreferences enforce same prop name; 1 commented-out `FrontA` stub correctly skipped). `AuspuffModel` 1,047 → ~670. Conversion/rounding policy now centralized (one place, was 45).
+- **Behavior-preserving** — same `TryConvert` call + policy + `!HasValue` path.
+
+⚠️ **Deferred (with rationale):** AuslassLogic CS8629 pragma removal (non-trivial non-null propagation); `[ObservableProperty]` sweep (limited applicability — mirrors delegate to model, no backing field); `EnsureDatabaseCreated` `Migrate()`+`EnsureCreated()` (DB-init behavior change, needs device); `Styles_Global` ListView→CollectionView (XAML, needs device visual review).
+
 ## Environment setup (performed in Phase 2)
 
 - SDK: only `11.0.100-preview.6.26359.118` installed (no .NET 10 side-by-side).
@@ -129,7 +141,7 @@ See [Phase-3-Migration.md](./Phase-3-Migration.md) for the full version table an
 - [ ] **Phase 8b (follow-up)** — View `Ioc.Default` removal (Shell→registered-routes) + Data `IPlatformSettings` decoupling — needs device verification.
 - [x] **Phase 9** — ✅ done. Serilog `Verbose` floor → per-config (`#if DEBUG` `Debug`/`#else` `Warning`); 3 message-as-template sites fixed (VehicleService ×2, BrowserService ×1). **0 errors, 0 new warnings; green in Debug + Release.** **Carried forward:** optional `LoggingLevelSwitch`; optional PII redaction if Release surface broadened.
 - [x] **Phase 11** — ✅ done. `throw new Exception()`→`InvalidOperationException` (NavigationService §7.7, +message); 3 bare `catch`→`catch (Exception)` (DatabaseSettings design-time fallbacks). VM/service catches already proper (left as-is). **0 errors, 0 new warnings.** **Carried forward:** SFF empty catch (P17); AudioUtlis empty catches (P13).
-- [ ] **Phase 12** — DRY UnitsNet `*Unit` boilerplate (value converter); dedup `VehiclesViewModelBase` mirrors.
+- [x] **Phase 12** — ✅ done. 45 UnitsNet `*Unit` setters → `ConvertValueForUnit` helper in `BaseEntityModel` (−737 LOC; AuspuffModel 1047→~670); 0 errors, 0 new warnings; Test compiles. **Carried forward:** AuslassLogic CS8629 pragma (non-null propagation); `[ObservableProperty]` sweep (limited applicability); `EnsureDatabaseCreated` Migrate+EnsureCreated (needs device); Styles_Global ListView→CollectionView (needs device).
 - [ ] **Phase 14** — zip-entry validation + System.Text.Json; path canonicalization; encrypt-at-rest decision; remove `RNGCryptoServiceProvider`/`SecureString`.
 - [ ] **Phase 15** — add `xunit.runner.visualstudio`; real assertions; fix dead tests (`AudioLogicTest` missing `[Fact]`, `DynoLogicTest` commented); cross-platform test paths; async tests.
 - [ ] **Phase 17** — replace vendored `Spectrogram` with NuGet (sole consumer `AudioLogic` confirmed; dead render/SFF/Colormap surface documented).

@@ -49,24 +49,7 @@ namespace SimTuning.Data.Models
             get => this._LuftdruckPUnit ?? LuftdruckPBaseUnit;
             set
             {
-                if (this.LuftdruckP.HasValue)
-                {
-                    UnitsNet.UnitConverter.TryConvert(
-               this.LuftdruckP.Value,
-               this.LuftdruckPUnit,
-               value,
-               out double convertedValue);
-
-                    if (UnitSettings.RoundOnUnitChange)
-                    {
-                        this.LuftdruckP = Math.Round(convertedValue, UnitSettings.RoundingAccuracy);
-                    }
-                    else
-                    {
-                        this.LuftdruckP = convertedValue;
-                    }
-                }
-
+                this.LuftdruckP = ConvertValueForUnit(this.LuftdruckP, this.LuftdruckPUnit, value);
                 this._LuftdruckPUnit = value;
             }
         }
@@ -94,24 +77,7 @@ namespace SimTuning.Data.Models
             get => this._TemperaturTUnit ?? TemperaturTBaseUnit;
             set
             {
-                if (this.TemperaturT.HasValue)
-                {
-                    UnitsNet.UnitConverter.TryConvert(
-               this.TemperaturT.Value,
-               this.TemperaturTUnit,
-               value,
-               out double convertedValue);
-
-                    if (UnitSettings.RoundOnUnitChange)
-                    {
-                        this.TemperaturT = Math.Round(convertedValue, UnitSettings.RoundingAccuracy);
-                    }
-                    else
-                    {
-                        this.TemperaturT = convertedValue;
-                    }
-                }
-
+                this.TemperaturT = ConvertValueForUnit(this.TemperaturT, this.TemperaturTUnit, value);
                 this._TemperaturTUnit = value;
             }
         }

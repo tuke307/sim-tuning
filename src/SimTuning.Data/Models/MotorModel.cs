@@ -92,24 +92,7 @@ namespace SimTuning.Data.Models
             get => this._BohrungDUnit ?? BohrungDBaseUnit;
             set
             {
-                if (this.BohrungD.HasValue)
-                {
-                    UnitsNet.UnitConverter.TryConvert(
-              this.BohrungD.Value,
-              this.BohrungDUnit,
-              value,
-              out double convertedValue);
-
-                    if (UnitSettings.RoundOnUnitChange)
-                    {
-                        this.BohrungD = Math.Round(convertedValue, UnitSettings.RoundingAccuracy);
-                    }
-                    else
-                    {
-                        this.BohrungD = convertedValue;
-                    }
-                }
-
+                this.BohrungD = ConvertValueForUnit(this.BohrungD, this.BohrungDUnit, value);
                 this._BohrungDUnit = value;
             }
         }
@@ -130,24 +113,7 @@ namespace SimTuning.Data.Models
             get => this._BrennraumVUnit ?? BrennraumVBaseUnit;
             set
             {
-                if (this.BrennraumV.HasValue)
-                {
-                    UnitsNet.UnitConverter.TryConvert(
-                                    this.BrennraumV.Value,
-                                    this.BrennraumVUnit,
-                                    value,
-                                    out double convertedValue);
-
-                    if (UnitSettings.RoundOnUnitChange)
-                    {
-                        this.BrennraumV = Math.Round(convertedValue, UnitSettings.RoundingAccuracy);
-                    }
-                    else
-                    {
-                        this.BrennraumV = convertedValue;
-                    }
-                }
-
+                this.BrennraumV = ConvertValueForUnit(this.BrennraumV, this.BrennraumVUnit, value);
                 this._BrennraumVUnit = value;
             }
         }
@@ -168,24 +134,7 @@ namespace SimTuning.Data.Models
             get => this._DeachsierungLUnit ?? DeachsierungLBaseUnit;
             set
             {
-                if (this.DeachsierungL.HasValue)
-                {
-                    UnitsNet.UnitConverter.TryConvert(
-               this.DeachsierungL.Value,
-               this.DeachsierungLUnit,
-               value,
-               out double convertedValue);
-
-                    if (UnitSettings.RoundOnUnitChange)
-                    {
-                        this.DeachsierungL = Math.Round(convertedValue, UnitSettings.RoundingAccuracy);
-                    }
-                    else
-                    {
-                        this.DeachsierungL = convertedValue;
-                    }
-                }
-
+                this.DeachsierungL = ConvertValueForUnit(this.DeachsierungL, this.DeachsierungLUnit, value);
                 this._DeachsierungLUnit = value;
             }
         }
@@ -219,24 +168,7 @@ namespace SimTuning.Data.Models
             get => this._HubLUnit ?? HubLBaseUnit;
             set
             {
-                if (this.HubL.HasValue)
-                {
-                    UnitsNet.UnitConverter.TryConvert(
-               this.HubL.Value,
-               this.HubLUnit,
-               value,
-               out double convertedValue);
-
-                    if (UnitSettings.RoundOnUnitChange)
-                    {
-                        this.HubL = Math.Round(convertedValue, UnitSettings.RoundingAccuracy);
-                    }
-                    else
-                    {
-                        this.HubL = convertedValue;
-                    }
-                }
-
+                this.HubL = ConvertValueForUnit(this.HubL, this.HubLUnit, value);
                 this._HubLUnit = value;
             }
         }
@@ -257,24 +189,7 @@ namespace SimTuning.Data.Models
             get => this._HubraumVUnit ?? HubraumVBaseUnit;
             set
             {
-                if (this.HubraumV.HasValue)
-                {
-                    UnitsNet.UnitConverter.TryConvert(
-                this.HubraumV.Value,
-                this.HubraumVUnit,
-                value,
-                out double convertedValue);
-
-                    if (UnitSettings.RoundOnUnitChange)
-                    {
-                        this.HubraumV = Math.Round(convertedValue, UnitSettings.RoundingAccuracy);
-                    }
-                    else
-                    {
-                        this.HubraumV = convertedValue;
-                    }
-                }
-
+                this.HubraumV = ConvertValueForUnit(this.HubraumV, this.HubraumVUnit, value);
                 this._HubraumVUnit = value;
             }
         }
@@ -295,24 +210,7 @@ namespace SimTuning.Data.Models
             get => this._KolbenGUnit ?? KolbenGBaseUnit;
             set
             {
-                if (this.KolbenG.HasValue)
-                {
-                    UnitsNet.UnitConverter.TryConvert(
-                this.KolbenG.Value,
-                this.KolbenGUnit,
-                value,
-                out double convertedValue);
-
-                    if (UnitSettings.RoundOnUnitChange)
-                    {
-                        this.KolbenG = Math.Round(convertedValue, UnitSettings.RoundingAccuracy);
-                    }
-                    else
-                    {
-                        this.KolbenG = convertedValue;
-                    }
-                }
-
+                this.KolbenG = ConvertValueForUnit(this.KolbenG, this.KolbenGUnit, value);
                 this._KolbenGUnit = value;
             }
         }
@@ -333,24 +231,7 @@ namespace SimTuning.Data.Models
             get => this._KurbelgehaeuseVUnit ?? KurbelgehaeuseVBaseUnit;
             set
             {
-                if (this.KurbelgehaeuseV.HasValue)
-                {
-                    UnitsNet.UnitConverter.TryConvert(
-               this.KurbelgehaeuseV.Value,
-               this.KurbelgehaeuseVUnit,
-               value,
-               out double convertedValue);
-
-                    if (UnitSettings.RoundOnUnitChange)
-                    {
-                        this.KurbelgehaeuseV = Math.Round(convertedValue, UnitSettings.RoundingAccuracy);
-                    }
-                    else
-                    {
-                        this.KurbelgehaeuseV = convertedValue;
-                    }
-                }
-
+                this.KurbelgehaeuseV = ConvertValueForUnit(this.KurbelgehaeuseV, this.KurbelgehaeuseVUnit, value);
                 this._KurbelgehaeuseVUnit = value;
             }
         }
@@ -378,24 +259,7 @@ namespace SimTuning.Data.Models
             get => this._PleulLUnit ?? PleulLBaseUnit;
             set
             {
-                if (this.PleulL.HasValue)
-                {
-                    UnitsNet.UnitConverter.TryConvert(
-                                   this.PleulL.Value,
-                                   this.PleulLUnit,
-                                   value,
-                                   out double convertedValue);
-
-                    if (UnitSettings.RoundOnUnitChange)
-                    {
-                        this.PleulL = Math.Round(convertedValue, UnitSettings.RoundingAccuracy);
-                    }
-                    else
-                    {
-                        this.PleulL = convertedValue;
-                    }
-                }
-
+                this.PleulL = ConvertValueForUnit(this.PleulL, this.PleulLUnit, value);
                 this._PleulLUnit = value;
             }
         }
