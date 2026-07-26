@@ -27,7 +27,7 @@ namespace SimTuning.Maui.UI.Services
                     // This is not good!
                     if (Debugger.IsAttached)
                         Debugger.Break();
-                    throw new Exception();
+                    throw new InvalidOperationException("No active navigation stack is available.");
                 }
             }
         }
