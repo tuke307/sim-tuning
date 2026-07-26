@@ -6,7 +6,6 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using SimTuning.Core;
 using SimTuning.Core.Helpers;
 using SimTuning.Core.Models.Messages;
@@ -15,6 +14,8 @@ using SimTuning.Data.Models;
 using SimTuning.Maui.UI.Services;
 using System.Collections.ObjectModel;
 using System.IO.Compression;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace SimTuning.Maui.UI.ViewModels
@@ -22,6 +23,17 @@ namespace SimTuning.Maui.UI.ViewModels
 
     public partial class DynoDataViewModel : ViewModelBase
     {
+        /// <summary>
+        /// JSON serializer options for dyno export/import. <see cref="ReferenceHandler.Preserve" />
+        /// handles the Dyno↔Vehicle reference loop the same way Newtonsoft's
+        /// <c>PreserveReferencesHandling.Objects</c> did (Phase 14 A08 migration).
+        /// </summary>
+        private static readonly JsonSerializerOptions ExportJsonOptions = new JsonSerializerOptions()
+        {
+            WriteIndented = true,
+            ReferenceHandler = ReferenceHandler.Preserve,
+        };
+
         private readonly IPopupService _popupService;
 
         public DynoDataViewModel(
@@ -75,14 +87,8 @@ namespace SimTuning.Maui.UI.ViewModels
         {
             try
             {
-                // erstellen der json.
-                // TODO: reference test check
-                string json = JsonConvert.SerializeObject(Dyno, Formatting.Indented,
-                new JsonSerializerSettings()
-                {
-                    // ReferenceLoopHandling = ReferenceLoopHandling.Ignore, ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
-                    PreserveReferencesHandling = PreserveReferencesHandling.Objects,
-                });
+                // erstellen der json. (Phase 14 A08: migrated from Newtonsoft.Json to System.Text.Json.)
+                string json = JsonSerializer.Serialize(Dyno, ExportJsonOptions);
 
                 await File.WriteAllTextAsync(GeneralSettings.DataExportFilePath, json);
 
@@ -183,11 +189,39 @@ namespace SimTuning.Maui.UI.ViewModels
                 File.Delete(SimTuning.Core.GeneralSettings.AudioAccelerationFilePath);
             }
 
-            // Async extraction (clears AsyncFixer02). Per-entry zip validation + System.Text.Json
-            // migration remain Phase 14 (security hardening, separate concern).
-            await ZipFile.ExtractToDirectoryAsync(
-                SimTuning.Core.GeneralSettings.DataExportArchivePath,
-                Data.DatabaseSettings.FileDirectory);
+            // Zip-Slip defense (Phase 14 A01): ExtractToDirectory(Async) performs no per-entry
+            // validation, so a crafted archive could write outside the target directory. Open the
+            // archive and reject any entry whose canonicalized path escapes FileDirectory. The sync
+            // OpenRead/ExtractToFile calls are fast local-file IO; AsyncFixer02 is suppressed for
+            // this block only (per-entry validation can't be done via ExtractToDirectoryAsync).
+            string destinationDirectory = Data.DatabaseSettings.FileDirectory;
+            string fullDestinationDirectory =
+                Path.GetFullPath(destinationDirectory) + Path.DirectorySeparatorChar;
+
+#pragma warning disable AsyncFixer02
+            using (ZipArchive archive = ZipFile.OpenRead(SimTuning.Core.GeneralSettings.DataExportArchivePath))
+            {
+                foreach (ZipArchiveEntry entry in archive.Entries)
+                {
+                    string fullTarget = Path.GetFullPath(Path.Combine(fullDestinationDirectory, entry.FullName));
+                    if (!fullTarget.StartsWith(fullDestinationDirectory, StringComparison.Ordinal))
+                    {
+                        throw new InvalidOperationException(
+                            $"Refusing to extract zip entry '{entry.FullName}' — it escapes the target directory.");
+                    }
+
+                    if (string.IsNullOrEmpty(entry.Name))
+                    {
+                        // Directory entry — create and skip.
+                        Directory.CreateDirectory(fullTarget);
+                        continue;
+                    }
+
+                    Directory.CreateDirectory(Path.GetDirectoryName(fullTarget)!);
+                    entry.ExtractToFile(fullTarget, overwrite: true);
+                }
+            }
+#pragma warning restore AsyncFixer02
 
             /*
 
@@ -207,7 +241,7 @@ namespace SimTuning.Maui.UI.ViewModels
             if (File.Exists(SimTuning.Core.GeneralSettings.DataExportFilePath))
             {
                 string json = await File.ReadAllTextAsync(SimTuning.Core.GeneralSettings.DataExportFilePath);
-                DynoModel dyno = JsonConvert.DeserializeObject<DynoModel>(json);
+                DynoModel dyno = JsonSerializer.Deserialize<DynoModel>(json, ExportJsonOptions)!;
             }
             */
         }
