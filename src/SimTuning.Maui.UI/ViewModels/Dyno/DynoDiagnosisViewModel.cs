@@ -21,7 +21,7 @@ using System.Collections.ObjectModel;
 
 namespace SimTuning.Maui.UI.ViewModels
 {
-    public class DynoDiagnosisViewModel : ViewModelBase
+    public partial class DynoDiagnosisViewModel : ViewModelBase
     {
         public DynoDiagnosisViewModel(
             ILogger<DynoDiagnosisViewModel> logger,
@@ -34,7 +34,7 @@ namespace SimTuning.Maui.UI.ViewModels
             AreaQuantityUnits = new AreaQuantity();
             MassQuantityUnits = new MassQuantity();
 
-            RefreshPlotCommand = new RelayCommand(RefreshPlot);
+            // RefreshPlotCommand is source-generated via [RelayCommand] on RefreshPlot().
 
             // erste navigation: selected dyno wird requested
             Dyno = Messenger.Send<CurrentDynoRequestMessage>();
@@ -61,6 +61,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <summary>
         /// Refreshes the plot.
         /// </summary>
+        [RelayCommand]
         protected void RefreshPlot()
         {
             if (!CheckDynoData())
@@ -235,12 +236,6 @@ namespace SimTuning.Maui.UI.ViewModels
             get => _plotStrength;
             set => SetProperty(ref _plotStrength, value);
         }
-
-        /// <summary>
-        /// Gets or sets the refresh plot command.
-        /// </summary>
-        /// <value>The refresh plot command.</value>
-        public IRelayCommand RefreshPlotCommand { get; set; }
 
         public Axis[] XAxes { get; set; }
             = new Axis[]

@@ -10,7 +10,7 @@ using System.Collections.ObjectModel;
 
 namespace SimTuning.Maui.UI.ViewModels
 {
-    public class VehiclesViewModel : VehiclesViewModelBase
+    public partial class VehiclesViewModel : VehiclesViewModelBase
     {
         public VehiclesViewModel(
             ILogger<VehiclesViewModel> logger,
@@ -19,9 +19,7 @@ namespace SimTuning.Maui.UI.ViewModels
         {
             _logger = logger;
 
-            NewVehicleCommand = new RelayCommand(NewVehicle);
-            DeleteVehicleCommand = new RelayCommand(DeleteVehicle);
-            SaveVehicleCommand = new RelayCommand(SaveVehicle);
+            // Commands are source-generated via [RelayCommand] on the methods below.
         }
 
         #region Methods
@@ -29,6 +27,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <summary>
         /// Deletes the vehicle.
         /// </summary>
+        [RelayCommand]
         protected void DeleteVehicle()
         {
             try
@@ -56,6 +55,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <summary>
         /// Creates new vehicle.
         /// </summary>
+        [RelayCommand]
         protected void NewVehicle()
         {
             try
@@ -84,6 +84,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <summary>
         /// Saves the vehicle.
         /// </summary>
+        [RelayCommand]
         protected void SaveVehicle()
         {
             var vehicle = Vehicle;
@@ -100,12 +101,6 @@ namespace SimTuning.Maui.UI.ViewModels
         #region Values
 
         private readonly ILogger<VehiclesViewModel> _logger;
-
-        public IRelayCommand DeleteVehicleCommand { get; set; }
-
-        public IRelayCommand NewVehicleCommand { get; set; }
-
-        public IRelayCommand SaveVehicleCommand { get; set; }
 
         #endregion Values
     }

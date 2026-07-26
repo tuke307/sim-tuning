@@ -21,7 +21,7 @@ using System.Timers;
 
 namespace SimTuning.Maui.UI.ViewModels
 {
-    public class DynoRuntimeViewModel : ViewModelBase
+    public partial class DynoRuntimeViewModel : ViewModelBase
     {
         public DynoRuntimeViewModel(
             ILogger<DynoRuntimeViewModel> logger,
@@ -33,9 +33,7 @@ namespace SimTuning.Maui.UI.ViewModels
             _navigationService = navigationService;
             _vehicleService = vehicleService;
 
-            // Commands
-            StartAccelerationCommand = new AsyncRelayCommand(StartBeschleunigung);
-            ResetAccelerationCommand = new AsyncRelayCommand(ResetRun);
+            // Commands are source-generated via [RelayCommand] on the methods below.
             ShowAudioButtonVis = true;
             StopwatchVis = false;
             CountdownVis = false;
@@ -209,7 +207,8 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <summary>
         /// Resets the acceleration.
         /// </summary>
-        protected async Task ResetRun()
+        [RelayCommand]
+        protected async Task ResetAcceleration()
         {
             try
             {
@@ -290,7 +289,8 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <summary>
         /// Starts the acceleration.
         /// </summary>
-        protected async Task StartBeschleunigung()
+        [RelayCommand]
+        protected async Task StartAcceleration()
         {
             if (!await CheckDynoData().ConfigureAwait(true))
             {
@@ -420,22 +420,10 @@ namespace SimTuning.Maui.UI.ViewModels
         // public IAsyncRelayCommand CloseCommand { get; protected set; }
 
         /// <summary>
-        /// Gets or sets the reset tracking command.
-        /// </summary>
-        /// <value>The reset tracking command.</value>
-        public IAsyncRelayCommand ResetAccelerationCommand { get; protected set; }
-
-        /// <summary>
         /// Gets or sets the show audio command.
         /// </summary>
         /// <value>The show audio command.</value>
         public IAsyncRelayCommand? ShowSpectrogramCommand { get; protected set; }
-
-        /// <summary>
-        /// Gets or sets the start tracking command.
-        /// </summary>
-        /// <value>The start tracking command.</value>
-        public IAsyncRelayCommand StartAccelerationCommand { get; protected set; }
 
         /// <summary>
         /// Gets or sets the stop acceleration command.

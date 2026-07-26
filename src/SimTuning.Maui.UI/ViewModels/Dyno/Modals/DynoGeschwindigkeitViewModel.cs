@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace SimTuning.Maui.UI.ViewModels
 {
-    public class DynoGeschwindigkeitViewModel : ViewModelBase
+    public partial class DynoGeschwindigkeitViewModel : ViewModelBase
     {
         public DynoGeschwindigkeitViewModel(
             ILogger<DynoGeschwindigkeitViewModel> logger,
@@ -25,9 +25,7 @@ namespace SimTuning.Maui.UI.ViewModels
             _navigationService = navigationService;
             _vehicleService = vehicleService;
 
-            ShowAusrollenCommand = new AsyncRelayCommand(async () => await _navigationService.Navigate<SimTuning.Maui.UI.Views.Dyno.DynoAusrollenView>(null));
-
-            RefreshPlotCommand = new AsyncRelayCommand(RefreshPlot);
+            // Commands are source-generated via [RelayCommand] on the methods below.
 
             ReloadData();
         }
@@ -54,13 +52,16 @@ namespace SimTuning.Maui.UI.ViewModels
             get => null;//DynoLogic.PlotGeschwindigkeit;
         }
 
-        public IAsyncRelayCommand RefreshPlotCommand { get; set; }
-
-        public IAsyncRelayCommand ShowAusrollenCommand { get; set; }
-
         #endregion Values
 
         #region Methods
+
+        /// <summary>
+        /// Opens the ausrollen (rollout) view.
+        /// </summary>
+        [RelayCommand]
+        private Task ShowAusrollenAsync()
+            => _navigationService.Navigate<SimTuning.Maui.UI.Views.Dyno.DynoAusrollenView>(null);
 
         /// <summary>
         /// Reloads the data.
@@ -81,6 +82,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Aktualisiert den Beschleunigungs-Graphen.
         /// </summary>
         /// <returns></returns>
+        [RelayCommand]
         protected async Task RefreshPlot()
         {
             if (!CheckDynoData())
