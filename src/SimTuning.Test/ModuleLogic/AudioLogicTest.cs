@@ -26,8 +26,13 @@ namespace SimTuning.Test
         public void SpectrogramCreationTest(int fftSize)
         {
             const int sampleRate = 44100;
+
+            // Generate enough audio for at least two FFT windows at every fftSize: the largest
+            // (65536) needs >1.5 s of data, so the previous fixed 1 s @ 44.1 kHz (44 100 samples)
+            // left zero whole windows for it and GetFFTs() came back empty. Phase 15.
+            double seconds = Math.Max(1, Math.Ceiling((fftSize * 2.0) / sampleRate));
             string audioFile = Path.Combine(SimTuning.Test.Constants.Directory, $"synthetic_{fftSize}.wav");
-            WriteSineWaveWav(audioFile, sampleRate, seconds: 1, frequencyHz: 1000);
+            WriteSineWaveWav(audioFile, sampleRate, seconds, frequencyHz: 1000);
 
             AudioLogic.CalculateSpectrogram(audioFile: audioFile, fftSize: fftSize);
 
