@@ -46,8 +46,19 @@ namespace SimTuning.Maui.App
             var flushInterval = new TimeSpan(0, 0, 1);
             var file = GeneralSettings.LogFilePath;
 
+            // Per-configuration minimum level. Nothing in the app logs at Verbose/Trace,
+            // so the old Verbose floor was purely wasteful (and a PII/perf smell in
+            // production — Phase-1 A05). Debug builds keep full app-flow diagnostics;
+            // Release is quieted to Warning so production logs carry only problems and
+            // minimize PII exposure (Information events include dyno/vehicle names).
+#if DEBUG
+            const LogEventLevel minimumLevel = LogEventLevel.Debug;
+#else
+            const LogEventLevel minimumLevel = LogEventLevel.Warning;
+#endif
+
             Serilog.Log.Logger = new LoggerConfiguration()
-            .MinimumLevel.Verbose()
+            .MinimumLevel.Is(minimumLevel)
             .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
             .Enrich.FromLogContext()
             .WriteTo.Debug()
