@@ -32,10 +32,10 @@ List<double[]> ffts = sg.GetFFTs();   // raw FFT magnitude columns — the core 
 
 The modern **`Spectrogram` NuGet (swharden)** was rejected on four grounds:
 
-1. **`System.Drawing.Common` dependency** — unsupported on iOS/MacCatalyst/Linux since .NET 6. Adopting it would break the cross-platform/.NET 11 goal. (The vendored copy was already migrated to SkiaSharp, and Phase 17 removes even that.)
-2. **Image-focused API** — the NuGet's main type is `SpectrogramGenerator` with `SaveImage`/`GetBitmap`; it does **not** expose `GetFFTs()` raw FFT data, which is exactly what `AudioLogic` reads to find rotational-speed hot points.
+1. **API mismatch (the decisive reason).** The NuGet's main type is `SpectrogramGenerator` with `SaveImage`/`GetBitmap`; it does **not** expose `GetFFTs()` raw FFT data, which is exactly what `AudioLogic` reads to find rotational-speed hot points. It also has no public `HzPerPx`/`SecPerPx` or `WavFile.ReadMono`. Even a cross-platform NuGet wouldn't fit this data-oriented consumer.
+2. **Platform / maturity of the published package.** The latest *stable* on NuGet is **1.6.1 (July 2022)**, which depends on **`System.Drawing.Common`** — unsupported at runtime on iOS/MacCatalyst/Linux since .NET 6 (and the unix-support switch was removed in .NET 7). `dotnet add package Spectrogram` pulls this version. The `master`/`2.0.0-alpha` source *did* drop `System.Drawing` for SkiaSharp (cross-platform), but that rewrite is **unreleased** (no stable since 2022).
 3. **No `WavFile.ReadMono`** in the package (the README shows it as user-authored example code using NAudio — also Windows-only).
-4. **Unmaintained** — last stable 1.6.1 (July 2022); a lone `2.0.0-alpha` (Nov 2024) with no follow-up; ~40K total downloads.
+4. **Unmaintained** — ~40K total downloads, no stable release in 3+ years.
 
 Alternatives considered: rewriting `AudioLogic` directly on **FftSharp** (already a dep) + a hand-rolled WAV reader would eliminate the vendored project entirely, but that's a behavioral rewrite of the FFT/windowing/band-slicing pipeline with **no audio test** to verify identical output — too risky vs. trimming. Per the brief's fallback, the vendored copy is kept and cleaned.
 
