@@ -14,6 +14,7 @@ Per the roadmap, docs are **seeded in Phase 1 and refreshed every phase** — no
 | [Phase-5-Migration.md](./Phase-5-Migration.md) | Modern-C# log: using-declarations applied; file-scoped namespaces / record / global-usings scoped/deferred with rationale |
 | [Phase-6-Migration.md](./Phase-6-Migration.md) | Structural log: popup-reg fix (Phase-1 direction corrected); `AuslassLogic.Auspuff` extracted; `VehiclesViewModelBase` split + mirrors collapsed; 24 commands → `[RelayCommand]` |
 | [Phase-7-Migration.md](./Phase-7-Migration.md) | Async log: AsyncFixer02 sync-IO cleared (2→0); `System.Timers.Timer`→`IDispatcherTimer`; `ShowSnackbarDialog` `async void`→`Task`; NavigationService handlers hardened; `CancellationToken` on download |
+| [Phase-8-Migration.md](./Phase-8-Migration.md) | DI log: `DatabaseContext`→`AddDbContextFactory` + `IDbContextFactory` in `VehicleService` (replaces dead Singleton + 15 `new`); View `Ioc.Default` + Data↔MAUI.Storage decoupling deferred w/ rationale |
 
 ## Phase 2 — ✅ Complete (migrate TFMs to .NET 11)
 
@@ -76,6 +77,16 @@ See [Phase-3-Migration.md](./Phase-3-Migration.md) for the full version table an
 
 ⚠️ **Deferred (with rationale):** `DynoAudioViewModel` CPU offload (needs thread-marshaling + `AudioLogic` static-state thread-safety; no tests yet → Phase-15 follow-up); popup `Button_Clicked` try/catch (Phase 11); `ConfigureAwait(false)` sweep (AsyncFixer03 not firing; MAUI guidance says *don't* add it in VMs).
 
+## Phase 8 — 🔶 Partial (DI / DbContext lifetime)
+
+**Outcome:** sub-task 1 (the Phase-1 "standout bug") done, behavior-preserving, build-verified; sub-tasks 2 & 3 deferred with precise technical rationale. MacCatalyst green, **0 errors, 0 new warnings.** See [Phase-8-Migration.md](./Phase-8-Migration.md).
+
+**Done — `DatabaseContext` lifetime:** `AddSingleton<DatabaseContext>()` → `AddDbContextFactory<DatabaseContext>()`; `VehicleService` injects `IDbContextFactory<DatabaseContext>`; the 15 `new DatabaseContext()` → `_dbFactory.CreateDbContext()` (still short-lived `using var` per op). `VehicleService` stays Singleton (its in-memory caches are Singleton-dependent → behavior identical); the factory (not a Scoped context) is the captured Singleton dep → **no captive-dependency**. The old Singleton DbContext reg was dead anyway (nobody resolved it — `VehicleService` always `new`'d its own); the real smell was the service-locator `new`, now gone. `IVehicleService` unchanged → mock tests unaffected.
+
+⚠️ **Deferred (with rationale):**
+- **23 `Ioc.Default` View sites** — `MainPage` is a `Shell` with `ShellContent ContentTemplate="{DataTemplate …View}"`; Shell's DataTemplate needs **parameterless ctors**, so constructor injection requires a Shell→registered-routes navigation restructure + device verification (none available). → follow-up.
+- **Data ↔ `Microsoft.Maui.Storage` decoupling** — wide static→instance ripple on `DatabaseSettings` (consumed across Data/Core/UI + inside `OnConfiguring`); Phase-1 P3. → follow-up (`IPlatformSettings` abstraction).
+
 ## Environment setup (performed in Phase 2)
 
 - SDK: only `11.0.100-preview.6.26359.118` installed (no .NET 10 side-by-side).
@@ -94,7 +105,8 @@ See [Phase-3-Migration.md](./Phase-3-Migration.md) for the full version table an
 - [x] **Phase 5** — ✅ done (focused). `using` declarations (BrowserService, VehicleService). Deferred w/ rationale: file-scoped namespaces (converge per-file), record/init/required (not applicable), target-typed new (SA1000), structural (→P6/P12).
 - [x] **Phase 6** — ✅ done. Broke up `VehiclesViewModelBase` (→ 6 partials, ~60 mirrors collapsed via `SetMirror`, `raiseAllPropertyChanged`→`OnPropertyChanged(string.Empty)`) and `AuslassLogic.Auspuff` (→ `Calculate`/`ComputeGeometry`/`Draw*` + `AuspuffGeometry` record); fixed duplicate popup reg (deleted dead `DynoCreationPopup`/`EnvironmentPopup` — Phase-1 direction corrected to first-wins); standardized 24 commands → `[RelayCommand]`. **0 errors, 0 new warnings**; public-surface + command-name invariants verified. **Carried forward:** device smoke test; AuslassLogic CS8629 pragma removal (P12); `[ObservableProperty]` sweep (P12).
 - [x] **Phase 7** — ✅ done. AsyncFixer02 sync-IO cleared (2→0; unique warnings 14→12); `DynoRuntimeViewModel` `System.Timers.Timer`→`IDispatcherTimer` (cross-thread fix); `ShowSnackbarDialog` `async void`→`Task` (9 call sites `_ =`); `NavigationService` async-void handlers try/catch+log; `CancellationToken` on `DownloadDocumentAsync`. **0 errors, 0 new warnings.** **Carried forward:** device smoke test (dyno run + import/export); `DynoAudioViewModel` CPU offload (after AudioLogic thread-safety + P15 tests); popup `async void` try/catch (P11).
-- [ ] **Phase 8** — `DatabaseContext` Singleton→Scoped; remove 22 `Ioc.Default` View call-sites; decouple `SimTuning.Data` from `Microsoft.Maui.Storage`.
+- [~] **Phase 8** — 🔶 partial. **Done:** `DatabaseContext`→`AddDbContextFactory` + `IDbContextFactory` injected into `VehicleService` (replaces dead Singleton DbContext reg + 15 `new DatabaseContext()` service-locator calls; `VehicleService` kept Singleton → cache behavior identical; no captive dep). **0 errors, 0 new warnings.** **Deferred w/ rationale:** (a) 23 `Ioc.Default` View sites — Shell `ContentTemplate` DataTemplate needs parameterless ctors → requires Shell→registered-routes nav restructure + device verification; (b) Data↔`Microsoft.Maui.Storage` decoupling — wide static→instance `DatabaseSettings` ripple incl. `OnConfiguring` (P3). **Carried forward:** CRUD device smoke test; `EnsureDatabaseCreated` `Migrate()`+`EnsureCreated()` anti-pattern (P12).
+- [ ] **Phase 8b (follow-up)** — View `Ioc.Default` removal (Shell→registered-routes) + Data `IPlatformSettings` decoupling — needs device verification.
 - [ ] **Phase 9** — drop Serilog `Verbose` floor in Release.
 - [ ] **Phase 14** — zip-entry validation + System.Text.Json; path canonicalization; encrypt-at-rest decision; remove `RNGCryptoServiceProvider`/`SecureString`.
 - [ ] **Phase 15** — add `xunit.runner.visualstudio`; real assertions; fix dead tests (`AudioLogicTest` missing `[Fact]`, `DynoLogicTest` commented); cross-platform test paths; async tests.

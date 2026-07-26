@@ -1,4 +1,5 @@
 using CommunityToolkit.Maui;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
 using Sharpnado.Tabs;
@@ -59,8 +60,14 @@ namespace SimTuning.Maui.App
             // Register logging
             services.AddLogging(logging => logging.AddSerilog(dispose: true));
 
-            // Register core services
-            services.AddSingleton<DatabaseContext>();
+            // Register core services.
+            // DatabaseContext is registered via AddDbContextFactory: IVehicleService (Singleton)
+            // consumes IDbContextFactory<DatabaseContext> (Singleton) and creates a short-lived
+            // context per operation. This replaces the previous AddSingleton<DatabaseContext>()
+            // (a captive, shared DbContext — the EF foot-gun flagged in Phase 1) AND the 14
+            // `new DatabaseContext()` service-locator calls in VehicleService. VehicleService stays
+            // Singleton so its in-memory caches are preserved; no Scoped DbContext is captured.
+            services.AddDbContextFactory<DatabaseContext>();
             services.AddSingleton<IVehicleService, VehicleService>();
             services.AddSingleton<IBrowserService, BrowserService>();
             services.AddSingleton<INavigationService, NavigationService>();
