@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2025 tuke productions. All rights reserved.
+// Copyright (c) 2025 tuke productions. All rights reserved.
 namespace SimTuning.Core
 {
     using Microsoft.Maui.Storage;
@@ -16,15 +16,8 @@ namespace SimTuning.Core
         /// <value>The audio file.</value>
         public static string AudioAccelerationFile
         {
-            get
-            {
-                return Preferences.Default.Get(nameof(AudioAccelerationFile), "DynoAccelerationAudio.wav");
-            }
-
-            set
-            {
-                Preferences.Default.Set(nameof(AudioAccelerationFile), value);
-            }
+            get => GetPreference(nameof(AudioAccelerationFile), "DynoAccelerationAudio.wav");
+            set => SetPreference(nameof(AudioAccelerationFile), value);
         }
 
         /// <summary>
@@ -45,15 +38,8 @@ namespace SimTuning.Core
         /// <value>The audio file.</value>
         public static string AudioRolloutFile
         {
-            get
-            {
-                return Preferences.Default.Get(nameof(AudioRolloutFile), "DynoAusrollenAudio.wav");
-            }
-
-            set
-            {
-                Preferences.Default.Set(nameof(AudioRolloutFile), value);
-            }
+            get => GetPreference(nameof(AudioRolloutFile), "DynoAusrollenAudio.wav");
+            set => SetPreference(nameof(AudioRolloutFile), value);
         }
 
         /// <summary>
@@ -74,15 +60,8 @@ namespace SimTuning.Core
         /// <value>The data export archive.</value>
         public static string DataExportArchive
         {
-            get
-            {
-                return Preferences.Default.Get(nameof(DataExportArchive), "DataExport.zip");
-            }
-
-            set
-            {
-                Preferences.Default.Set(nameof(DataExportArchive), value);
-            }
+            get => GetPreference(nameof(DataExportArchive), "DataExport.zip");
+            set => SetPreference(nameof(DataExportArchive), value);
         }
 
         /// <summary>
@@ -103,15 +82,8 @@ namespace SimTuning.Core
         /// <value>The data export file.</value>
         public static string DataExportFile
         {
-            get
-            {
-                return Preferences.Default.Get(nameof(DataExportFile), "DataExport.json");
-            }
-
-            set
-            {
-                Preferences.Default.Set(nameof(DataExportFile), value);
-            }
+            get => GetPreference(nameof(DataExportFile), "DataExport.json");
+            set => SetPreference(nameof(DataExportFile), value);
         }
 
         /// <summary>
@@ -132,15 +104,8 @@ namespace SimTuning.Core
         /// <value>The log file.</value>
         public static string LogFile
         {
-            get
-            {
-                return Preferences.Default.Get(nameof(LogFile), "simtuning_log_.log");
-            }
-
-            set
-            {
-                Preferences.Default.Set(nameof(LogFile), value);
-            }
+            get => GetPreference(nameof(LogFile), "simtuning_log_.log");
+            set => SetPreference(nameof(LogFile), value);
         }
 
         /// <summary>
@@ -161,15 +126,8 @@ namespace SimTuning.Core
         /// <value>The release notes file.</value>
         public static string ReleaseNotesFile
         {
-            get
-            {
-                return Preferences.Default.Get(nameof(ReleaseNotesFile), "releasenotes.txt");
-            }
-
-            set
-            {
-                Preferences.Default.Set(nameof(ReleaseNotesFile), value);
-            }
+            get => GetPreference(nameof(ReleaseNotesFile), "releasenotes.txt");
+            set => SetPreference(nameof(ReleaseNotesFile), value);
         }
 
         /// <summary>
@@ -181,6 +139,44 @@ namespace SimTuning.Core
             get
             {
                 return Path.Combine(DatabaseSettings.FileDirectory, ReleaseNotesFile);
+            }
+        }
+
+        /// <summary>
+        /// Reads a preference, tolerating the absence of a MAUI Essentials host. On a real
+        /// device <see cref="Preferences.Default" /> is always available and this is a plain
+        /// pass-through; in design-time/headless hosts (unit tests, XAML designer) the
+        /// reference assembly throws <c>NotImplementedInReferenceAssemblyException</c>, so the
+        /// documented default is returned instead. Parity with
+        /// <see cref="SimTuning.Data.DatabaseSettings" />. Phase 8b.
+        /// </summary>
+        private static string GetPreference(string key, string defaultValue)
+        {
+            try
+            {
+                return Preferences.Default.Get(key, defaultValue);
+            }
+            catch (Exception)
+            {
+                // Fallback for design-time/headless hosts where Preferences has no platform
+                // implementation. Parity with DatabaseSettings.GetPreference. Phase 8b.
+                return defaultValue;
+            }
+        }
+
+        /// <summary>
+        /// Writes a preference, tolerating the absence of a MAUI Essentials host. See
+        /// <see cref="GetPreference" />. Phase 8b.
+        /// </summary>
+        private static void SetPreference(string key, string value)
+        {
+            try
+            {
+                Preferences.Default.Set(key, value);
+            }
+            catch (Exception)
+            {
+                // Ignore at design-time/headless — parity with DatabaseSettings.SetPreference. Phase 8b.
             }
         }
     }
