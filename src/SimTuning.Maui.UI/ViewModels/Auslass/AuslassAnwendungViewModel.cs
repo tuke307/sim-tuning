@@ -40,9 +40,7 @@ namespace SimTuning.Maui.UI.ViewModels
 
             DiffStages = new List<string>() { "One Stage", "Two Stage", "Three Stage" };
 
-            // Methods
-            CalculateCommand = new RelayCommand(Calculate);
-            DiffusorStageCommand = new RelayCommand<int>(DiffusorStage);
+            // Commands are source-generated via [RelayCommand] on the methods below.
         }
 
         #region Methods
@@ -50,6 +48,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <summary>
         /// Diffusors the stage.
         /// </summary>
+        [RelayCommand]
         public void DiffusorStage(int stage)
         {
             var auspuff = Vehicle?.Motor?.Auslass?.Auspuff;
@@ -96,6 +95,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Berechnet den Auspuff.
         /// </summary>
         /// <returns>Auspuff-Bild als Stream.</returns>
+        [RelayCommand]
         protected void Calculate()
         {
             if (Vehicle is not VehiclesModel vehicle)
@@ -144,22 +144,10 @@ namespace SimTuning.Maui.UI.ViewModels
         }
 
         /// <summary>
-        /// Gets or sets the calculate command.
-        /// </summary>
-        /// <value>The calculate command.</value>
-        public IRelayCommand CalculateCommand { get; set; }
-
-        /// <summary>
         /// Gets the difference stages.
         /// </summary>
         /// <value>The difference stages.</value>
         public List<string> DiffStages { get; private set; }
-
-        /// <summary>
-        /// Gets or sets the diffusor stage command.
-        /// </summary>
-        /// <value>The diffusor stage command.</value>
-        public IRelayCommand DiffusorStageCommand { get; set; }
 
         /// <summary>
         /// Gets or sets the length quantity units.

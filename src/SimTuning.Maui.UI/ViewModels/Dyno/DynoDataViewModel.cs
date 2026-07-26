@@ -37,12 +37,7 @@ namespace SimTuning.Maui.UI.ViewModels
             _popupService = popupService;
             _browserService = browserService;
 
-            DeleteDynoCommand = new RelayCommand(DeleteDyno);
-            SaveDynoCommand = new RelayCommand(SaveDyno);
-
-            ImportDynoCommand = new AsyncRelayCommand(ImportDyno);
-
-            ExportDynoCommand = new AsyncRelayCommand(ExportDynoAsync);
+            // Commands are source-generated via [RelayCommand] on the methods below.
 
             Dynos = new ObservableCollection<DynoModel>(_vehicleService.RetrieveDynos() ?? new List<DynoModel>());
             Messenger.Register<DynoDataViewModel, CurrentDynoRequestMessage>(this, (r, m) => m.Reply(r.Dyno!)); // justified: preserves prior behavior — reply carries the current dyno (incl. null when none selected)
@@ -53,6 +48,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <summary>
         /// Deletes the dyno.
         /// </summary>
+        [RelayCommand]
         protected void DeleteDyno()
         {
             try
@@ -74,6 +70,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <summary>
         /// Exports the dyno.
         /// </summary>
+        [RelayCommand]
         protected async Task ExportDynoAsync()
         {
             try
@@ -149,6 +146,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <summary>
         /// Saves the dyno.
         /// </summary>
+        [RelayCommand]
         protected void SaveDyno()
         {
             try
@@ -164,6 +162,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <summary>
         /// Imports the dyno.
         /// </summary>
+        [RelayCommand]
         private async Task ImportDyno()
         {
             await Functions.GetPermission<Permissions.StorageRead>();
@@ -212,18 +211,6 @@ namespace SimTuning.Maui.UI.ViewModels
         #endregion Methods
 
         #region Values
-
-        #region Commands
-
-        public IRelayCommand DeleteDynoCommand { get; set; }
-
-        public IRelayCommand ExportDynoCommand { get; set; }
-
-        public IAsyncRelayCommand ImportDynoCommand { get; set; }
-
-        public IRelayCommand SaveDynoCommand { get; set; }
-
-        #endregion Commands
 
         protected readonly INavigationService _navigationService;
         private readonly IBrowserService _browserService;

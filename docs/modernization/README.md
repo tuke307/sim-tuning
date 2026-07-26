@@ -12,6 +12,7 @@ Per the roadmap, docs are **seeded in Phase 1 and refreshed every phase** — no
 | [Phase-3-Migration.md](./Phase-3-Migration.md) | NuGet package upgrade log: version decisions, Popup v2 migration, NU1903 CVE clearance |
 | [Phase-4-Migration.md](./Phase-4-Migration.md) | Fix-compilation log: obsolete APIs, XAML deprecations, nullable-reference migration (484→24 warnings; production clean) |
 | [Phase-5-Migration.md](./Phase-5-Migration.md) | Modern-C# log: using-declarations applied; file-scoped namespaces / record / global-usings scoped/deferred with rationale |
+| [Phase-6-Migration.md](./Phase-6-Migration.md) | Structural log: popup-reg fix (Phase-1 direction corrected); `AuslassLogic.Auspuff` extracted; `VehiclesViewModelBase` split + mirrors collapsed; 24 commands → `[RelayCommand]` |
 
 ## Phase 2 — ✅ Complete (migrate TFMs to .NET 11)
 
@@ -49,6 +50,18 @@ See [Phase-3-Migration.md](./Phase-3-Migration.md) for the full version table an
 
 **Deferred (with rationale):** file-scoped namespaces (180-file churn conflicting with P6/P12 → converge per-file); `global usings` (ImplicitUsings already on); `record`/`init`/`required` (EF entities + framework-message subclasses); target-typed `new()` (SA1000 blocks it); structural modernization (→ P6/P12).
 
+## Phase 6 — ✅ Complete (structural modernization)
+
+**Outcome:** all four mandated sub-tasks done, **behavior-preserving**; MacCatalyst builds green, **0 errors, 0 new warnings** (warning-neutral vs HEAD). See [Phase-6-Migration.md](./Phase-6-Migration.md).
+
+**Highlights:**
+- **Popup fix + Phase-1 correction:** CommunityToolkit `PopupService` maps VM→view with `TryAdd` (**first registration wins**), so `DynoCreationPopup`/`EnvironmentPopup` were the *dead* pair (Phase-1 had the direction backwards) — deleted; `VehiclePopup`/`PortTimingPopup` kept. Phase-1 doc corrected.
+- **`AuslassLogic.Auspuff`** (~460-LOC method) → `Calculate` + `ComputeGeometry` (returns an `AuspuffGeometry` record) + 4 `Draw*` helpers; the triply-nested stage `if/else` (duplicated across 3 regions) deduped to computed `HasD1/2/3` flags. Identical draw calls.
+- **`VehiclesViewModelBase`** (1,318 LOC) → 6 partial files; ~60 mirror props collapsed via one `SetMirror<TParent>` helper; the 70-line `raiseAllPropertyChanged()` → `OnPropertyChanged(string.Empty)`. Public surface **byte-identical** (69 members, empty before/after diff).
+- **`[RelayCommand]`:** 24 hand-written commands across 9 VMs converted to source-generated commands; `StartBeschleunigung`→`StartAcceleration` and `ResetRun`→`ResetAcceleration` (no callers) to preserve the XAML-bound command names. All 26 bound `*Command` names still resolve.
+
+⚠️ **Corrections surfaced:** (1) Phase-1 popup shadow direction was wrong (first-wins, not last-wins) — fixed in `Phase-1-Analysis.md`. (2) A U+FEFF a Plan agent flagged as "load-bearing" on `VehicleMotorDeachsierungL` was proven (hexdump) to be plain-ASCII on the property declaration (it lived only inside the now-deleted `nameof`) — **no latent XAML binding bug**. (3) The Auspuff extraction introduced 24 false-positive CS8629 (splitting calc/geometry across methods lost HEAD's intra-method non-null proof); suppressed locally with a documented pragma — identical cast IL.
+
 ## Environment setup (performed in Phase 2)
 
 - SDK: only `11.0.100-preview.6.26359.118` installed (no .NET 10 side-by-side).
@@ -65,7 +78,7 @@ See [Phase-3-Migration.md](./Phase-3-Migration.md) for the full version table an
 - [x] **Phase 3** — package upgrades done; NU1903 CVEs cleared (80→0); Popup v2 migrated. Carried forward: NAudio→NLayer replacement (~Phase 13); SkiaSharp 3→4 when LiveCharts bumps; Sharpnado net11 watch; MediaElement/Mono→CoreCLR device retest; `WinUI.Notifications`→`AppNotificationManager`.
 - [x] **Phase 4** — ✅ done. 484→24 unique warnings; production code warning-clean; 0 non-iOS errors. Fixed: obsolete APIs (SkiaSharp `SKFont`, RNGCryptoServiceProvider, `Application.MainPage`), XAML (`*AndExpand`, FontSize NamedSize), nullable migration (Core + all VMs), formatter config (`useTabs:false`). 24 remaining all deferred to P6/7/15/16. **Carried forward:** device visual review of AndExpand/FontSize changes; `dotnet test` still 0-discovered (adapter missing, P15); cspell not a committed devDep.
 - [x] **Phase 5** — ✅ done (focused). `using` declarations (BrowserService, VehicleService). Deferred w/ rationale: file-scoped namespaces (converge per-file), record/init/required (not applicable), target-typed new (SA1000), structural (→P6/P12).
-- [ ] **Phase 6** — break up `VehiclesViewModelBase` (1,318 LOC) + `AuslassLogic.Auspuff` (460-LOC method); fix duplicate popup registration; standardize source generators.
+- [x] **Phase 6** — ✅ done. Broke up `VehiclesViewModelBase` (→ 6 partials, ~60 mirrors collapsed via `SetMirror`, `raiseAllPropertyChanged`→`OnPropertyChanged(string.Empty)`) and `AuslassLogic.Auspuff` (→ `Calculate`/`ComputeGeometry`/`Draw*` + `AuspuffGeometry` record); fixed duplicate popup reg (deleted dead `DynoCreationPopup`/`EnvironmentPopup` — Phase-1 direction corrected to first-wins); standardized 24 commands → `[RelayCommand]`. **0 errors, 0 new warnings**; public-surface + command-name invariants verified. **Carried forward:** device smoke test; AuslassLogic CS8629 pragma removal (P12); `[ObservableProperty]` sweep (P12).
 - [ ] **Phase 8** — `DatabaseContext` Singleton→Scoped; remove 22 `Ioc.Default` View call-sites; decouple `SimTuning.Data` from `Microsoft.Maui.Storage`.
 - [ ] **Phase 9** — drop Serilog `Verbose` floor in Release.
 - [ ] **Phase 14** — zip-entry validation + System.Text.Json; path canonicalization; encrypt-at-rest decision; remove `RNGCryptoServiceProvider`/`SecureString`.

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace SimTuning.Maui.UI.ViewModels
 {
-    public class DynoAusrollenViewModel : ViewModelBase
+    public partial class DynoAusrollenViewModel : ViewModelBase
     {
         public DynoAusrollenViewModel(
             ILogger<DynoAusrollenViewModel> logger,
@@ -26,7 +26,7 @@ namespace SimTuning.Maui.UI.ViewModels
 
             //ShowDiagnosisCommand = new AsyncRelayCommand(async () => await _navigationService.Navigate<SimTuning.Maui.UI.Views.Dyno.DynoDiagnosisView>(null));
 
-            RefreshPlotCommand = new AsyncRelayCommand(RefreshPlot);
+            // RefreshPlotCommand is source-generated via [RelayCommand] on RefreshPlot().
             ReloadData();
         }
 
@@ -55,8 +55,6 @@ namespace SimTuning.Maui.UI.ViewModels
             get => null;//DynoLogic.PlotAusrollen;
         }
 
-        public IAsyncRelayCommand RefreshPlotCommand { get; set; }
-
         public IAsyncRelayCommand? ShowDiagnosisCommand { get; set; }
 
         #endregion Values
@@ -82,6 +80,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Aktualisiert den Ausroll-Graphen.
         /// </summary>
         /// <returns></returns>
+        [RelayCommand]
         protected async Task RefreshPlot()
         {
             if (!CheckDynoData())

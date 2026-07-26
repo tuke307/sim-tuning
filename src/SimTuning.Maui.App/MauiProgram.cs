@@ -102,11 +102,13 @@ namespace SimTuning.Maui.App
 
         private static void RegisterPopups(IServiceCollection services)
         {
-            // Register popup view models and views
+            // Register popup view models and views.
+            // CommunityToolkit.Maui PopupService maps VM-type -> popup view with TryAdd
+            // (FIRST registration wins), so each VM type may map to exactly one popup.
+            // The previously-registered DynoCreationPopup/EnvironmentPopup were dead
+            // code — shadowed by these and therefore never shown.
             services.AddTransientPopup<VehiclePopup, VehiclesViewModel>();
-            services.AddTransientPopup<DynoCreationPopup, VehiclesViewModel>();
             services.AddTransientPopup<PortTimingPopup, PortTimingViewModel>();
-            services.AddTransientPopup<EnvironmentPopup, PortTimingViewModel>();
         }
     }
 }

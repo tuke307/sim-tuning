@@ -20,7 +20,7 @@ using System.Collections.ObjectModel;
 
 namespace SimTuning.Maui.UI.ViewModels
 {
-    public class DynoAudioViewModel : ViewModelBase
+    public partial class DynoAudioViewModel : ViewModelBase
     {
         public DynoAudioViewModel(
             ILogger<DynoAudioViewModel> logger,
@@ -40,9 +40,7 @@ namespace SimTuning.Maui.UI.ViewModels
             FftSizeIndex = 2; // 2. Index von fftSizes = 2^15 = 32768
             Intensity = 100;
 
-            RefreshPlotCommand = new RelayCommand(RefreshPlot);
-            FilterPlotCommand = new RelayCommand(FilterPlot);
-            SpecificGraphCommand = new RelayCommand(SpecificGraph);
+            // Commands are source-generated via [RelayCommand] on the methods below.
 
             // erste navigation: selected dyno wird requested
             Dyno = Messenger.Send<CurrentDynoRequestMessage>();
@@ -59,6 +57,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <summary>
         /// Refreshes the plot.
         /// </summary>
+        [RelayCommand]
         private void RefreshPlot()
         {
             if (!CheckDynoData())
@@ -72,6 +71,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <summary>
         /// Filters the plot.
         /// </summary>
+        [RelayCommand]
         protected void FilterPlot()
         {
             if (!CheckDynoData())
@@ -85,6 +85,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <summary>
         /// Specifics the graph.
         /// </summary>
+        [RelayCommand]
         private void SpecificGraph()
         {
             if (Graphs == null || Graph == null)
@@ -267,28 +268,10 @@ namespace SimTuning.Maui.UI.ViewModels
         #region Commands
 
         /// <summary>
-        /// Gets or sets the filter plot command.
-        /// </summary>
-        /// <value>The filter plot command.</value>
-        public IRelayCommand FilterPlotCommand { get; set; }
-
-        /// <summary>
         /// Gets or sets the open file command.
         /// </summary>
         /// <value>The open file command.</value>
         public IAsyncRelayCommand? RefreshAudioFileCommand { get; set; }
-
-        /// <summary>
-        /// Gets or sets the refresh plot command.
-        /// </summary>
-        /// <value>The refresh plot command.</value>
-        public IRelayCommand RefreshPlotCommand { get; set; }
-
-        /// <summary>
-        /// Gets or sets the specific graph command.
-        /// </summary>
-        /// <value>The specific graph command.</value>
-        public IRelayCommand SpecificGraphCommand { get; set; }
 
         #endregion Commands
 
