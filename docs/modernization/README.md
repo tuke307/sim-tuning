@@ -18,6 +18,7 @@ Per the roadmap, docs are **seeded in Phase 1 and refreshed every phase** — no
 | [Phase-9-Migration.md](./Phase-9-Migration.md) | Logging log: Serilog `Verbose` floor → per-config (`#if DEBUG` Debug/`#else` Warning); 3 message-as-template sites fixed |
 | [Phase-11-Migration.md](./Phase-11-Migration.md) | Exceptions log: `throw new Exception()`→`InvalidOperationException` (NavigationService §7.7); 3 bare `catch`→`catch (Exception)` (DatabaseSettings); SFF/AudioUtlis catches deferred to P13/P17 |
 | [Phase-12-Migration.md](./Phase-12-Migration.md) | DRY log: 45 UnitsNet `*Unit` setters → `ConvertValueForUnit` helper in `BaseEntityModel` (−737 LOC; AuspuffModel 1047→~670); 0 errors, 0 new warnings |
+| [Phase-17-Migration.md](./Phase-17-Migration.md) | Spectrogram log: NuGet rejected (Windows-only/unmaintained); vendored copy trimmed 995→318 LOC (deleted SFF/Image/Colormap/Tools; trimmed Spectrogram.cs; dropped AllowUnsafeBlocks + SkiaSharp; AudioLogicTest repointed to GetFFTs) |
 
 ## Phase 2 — ✅ Complete (migrate TFMs to .NET 11)
 
@@ -119,6 +120,18 @@ See [Phase-3-Migration.md](./Phase-3-Migration.md) for the full version table an
 
 ⚠️ **Deferred (with rationale):** AuslassLogic CS8629 pragma removal (non-trivial non-null propagation); `[ObservableProperty]` sweep (limited applicability — mirrors delegate to model, no backing field); `EnsureDatabaseCreated` `Migrate()`+`EnsureCreated()` (DB-init behavior change, needs device); `Styles_Global` ListView→CollectionView (XAML, needs device visual review).
 
+## Phase 17 — ✅ Complete (vendored Spectrogram cleanup)
+
+**Outcome:** the modern `Spectrogram` NuGet was **evaluated and rejected** (depends on `System.Drawing.Common` → Windows-only, image-focused with no `GetFFTs()` raw-data API, unmaintained since 2022). Per the brief's fallback, the vendored copy was **kept and trimmed: 995 → 318 LOC (−677).** MacCatalyst green, **0 errors, 0 new warnings;** Test compiles. See [Phase-17-Migration.md](./Phase-17-Migration.md).
+
+**Highlights:**
+- **Deleted 4 dead files** (534 LOC): `SFF.cs` (297 — the untrusted-binary `.sff` reader/writer + empty catch), `Image.cs` (119 — bitmaps), `Tools.cs` (90 — MIDI/SFF helpers), `Colormap.cs` (28). Verified 0 external refs (the `Image.`/`Tools.` grep hits were `SKImage`/`System.Resources.Tools` false positives).
+- **`Spectrogram.cs` trimmed 266→~110** — kept only the consumed surface (ctor, `Add`, `Process`, `GetFFTs`, `HzPerPx`/`SecPerPx`); the `Process` FFT core is byte-identical, so consumed behavior is preserved.
+- **Modernized:** removed `AllowUnsafeBlocks` (unused), dropped `SkiaSharp` from the code, stripped 10 `Console.WriteLine` debug lines from `WavFile`, repointed `AudioLogicTest` to `GetFFTs()`.
+- `AudioLogic` is the sole consumer; its API (`WavFile.ReadMono`, ctor/`Add`/`HzPerPx`/`SecPerPx`/`GetFFTs`) is unchanged.
+
+⚠️ **Carry-forward:** optional rewrite of `AudioLogic` directly on `FftSharp` to drop the vendored project entirely (needs an audio-equivalence test); `AudioLogicTest` activation (`[Theory]` + cross-platform path) → Phase 15.
+
 ## Environment setup (performed in Phase 2)
 
 - SDK: only `11.0.100-preview.6.26359.118` installed (no .NET 10 side-by-side).
@@ -144,6 +157,6 @@ See [Phase-3-Migration.md](./Phase-3-Migration.md) for the full version table an
 - [x] **Phase 12** — ✅ done. 45 UnitsNet `*Unit` setters → `ConvertValueForUnit` helper in `BaseEntityModel` (−737 LOC; AuspuffModel 1047→~670); 0 errors, 0 new warnings; Test compiles. **Carried forward:** AuslassLogic CS8629 pragma (non-null propagation); `[ObservableProperty]` sweep (limited applicability); `EnsureDatabaseCreated` Migrate+EnsureCreated (needs device); Styles_Global ListView→CollectionView (needs device).
 - [ ] **Phase 14** — zip-entry validation + System.Text.Json; path canonicalization; encrypt-at-rest decision; remove `RNGCryptoServiceProvider`/`SecureString`.
 - [ ] **Phase 15** — add `xunit.runner.visualstudio`; real assertions; fix dead tests (`AudioLogicTest` missing `[Fact]`, `DynoLogicTest` commented); cross-platform test paths; async tests.
-- [ ] **Phase 17** — replace vendored `Spectrogram` with NuGet (sole consumer `AudioLogic` confirmed; dead render/SFF/Colormap surface documented).
+- [x] **Phase 17** — ✅ done. Spectrogram NuGet **rejected** (Windows-only `System.Drawing.Common`, image-focused, unmaintained); vendored copy **trimmed 995→318 LOC** (deleted SFF/Image/Colormap/Tools = −534; `Spectrogram.cs` 266→~110; dropped `AllowUnsafeBlocks` + SkiaSharp; `WavFile` console-spam removed; `AudioLogicTest` → `GetFFTs`). Consumed API + `Process` FFT core unchanged. **0 errors, 0 new warnings;** Test compiles. **Carried forward:** optional FftSharp-direct rewrite of AudioLogic (needs audio-equivalence test); AudioLogicTest activation (P15).
 
 Full detail and rationale: see [Phase-1-Analysis.md](./Phase-1-Analysis.md) §6–§9.
