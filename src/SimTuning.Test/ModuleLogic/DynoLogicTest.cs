@@ -1,67 +1,30 @@
-﻿// Copyright (c) 2025 tuke productions. All rights reserved.
+// Copyright (c) 2025 tuke productions. All rights reserved.
 namespace SimTuning.Test
 {
+    using SimTuning.Core.Models;
     using SimTuning.Core.ModuleLogic;
-    using SimTuning.Test;
-    using System.IO;
     using Xunit;
 
     /// <summary>
-    /// DynoLogicTest.
+    /// DynoLogicTest. Phase 15: the old <c>PlotCreationTest</c> body was fully commented out and
+    /// referenced removed APIs (OxyPlot <c>PngExporter</c>, the old <c>DynoLogic.PlotAudio</c>/
+    /// <c>GetDrehzahlGraph</c> surface) — a false green. Replaced with a live test of the
+    /// deterministic conversion extensions.
     /// </summary>
     public class DynoLogicTest
     {
         /// <summary>
-        /// Plots the creation test.
+        /// Converts a <see cref="DataPoint" /> to a LiveCharts <see cref="global::LiveChartsCore.Defaults.ObservablePoint" />.
         /// </summary>
         [Fact]
-        public void PlotCreationTest()
+        public void ToObservablePointTest()
         {
-            /*
-            string _filePath;
-            string _fileName;
+            var dataPoint = new DataPoint(3, 4);
 
-            var colormap = AudioLogic.GetSpectrogram(
-                audioFile: SimTuning.Test.Constants.DynoAudioFile,
-                fftSize: 32768);
+            var observablePoint = dataPoint.ToObservablePoint();
 
-            AudioLogic.GetDrehzahlGraph(areas: false, intensity: 0.75, areaAbstand: 5);
-
-            DynoLogic.GetDrehzahlGraph(areas: false, intensity: 0.75, areaAbstand: 5);
-
-            _fileName = nameof(DynoLogic.PlotAudio) + ".png";
-            _filePath = Path.Combine(SimTuning.Test.Constants.Directory, _fileName);
-
-            PngExporter.Export(DynoLogic.PlotAudio, _filePath, 1000, 1000, OxyColors.White);
-
-            DynoLogic.GetDrehzahlGraphFitted(out var drehzahlModels);
-
-            _fileName = nameof(DynoLogic.PlotAudio) + "Fitted" + ".png";
-            _filePath = Path.Combine(SimTuning.Test.Constants.Directory, _fileName);
-
-            PngExporter.Export(DynoLogic.PlotAudio, _filePath, 1000, 1000, OxyColors.White);
-
-            //DynoLogic.GetAusrollGraphFitted(nullList < Data.Models.AusrollenModel > ausrollenModels);
-
-            _fileName = nameof(DynoLogic.PlotGeschwindigkeit) + "Fitted" + ".png";
-            _filePath = Path.Combine(SimTuning.Test.Constants.Directory, _fileName);
-
-            PngExporter.Export(DynoLogic.PlotGeschwindigkeit, _filePath, 1000, 1000, OxyColors.White);
-
-            //DynoLogic.GetGeschwindigkeitsGraphFitted(nullList < Data.Models.BeschleunigungModel > beschleunigungModels);
-
-            _fileName = nameof(DynoLogic.PlotAusrollen) + "Fitted" + ".png";
-            _filePath = Path.Combine(SimTuning.Test.Constants.Directory, _fileName);
-
-            PngExporter.Export(DynoLogic.PlotAusrollen, _filePath, 1000, 1000, OxyColors.White);
-
-            DynoLogic.GetLeistungsGraph(200, out var dynoPsModels);
-
-            _fileName = nameof(DynoLogic.PlotLeistung) + "Fitted" + ".png";
-            _filePath = Path.Combine(SimTuning.Test.Constants.Directory, _fileName);
-
-            PngExporter.Export(DynoLogic.PlotLeistung, _filePath, 1000, 1000, OxyColors.White);
-            */
+            Assert.Equal(3, observablePoint.X);
+            Assert.Equal(4, observablePoint.Y);
         }
     }
 }

@@ -1,15 +1,14 @@
-﻿// Copyright (c) 2025 tuke productions. All rights reserved.
+// Copyright (c) 2025 tuke productions. All rights reserved.
 namespace SimTuning.Test
 {
     using SimTuning.Core.ModuleLogic;
     using SimTuning.Data.Models;
-    using SimTuning.Test;
     using SkiaSharp;
     using System.IO;
     using Xunit;
 
     /// <summary>
-    /// AuslassLogicTest.
+    /// AuslassLogicTest. Phase 15: added real assertions (finite / non-null) to every test.
     /// </summary>
     public class AuslassLogicTest
     {
@@ -19,64 +18,46 @@ namespace SimTuning.Test
         [Fact]
         public void AuspuffTest()
         {
-            SKBitmap auspuff;
-            string _fileName;
-            string _filePath;
-            VehiclesModel _vehicle;
+            var vehicle = new VehiclesModel
+            {
+                Motor = new MotorModel
+                {
+                    ResonanzU = 8000,
+                    Auslass = new AuslassModel
+                    {
+                        LaengeL = 100,
+                        SteuerzeitSZ = 190,
+                        DurchmesserD = 45.83,
+                        FlaecheA = 20,
+                        Auspuff = new AuspuffModel
+                        {
+                            AbgasT = 548.69,
+                            AbgasV = 548.69,
+                            DiffusorStage = 1,
+                            DiffusorW = 4,
+                            DiffusorW1 = 7.5,
+                            KruemmerF = 10,
+                            KruemmerW = 0,
+                            MittelteilF = 2.9,
+                            GegenKonusW = 0,
+                            EndrohrL = 295,
+                            EndrohrD = 27,
+                        },
+                    },
+                },
+            };
 
-            // Vehicle Creation
-            _vehicle = new VehiclesModel();
-            _vehicle.Motor = new MotorModel();
-            _vehicle.Motor.Auslass = new AuslassModel();
-            _vehicle.Motor.Auslass.Auspuff = new AuspuffModel();
+            SKBitmap auspuff = AuslassLogic.Auspuff(ref vehicle);
 
-            _fileName = "Auspuff.png";
-            _filePath = Path.Combine(SimTuning.Test.Constants.Directory, _fileName);
+            Assert.NotNull(auspuff);
 
-            #region Daten
-
-            _vehicle.Motor.Auslass.Auspuff.AbgasT = 548.69;
-            _vehicle.Motor.Auslass.Auspuff.AbgasV = 548.69;
-            _vehicle.Motor.Auslass.LaengeL = 100;
-            _vehicle.Motor.Auslass.SteuerzeitSZ = 190;
-            _vehicle.Motor.ResonanzU = 8000;
-            _vehicle.Motor.Auslass.DurchmesserD = 45.83;
-            _vehicle.Motor.Auslass.FlaecheA = 20;
-            _vehicle.Motor.Auslass.Auspuff.DiffusorW1 = 7.5;
-
-            // 6 bis 12
-            _vehicle.Motor.Auslass.Auspuff.KruemmerF = 10;
-            _vehicle.Motor.Auslass.Auspuff.KruemmerW = 0;
-
-            // 2 bis 3
-            _vehicle.Motor.Auslass.Auspuff.MittelteilF = 2.9;
-
-            _vehicle.Motor.Auslass.Auspuff.GegenKonusW = 0;
-            // _vehicle.Motor.Auslass.Auspuff.GegenkonusL = 0;
-
-            _vehicle.Motor.Auslass.Auspuff.DiffusorStage = 1;
-            _vehicle.Motor.Auslass.Auspuff.DiffusorW = 4;
-            // _vehicle.Motor.Auslass.Auspuff.DiffusorW1 = 0;
-            // _vehicle.Motor.Auslass.Auspuff.DiffusorW2 = 0;
-            // _vehicle.Motor.Auslass.Auspuff.DiffusorW3 = 0;
-
-            _vehicle.Motor.Auslass.Auspuff.EndrohrL = 295;
-            _vehicle.Motor.Auslass.Auspuff.EndrohrD = 27;
-
-            #endregion Daten
-
-            VehiclesModel _vehicle2 = _vehicle;
-            auspuff = AuslassLogic.Auspuff(ref _vehicle2);
-            _vehicle = _vehicle2;
-
+            // Export for manual inspection (cross-platform temp dir).
+            string filePath = Path.Combine(SimTuning.Test.Constants.Directory, "Auspuff.png");
             using (var image = SKImage.FromBitmap(auspuff))
             using (var data = image.Encode())
+            using (var stream = File.OpenWrite(filePath))
             {
-                // save the data to a stream
-                using (var stream = File.OpenWrite(_filePath))
-                {
-                    data.SaveTo(stream);
-                }
+                data.SaveTo(stream);
             }
         }
 
@@ -86,12 +67,9 @@ namespace SimTuning.Test
         [Fact]
         public void GasVelocityTest()
         {
-            double value;
-            double abgasT;
+            double value = AuslassLogic.GetGasGeschwindigkeit(550);
 
-            abgasT = 550;
-
-            value = AuslassLogic.GetGasGeschwindigkeit(abgasT);
+            Assert.True(double.IsFinite(value));
         }
 
         /// <summary>
@@ -100,14 +78,9 @@ namespace SimTuning.Test
         [Fact]
         public void ManifoldDiameterTest()
         {
-            double value;
-            double auslassA;
-            int percentage;
+            double value = AuslassLogic.GetKruemmerDurchmesser(2, 10);
 
-            auslassA = 2;
-            percentage = 10;
-
-            value = AuslassLogic.GetKruemmerDurchmesser(auslassA, percentage);
+            Assert.True(double.IsFinite(value));
         }
 
         /// <summary>
@@ -116,16 +89,9 @@ namespace SimTuning.Test
         [Fact]
         public void ManifoldLengthTest()
         {
-            double value;
-            double kruemerdurchmesser;
-            double drehmomentfaktor;
-            double auslassLaenge;
+            double value = AuslassLogic.GetKruemmerLaenge(20, 20, 20);
 
-            kruemerdurchmesser = 20;
-            drehmomentfaktor = 20;
-            auslassLaenge = 20;
-
-            value = AuslassLogic.GetKruemmerLaenge(kruemerdurchmesser, drehmomentfaktor, auslassLaenge);
+            Assert.True(double.IsFinite(value));
         }
 
         /// <summary>
@@ -134,16 +100,9 @@ namespace SimTuning.Test
         [Fact]
         public void ResonanceLengthTest()
         {
-            double value;
-            double auslassSteuerwinkel;
-            double abgasTemperatur;
-            double resonanzDrehzahl;
+            double value = AuslassLogic.GetResonanzLaenge(auslassSteuerwinkel: 180, abgasTemperatur: 550, resonanzDrehzahl: 8000);
 
-            auslassSteuerwinkel = 180;
-            abgasTemperatur = 550;
-            resonanzDrehzahl = 8000;
-
-            value = AuslassLogic.GetResonanzLaenge(auslassSteuerwinkel, abgasTemperatur, resonanzDrehzahl);
+            Assert.True(double.IsFinite(value));
         }
 
         /// <summary>
@@ -152,14 +111,9 @@ namespace SimTuning.Test
         [Fact]
         public void VehiclePortDurationTest()
         {
-            double value;
-            double auslassSteuerzeit;
-            double drehzahl;
+            double value = AuslassLogic.GetVehiclePortDuration(auslassSteuerzeit: 180, drehzahl: 8000);
 
-            auslassSteuerzeit = 180;
-            drehzahl = 8000;
-
-            value = AuslassLogic.GetVehiclePortDuration(auslassSteuerzeit, drehzahl);
+            Assert.True(double.IsFinite(value));
         }
     }
 }
