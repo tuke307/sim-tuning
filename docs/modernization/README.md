@@ -21,6 +21,7 @@ Per the roadmap, docs are **seeded in Phase 1 and refreshed every phase** — no
 | [Phase-17-Migration.md](./Phase-17-Migration.md) | Spectrogram log: NuGet rejected (Windows-only/unmaintained); vendored copy trimmed 995→318 LOC (deleted SFF/Image/Colormap/Tools; trimmed Spectrogram.cs; dropped AllowUnsafeBlocks + SkiaSharp; AudioLogicTest repointed to GetFFTs) |
 | [Phase-14-Migration.md](./Phase-14-Migration.md) | Security log: Zip-Slip defense in ImportDyno (A01); dead `SecureString` methods removed (A02); Newtonsoft→System.Text.Json + dependency dropped (A08); path canonicalization + encrypt-at-rest deferred |
 | [Phase-16-Migration.md](./Phase-16-Migration.md) | Dead-code log: deleted Tizen platform + all-stub `TuningLogic` + commented blocks in ImportDyno/`DynoRuntimeViewModel` (OnLocationUpdated/StartRecording); ~150 LOC removed |
+| [Phase-15-Migration.md](./Phase-15-Migration.md) | Test log: `xunit.runner.visualstudio` + coverlet added (in `2ddc1fc`); `dotnet test` 0-discovered → **47 discovered, 46 passed / 1 skipped / 0 failed**; fixed `AudioLogicTest(65536)` window count; skipped `DynoAudio` (→P8b); redesigned `DynoRuntime` integration path; deleted dead `IViewModelTest` |
 
 ## Phase 2 — ✅ Complete (migrate TFMs to .NET 11)
 
@@ -158,6 +159,20 @@ See [Phase-3-Migration.md](./Phase-3-Migration.md) for the full version table an
 
 ⚠️ **Deferred:** broader commented-code sweep across VMs/Logic (scattered/cosmetic); `IViewModelTest` empty contract → P15.
 
+## Phase 15 — ✅ Complete (test project modernization)
+
+**Outcome:** `dotnet test` went from **0-discovered** (the Phase-4 state — the adapter was missing) to **47 tests discovered: 46 passed, 1 skipped, 0 failed**, test-project warning-clean. The file-by-file modernization (adapter + coverlet, real assertions, cross-platform temp paths, the missing `[Theory]` on `AudioLogicTest`, the commented `DynoLogicTest` body) landed in `2ddc1fc`; this phase **resolved the 3 failures those real assertions surfaced**. See [Phase-15-Migration.md](./Phase-15-Migration.md).
+
+**Highlights:**
+- **`AudioLogicTest(65536)`** — the 1-second @ 44.1 kHz test WAV (44 100 samples) was shorter than the 65 536-sample FFT window → `GetFFTs()` empty. Scaled the generated duration with `fftSize` (≥2 windows per size). Test-data fix; `AudioLogic` untouched.
+- **`DynoAudioViewModelTest`** — `FilterPlot`→`CheckDynoData` hits `GeneralSettings.AudioAccelerationFilePath` → `Preferences.Default.Get` with **no design-time fallback** (unlike `DatabaseSettings`). That's the Phase-8b Data↔MAUI.Storage coupling → **skipped with a pointer to P8b** (re-enabled when `GeneralSettings` gets fallback parity).
+- **`DynoRuntimeViewModelTest`** — `StartAcceleration` is an integration-only path (permissions via `Functions.GetPermission` + `IDispatcherTimer` via `Application.Current.Dispatcher`, neither present in a headless host). Redesigned to construct + `ResetAccelerationCommand` only; the run flow is on-device.
+- **Deleted `IViewModelTest`** (empty marker interface — the Phase-16 carry-forward) and **fixed the last test warning** (`NewDyno(null)` CS8625 → `new VehiclesModel()`).
+
+⚠️ **Carry-forward:** re-enable `DynoAudioViewModelTest` (→ Phase 8b); device smoke test for the `DynoRuntime` permission/run flow.
+
+⚠️ **Test-only changes** — the MacCatalyst head and its 12-warning baseline are untouched.
+
 ## Environment setup (performed in Phase 2)
 
 - SDK: only `11.0.100-preview.6.26359.118` installed (no .NET 10 side-by-side).
@@ -182,8 +197,7 @@ See [Phase-3-Migration.md](./Phase-3-Migration.md) for the full version table an
 - [x] **Phase 11** — ✅ done. `throw new Exception()`→`InvalidOperationException` (NavigationService §7.7, +message); 3 bare `catch`→`catch (Exception)` (DatabaseSettings design-time fallbacks). VM/service catches already proper (left as-is). **0 errors, 0 new warnings.** **Carried forward:** SFF empty catch (P17); AudioUtlis empty catches (P13).
 - [x] **Phase 12** — ✅ done. 45 UnitsNet `*Unit` setters → `ConvertValueForUnit` helper in `BaseEntityModel` (−737 LOC; AuspuffModel 1047→~670); 0 errors, 0 new warnings; Test compiles. **Carried forward:** AuslassLogic CS8629 pragma (non-null propagation); `[ObservableProperty]` sweep (limited applicability); `EnsureDatabaseCreated` Migrate+EnsureCreated (needs device); Styles_Global ListView→CollectionView (needs device).
 - [~] **Phase 14** — 🔶 partial. **Done:** Zip-Slip defense in `ImportDyno` (A01, per-entry path validation); dead `SecureString` methods removed (A02); `Newtonsoft.Json`→`System.Text.Json` + package dropped (A08). **0 errors, 0 new warnings.** **Deferred w/ rationale:** path canonicalization (→ Phase 8b static-settings decoupling); **encrypt-at-rest decision** (needs threat-model + key-management — surface to user). `RNGCryptoServiceProvider`/`SFF` already gone (P4/P17). **Carried forward:** Export→Import device smoke test.
-- [ ] **Phase 15** — real assertions; fix dead tests; cross-platform test paths; async tests.
-- [ ] **Phase 15** — add `xunit.runner.visualstudio`; real assertions; fix dead tests (`AudioLogicTest` missing `[Fact]`, `DynoLogicTest` commented); cross-platform test paths; async tests.
+- [x] **Phase 15** — ✅ done. `xunit.runner.visualstudio` + coverlet added (in `2ddc1fc`) → `dotnet test` **0-discovered → 47 discovered (46 passed / 1 skipped / 0 failed)**, test-project warning-clean. Resolved the 3 failures the new real assertions surfaced: `AudioLogicTest(65536)` WAV-duration window-count fix; `DynoAudioViewModelTest` skipped (→ P8b `GeneralSettings` Preferences fallback); `DynoRuntimeViewModelTest` redesigned (drop the integration-only `StartAcceleration` path). Deleted dead `IViewModelTest`; fixed last test warning (`NewDyno(null)` CS8625). **Test-only — head + 12-warning baseline untouched.** **Carried forward:** re-enable `DynoAudioViewModelTest` (P8b); `DynoRuntime` run-flow device smoke test.
 - [x] **Phase 17** — ✅ done. Spectrogram NuGet **rejected** (Windows-only `System.Drawing.Common`, image-focused, unmaintained); vendored copy **trimmed 995→318 LOC** (deleted SFF/Image/Colormap/Tools = −534; `Spectrogram.cs` 266→~110; dropped `AllowUnsafeBlocks` + SkiaSharp; `WavFile` console-spam removed; `AudioLogicTest` → `GetFFTs`). Consumed API + `Process` FFT core unchanged. **0 errors, 0 new warnings;** Test compiles. **Carried forward:** optional FftSharp-direct rewrite of AudioLogic (needs audio-equivalence test); AudioLogicTest activation (P15).
 
 Full detail and rationale: see [Phase-1-Analysis.md](./Phase-1-Analysis.md) §6–§9.
