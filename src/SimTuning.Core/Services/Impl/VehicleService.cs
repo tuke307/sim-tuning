@@ -181,7 +181,7 @@ namespace SimTuning.Core.Services
             }
             catch (Exception exc)
             {
-                _logger.LogError(exc, exc.Message);
+                _logger.LogError(exc, "Error retrieving dynos");
             }
 
             return null;
@@ -224,7 +224,7 @@ namespace SimTuning.Core.Services
             }
             catch (Exception exc)
             {
-                _logger.LogError(exc, exc.Message);
+                _logger.LogError(exc, "Error retrieving motoren");
             }
 
             return null;

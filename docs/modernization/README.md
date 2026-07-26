@@ -15,6 +15,7 @@ Per the roadmap, docs are **seeded in Phase 1 and refreshed every phase** — no
 | [Phase-6-Migration.md](./Phase-6-Migration.md) | Structural log: popup-reg fix (Phase-1 direction corrected); `AuslassLogic.Auspuff` extracted; `VehiclesViewModelBase` split + mirrors collapsed; 24 commands → `[RelayCommand]` |
 | [Phase-7-Migration.md](./Phase-7-Migration.md) | Async log: AsyncFixer02 sync-IO cleared (2→0); `System.Timers.Timer`→`IDispatcherTimer`; `ShowSnackbarDialog` `async void`→`Task`; NavigationService handlers hardened; `CancellationToken` on download |
 | [Phase-8-Migration.md](./Phase-8-Migration.md) | DI log: `DatabaseContext`→`AddDbContextFactory` + `IDbContextFactory` in `VehicleService` (replaces dead Singleton + 15 `new`); View `Ioc.Default` + Data↔MAUI.Storage decoupling deferred w/ rationale |
+| [Phase-9-Migration.md](./Phase-9-Migration.md) | Logging log: Serilog `Verbose` floor → per-config (`#if DEBUG` Debug/`#else` Warning); 3 message-as-template sites fixed |
 
 ## Phase 2 — ✅ Complete (migrate TFMs to .NET 11)
 
@@ -87,6 +88,14 @@ See [Phase-3-Migration.md](./Phase-3-Migration.md) for the full version table an
 - **23 `Ioc.Default` View sites** — `MainPage` is a `Shell` with `ShellContent ContentTemplate="{DataTemplate …View}"`; Shell's DataTemplate needs **parameterless ctors**, so constructor injection requires a Shell→registered-routes navigation restructure + device verification (none available). → follow-up.
 - **Data ↔ `Microsoft.Maui.Storage` decoupling** — wide static→instance ripple on `DatabaseSettings` (consumed across Data/Core/UI + inside `OnConfiguring`); Phase-1 P3. → follow-up (`IPlatformSettings` abstraction).
 
+## Phase 9 — ✅ Complete (logging posture)
+
+**Outcome:** Serilog `Verbose` floor dropped (Phase-1 A05); per-configuration level (`#if DEBUG` `Debug` / `#else` `Warning`); 3 message-as-template sites fixed. MacCatalyst green in **both Debug and Release**, **0 errors, 0 new warnings.** See [Phase-9-Migration.md](./Phase-9-Migration.md).
+
+**Highlights:**
+- **`SetupSerilog`** — `MinimumLevel.Verbose()` → `MinimumLevel.Is(minimumLevel)` with `#if DEBUG Debug #else Warning`. Verified **nothing logs at Verbose/Trace**, so no app output is lost; Release now logs only `Warning`/`Error` (minimizes PII — `Information` events carry dyno/vehicle names — and log volume). `Microsoft→Warning` override + Debug/File sinks unchanged.
+- **Structured logging** — 3 `_logger.LogXxx(exc, exc.Message)` sites (VehicleService RetrieveDynos/RetrieveMotoren, BrowserService OpenBrowser) → fixed templates (matching the existing sibling pattern). No `{0}` positional templates existed.
+
 ## Environment setup (performed in Phase 2)
 
 - SDK: only `11.0.100-preview.6.26359.118` installed (no .NET 10 side-by-side).
@@ -107,7 +116,7 @@ See [Phase-3-Migration.md](./Phase-3-Migration.md) for the full version table an
 - [x] **Phase 7** — ✅ done. AsyncFixer02 sync-IO cleared (2→0; unique warnings 14→12); `DynoRuntimeViewModel` `System.Timers.Timer`→`IDispatcherTimer` (cross-thread fix); `ShowSnackbarDialog` `async void`→`Task` (9 call sites `_ =`); `NavigationService` async-void handlers try/catch+log; `CancellationToken` on `DownloadDocumentAsync`. **0 errors, 0 new warnings.** **Carried forward:** device smoke test (dyno run + import/export); `DynoAudioViewModel` CPU offload (after AudioLogic thread-safety + P15 tests); popup `async void` try/catch (P11).
 - [~] **Phase 8** — 🔶 partial. **Done:** `DatabaseContext`→`AddDbContextFactory` + `IDbContextFactory` injected into `VehicleService` (replaces dead Singleton DbContext reg + 15 `new DatabaseContext()` service-locator calls; `VehicleService` kept Singleton → cache behavior identical; no captive dep). **0 errors, 0 new warnings.** **Deferred w/ rationale:** (a) 23 `Ioc.Default` View sites — Shell `ContentTemplate` DataTemplate needs parameterless ctors → requires Shell→registered-routes nav restructure + device verification; (b) Data↔`Microsoft.Maui.Storage` decoupling — wide static→instance `DatabaseSettings` ripple incl. `OnConfiguring` (P3). **Carried forward:** CRUD device smoke test; `EnsureDatabaseCreated` `Migrate()`+`EnsureCreated()` anti-pattern (P12).
 - [ ] **Phase 8b (follow-up)** — View `Ioc.Default` removal (Shell→registered-routes) + Data `IPlatformSettings` decoupling — needs device verification.
-- [ ] **Phase 9** — drop Serilog `Verbose` floor in Release.
+- [x] **Phase 9** — ✅ done. Serilog `Verbose` floor → per-config (`#if DEBUG` `Debug`/`#else` `Warning`); 3 message-as-template sites fixed (VehicleService ×2, BrowserService ×1). **0 errors, 0 new warnings; green in Debug + Release.** **Carried forward:** optional `LoggingLevelSwitch`; optional PII redaction if Release surface broadened.
 - [ ] **Phase 14** — zip-entry validation + System.Text.Json; path canonicalization; encrypt-at-rest decision; remove `RNGCryptoServiceProvider`/`SecureString`.
 - [ ] **Phase 15** — add `xunit.runner.visualstudio`; real assertions; fix dead tests (`AudioLogicTest` missing `[Fact]`, `DynoLogicTest` commented); cross-platform test paths; async tests.
 - [ ] **Phase 17** — replace vendored `Spectrogram` with NuGet (sole consumer `AudioLogic` confirmed; dead render/SFF/Colormap surface documented).
