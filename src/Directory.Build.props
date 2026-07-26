@@ -65,7 +65,8 @@
     <PackageReference Include="LiveChartsCore.SkiaSharpView.Maui" Version="2.0.5" />
     <PackageReference Include="SkiaSharp" Version="3.119.1" />
     <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+    <!-- Newtonsoft.Json removed (Phase 14 A08): the sole consumer (DynoDataViewModel export/import)
+         migrated to System.Text.Json. -->
     <PackageReference Include="Serilog" Version="4.4.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
     <PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />

@@ -19,6 +19,7 @@ Per the roadmap, docs are **seeded in Phase 1 and refreshed every phase** — no
 | [Phase-11-Migration.md](./Phase-11-Migration.md) | Exceptions log: `throw new Exception()`→`InvalidOperationException` (NavigationService §7.7); 3 bare `catch`→`catch (Exception)` (DatabaseSettings); SFF/AudioUtlis catches deferred to P13/P17 |
 | [Phase-12-Migration.md](./Phase-12-Migration.md) | DRY log: 45 UnitsNet `*Unit` setters → `ConvertValueForUnit` helper in `BaseEntityModel` (−737 LOC; AuspuffModel 1047→~670); 0 errors, 0 new warnings |
 | [Phase-17-Migration.md](./Phase-17-Migration.md) | Spectrogram log: NuGet rejected (Windows-only/unmaintained); vendored copy trimmed 995→318 LOC (deleted SFF/Image/Colormap/Tools; trimmed Spectrogram.cs; dropped AllowUnsafeBlocks + SkiaSharp; AudioLogicTest repointed to GetFFTs) |
+| [Phase-14-Migration.md](./Phase-14-Migration.md) | Security log: Zip-Slip defense in ImportDyno (A01); dead `SecureString` methods removed (A02); Newtonsoft→System.Text.Json + dependency dropped (A08); path canonicalization + encrypt-at-rest deferred |
 
 ## Phase 2 — ✅ Complete (migrate TFMs to .NET 11)
 
@@ -132,6 +133,18 @@ See [Phase-3-Migration.md](./Phase-3-Migration.md) for the full version table an
 
 ⚠️ **Carry-forward:** optional rewrite of `AudioLogic` directly on `FftSharp` to drop the vendored project entirely (needs an audio-equivalence test); `AudioLogicTest` activation (`[Theory]` + cross-platform path) → Phase 15.
 
+## Phase 14 — 🔶 Partial (security hardening)
+
+**Outcome:** Zip-Slip defense added (A01), dead deprecated `SecureString` removed (A02), `Newtonsoft.Json`→`System.Text.Json` + dependency dropped (A08). MacCatalyst green, **0 errors, 0 new warnings.** Path canonicalization + encrypt-at-rest deferred. See [Phase-14-Migration.md](./Phase-14-Migration.md).
+
+**Highlights:**
+- **Zip-Slip defense (A01)** — `ImportDyno` now opens the archive and rejects any entry whose canonicalized path escapes `FileDirectory` (was `ExtractToDirectoryAsync` with no per-entry check). Localized `AsyncFixer02` pragma (per-entry validation needs sync `OpenRead`); `overwrite:true`.
+- **`SecureString` removal (A02)** — `Converts.SecureStringToString`/`StringToSecureString` deleted (0 refs, deprecated); `SKBitmapToStream` kept. (`RNGCryptoServiceProvider` already gone in P4; `SFF` untrusted-binary parse gone via P17.)
+- **Newtonsoft→System.Text.Json (A08)** — `DynoDataViewModel` serialize (active) + deserialize (commented) → `JsonSerializer` with `ReferenceHandler.Preserve` (≈ `PreserveReferencesHandling.Objects`); **`Newtonsoft.Json` package removed** from `Directory.Build.props`. ⚠️ Export JSON format changed (no code round-trips it today).
+- **2 transient StyleCop warnings** (SA1000/SA1204 from target-typed `new()`) caught + fixed.
+
+⚠️ **Deferred:** path canonicalization (intertwined with Phase-8b static-settings decoupling); **encrypt-at-rest** (needs a threat-model + key-management decision — does the team want AES-at-rest on the SQLite, and where's the key?).
+
 ## Environment setup (performed in Phase 2)
 
 - SDK: only `11.0.100-preview.6.26359.118` installed (no .NET 10 side-by-side).
@@ -155,7 +168,8 @@ See [Phase-3-Migration.md](./Phase-3-Migration.md) for the full version table an
 - [x] **Phase 9** — ✅ done. Serilog `Verbose` floor → per-config (`#if DEBUG` `Debug`/`#else` `Warning`); 3 message-as-template sites fixed (VehicleService ×2, BrowserService ×1). **0 errors, 0 new warnings; green in Debug + Release.** **Carried forward:** optional `LoggingLevelSwitch`; optional PII redaction if Release surface broadened.
 - [x] **Phase 11** — ✅ done. `throw new Exception()`→`InvalidOperationException` (NavigationService §7.7, +message); 3 bare `catch`→`catch (Exception)` (DatabaseSettings design-time fallbacks). VM/service catches already proper (left as-is). **0 errors, 0 new warnings.** **Carried forward:** SFF empty catch (P17); AudioUtlis empty catches (P13).
 - [x] **Phase 12** — ✅ done. 45 UnitsNet `*Unit` setters → `ConvertValueForUnit` helper in `BaseEntityModel` (−737 LOC; AuspuffModel 1047→~670); 0 errors, 0 new warnings; Test compiles. **Carried forward:** AuslassLogic CS8629 pragma (non-null propagation); `[ObservableProperty]` sweep (limited applicability); `EnsureDatabaseCreated` Migrate+EnsureCreated (needs device); Styles_Global ListView→CollectionView (needs device).
-- [ ] **Phase 14** — zip-entry validation + System.Text.Json; path canonicalization; encrypt-at-rest decision; remove `RNGCryptoServiceProvider`/`SecureString`.
+- [~] **Phase 14** — 🔶 partial. **Done:** Zip-Slip defense in `ImportDyno` (A01, per-entry path validation); dead `SecureString` methods removed (A02); `Newtonsoft.Json`→`System.Text.Json` + package dropped (A08). **0 errors, 0 new warnings.** **Deferred w/ rationale:** path canonicalization (→ Phase 8b static-settings decoupling); **encrypt-at-rest decision** (needs threat-model + key-management — surface to user). `RNGCryptoServiceProvider`/`SFF` already gone (P4/P17). **Carried forward:** Export→Import device smoke test.
+- [ ] **Phase 15** — real assertions; fix dead tests; cross-platform test paths; async tests.
 - [ ] **Phase 15** — add `xunit.runner.visualstudio`; real assertions; fix dead tests (`AudioLogicTest` missing `[Fact]`, `DynoLogicTest` commented); cross-platform test paths; async tests.
 - [x] **Phase 17** — ✅ done. Spectrogram NuGet **rejected** (Windows-only `System.Drawing.Common`, image-focused, unmaintained); vendored copy **trimmed 995→318 LOC** (deleted SFF/Image/Colormap/Tools = −534; `Spectrogram.cs` 266→~110; dropped `AllowUnsafeBlocks` + SkiaSharp; `WavFile` console-spam removed; `AudioLogicTest` → `GetFFTs`). Consumed API + `Process` FFT core unchanged. **0 errors, 0 new warnings;** Test compiles. **Carried forward:** optional FftSharp-direct rewrite of AudioLogic (needs audio-equivalence test); AudioLogicTest activation (P15).
 
