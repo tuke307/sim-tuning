@@ -1,9 +1,7 @@
-﻿// Copyright (c) 2025 tuke productions. All rights reserved.
+// Copyright (c) 2025 tuke productions. All rights reserved.
 namespace SimTuning.Test
 {
     using SimTuning.Core.ModuleLogic;
-    using SkiaSharp;
-    using System.IO;
     using Xunit;
 
     /// <summary>
@@ -21,29 +19,15 @@ namespace SimTuning.Test
         [InlineData(65536)] // 2^16
         public void SpectrogramCreationTest(int fftSize)
         {
-            int _fftSize = fftSize;
-            string _fileName;
-            string _filePath;
-            SKBitmap colormap;
-
-            _fileName = "colormap" + _fftSize + ".png";
-            _filePath = Path.Combine(SimTuning.Test.Constants.Directory, _fileName);
-
             AudioLogic.CalculateSpectrogram(
                 audioFile: SimTuning.Test.Constants.DynoAudioFile,
-                fftSize: _fftSize);
+                fftSize: fftSize);
 
-            colormap = AudioLogic.SpectrogramAudio.GetBitmap();
-
-            using (var image = SKImage.FromBitmap(colormap))
-            using (var data = image.Encode())
-            {
-                // save the data to a stream
-                using (var stream = File.OpenWrite(_filePath))
-                {
-                    data.SaveTo(stream);
-                }
-            }
+            // Phase 17: GetBitmap() (image rendering) was removed as dead surface; the kept
+            // API is the raw FFT data. Assert the spectrogram produced columns.
+            // NOTE: this method is still missing [Theory] and relies on a Windows-only path
+            // (Constants.DynoAudioFile) — both are Phase 15's scope.
+            Assert.NotEmpty(AudioLogic.SpectrogramAudio!.GetFFTs());
         }
     }
 }
