@@ -9,6 +9,12 @@
 > runtime/device verification path and high behavior-regression risk, so they are
 > **deferred with precise technical rationale** below (same discipline as Phase 5/6/7
 > deferrals). This is reported honestly rather than forced.
+>
+> **Update — Phase 8b follow-up:** the blind-safe, test-verifiable slice of **sub-task 3** is
+> now done — `GeneralSettings`/`UnitSettings` have the same design-time `Preferences` fallback
+> that `DatabaseSettings` already had, which re-enabled `DynoAudioViewModelTest`. Sub-task 2
+> (Shell routes) and the full `IPlatformSettings` DI refactor remain deferred (device-only). See
+> [Phase-8b-Migration.md](./Phase-8b-Migration.md).
 
 ## Result
 

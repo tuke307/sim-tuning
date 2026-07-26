@@ -200,15 +200,13 @@ namespace SimTuning.Test
         /// Dynoes the spectrogram view model test.
         /// </summary>
         /// <remarks>
-        /// Skipped until Phase 8b: <see cref="DynoAudioViewModel.FilterPlot" /> ->
+        /// Re-enabled in Phase 8b: <see cref="DynoAudioViewModel.FilterPlot" /> ->
         /// <c>CheckDynoData</c> reads <see cref="SimTuning.Core.GeneralSettings.AudioAccelerationFilePath" />,
-        /// which calls <c>Preferences.Default.Get</c> with no design-time fallback (unlike
-        /// <see cref="SimTuning.Data.DatabaseSettings" />, which already tolerates a missing
-        /// Essentials host). That throws <c>NotImplementedInReferenceAssemblyException</c> in the
-        /// headless xUnit host. Phase 8b gives <see cref="SimTuning.Core.GeneralSettings" /> the
-        /// same fallback parity, after which this test is re-enabled.
+        /// whose <c>Preferences.Default.Get</c> now has design-time fallback parity with
+        /// <see cref="SimTuning.Data.DatabaseSettings" />. In the headless host the path resolves to a
+        /// non-existent file, so <c>CheckDynoData</c> returns false and the commands gracefully no-op.
         /// </remarks>
-        [Fact(Skip = "Blocked on Phase 8b: GeneralSettings.Preferences has no design-time fallback (see DatabaseSettings parity).")]
+        [Fact]
         public void DynoAudioViewModelTest()
         {
             // Arrange

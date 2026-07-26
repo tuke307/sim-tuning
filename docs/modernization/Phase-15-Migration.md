@@ -42,8 +42,9 @@ fix; `AudioLogic`/`Spectrogram` are unchanged.
 `FilterPlot` → `CheckDynoData` reads `GeneralSettings.AudioAccelerationFilePath`,
 whose getter calls `Preferences.Default.Get(...)` **with no design-time fallback**.
 A plain `net11.0` xUnit host has no MAUI Essentials platform implementation, so it
-throws. Notably `DatabaseSettings`/`UnitSettings` siblings already call the *same*
-API but through try/catch fallbacks — `GeneralSettings` is the outlier.
+throws. Notably `DatabaseSettings` already calls the *same* API through a try/catch
+fallback (which is why the `DynoDataViewModelTest` path passes); `GeneralSettings`
+and `UnitSettings` lacked it — fixed in Phase 8b.
 
 This is exactly the **Phase-8b** "decouple `SimTuning.Data`/Core from
 `Microsoft.Maui.Storage`" coupling. **Skipped** (`[Fact(Skip = …)]`) with a pointer
