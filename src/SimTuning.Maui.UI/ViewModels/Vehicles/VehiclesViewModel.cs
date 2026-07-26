@@ -10,7 +10,7 @@ using System.Collections.ObjectModel;
 
 namespace SimTuning.Maui.UI.ViewModels
 {
-    public class VehiclesViewModel : VehiclesViewModelBase
+    public partial class VehiclesViewModel : VehiclesViewModelBase
     {
         public VehiclesViewModel(
             ILogger<VehiclesViewModel> logger,
@@ -19,9 +19,7 @@ namespace SimTuning.Maui.UI.ViewModels
         {
             _logger = logger;
 
-            NewVehicleCommand = new RelayCommand(NewVehicle);
-            DeleteVehicleCommand = new RelayCommand(DeleteVehicle);
-            SaveVehicleCommand = new RelayCommand(SaveVehicle);
+            // Commands are source-generated via [RelayCommand] on the methods below.
         }
 
         #region Methods
@@ -29,20 +27,24 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <summary>
         /// Deletes the vehicle.
         /// </summary>
+        [RelayCommand]
         protected void DeleteVehicle()
         {
             try
             {
-                if (Vehicle.Deletable)
+                var vehicle = Vehicle;
+                if (vehicle is null || !vehicle.Deletable)
                 {
-                    // in Datenbank löschen
-                    _vehicleService.DeleteOne(Vehicle);
-
-                    // in lokaler liste löschen
-                    Vehicles.Remove(Vehicle);
-
-                    Vehicle = null;
+                    return;
                 }
+
+                // in Datenbank löschen
+                _vehicleService.DeleteOne(vehicle);
+
+                // in lokaler liste löschen
+                Vehicles.Remove(vehicle);
+
+                Vehicle = null;
             }
             catch (Exception exc)
             {
@@ -53,6 +55,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <summary>
         /// Creates new vehicle.
         /// </summary>
+        [RelayCommand]
         protected void NewVehicle()
         {
             try
@@ -63,9 +66,13 @@ namespace SimTuning.Maui.UI.ViewModels
                     Beschreibung = "Erstellt am " + DateTime.Now + " über Fahrzeug-Modul",
                     Deletable = true,
                 };
-                vehicle = _vehicleService.CreateOne(vehicle);
+                var saved = _vehicleService.CreateOne(vehicle);
+                if (saved is null)
+                {
+                    return;
+                }
 
-                Vehicles.Add(vehicle);
+                Vehicles.Add(saved);
                 Vehicle = Vehicles.Last();
             }
             catch (Exception exc)
@@ -77,9 +84,16 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <summary>
         /// Saves the vehicle.
         /// </summary>
+        [RelayCommand]
         protected void SaveVehicle()
         {
-            _vehicleService.UpdateOne(Vehicle);
+            var vehicle = Vehicle;
+            if (vehicle is null)
+            {
+                return;
+            }
+
+            _vehicleService.UpdateOne(vehicle);
         }
 
         #endregion Methods
@@ -87,12 +101,6 @@ namespace SimTuning.Maui.UI.ViewModels
         #region Values
 
         private readonly ILogger<VehiclesViewModel> _logger;
-
-        public IRelayCommand DeleteVehicleCommand { get; set; }
-
-        public IRelayCommand NewVehicleCommand { get; set; }
-
-        public IRelayCommand SaveVehicleCommand { get; set; }
 
         #endregion Values
     }

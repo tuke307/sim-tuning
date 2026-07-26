@@ -13,7 +13,7 @@ namespace SimTuning.Maui.UI.Behaviors
         public static readonly BindableProperty CommandProperty = BindableProperty.Create("Command", typeof(ICommand), typeof(EventToCommandBehavior), null);
         public static readonly BindableProperty EventNameProperty = BindableProperty.Create("EventName", typeof(string), typeof(EventToCommandBehavior), null, propertyChanged: OnEventNameChanged);
         public static readonly BindableProperty InputConverterProperty = BindableProperty.Create("Converter", typeof(IValueConverter), typeof(EventToCommandBehavior), null);
-        private Delegate eventHandler;
+        private Delegate? eventHandler;
 
         public ICommand Command
         {
@@ -68,16 +68,12 @@ namespace SimTuning.Maui.UI.Behaviors
 
         private void DeregisterEvent(string name)
         {
-            if (string.IsNullOrWhiteSpace(name))
+            if (string.IsNullOrWhiteSpace(name) || eventHandler is null || AssociatedObject is null)
             {
                 return;
             }
 
-            if (eventHandler == null)
-            {
-                return;
-            }
-            EventInfo eventInfo = AssociatedObject.GetType().GetRuntimeEvent(name);
+            EventInfo? eventInfo = AssociatedObject.GetType().GetRuntimeEvent(name);
             if (eventInfo == null)
             {
                 throw new ArgumentException(string.Format("EventToCommandBehavior: Can't de-register the '{0}' event.", EventName));
@@ -93,14 +89,14 @@ namespace SimTuning.Maui.UI.Behaviors
                 return;
             }
 
-            object resolvedParameter;
+            object? resolvedParameter;
             if (CommandParameter != null)
             {
                 resolvedParameter = CommandParameter;
             }
             else if (Converter != null)
             {
-                resolvedParameter = Converter.Convert(eventArgs, typeof(object), null, null);
+                resolvedParameter = Converter.Convert(eventArgs, typeof(object), null!, null!); // converter parameter/culture are optional; null is the standard "none" value (analyzer false-positive on the optional params)
             }
             else
             {
@@ -115,18 +111,24 @@ namespace SimTuning.Maui.UI.Behaviors
 
         private void RegisterEvent(string name)
         {
-            if (string.IsNullOrWhiteSpace(name))
+            if (string.IsNullOrWhiteSpace(name) || AssociatedObject is null)
             {
                 return;
             }
 
-            EventInfo eventInfo = AssociatedObject.GetType().GetRuntimeEvent(name);
+            EventInfo? eventInfo = AssociatedObject.GetType().GetRuntimeEvent(name);
             if (eventInfo == null)
             {
                 throw new ArgumentException(string.Format("EventToCommandBehavior: Can't register the '{0}' event.", EventName));
             }
-            MethodInfo methodInfo = typeof(EventToCommandBehavior).GetTypeInfo().GetDeclaredMethod("OnEvent");
-            eventHandler = methodInfo.CreateDelegate(eventInfo.EventHandlerType, this);
+
+            MethodInfo? methodInfo = typeof(EventToCommandBehavior).GetTypeInfo().GetDeclaredMethod("OnEvent");
+            if (methodInfo == null)
+            {
+                throw new InvalidOperationException("EventToCommandBehavior: OnEvent method not found.");
+            }
+
+            eventHandler = methodInfo.CreateDelegate(eventInfo.EventHandlerType!, this); // EventHandlerType is non-null for a resolved EventInfo
             eventInfo.AddEventHandler(AssociatedObject, eventHandler);
         }
     }

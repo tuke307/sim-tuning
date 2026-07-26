@@ -45,9 +45,9 @@
 							Margin="5,0,0,0"
 							ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
 							ItemDisplayBinding="{Binding Abbreviation}"
-							HorizontalOptions="StartAndExpand"
+							HorizontalOptions="Start"
 							SelectedItem="{Binding UnitHub}"
-							VerticalOptions="CenterAndExpand" />
+							VerticalOptions="Center" />
                     </StackLayout>
 
                     <StackLayout Orientation="Horizontal">
@@ -61,9 +61,9 @@
 							Margin="5,0,0,0"
 							ItemsSource="{Binding Path=VolumeQuantityUnits, Mode=OneTime}"
 							ItemDisplayBinding="{Binding Abbreviation}"
-							HorizontalOptions="StartAndExpand"
+							HorizontalOptions="Start"
 							SelectedItem="{Binding UnitHubraumV}"
-							VerticalOptions="CenterAndExpand" />
+							VerticalOptions="Center" />
                         <!--<Label  Margin="5, 0, 0, 0"
                                VerticalOptions="Center">
                             cm³
@@ -93,9 +93,9 @@
 							Margin="5,0,0,0"
 							ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
 							ItemDisplayBinding="{Binding Abbreviation}"
-							HorizontalOptions="StartAndExpand"
+							HorizontalOptions="Start"
 							SelectedItem="{Binding UnitBohrungD}"
-							VerticalOptions="CenterAndExpand" />
+							VerticalOptions="Center" />
                         <!--<Label  Margin="5, 0, 0, 0"
                                VerticalOptions="Center">
                             cm
@@ -124,9 +124,9 @@
 							Margin="5,0,0,0"
 							ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
 							ItemDisplayBinding="{Binding Abbreviation}"
-							HorizontalOptions="StartAndExpand"
+							HorizontalOptions="Start"
 							SelectedItem="{Binding UnitEinbauspiel}"
-							VerticalOptions="CenterAndExpand" />
+							VerticalOptions="Center" />
                     </StackLayout>
 
                     <StackLayout Orientation="Horizontal">
@@ -141,9 +141,9 @@
 							Margin="5,0,0,0"
 							ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
 							ItemDisplayBinding="{Binding Abbreviation}"
-							HorizontalOptions="StartAndExpand"
+							HorizontalOptions="Start"
 							SelectedItem="{Binding UnitKolbenD}"
-							VerticalOptions="CenterAndExpand" />
+							VerticalOptions="Center" />
                         <!--<Label  Margin="5, 0, 0, 0"
                                VerticalOptions="Center">
                             cm

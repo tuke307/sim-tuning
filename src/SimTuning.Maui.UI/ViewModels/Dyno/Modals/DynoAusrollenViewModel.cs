@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace SimTuning.Maui.UI.ViewModels
 {
-    public class DynoAusrollenViewModel : ViewModelBase
+    public partial class DynoAusrollenViewModel : ViewModelBase
     {
         public DynoAusrollenViewModel(
             ILogger<DynoAusrollenViewModel> logger,
@@ -26,7 +26,7 @@ namespace SimTuning.Maui.UI.ViewModels
 
             //ShowDiagnosisCommand = new AsyncRelayCommand(async () => await _navigationService.Navigate<SimTuning.Maui.UI.Views.Dyno.DynoDiagnosisView>(null));
 
-            RefreshPlotCommand = new AsyncRelayCommand(RefreshPlot);
+            // RefreshPlotCommand is source-generated via [RelayCommand] on RefreshPlot().
             ReloadData();
         }
 
@@ -35,13 +35,13 @@ namespace SimTuning.Maui.UI.ViewModels
         protected readonly INavigationService _navigationService;
         protected readonly IVehicleService _vehicleService;
         private readonly ILogger<DynoAusrollenViewModel> _logger;
-        private DynoModel _dyno;
+        private DynoModel? _dyno;
 
         /// <summary>
         /// Gets or sets the dyno.
         /// </summary>
         /// <value>The dyno.</value>
-        public DynoModel Dyno
+        public DynoModel? Dyno
         {
             get => _dyno;
             set => SetProperty(ref _dyno, value);
@@ -50,14 +50,12 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <summary>
         /// PlotAusrollen.
         /// </summary>
-        public ISeries PlotAusrollen
+        public ISeries? PlotAusrollen
         {
             get => null;//DynoLogic.PlotAusrollen;
         }
 
-        public IAsyncRelayCommand RefreshPlotCommand { get; set; }
-
-        public IAsyncRelayCommand ShowDiagnosisCommand { get; set; }
+        public IAsyncRelayCommand? ShowDiagnosisCommand { get; set; }
 
         #endregion Values
 
@@ -82,6 +80,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Aktualisiert den Ausroll-Graphen.
         /// </summary>
         /// <returns></returns>
+        [RelayCommand]
         protected async Task RefreshPlot()
         {
             if (!CheckDynoData())
@@ -112,14 +111,14 @@ namespace SimTuning.Maui.UI.ViewModels
         {
             if (Dyno == null)
             {
-                Core.Helpers.Functions.ShowSnackbarDialog(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_NODATA"));
+                _ = Core.Helpers.Functions.ShowSnackbarDialogAsync(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_NODATA"));
 
                 return false;
             }
 
             if (Dyno.Ausrollen == null)
             {
-                Core.Helpers.Functions.ShowSnackbarDialog(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_NODATA"));
+                _ = Core.Helpers.Functions.ShowSnackbarDialogAsync(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_NODATA"));
 
                 return false;
             }

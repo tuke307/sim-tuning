@@ -14,6 +14,7 @@ namespace SimTuning.Core.Services
     public class VehicleService : IVehicleService
     {
         private readonly ILogger<VehicleService> _logger;
+        private readonly IDbContextFactory<DatabaseContext> _dbFactory;
 
         private List<DynoModel> Dynos { get; set; }
 
@@ -23,8 +24,9 @@ namespace SimTuning.Core.Services
 
         private List<VehiclesModel> Vehicles { get; set; }
 
-        public VehicleService(ILogger<VehicleService> logger)
+        public VehicleService(IDbContextFactory<DatabaseContext> dbFactory, ILogger<VehicleService> logger)
         {
+            _dbFactory = dbFactory;
             _logger = logger;
 
             Dynos = new List<DynoModel>();
@@ -33,16 +35,16 @@ namespace SimTuning.Core.Services
             Motoren = new List<MotorModel>();
 
             // Ensure database is created on first use
-            using var db = new DatabaseContext();
+            using var db = _dbFactory.CreateDbContext();
             db.EnsureDatabaseCreated();
         }
 
         /// <inheritdoc />
-        public DynoModel CreateOne(DynoModel dyno)
+        public DynoModel? CreateOne(DynoModel dyno)
         {
             try
             {
-                using var db = new DatabaseContext();
+                using var db = _dbFactory.CreateDbContext();
                 db.Dyno.Add(dyno);
                 db.SaveChanges();
 
@@ -59,11 +61,11 @@ namespace SimTuning.Core.Services
         }
 
         /// <inheritdoc />
-        public VehiclesModel CreateOne(VehiclesModel vehicle)
+        public VehiclesModel? CreateOne(VehiclesModel vehicle)
         {
             try
             {
-                using var db = new DatabaseContext();
+                using var db = _dbFactory.CreateDbContext();
                 db.Vehicles.Add(vehicle);
                 db.SaveChanges();
 
@@ -88,7 +90,7 @@ namespace SimTuning.Core.Services
             if (!validItems.Any())
                 return;
 
-            using var db = new DatabaseContext();
+            using var db = _dbFactory.CreateDbContext();
             db.Ausrollen.RemoveRange(validItems);
             db.SaveChanges();
         }
@@ -102,7 +104,7 @@ namespace SimTuning.Core.Services
             if (!validItems.Any())
                 return;
 
-            using var db = new DatabaseContext();
+            using var db = _dbFactory.CreateDbContext();
             db.Geschwindigkeit.RemoveRange(validItems);
             db.SaveChanges();
         }
@@ -115,23 +117,21 @@ namespace SimTuning.Core.Services
                 return;
             }
 
-            using (var db = new DatabaseContext())
+            using var db = _dbFactory.CreateDbContext();
+            var existingVehicle = db.Vehicles.Find(vehicle.Id);
+            if (existingVehicle != null)
             {
-                var existingVehicle = db.Vehicles.Find(vehicle.Id);
-                if (existingVehicle != null)
-                {
-                    db.Vehicles.Remove(existingVehicle);
-                    db.SaveChanges();
+                db.Vehicles.Remove(existingVehicle);
+                db.SaveChanges();
 
-                    // Remove from local list
-                    Vehicles.Remove(Vehicles.Single(d => d.Id == vehicle.Id));
+                // Remove from local list
+                Vehicles.Remove(Vehicles.Single(d => d.Id == vehicle.Id));
 
-                    _logger.LogInformation("Vehicle: {0} (ID: {1}) deleted.", vehicle.Name, vehicle.Id);
-                }
-                else
-                {
-                    _logger.LogWarning("Vehicle with ID: {0} not found in database.", vehicle.Id);
-                }
+                _logger.LogInformation("Vehicle: {0} (ID: {1}) deleted.", vehicle.Name, vehicle.Id);
+            }
+            else
+            {
+                _logger.LogWarning("Vehicle with ID: {0} not found in database.", vehicle.Id);
             }
         }
 
@@ -143,7 +143,7 @@ namespace SimTuning.Core.Services
                 return;
             }
 
-            using var db = new DatabaseContext();
+            using var db = _dbFactory.CreateDbContext();
             var existingDyno = db.Dyno.Find(dyno.Id);
             if (existingDyno != null)
             {
@@ -161,13 +161,13 @@ namespace SimTuning.Core.Services
         }
 
         /// <inheritdoc />
-        public List<DynoModel> RetrieveDynos(bool forceupdate = false)
+        public List<DynoModel>? RetrieveDynos(bool forceupdate = false)
         {
             try
             {
                 if (Dynos.Count == 0 || forceupdate)
                 {
-                    using var db = new DatabaseContext();
+                    using var db = _dbFactory.CreateDbContext();
                     Dynos = db.Dyno
                         .Include(dyno => dyno.Vehicle)
                         .Include(dyno => dyno.Drehzahl)
@@ -181,20 +181,20 @@ namespace SimTuning.Core.Services
             }
             catch (Exception exc)
             {
-                _logger.LogError(exc, exc.Message);
+                _logger.LogError(exc, "Error retrieving dynos");
             }
 
             return null;
         }
 
         /// <inheritdoc />
-        public List<EnvironmentModel> RetrieveEnvironments(bool forceupdate = false)
+        public List<EnvironmentModel>? RetrieveEnvironments(bool forceupdate = false)
         {
             try
             {
                 if (Environments.Count == 0 || forceupdate)
                 {
-                    using var db = new DatabaseContext();
+                    using var db = _dbFactory.CreateDbContext();
                     Environments = db.Environment.ToList();
                 }
 
@@ -209,13 +209,13 @@ namespace SimTuning.Core.Services
         }
 
         /// <inheritdoc />
-        public List<MotorModel> RetrieveMotoren(bool forceupdate = false)
+        public List<MotorModel>? RetrieveMotoren(bool forceupdate = false)
         {
             try
             {
                 if (Motoren.Count == 0 || forceupdate)
                 {
-                    using var db = new DatabaseContext();
+                    using var db = _dbFactory.CreateDbContext();
                     Motoren = db.Motor.ToList();
                 }
 
@@ -224,14 +224,14 @@ namespace SimTuning.Core.Services
             }
             catch (Exception exc)
             {
-                _logger.LogError(exc, exc.Message);
+                _logger.LogError(exc, "Error retrieving motoren");
             }
 
             return null;
         }
 
         /// <inheritdoc />
-        public VehiclesModel RetrieveOne(int? id)
+        public VehiclesModel? RetrieveOne(int? id)
         {
             if (!id.HasValue)
                 return null;
@@ -242,7 +242,7 @@ namespace SimTuning.Core.Services
         }
 
         /// <inheritdoc />
-        public DynoModel RetrieveOneActive()
+        public DynoModel? RetrieveOneActive()
         {
             _logger.LogInformation("retrieve active Vehicle.");
 
@@ -250,13 +250,13 @@ namespace SimTuning.Core.Services
         }
 
         /// <inheritdoc />
-        public List<VehiclesModel> RetrieveVehicles(bool forceupdate = false)
+        public List<VehiclesModel>? RetrieveVehicles(bool forceupdate = false)
         {
             try
             {
                 if (Vehicles.Count == 0 || forceupdate)
                 {
-                    using var db = new DatabaseContext();
+                    using var db = _dbFactory.CreateDbContext();
                     Vehicles = db.Vehicles
                         .Include(vehicle => vehicle.Motor)
                             .ThenInclude(motor => motor.Auslass)
@@ -301,7 +301,7 @@ namespace SimTuning.Core.Services
                     Vehicles[index] = vehicle;
                 }
 
-                using var db = new DatabaseContext();
+                using var db = _dbFactory.CreateDbContext();
                 db.Vehicles.Attach(vehicle);
                 db.SaveChanges();
 
@@ -329,7 +329,7 @@ namespace SimTuning.Core.Services
                     Dynos[index] = dyno;
                 }
 
-                using var db = new DatabaseContext();
+                using var db = _dbFactory.CreateDbContext();
                 db.Dyno.Attach(dyno);
                 db.SaveChanges();
 

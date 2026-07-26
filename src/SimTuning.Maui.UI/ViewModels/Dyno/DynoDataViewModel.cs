@@ -6,7 +6,6 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using SimTuning.Core;
 using SimTuning.Core.Helpers;
 using SimTuning.Core.Models.Messages;
@@ -15,6 +14,8 @@ using SimTuning.Data.Models;
 using SimTuning.Maui.UI.Services;
 using System.Collections.ObjectModel;
 using System.IO.Compression;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace SimTuning.Maui.UI.ViewModels
@@ -22,6 +23,17 @@ namespace SimTuning.Maui.UI.ViewModels
 
     public partial class DynoDataViewModel : ViewModelBase
     {
+        /// <summary>
+        /// JSON serializer options for dyno export/import. <see cref="ReferenceHandler.Preserve" />
+        /// handles the Dyno↔Vehicle reference loop the same way Newtonsoft's
+        /// <c>PreserveReferencesHandling.Objects</c> did (Phase 14 A08 migration).
+        /// </summary>
+        private static readonly JsonSerializerOptions ExportJsonOptions = new JsonSerializerOptions()
+        {
+            WriteIndented = true,
+            ReferenceHandler = ReferenceHandler.Preserve,
+        };
+
         private readonly IPopupService _popupService;
 
         public DynoDataViewModel(
@@ -37,15 +49,10 @@ namespace SimTuning.Maui.UI.ViewModels
             _popupService = popupService;
             _browserService = browserService;
 
-            DeleteDynoCommand = new RelayCommand(DeleteDyno);
-            SaveDynoCommand = new RelayCommand(SaveDyno);
+            // Commands are source-generated via [RelayCommand] on the methods below.
 
-            ImportDynoCommand = new AsyncRelayCommand(ImportDyno);
-
-            ExportDynoCommand = new AsyncRelayCommand(ExportDynoAsync);
-
-            Dynos = new ObservableCollection<DynoModel>(_vehicleService.RetrieveDynos());
-            Messenger.Register<DynoDataViewModel, CurrentDynoRequestMessage>(this, (r, m) => m.Reply(r.Dyno));
+            Dynos = new ObservableCollection<DynoModel>(_vehicleService.RetrieveDynos() ?? new List<DynoModel>());
+            Messenger.Register<DynoDataViewModel, CurrentDynoRequestMessage>(this, (r, m) => m.Reply(r.Dyno!)); // justified: preserves prior behavior — reply carries the current dyno (incl. null when none selected)
         }
 
         #region Methods
@@ -53,15 +60,16 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <summary>
         /// Deletes the dyno.
         /// </summary>
+        [RelayCommand]
         protected void DeleteDyno()
         {
             try
             {
                 // in Datenbank löschen
-                _vehicleService.DeleteOne(Dyno);
+                _vehicleService.DeleteOne(Dyno!); // justified: preserves prior behavior — Dyno could already be null; service call is wrapped in try/catch
 
                 // in lokaler liste löschen
-                Dynos.Remove(Dyno);
+                Dynos!.Remove(Dyno!); // justified: Dynos reliably initialized in ctor; Dyno preserved-as-before (see above)
 
                 Dyno = null;
             }
@@ -74,20 +82,15 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <summary>
         /// Exports the dyno.
         /// </summary>
+        [RelayCommand]
         protected async Task ExportDynoAsync()
         {
             try
             {
-                // erstellen der json.
-                // TODO: reference test check
-                string json = JsonConvert.SerializeObject(Dyno, Formatting.Indented,
-                new JsonSerializerSettings()
-                {
-                    // ReferenceLoopHandling = ReferenceLoopHandling.Ignore, ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
-                    PreserveReferencesHandling = PreserveReferencesHandling.Objects,
-                });
+                // erstellen der json. (Phase 14 A08: migrated from Newtonsoft.Json to System.Text.Json.)
+                string json = JsonSerializer.Serialize(Dyno, ExportJsonOptions);
 
-                File.WriteAllText(GeneralSettings.DataExportFilePath, json);
+                await File.WriteAllTextAsync(GeneralSettings.DataExportFilePath, json);
 
                 // Dateien die gepackt werden sollen
                 var list = new List<string>()
@@ -122,13 +125,13 @@ namespace SimTuning.Maui.UI.ViewModels
                 {
                     Name = "Dyno-Durchgang",
                     Beschreibung = $"Erstellt am {DateTime.Now} über Dyno-Modul",
-                    VehicleId = (int)vehicle.Id,
+                    VehicleId = vehicle.Id.GetValueOrDefault(),
                 };
-                dyno = _vehicleService.CreateOne(dyno);
+                dyno = _vehicleService.CreateOne(dyno)!; // justified: on DB failure CreateOne returns null -> NRE here lands in the surrounding catch (preserves prior error logging)
                 dyno.Vehicle = vehicle;
 
-                Dynos.Add(dyno);
-                Dyno = Dynos.Last();
+                Dynos!.Add(dyno); // justified: Dynos reliably initialized in ctor
+                Dyno = Dynos!.Last(); // justified: Dynos reliably initialized in ctor
             }
             catch (Exception exc)
             {
@@ -149,11 +152,12 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <summary>
         /// Saves the dyno.
         /// </summary>
+        [RelayCommand]
         protected void SaveDyno()
         {
             try
             {
-                _vehicleService.UpdateOne(Dyno);
+                _vehicleService.UpdateOne(Dyno!); // justified: preserves prior behavior — Dyno could already be null; service call is wrapped in try/catch
             }
             catch (Exception exc)
             {
@@ -164,6 +168,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <summary>
         /// Imports the dyno.
         /// </summary>
+        [RelayCommand]
         private async Task ImportDyno()
         {
             await Functions.GetPermission<Permissions.StorageRead>();
@@ -184,56 +189,54 @@ namespace SimTuning.Maui.UI.ViewModels
                 File.Delete(SimTuning.Core.GeneralSettings.AudioAccelerationFilePath);
             }
 
-            ZipFile.ExtractToDirectory(SimTuning.Core.GeneralSettings.DataExportArchivePath, Data.DatabaseSettings.FileDirectory);
+            // Zip-Slip defense (Phase 14 A01): ExtractToDirectory(Async) performs no per-entry
+            // validation, so a crafted archive could write outside the target directory. Open the
+            // archive and reject any entry whose canonicalized path escapes FileDirectory. The sync
+            // OpenRead/ExtractToFile calls are fast local-file IO; AsyncFixer02 is suppressed for
+            // this block only (per-entry validation can't be done via ExtractToDirectoryAsync).
+            string destinationDirectory = Data.DatabaseSettings.FileDirectory;
+            string fullDestinationDirectory =
+                Path.GetFullPath(destinationDirectory) + Path.DirectorySeparatorChar;
 
-            /*
-
-            using var stream = await FileSystem.OpenAppPackageFileAsync(GeneralSettings.AudioAccelerationFile);
-            using var reader = new StreamReader(stream);
-
-            var contents = reader.ReadToEnd();
-            */
-
-            // wenn Datei ausgewählt using (FileStream sourceStream = File.Open(fileName, FileMode.OpenOrCreate)) { status =
-            // SimTuning.Core.Helpers.AudioUtils.AudioCopy(SimTuning.Core.GeneralSettings.AudioFile, sourceStream); }
-
-            // if (status) { await RefreshAudioFileAsync().ConfigureAwait(true); }
-
-            // TODO: only for testing
-            /*
-            if (File.Exists(SimTuning.Core.GeneralSettings.DataExportFilePath))
+#pragma warning disable AsyncFixer02
+            using (ZipArchive archive = ZipFile.OpenRead(SimTuning.Core.GeneralSettings.DataExportArchivePath))
             {
-                string json = await File.ReadAllTextAsync(SimTuning.Core.GeneralSettings.DataExportFilePath);
-                DynoModel dyno = JsonConvert.DeserializeObject<DynoModel>(json);
+                foreach (ZipArchiveEntry entry in archive.Entries)
+                {
+                    string fullTarget = Path.GetFullPath(Path.Combine(fullDestinationDirectory, entry.FullName));
+                    if (!fullTarget.StartsWith(fullDestinationDirectory, StringComparison.Ordinal))
+                    {
+                        throw new InvalidOperationException(
+                            $"Refusing to extract zip entry '{entry.FullName}' — it escapes the target directory.");
+                    }
+
+                    if (string.IsNullOrEmpty(entry.Name))
+                    {
+                        // Directory entry — create and skip.
+                        Directory.CreateDirectory(fullTarget);
+                        continue;
+                    }
+
+                    Directory.CreateDirectory(Path.GetDirectoryName(fullTarget)!);
+                    entry.ExtractToFile(fullTarget, overwrite: true);
+                }
             }
-            */
+#pragma warning restore AsyncFixer02
         }
 
         #endregion Methods
 
         #region Values
 
-        #region Commands
-
-        public IRelayCommand DeleteDynoCommand { get; set; }
-
-        public IRelayCommand ExportDynoCommand { get; set; }
-
-        public IAsyncRelayCommand ImportDynoCommand { get; set; }
-
-        public IRelayCommand SaveDynoCommand { get; set; }
-
-        #endregion Commands
-
         protected readonly INavigationService _navigationService;
         private readonly IBrowserService _browserService;
         private readonly ILogger<DynoDataViewModel> _logger;
         private readonly IVehicleService _vehicleService;
-        private DynoModel _dyno;
-        private ObservableCollection<DynoModel> _dynos;
-        private VehiclesModel _vehicle;
+        private DynoModel? _dyno;
+        private ObservableCollection<DynoModel>? _dynos;
+        private VehiclesModel? _vehicle;
 
-        public DynoModel Dyno
+        public DynoModel? Dyno
         {
             get => _dyno;
             set
@@ -241,9 +244,10 @@ namespace SimTuning.Maui.UI.ViewModels
                 if (value == null)
                 {
                     // Just deleted => load last dyno
-                    if (Dynos.Count > 0)
+                    var dynos = Dynos;
+                    if (dynos != null && dynos.Count > 0)
                     {
-                        value = Dynos.Last();
+                        value = dynos.Last();
                     }
                 }
 
@@ -251,7 +255,7 @@ namespace SimTuning.Maui.UI.ViewModels
 
                 raiseAllPropertyChanged();
 
-                Messenger.Send(new DynoChangedMessage(Dyno));
+                Messenger.Send(new DynoChangedMessage(Dyno!)); // justified: preserves prior behavior — subscribers historically receive the current dyno (incl. null when none selected)
             }
         }
 
@@ -261,7 +265,7 @@ namespace SimTuning.Maui.UI.ViewModels
             OnPropertyChanged(nameof(DynoName));
         }
 
-        public string DynoBeschreibung
+        public string? DynoBeschreibung
         {
             get => Dyno?.Beschreibung;
             set
@@ -275,7 +279,7 @@ namespace SimTuning.Maui.UI.ViewModels
             }
         }
 
-        public string DynoName
+        public string? DynoName
         {
             get => Dyno?.Name;
             set
@@ -289,13 +293,13 @@ namespace SimTuning.Maui.UI.ViewModels
             }
         }
 
-        public ObservableCollection<DynoModel> Dynos
+        public ObservableCollection<DynoModel>? Dynos
         {
             get => _dynos;
             set => SetProperty(ref _dynos, value);
         }
 
-        public VehiclesModel Vehicle
+        public VehiclesModel? Vehicle
         {
             get => _vehicle;
             set => SetProperty(ref _vehicle, value);

@@ -71,7 +71,7 @@ namespace SimTuning.Data
             {
                 return FileSystem.AppDataDirectory;
             }
-            catch
+            catch (Exception)
             {
                 // Fallback for design-time when FileSystem is not available
                 return Path.GetTempPath();
@@ -92,7 +92,7 @@ namespace SimTuning.Data
             {
                 return Preferences.Default.Get(key, defaultValue);
             }
-            catch
+            catch (Exception)
             {
                 // Fallback for design-time when Preferences is not available
                 return defaultValue;
@@ -105,7 +105,7 @@ namespace SimTuning.Data
             {
                 Preferences.Default.Set(key, value);
             }
-            catch
+            catch (Exception)
             {
                 // Ignore at design-time when Preferences is not available
             }

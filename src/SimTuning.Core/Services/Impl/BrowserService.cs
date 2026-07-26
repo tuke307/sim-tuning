@@ -7,6 +7,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SimTuning.Core.Services
@@ -44,23 +45,18 @@ namespace SimTuning.Core.Services
             catch (Exception ex)
             {
                 // An unexpected error occurred. No browser may be installed on the device.
-                _logger.LogError(ex, ex.Message);
+                // An unexpected error occurred. No browser may be installed on the device.
+                _logger.LogError(ex, "Failed to open browser for {Url}", url);
             }
         }
 
         /// <inheritdoc />
-        public async Task DownloadDocumentAsync(string fileToDownload, string fileSave)
+        public async Task DownloadDocumentAsync(string fileToDownload, string fileSave, CancellationToken cancellationToken = default)
         {
-            using (var client = new HttpClient())
-            {
-                using (var s = await client.GetStreamAsync(fileToDownload))
-                {
-                    using (var fs = new FileStream(fileSave, FileMode.OpenOrCreate))
-                    {
-                        await s.CopyToAsync(fs);
-                    }
-                }
-            }
+            using var client = new HttpClient();
+            using var s = await client.GetStreamAsync(fileToDownload, cancellationToken);
+            using var fs = new FileStream(fileSave, FileMode.OpenOrCreate);
+            await s.CopyToAsync(fs, cancellationToken);
         }
     }
 }

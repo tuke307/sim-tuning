@@ -7,16 +7,14 @@ namespace SimTuning.Core.Converters
 {
     public class TimeSpanToDoubleValueConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo? culture)
         {
-            var timeSpan = (TimeSpan)value;
-            return timeSpan.TotalSeconds;
+            return value is TimeSpan timeSpan ? timeSpan.TotalSeconds : 0d;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo? culture)
         {
-            var totalSeconds = (double)value;
-            return TimeSpan.FromSeconds(totalSeconds);
+            return value is double totalSeconds ? TimeSpan.FromSeconds(totalSeconds) : TimeSpan.Zero;
         }
     }
 }

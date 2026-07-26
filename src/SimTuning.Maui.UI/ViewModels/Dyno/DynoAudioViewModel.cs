@@ -20,7 +20,7 @@ using System.Collections.ObjectModel;
 
 namespace SimTuning.Maui.UI.ViewModels
 {
-    public class DynoAudioViewModel : ViewModelBase
+    public partial class DynoAudioViewModel : ViewModelBase
     {
         public DynoAudioViewModel(
             ILogger<DynoAudioViewModel> logger,
@@ -40,9 +40,7 @@ namespace SimTuning.Maui.UI.ViewModels
             FftSizeIndex = 2; // 2. Index von fftSizes = 2^15 = 32768
             Intensity = 100;
 
-            RefreshPlotCommand = new RelayCommand(RefreshPlot);
-            FilterPlotCommand = new RelayCommand(FilterPlot);
-            SpecificGraphCommand = new RelayCommand(SpecificGraph);
+            // Commands are source-generated via [RelayCommand] on the methods below.
 
             // erste navigation: selected dyno wird requested
             Dyno = Messenger.Send<CurrentDynoRequestMessage>();
@@ -54,11 +52,12 @@ namespace SimTuning.Maui.UI.ViewModels
 
         #region Methods
 
-        private List<ObservableCollection<ObservablePoint>> values;
+        private List<ObservableCollection<ObservablePoint>>? values;
 
         /// <summary>
         /// Refreshes the plot.
         /// </summary>
+        [RelayCommand]
         private void RefreshPlot()
         {
             if (!CheckDynoData())
@@ -72,6 +71,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <summary>
         /// Filters the plot.
         /// </summary>
+        [RelayCommand]
         protected void FilterPlot()
         {
             if (!CheckDynoData())
@@ -85,6 +85,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// <summary>
         /// Specifics the graph.
         /// </summary>
+        [RelayCommand]
         private void SpecificGraph()
         {
             if (Graphs == null || Graph == null)
@@ -102,14 +103,14 @@ namespace SimTuning.Maui.UI.ViewModels
         {
             if (!File.Exists(SimTuning.Core.GeneralSettings.AudioAccelerationFilePath))
             {
-                Functions.ShowSnackbarDialog(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_NOAUDIOFILE"));
+                _ = Functions.ShowSnackbarDialogAsync(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_NOAUDIOFILE"));
 
                 return false;
             }
 
             if (Dyno == null)
             {
-                Functions.ShowSnackbarDialog(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_NODATA"));
+                _ = Functions.ShowSnackbarDialogAsync(SimTuning.Core.Helpers.Functions.GetLocalisedRes(typeof(SimTuning.Core.resources), "ERR_NODATA"));
 
                 return false;
             }
@@ -166,7 +167,13 @@ namespace SimTuning.Maui.UI.ViewModels
 
                 values = new List<ObservableCollection<ObservablePoint>>();
 
-                PlotAudio.Clear();
+                var plotAudio = PlotAudio;
+                if (plotAudio == null)
+                {
+                    return;
+                }
+
+                plotAudio.Clear();
 
                 // spalte einfügen
                 for (int anzahl = 0; anzahl < AudioLogic.ClusterPoints.Count; anzahl++)
@@ -178,7 +185,7 @@ namespace SimTuning.Maui.UI.ViewModels
                         values[anzahl].Add(item.ToObservablePoint());
                     }
 
-                    PlotAudio.Add(
+                    plotAudio.Add(
                         new ScatterSeries<ObservablePoint>()
                         {
                             GeometrySize = 5,
@@ -202,16 +209,24 @@ namespace SimTuning.Maui.UI.ViewModels
         {
             try
             {
+                var graphs = Graphs;
+                var plotAudio = PlotAudio;
+                var dyno = Dyno;
+                if (graphs == null || plotAudio == null || dyno == null)
+                {
+                    return;
+                }
+
                 List<ObservablePoint> values = new List<ObservablePoint>();
-                int index = Graphs.IndexOf(Graph);
+                int index = graphs.IndexOf(Graph);
                 double xMin = AudioLogic.ClusterPoints[index].Min(x => x.X);
                 double xMax = AudioLogic.ClusterPoints[index].Max(x => x.X);
                 double stepSize = 5;
                 int polynomialFuncOrder = 5;
-                ISeries series = PlotAudio[index];
+                ISeries series = plotAudio[index];
 
-                PlotAudio.Clear();
-                PlotAudio.Add(series);
+                plotAudio.Clear();
+                plotAudio.Add(series);
 
                 // Polynom: Regressions-Punkte bilden
                 var drehzahlfunction = Fit.PolynomialFunc(
@@ -224,7 +239,7 @@ namespace SimTuning.Maui.UI.ViewModels
                     values.Add(new ObservablePoint(x, drehzahlfunction(x)));
                 }
 
-                PlotAudio.Add(
+                plotAudio.Add(
                     new LineSeries<ObservablePoint>()
                     {
                         GeometrySize = 5,
@@ -233,12 +248,12 @@ namespace SimTuning.Maui.UI.ViewModels
                         Fill = null,
                     });
 
-                Dyno.Drehzahl = new List<DrehzahlModel>();
+                dyno.Drehzahl = new List<DrehzahlModel>();
                 foreach (var value in values)
                 {
-                    Dyno.Drehzahl.Add(value.ToDrehzahlModel());
+                    dyno.Drehzahl.Add(value.ToDrehzahlModel());
                 }
-                _vehicleService.UpdateOne(Dyno);
+                _vehicleService.UpdateOne(dyno);
             }
             catch (Exception exc)
             {
@@ -253,28 +268,10 @@ namespace SimTuning.Maui.UI.ViewModels
         #region Commands
 
         /// <summary>
-        /// Gets or sets the filter plot command.
-        /// </summary>
-        /// <value>The filter plot command.</value>
-        public IRelayCommand FilterPlotCommand { get; set; }
-
-        /// <summary>
         /// Gets or sets the open file command.
         /// </summary>
         /// <value>The open file command.</value>
-        public IAsyncRelayCommand RefreshAudioFileCommand { get; set; }
-
-        /// <summary>
-        /// Gets or sets the refresh plot command.
-        /// </summary>
-        /// <value>The refresh plot command.</value>
-        public IRelayCommand RefreshPlotCommand { get; set; }
-
-        /// <summary>
-        /// Gets or sets the specific graph command.
-        /// </summary>
-        /// <value>The specific graph command.</value>
-        public IRelayCommand SpecificGraphCommand { get; set; }
+        public IAsyncRelayCommand? RefreshAudioFileCommand { get; set; }
 
         #endregion Commands
 
@@ -284,14 +281,14 @@ namespace SimTuning.Maui.UI.ViewModels
         protected readonly IVehicleService _vehicleService;
         private readonly ILogger<DynoAudioViewModel> _logger;
         private readonly List<int> fftSizes;
-        private DynoModel _dyno;
+        private DynoModel? _dyno;
         private int _fftSizeIndex;
         private int _epsilon;
         private int _frequenzbeginn;
         private int _frequenzende;
-        private string _graph;
+        private string? _graph;
         private int _intensity;
-        private ObservableCollection<ISeries> _plotAudio;
+        private ObservableCollection<ISeries>? _plotAudio;
 
         #endregion private
 
@@ -299,7 +296,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the dyno.
         /// </summary>
         /// <value>The dyno.</value>
-        public DynoModel Dyno
+        public DynoModel? Dyno
         {
             get => _dyno;
             set => SetProperty(ref _dyno, value);
@@ -349,7 +346,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets or sets the graph.
         /// </summary>
         /// <value>The graph.</value>
-        public string Graph
+        public string? Graph
         {
             get => _graph;
             set
@@ -368,7 +365,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets the graphs.
         /// </summary>
         /// <value>The graphs.</value>
-        public List<string> Graphs
+        public List<string?>? Graphs
         {
             get => PlotAudio?.Select(x => x.Name).ToList();
         }
@@ -387,7 +384,7 @@ namespace SimTuning.Maui.UI.ViewModels
         /// Gets the plot audio.
         /// </summary>
         /// <value>The plot audio.</value>
-        public ObservableCollection<ISeries> PlotAudio
+        public ObservableCollection<ISeries>? PlotAudio
         {
             get => _plotAudio;
             set => SetProperty(ref _plotAudio, value);

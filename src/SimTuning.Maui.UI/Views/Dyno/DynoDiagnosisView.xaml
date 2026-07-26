@@ -27,7 +27,7 @@
             <StackLayout>
                 <Label
 					Text="Einstellungen"
-					FontSize="Medium"
+					FontSize="14"
 					FontAttributes="Bold" />
 
                 <BoxView Style="{StaticResource DividerBoxViewStyle}" />
@@ -50,8 +50,8 @@
                     <Picker
 						Margin="5, 0, 0, 0"
 						ItemsSource="{Binding Path=MassQuantityUnits, Mode=OneTime}"
-						HorizontalOptions="StartAndExpand"
-						VerticalOptions="CenterAndExpand"
+						HorizontalOptions="Start"
+						VerticalOptions="Center"
 						SelectedItem="{Binding DynoVehicleGewichtUnit}"
 						ItemDisplayBinding="{Binding Abbreviation}">
                     </Picker>
@@ -68,8 +68,8 @@
                     <Picker
 						Margin="5, 0, 0, 0"
 						ItemsSource="{Binding Path=AreaQuantityUnits, Mode=OneTime}"
-						HorizontalOptions="StartAndExpand"
-						VerticalOptions="CenterAndExpand"
+						HorizontalOptions="Start"
+						VerticalOptions="Center"
 						SelectedItem="{Binding FrontAUnit}"
 						ItemDisplayBinding="{Binding Abbreviation}">
                     </Picker>
@@ -99,7 +99,7 @@
 
                 <!--Refresh-->
                 <Button
-					HorizontalOptions="FillAndExpand"
+					HorizontalOptions="Fill"
 					ImageSource="{StaticResource IconRefreshMedium}"
 					Command="{Binding RefreshPlotCommand}">
                 </Button>

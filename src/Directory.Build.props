@@ -16,10 +16,10 @@
 
   <!--  build configuration -->
   <PropertyGroup>
-  <TargetFrameworks>net10.0-ios;net10.0-maccatalyst</TargetFrameworks>
-		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net10.0-windows10.0.19041.0</TargetFrameworks>
+  <TargetFrameworks>net11.0-ios;net11.0-maccatalyst</TargetFrameworks>
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net11.0-windows10.0.19041.0</TargetFrameworks>
     <!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
-		<!-- <TargetFrameworks>$(TargetFrameworks);net10.0-tizen</TargetFrameworks> -->
+		<!-- <TargetFrameworks>$(TargetFrameworks);net11.0-tizen</TargetFrameworks> -->
 
 		<!-- Note for MacCatalyst:
 		The default runtime is maccatalyst-x64, except in Release config, in which case the default is maccatalyst-x64;maccatalyst-arm64.
@@ -54,26 +54,27 @@
   <!-- Nuget configuration -->
   <ItemGroup>
     <!-- Nugets -->
-    <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.10" />
-		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="10.0.10" />
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-    <PackageReference Include="UnitsNet" Version="5.75.0" />
-    <PackageReference Include="CommunityToolkit.Maui" Version="13.0.0" />
-    <PackageReference Include="CommunityToolkit.Maui.MediaElement" Version="6.1.3" />
+    <PackageReference Include="Microsoft.Maui.Controls" Version="11.0.0-preview.6.26360.8" />
+		<!-- Microsoft.Maui.Controls.Compatibility removed (Phase 3): unused in this codebase and no longer shipped in MAUI 11. -->
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <PackageReference Include="UnitsNet" Version="5.75.1" />
+    <PackageReference Include="CommunityToolkit.Maui" Version="15.0.0" />
+    <PackageReference Include="CommunityToolkit.Maui.MediaElement" Version="10.0.0" />
     <PackageReference Include="Sharpnado.Maui.TaskLoaderView" Version="2.6.3" />
     <PackageReference Include="Sharpnado.Tabs.Maui" Version="4.0.1" />
-    <PackageReference Include="LiveChartsCore.SkiaSharpView.Maui" Version="2.0.0-rc4.5" />
+    <PackageReference Include="LiveChartsCore.SkiaSharpView.Maui" Version="2.0.5" />
     <PackageReference Include="SkiaSharp" Version="3.119.1" />
     <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-    <PackageReference Include="Serilog" Version="4.3.0" />
+    <!-- Newtonsoft.Json removed (Phase 14 A08): the sole consumer (DynoDataViewModel export/import)
+         migrated to System.Text.Json. -->
+    <PackageReference Include="Serilog" Version="4.4.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
     <PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
-    <PackageReference Include="Serilog.Extensions.Logging" Version="9.0.2" />
-    <PackageReference Include="CommunityToolkit.WinUI.Notifications" Version="7.1.2" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="10.0.0" />
+    <!-- CommunityToolkit.WinUI.Notifications moved to SimTuning.Maui.App.csproj (Phase 3): Windows-only, made conditional. -->
 
     <!-- Analyzers -->
-    <PackageReference Include="AsyncFixer" Version="1.6.0" PrivateAssets="All" />
+    <PackageReference Include="AsyncFixer" Version="2.1.0" PrivateAssets="All" />
 
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>

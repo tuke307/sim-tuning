@@ -8,8 +8,9 @@
 	xmlns:models="clr-namespace:SimTuning.Data.Models;assembly=SimTuning.Data"
 	x:Class="SimTuning.Maui.UI.Views.Popups.PortTimingPopup"
 	x:DataType="PortTimingViewModel"
-	Color="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}"
-	Size="500, 700">
+	BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}"
+	WidthRequest="500"
+	HeightRequest="700">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -22,7 +23,7 @@
 			ItemsSource="{Binding Engines}"
 			SelectedItem="{Binding Engine}"
 			ItemDisplayBinding="{Binding Name}"
-			HorizontalOptions="CenterAndExpand"
+			HorizontalOptions="Center"
 			Margin="5">
         </Picker>
 

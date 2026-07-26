@@ -21,13 +21,11 @@ namespace Spectrogram
                 // The first chunk is RIFF section Length should be the number of bytes in
                 // the file minus 4
                 var riffChunk = ChunkInfo(br, 0);
-                Console.WriteLine($"First chunk '{riffChunk.id}' indicates {riffChunk.length:N0} bytes");
                 if (riffChunk.id != "RIFF")
                     throw new InvalidOperationException($"Unsupported WAV format (first chunk ID was '{riffChunk.id}', not 'RIFF')");
 
                 // The second chunk is FORMAT section
                 var fmtChunk = ChunkInfo(br, 12);
-                Console.WriteLine($"Format chunk '{fmtChunk.id}' indicates {fmtChunk.length:N0} bytes");
                 if (fmtChunk.id != "fmt ")
                     throw new InvalidOperationException($"Unsupported WAV format (first chunk ID was '{fmtChunk.id}', not 'fmt ')");
                 if (fmtChunk.length != 16)
@@ -36,26 +34,20 @@ namespace Spectrogram
                 // By now we verified this is probably a valid FORMAT section, so read its
                 // values.
                 int audioFormat = br.ReadUInt16();
-                Console.WriteLine($"audio format: {audioFormat}");
                 if (audioFormat != 1)
                     throw new NotImplementedException("Unsupported WAV format (audio format must be 1, indicating uncompressed PCM data)");
 
                 int channelCount = br.ReadUInt16();
-                Console.WriteLine($"channel count: {channelCount}");
                 if (channelCount < 0 || channelCount > 2)
                     throw new NotImplementedException($"Unsupported WAV format (must be 1 or 2 channel, file has {channelCount})");
 
                 int sampleRate = (int)br.ReadUInt32();
-                Console.WriteLine($"sample rate: {sampleRate} Hz");
 
                 int byteRate = (int)br.ReadUInt32();
-                Console.WriteLine($"byteRate: {byteRate}");
 
                 ushort blockSize = br.ReadUInt16();
-                Console.WriteLine($"block size: {blockSize} bytes per sample");
 
                 ushort bitsPerSample = br.ReadUInt16();
-                Console.WriteLine($"resolution: {bitsPerSample}-bit");
                 if (bitsPerSample != 16)
                     throw new NotImplementedException("Only 16-bit WAV files are supported");
 
@@ -68,7 +60,6 @@ namespace Spectrogram
                 for (int i = 0; i < maximumChunkNumber; i++)
                 {
                     var chunk = ChunkInfo(br, nextChunkPosition);
-                    Console.WriteLine($"Chunk at {nextChunkPosition} ('{chunk.id}') indicates {chunk.length:N0} bytes");
                     if (chunk.id == "data")
                     {
                         firstDataByte = nextChunkPosition + 8;
@@ -79,7 +70,6 @@ namespace Spectrogram
                 }
                 if (firstDataByte == 0 || dataByteCount == 0)
                     throw new InvalidOperationException("Unsupported WAV format (no 'data' chunk found)");
-                Console.WriteLine($"PCM data starts at {firstDataByte} and contains {dataByteCount} bytes");
 
                 // Now read PCM data values into an array and return it
                 long sampleCount = dataByteCount / blockSize;

@@ -1,4 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <!-- Expose a base net11.0 target so the net11.0-only SimTuning.Test project can
+         reference this library for headless unit tests. -->
+    <TargetFrameworks>$(TargetFrameworks);net11.0</TargetFrameworks>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="DBSCAN" Version="3.0.0" />
     <PackageReference Include="NAudio" Version="2.2.1" />

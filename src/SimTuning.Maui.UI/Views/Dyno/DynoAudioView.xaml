@@ -109,7 +109,7 @@
 								Minimum="1"
 								Maximum="300"
 								Value="{Binding Epsilon}"
-								VerticalOptions="CenterAndExpand" />
+								VerticalOptions="Center" />
 
                             <!--Graph-->
                             <Picker

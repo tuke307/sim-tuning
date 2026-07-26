@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2025 tuke productions. All rights reserved.
+// Copyright (c) 2025 tuke productions. All rights reserved.
 namespace SimTuning.Test
 {
     using SimTuning.Core.Models;
@@ -8,7 +8,8 @@ namespace SimTuning.Test
     using Xunit;
 
     /// <summary>
-    /// EngineLogicTest.
+    /// EngineLogicTest. Phase 15: each smoke test now asserts the result is a finite number
+    /// (or non-null for image/model results) — previously the returns were read into unused locals.
     /// </summary>
     public class EngineLogicTest
     {
@@ -18,19 +19,9 @@ namespace SimTuning.Test
         [Fact]
         public void CompressionTest()
         {
-            double value;
-            double hubraum;
-            double brennraum;
-            double durchmesser;
+            double value = EngineLogic.GetCompression(hubraum: 50000, brennraum: 17000, durchmesser: 38);
 
-            hubraum = 50000;
-            brennraum = 17000;
-            durchmesser = 38;
-
-            value = EngineLogic.GetCompression(
-                hubraum,
-                brennraum,
-                durchmesser);
+            Assert.True(double.IsFinite(value));
         }
 
         /// <summary>
@@ -39,14 +30,9 @@ namespace SimTuning.Test
         [Fact]
         public void CylinderHoleDiameterTest()
         {
-            double value;
-            double hubraum;
-            double hub;
+            double value = EngineLogic.GetCylinderHoleDiameter(hubraum: 50000, hub: 17000);
 
-            hubraum = 50000;
-            hub = 17000;
-
-            value = EngineLogic.GetCylinderHoleDiameter(hubraum, hub);
+            Assert.True(double.IsFinite(value));
         }
 
         /// <summary>
@@ -55,14 +41,9 @@ namespace SimTuning.Test
         [Fact]
         public void DisplacementTest()
         {
-            double value;
-            double bohrungsdurchmesser;
-            double hub;
+            double value = EngineLogic.GetDisplacement(bohrungsdurchmesser: 38, hub: 17000);
 
-            hub = 17000;
-            bohrungsdurchmesser = 38;
-
-            value = EngineLogic.GetDisplacement(bohrungsdurchmesser, hub);
+            Assert.True(double.IsFinite(value));
         }
 
         /// <summary>
@@ -71,18 +52,9 @@ namespace SimTuning.Test
         [Fact]
         public void DistanceToOTTest()
         {
-            double value;
-            double pleullaenge;
-            double hubradius;
-            double deachsierung;
-            double kwgrad;
+            double value = EngineLogic.GetDistanceToOT(pleullaenge: 44, hubradius: 22, deachsierung: 2, kwgrad: 120);
 
-            pleullaenge = 44;
-            hubradius = 22;
-            deachsierung = 2;
-            kwgrad = 120;
-
-            value = EngineLogic.GetDistanceToOT(pleullaenge, hubradius, deachsierung, kwgrad);
+            Assert.True(double.IsFinite(value));
         }
 
         /// <summary>
@@ -91,12 +63,9 @@ namespace SimTuning.Test
         [Fact]
         public void GrindingDiametersTest()
         {
-            GrindingDiametersModel value;
-            double durchmesser;
+            GrindingDiametersModel value = EngineLogic.GetGrindingDiameters(38);
 
-            durchmesser = 38;
-
-            value = EngineLogic.GetGrindingDiameters(durchmesser);
+            Assert.NotNull(value);
         }
 
         /// <summary>
@@ -105,16 +74,9 @@ namespace SimTuning.Test
         [Fact]
         public void HubRadiusTest()
         {
-            double value;
-            double hub;
-            double pleullaenge;
-            double deachsierung;
+            double value = EngineLogic.GetHubRadius(hub: 44, pleullaenge: 44, deachsierung: 2);
 
-            hub = 44;
-            pleullaenge = 44;
-            deachsierung = 2;
-
-            value = EngineLogic.GetHubRadius(hub, pleullaenge, deachsierung);
+            Assert.True(double.IsFinite(value));
         }
 
         /// <summary>
@@ -123,14 +85,9 @@ namespace SimTuning.Test
         [Fact]
         public void KolbenDurchmesserTest()
         {
-            double value;
-            double bohrungsdurchmesser;
-            double einbauspiel;
+            double value = EngineLogic.GetKolbenDurchmesser(bohrungsdurchmesser: 38, einbauspiel: 0.03);
 
-            bohrungsdurchmesser = 38;
-            einbauspiel = 0.03;
-
-            value = EngineLogic.GetKolbenDurchmesser(bohrungsdurchmesser, einbauspiel);
+            Assert.True(double.IsFinite(value));
         }
 
         /// <summary>
@@ -139,14 +96,9 @@ namespace SimTuning.Test
         [Fact]
         public void KolbenGeschwindigkeitTest()
         {
-            double value;
-            double hub;
-            double drehzahl;
+            double value = EngineLogic.GetKolbenGeschwindigkeit(hub: 44, drehzahl: 8000);
 
-            hub = 44;
-            drehzahl = 8000;
-
-            value = EngineLogic.GetKolbenGeschwindigkeit(hub, drehzahl);
+            Assert.True(double.IsFinite(value));
         }
 
         /// <summary>
@@ -155,29 +107,17 @@ namespace SimTuning.Test
         [Fact]
         public void SteuerdiagrammTest()
         {
-            SKBitmap value;
-            double einlass;
-            double auslass;
-            double ueberstroemer;
-            string _fileName;
-            string _filePath;
+            SKBitmap value = EngineLogic.GetSteuerdiagramm(einlass: 120, auslass: 120, ueberstroemer: 120);
 
-            _fileName = "Steuerdiagramm.png";
-            _filePath = Path.Combine(SimTuning.Test.Constants.Directory, _fileName);
-            einlass = 120;
-            auslass = 120;
-            ueberstroemer = 120;
+            Assert.NotNull(value);
 
-            value = EngineLogic.GetSteuerdiagramm(einlass, auslass, ueberstroemer);
-
+            // Export the rendered diagram for manual inspection (cross-platform temp dir).
+            string filePath = Path.Combine(SimTuning.Test.Constants.Directory, "Steuerdiagramm.png");
             using (var image = SKImage.FromBitmap(value))
             using (var data = image.Encode())
+            using (var stream = File.OpenWrite(filePath))
             {
-                // save the data to a stream
-                using (var stream = File.OpenWrite(_filePath))
-                {
-                    data.SaveTo(stream);
-                }
+                data.SaveTo(stream);
             }
         }
 
@@ -187,20 +127,10 @@ namespace SimTuning.Test
         [Fact]
         public void SteuerwinkelTest()
         {
-            double value;
-            double vorherSteuerzeit;
-            double nachherSteuerzeit;
-            bool kolbenoberkante;
-            bool kolbenunterkante;
+            EngineLogic.GetSteuerwinkel(vorherSteuerzeit: 120, nachherSteuerzeit: 130, kolbenoberkante: true, kolbenunterkante: false);
 
-            vorherSteuerzeit = 120;
-            nachherSteuerzeit = 130;
-            kolbenoberkante = true;
-            kolbenunterkante = false;
-
-            EngineLogic.GetSteuerwinkel(vorherSteuerzeit, nachherSteuerzeit, kolbenoberkante, kolbenunterkante);
-            value = EngineLogic.GetSteuerwinkelOeffnet();
-            value = EngineLogic.GetSteuerwinkelSchließt();
+            Assert.True(double.IsFinite(EngineLogic.GetSteuerwinkelOeffnet()));
+            Assert.True(double.IsFinite(EngineLogic.GetSteuerwinkelSchließt()));
         }
 
         /// <summary>
@@ -209,18 +139,9 @@ namespace SimTuning.Test
         [Fact]
         public void ToDecreasingLengthTest()
         {
-            double value;
-            double hubraum;
-            double brennraum;
-            double durchmesser;
-            double zielVerdichtung;
+            double value = EngineLogic.GetToDecreasingLength(hubraum: 50000, brennraum: 17000, durchmesser: 38, zielVerdichtung: 12);
 
-            hubraum = 50000;
-            brennraum = 17000;
-            durchmesser = 38;
-            zielVerdichtung = 12;
-
-            value = EngineLogic.GetToDecreasingLength(hubraum, brennraum, durchmesser, zielVerdichtung);
+            Assert.True(double.IsFinite(value));
         }
 
         /// <summary>
@@ -229,14 +150,9 @@ namespace SimTuning.Test
         [Fact]
         public void VorauslassTest()
         {
-            double value;
-            double auslassSW;
-            double ueberstroemerSW;
+            double value = EngineLogic.GetVorauslass(auslassSW: 190, ueberstroemerSW: 125);
 
-            auslassSW = 190;
-            ueberstroemerSW = 125;
-
-            value = EngineLogic.GetVorauslass(auslassSW, ueberstroemerSW);
+            Assert.True(double.IsFinite(value));
         }
     }
 }

@@ -1,4 +1,5 @@
 using CommunityToolkit.Maui;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
 using Sharpnado.Tabs;
@@ -25,7 +26,7 @@ namespace SimTuning.Maui.App
                 .UseSkiaSharp()
                 .UseSharpnadoTabs(loggerEnable: true, debugLogEnable: true)
                 .UseMauiCommunityToolkit()
-                .UseMauiCommunityToolkitMediaElement()
+                .UseMauiCommunityToolkitMediaElement(isAndroidForegroundServiceEnabled: false)
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont(filename: "materialdesignicons-webfont.ttf", alias: "MaterialDesignIcons");
@@ -45,8 +46,19 @@ namespace SimTuning.Maui.App
             var flushInterval = new TimeSpan(0, 0, 1);
             var file = GeneralSettings.LogFilePath;
 
+            // Per-configuration minimum level. Nothing in the app logs at Verbose/Trace,
+            // so the old Verbose floor was purely wasteful (and a PII/perf smell in
+            // production — Phase-1 A05). Debug builds keep full app-flow diagnostics;
+            // Release is quieted to Warning so production logs carry only problems and
+            // minimize PII exposure (Information events include dyno/vehicle names).
+#if DEBUG
+            const LogEventLevel minimumLevel = LogEventLevel.Debug;
+#else
+            const LogEventLevel minimumLevel = LogEventLevel.Warning;
+#endif
+
             Serilog.Log.Logger = new LoggerConfiguration()
-            .MinimumLevel.Verbose()
+            .MinimumLevel.Is(minimumLevel)
             .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
             .Enrich.FromLogContext()
             .WriteTo.Debug()
@@ -59,8 +71,14 @@ namespace SimTuning.Maui.App
             // Register logging
             services.AddLogging(logging => logging.AddSerilog(dispose: true));
 
-            // Register core services
-            services.AddSingleton<DatabaseContext>();
+            // Register core services.
+            // DatabaseContext is registered via AddDbContextFactory: IVehicleService (Singleton)
+            // consumes IDbContextFactory<DatabaseContext> (Singleton) and creates a short-lived
+            // context per operation. This replaces the previous AddSingleton<DatabaseContext>()
+            // (a captive, shared DbContext — the EF foot-gun flagged in Phase 1) AND the 14
+            // `new DatabaseContext()` service-locator calls in VehicleService. VehicleService stays
+            // Singleton so its in-memory caches are preserved; no Scoped DbContext is captured.
+            services.AddDbContextFactory<DatabaseContext>();
             services.AddSingleton<IVehicleService, VehicleService>();
             services.AddSingleton<IBrowserService, BrowserService>();
             services.AddSingleton<INavigationService, NavigationService>();
@@ -102,11 +120,13 @@ namespace SimTuning.Maui.App
 
         private static void RegisterPopups(IServiceCollection services)
         {
-            // Register popup view models and views
+            // Register popup view models and views.
+            // CommunityToolkit.Maui PopupService maps VM-type -> popup view with TryAdd
+            // (FIRST registration wins), so each VM type may map to exactly one popup.
+            // The previously-registered DynoCreationPopup/EnvironmentPopup were dead
+            // code — shadowed by these and therefore never shown.
             services.AddTransientPopup<VehiclePopup, VehiclesViewModel>();
-            services.AddTransientPopup<DynoCreationPopup, VehiclesViewModel>();
             services.AddTransientPopup<PortTimingPopup, PortTimingViewModel>();
-            services.AddTransientPopup<EnvironmentPopup, PortTimingViewModel>();
         }
     }
 }

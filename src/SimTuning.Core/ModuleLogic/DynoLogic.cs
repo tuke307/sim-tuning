@@ -33,12 +33,12 @@ namespace SimTuning.Core.ModuleLogic
 
         public static DynoPsModel ToDynoPSModel(this ObservablePoint observablePoint)
         {
-            return new DynoPsModel((double)observablePoint.X, (double)observablePoint.Y);
+            return new DynoPsModel(observablePoint.X ?? 0, observablePoint.Y ?? 0);
         }
 
         public static DrehzahlModel ToDrehzahlModel(this ObservablePoint observablePoint)
         {
-            return new DrehzahlModel((double)observablePoint.X, (double)observablePoint.Y);
+            return new DrehzahlModel(observablePoint.X ?? 0, observablePoint.Y ?? 0);
         }
 
         public static ObservablePoint ToObservablePoint(this DataPoint dataPoint)

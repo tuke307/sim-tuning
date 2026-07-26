@@ -11,7 +11,7 @@ namespace SimTuning.Maui.UI.Behaviors
     /// <typeparam name="T">object.</typeparam>
     public class BehaviorBase<T> : Behavior<T> where T : BindableObject
     {
-        public T AssociatedObject { get; private set; }
+        public T? AssociatedObject { get; private set; }
 
         protected override void OnAttachedTo(T bindable)
         {
@@ -29,7 +29,7 @@ namespace SimTuning.Maui.UI.Behaviors
         protected override void OnBindingContextChanged()
         {
             base.OnBindingContextChanged();
-            BindingContext = AssociatedObject.BindingContext;
+            BindingContext = AssociatedObject?.BindingContext;
         }
 
         protected override void OnDetachingFrom(T bindable)
@@ -39,7 +39,7 @@ namespace SimTuning.Maui.UI.Behaviors
             AssociatedObject = null;
         }
 
-        private void OnBindingContextChanged(object sender, EventArgs e)
+        private void OnBindingContextChanged(object? sender, EventArgs e)
         {
             OnBindingContextChanged();
         }
