@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2021 tuke productions. All rights reserved.
+﻿// Copyright (c) 2025 tuke productions. All rights reserved.
 namespace SimTuning.Data.Models
 {
     using System;
@@ -40,24 +40,7 @@ namespace SimTuning.Data.Models
             get => this._DurchmesserDUnit ?? DurchmesserDBaseUnit;
             set
             {
-                if (this.DurchmesserD.HasValue)
-                {
-                    UnitsNet.UnitConverter.TryConvert(
-                                   this.DurchmesserD.Value,
-                                   this.DurchmesserDUnit,
-                                   value,
-                                   out double convertedValue);
-
-                    if (UnitSettings.RoundOnUnitChange)
-                    {
-                        this.DurchmesserD = Math.Round(convertedValue, UnitSettings.RoundingAccuracy);
-                    }
-                    else
-                    {
-                        this.DurchmesserD = convertedValue;
-                    }
-                }
-
+                this.DurchmesserD = ConvertValueForUnit(this.DurchmesserD, this.DurchmesserDUnit, value);
                 this._DurchmesserDUnit = value;
             }
         }

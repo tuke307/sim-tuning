@@ -1,0 +1,264 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+	xmlns="http://schemas.microsoft.com/dotnet/maui/global"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	x:Class="SimTuning.Maui.UI.Views.Dyno.DynoDataView"
+	x:DataType="DynoDataViewModel">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0">
+            <StackLayout>
+                <Label
+					Text="Auswahl"
+					FontSize="14"
+					FontAttributes="Bold" />
+
+                <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+
+                <CollectionView
+					HeightRequest="200"
+					ItemsSource="{Binding Dynos}"
+					SelectionMode="Single"
+					SelectedItem="{Binding Dyno}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="DynoModel">
+                            <Grid Padding="10">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <Label
+									Grid.Row="0"
+									Grid.Column="0"
+									Text="{Binding Name}"
+									FontAttributes="Bold" />
+
+                                <Label
+									Grid.Row="1"
+									Grid.Column="0"
+									Text="{Binding Beschreibung}"
+									FontAttributes="Italic"
+									VerticalOptions="End" />
+
+                                <Label
+									Grid.RowSpan="2"
+									Grid.Column="1"
+									Text="{Binding Vehicle.Name}"
+									FontAttributes="Italic"
+									VerticalOptions="End" />
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <Grid Margin="5, 0, 0, 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <ImageButton
+						Grid.Column="0"
+						MinimumWidthRequest="50"
+						Source="{StaticResource IconPlusCircleMultipleOutlineMedium}"
+						Command="{Binding ShowNewDynoCommand}">
+                    </ImageButton>
+
+                    <ImageButton
+						Grid.Column="2"
+						MinimumWidthRequest="50"
+						Opacity="0.7"
+						BackgroundColor="{AppThemeBinding Light={StaticResource Primary600}, Dark={StaticResource Primary600}}"
+						Source="{StaticResource IconDeleteCircleOutlineMedium}"
+						Command="{Binding DeleteDynoCommand}">
+                    </ImageButton>
+                </Grid>
+            </StackLayout>
+        </Border>
+
+        <Border Grid.Row="1">
+            <StackLayout>
+                <Label
+					Text="Daten"
+					FontSize="14"
+					FontAttributes="Bold" />
+
+                <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <StackLayout
+						Grid.Column="0"
+						Grid.RowSpan="3">
+                        <Entry
+							Placeholder="Name"
+							Text="{Binding DynoName}"
+							Margin="5">
+                        </Entry>
+
+                        <Editor
+							Placeholder="Beschreibung"
+							Text="{Binding DynoBeschreibung}"
+							HeightRequest="150"
+							Margin="5">
+                        </Editor>
+                    </StackLayout>
+
+                    <Button
+						Margin="5"
+						Grid.Column="1"
+						Grid.Row="0"
+						VerticalOptions="Center"
+						HorizontalOptions="Fill"
+						ImageSource="{StaticResource IconContentSaveMedium}"
+						Command="{Binding SaveDynoCommand}"
+						HeightRequest="60">
+                    </Button>
+
+                    <Button
+						Margin="5"
+						Grid.Column="1"
+						Grid.Row="1"
+						VerticalOptions="Center"
+						HorizontalOptions="Fill"
+						ImageSource="{StaticResource IconBackupRestoreMedium}"
+						Command="{Binding ExportDynoCommand}"
+						HeightRequest="60">
+                    </Button>
+
+                    <Button
+						Margin="5"
+						Grid.Column="1"
+						Grid.Row="2"
+						VerticalOptions="Center"
+						HorizontalOptions="Fill"
+						ImageSource="{StaticResource IconFileImportOutlineMedium}"
+						Command="{Binding ImportDynoCommand}"
+						HeightRequest="60">
+                    </Button>
+                </Grid>
+
+                <!--Audio-->
+                <!--<Expander>
+                        <Expander.Header>
+                            <Border>
+                                <Label>
+                                    Drehzahl
+                                </Label>
+                            </Border>
+                        </Expander.Header>
+                        <HorizontalStackLayout>
+                            <DataTemplate>
+                                <StackLayout Orientation="Horizontal"
+                                             Margin="20, 0, 0, 0">
+                                    <Picker Title="X"
+                                            WidthRequest="100"
+                                            ItemsSource="{Binding Dyno.Drehzahl}"
+                                            ItemDisplayBinding="Zeit">
+                                    </Picker>
+
+                                    <Picker Title="Y"
+                                            WidthRequest="100"
+                                            ItemsSource="{Binding Dyno.Drehzahl}"
+                                            ItemDisplayBinding="Drehzahl">
+                                    </Picker>
+                                </StackLayout>
+                            </DataTemplate>
+                        </HorizontalStackLayout>
+                    </Expander>
+
+                    -->
+                <!--PS-->
+                <!--
+                    <Expander>
+                        <Expander.Header>
+                            <Border>
+                                <Label>
+                                    PS
+                                </Label>
+                            </Border>
+                        </Expander.Header>
+                        <HorizontalStackLayout>
+                            <DataTemplate>
+                                <StackLayout Orientation="Horizontal"
+                                             Margin="20, 0, 0, 0">
+                                    <Picker Title="X"
+                                            WidthRequest="100"
+                                            ItemsSource="{Binding Dyno.DynoPs}"
+                                            ItemDisplayBinding="Drehzahl">
+                                    </Picker>
+
+                                    <Picker Title="Y"
+                                            WidthRequest="100"
+                                            ItemsSource="{Binding Dyno.DynoPs}"
+                                            ItemDisplayBinding="Ps">
+                                    </Picker>
+                                </StackLayout>
+                            </DataTemplate>
+                        </HorizontalStackLayout>
+                    </Expander>-->
+
+                <!--Nm-->
+                <!--<Expander>
+                        <Expander.Header>
+                            <Border>
+                                <Label>
+                                    Nm
+                                </Label>
+                            </Border>
+                        </Expander.Header>
+                        <HorizontalStackLayout>
+                            <DataTemplate>
+                                <StackLayout Orientation="Horizontal"
+                                             Margin="20, 0, 0, 0">
+                                    <Entry Keyboard="Choice"
+
+                                                                Placeholder="X"
+                                                                WidthRequest="100"
+                                                                ItemsSource="{Binding Dyno.DynoNm}"
+                                                                ItemDisplayBinding="Drehzahl">
+                                    </Entry>
+
+                                    <Entry Keyboard="Choice"
+
+                                                                Placeholder="Y"
+                                                                WidthRequest="100"
+                                                                ItemsSource="{Binding Dyno.DynoNm}"
+                                                                ItemDisplayBinding="Nm">
+                                    </Entry>
+                                </StackLayout>
+                            </DataTemplate>
+                        </HorizontalStackLayout>
+                    </Expander>-->
+            </StackLayout>
+        </Border>
+
+        <Button
+			Margin="5"
+			Grid.Row="2"
+			ImageSource="{StaticResource IconChevronRightMedium}"
+			Clicked="Button_Clicked">
+        </Button>
+    </Grid>
+</ContentView>

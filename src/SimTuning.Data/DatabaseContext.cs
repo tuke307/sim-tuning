@@ -1,9 +1,10 @@
-﻿// Copyright (c) 2021 tuke productions. All rights reserved.
+﻿// Copyright (c) 2025 tuke productions. All rights reserved.
 namespace SimTuning.Data
 {
     using Microsoft.EntityFrameworkCore;
     using SimTuning.Data.Models;
     using System;
+    using System.IO;
     using System.Linq;
 
     /// <summary>
@@ -88,18 +89,6 @@ namespace SimTuning.Data
         public DbSet<UeberstroemerModel> MotorUeberstroemer { get; set; }
 
         /// <summary>
-        /// Gets or sets the tuning.
-        /// </summary>
-        /// <value>The tuning.</value>
-        public DbSet<TuningModel> Tuning { get; set; }
-
-        /// <summary>
-        /// Gets or sets the tuning ps.
-        /// </summary>
-        /// <value>The tuning ps.</value>
-        public DbSet<TuningPSModel> TuningPs { get; set; }
-
-        /// <summary>
         /// Gets or sets the vehicles.
         /// </summary>
         /// <value>The vehicles.</value>
@@ -118,6 +107,38 @@ namespace SimTuning.Data
         /// </summary>
         public DatabaseContext()
         {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DatabaseContext" /> class with options.
+        /// </summary>
+        /// <param name="options">The options for this context.</param>
+        public DatabaseContext(DbContextOptions<DatabaseContext> options)
+            : base(options)
+        {
+        }
+
+        /// <summary>
+        /// Ensures the database is created and migrated.
+        /// </summary>
+        public void EnsureDatabaseCreated()
+        {
+            // Ensure the directory exists before attempting to create the database file
+            var dbDirectory = Path.GetDirectoryName(Data.DatabaseSettings.DatabasePath);
+            if (!string.IsNullOrEmpty(dbDirectory) && !Directory.Exists(dbDirectory))
+            {
+                Directory.CreateDirectory(dbDirectory);
+            }
+
+            // since android 10, database has to be created at the first time
+            if (!File.Exists(Data.DatabaseSettings.DatabasePath))
+            {
+                var fs = File.Create(Data.DatabaseSettings.DatabasePath);
+                fs.Dispose();
+            }
+
+            Database.Migrate();
+            Database.EnsureCreated();
         }
 
         /// <summary>

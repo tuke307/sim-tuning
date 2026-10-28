@@ -120,14 +120,11 @@
   <data name="MES_LOAD" xml:space="preserve">
     <value>Laden</value>
   </data>
-  <data name="ERR_NOSUPPORT" xml:space="preserve">
-    <value>Diese Plattform wird nicht unterstützt!</value>
+  <data name="ERR_ONLYMOBILE" xml:space="preserve">
+    <value>Diese Erweiterung ist nur für mobile Geräte (Android, iOS) ausgelegt.</value>
   </data>
   <data name="ERR_NODATA" xml:space="preserve">
     <value>Bitte Datensatz auswählen um fortzufahren!</value>
-  </data>
-  <data name="MES_PRO" xml:space="preserve">
-    <value>Kaufe die Pro Version um Presets zu ändern</value>
   </data>
   <data name="ERR_MICROPHONE" xml:space="preserve">
     <value>Kein Zugriff auf das Mikrofon</value>
@@ -137,5 +134,11 @@
   </data>
   <data name="ERR_NOAUDIOFILE" xml:space="preserve">
     <value>Es wurde keine aufgezeichnete Audiodatei gefunden</value>
+  </data>
+  <data name="ERR_STORAGEWRITE" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="ERR_STORAGEREAD" xml:space="preserve">
+    <value>1</value>
   </data>
 </root>

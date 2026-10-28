@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2021 tuke productions. All rights reserved.
+﻿// Copyright (c) 2025 tuke productions. All rights reserved.
 namespace SimTuning.Data.Models
 {
     using System;
@@ -88,24 +88,7 @@ namespace SimTuning.Data.Models
             get => this._GewichtUnit ?? GewichtBaseUnit;
             set
             {
-                if (this.Gewicht.HasValue)
-                {
-                }
-                UnitsNet.UnitConverter.TryConvert(
-               this.Gewicht.Value,
-               this.GewichtUnit,
-               value,
-               out double convertedValue);
-
-                if (UnitSettings.RoundOnUnitChange)
-                {
-                    this.Gewicht = Math.Round(convertedValue, UnitSettings.RoundingAccuracy);
-                }
-                else
-                {
-                    this.Gewicht = convertedValue;
-                }
-
+                this.Gewicht = ConvertValueForUnit(this.Gewicht, this.GewichtUnit, value);
                 this._GewichtUnit = value;
             }
         }
@@ -129,12 +112,6 @@ namespace SimTuning.Data.Models
         /// <value>The name.</value>
         [Required]
         public string Name { get; set; }
-
-        /// <summary>
-        /// Gets or sets the tuning.
-        /// </summary>
-        /// <value>The tuning.</value>
-        public virtual TuningModel Tuning { get; set; }
 
         /// <summary>
         /// Gets or sets the uebersetzung.

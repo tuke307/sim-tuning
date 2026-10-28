@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2021 tuke productions. All rights reserved.
+﻿// Copyright (c) 2025 tuke productions. All rights reserved.
 using SimTuning.Core.Helpers;
 using SimTuning.Core.Models;
 using SkiaSharp;
@@ -35,12 +35,8 @@ namespace SimTuning.Core.ModuleLogic
         /// <returns>Bohrung in mm.</returns>
         public static double GetCylinderHoleDiameter(double hubraum, double hub)
         {
-            double durchmesser = 0;
-
-            durchmesser = 2 * Math.Sqrt(hubraum / hub) / Math.Sqrt(Math.PI);
-            durchmesser = Math.Round(durchmesser, 2);
-
-            return durchmesser;
+            double durchmesser = 2 * Math.Sqrt(hubraum / hub) / Math.Sqrt(Math.PI);
+            return Math.Round(durchmesser, 2);
         }
 
         /// <summary>
@@ -126,11 +122,7 @@ namespace SimTuning.Core.ModuleLogic
         /// <returns>Kolbendurchmesser in mm.</returns>
         public static double GetKolbenDurchmesser(double bohrungsdurchmesser, double einbauspiel)
         {
-            double durchmesser = 0;
-
-            durchmesser = bohrungsdurchmesser - (einbauspiel / 100);
-
-            return durchmesser;
+            return bohrungsdurchmesser - (einbauspiel / 100);
         }
 
         /// <summary>
@@ -141,12 +133,8 @@ namespace SimTuning.Core.ModuleLogic
         /// <returns>Kolbengeschwindigkeit in m/s.</returns>
         public static double GetKolbenGeschwindigkeit(double hub, double drehzahl)
         {
-            double kolbengeschwindigkeit = 0;
-
-            kolbengeschwindigkeit = hub * drehzahl / 30;
-            kolbengeschwindigkeit = Math.Round(kolbengeschwindigkeit, 2);
-
-            return kolbengeschwindigkeit;
+            double kolbengeschwindigkeit = hub * drehzahl / 30;
+            return Math.Round(kolbengeschwindigkeit, 2);
         }
 
         /// <summary>
@@ -202,8 +190,11 @@ namespace SimTuning.Core.ModuleLogic
                 Color = SKColors.Black,
                 StrokeWidth = 4,
                 IsAntialias = true,
-                TextSize = 22,
             };
+
+            // SkiaSharp 3.x: text metrics moved from SKPaint to SKFont (TextSize and
+            // DrawText with SKPaint are obsolete). Label font matches former blackPen.TextSize.
+            using SKFont labelFont = new SKFont { Size = 22 };
             SKPaint redPen = new SKPaint
             {
                 Style = SKPaintStyle.Stroke,
@@ -299,8 +290,8 @@ namespace SimTuning.Core.ModuleLogic
 
             // Textbezeichnung hinzufügen
             blackPen.PathEffect = null;
-            graphic_rad.DrawText("OT", mitte + 10, 30, blackPen);
-            graphic_rad.DrawText("UT", mitte - 40, 580, blackPen);
+            graphic_rad.DrawText("OT", mitte + 10, 30, SKTextAlign.Left, labelFont, blackPen);
+            graphic_rad.DrawText("UT", mitte - 40, 580, SKTextAlign.Left, labelFont, blackPen);
 
             return bmp_rad;
         }

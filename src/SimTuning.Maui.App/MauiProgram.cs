@@ -1,0 +1,132 @@
+using CommunityToolkit.Maui;
+using Microsoft.EntityFrameworkCore;
+using Serilog;
+using Serilog.Events;
+using Sharpnado.Tabs;
+using SimTuning.Core;
+using SimTuning.Core.Services;
+using SimTuning.Data;
+using SimTuning.Maui.UI.Services;
+using SimTuning.Maui.UI.Views.Popups;
+using SimTuning.Maui.UI.ViewModels;
+using SkiaSharp.Views.Maui.Controls.Hosting;
+
+namespace SimTuning.Maui.App
+{
+    public static class MauiProgram
+    {
+        public static MauiApp CreateMauiApp()
+        {
+            var builder = MauiApp.CreateBuilder();
+
+            SetupSerilog();
+
+            builder
+                .UseMauiApp<App>()
+                .UseSkiaSharp()
+                .UseSharpnadoTabs(loggerEnable: true, debugLogEnable: true)
+                .UseMauiCommunityToolkit()
+                .UseMauiCommunityToolkitMediaElement(isAndroidForegroundServiceEnabled: false)
+                .ConfigureFonts(fonts =>
+                {
+                    fonts.AddFont(filename: "materialdesignicons-webfont.ttf", alias: "MaterialDesignIcons");
+                    fonts.AddFont(filename: "Roboto-Regular.ttf", alias: "Roboto-Regular");
+                    fonts.AddFont(filename: "Roboto-Bold.ttf", alias: "Roboto-Bold");
+                });
+
+            RegisterServices(builder.Services);
+            RegisterViewModels(builder.Services);
+            RegisterPopups(builder.Services);
+
+            return builder.Build();
+        }
+
+        private static void SetupSerilog()
+        {
+            var flushInterval = new TimeSpan(0, 0, 1);
+            var file = GeneralSettings.LogFilePath;
+
+            // Per-configuration minimum level. Nothing in the app logs at Verbose/Trace,
+            // so the old Verbose floor was purely wasteful (and a PII/perf smell in
+            // production — Phase-1 A05). Debug builds keep full app-flow diagnostics;
+            // Release is quieted to Warning so production logs carry only problems and
+            // minimize PII exposure (Information events include dyno/vehicle names).
+#if DEBUG
+            const LogEventLevel minimumLevel = LogEventLevel.Debug;
+#else
+            const LogEventLevel minimumLevel = LogEventLevel.Warning;
+#endif
+
+            Serilog.Log.Logger = new LoggerConfiguration()
+            .MinimumLevel.Is(minimumLevel)
+            .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+            .Enrich.FromLogContext()
+            .WriteTo.Debug()
+            .WriteTo.File(file, flushToDiskInterval: flushInterval, encoding: System.Text.Encoding.UTF8, rollingInterval: RollingInterval.Day, retainedFileCountLimit: 22)
+            .CreateLogger();
+        }
+
+        private static void RegisterServices(IServiceCollection services)
+        {
+            // Register logging
+            services.AddLogging(logging => logging.AddSerilog(dispose: true));
+
+            // Register core services.
+            // DatabaseContext is registered via AddDbContextFactory: IVehicleService (Singleton)
+            // consumes IDbContextFactory<DatabaseContext> (Singleton) and creates a short-lived
+            // context per operation. This replaces the previous AddSingleton<DatabaseContext>()
+            // (a captive, shared DbContext — the EF foot-gun flagged in Phase 1) AND the 14
+            // `new DatabaseContext()` service-locator calls in VehicleService. VehicleService stays
+            // Singleton so its in-memory caches are preserved; no Scoped DbContext is captured.
+            services.AddDbContextFactory<DatabaseContext>();
+            services.AddSingleton<IVehicleService, VehicleService>();
+            services.AddSingleton<IBrowserService, BrowserService>();
+            services.AddSingleton<INavigationService, NavigationService>();
+        }
+
+        private static void RegisterViewModels(IServiceCollection services)
+        {
+            // Register ViewModels
+            services.AddTransient<MainPageViewModel>();
+            services.AddTransient<VehiclesViewModel>();
+            services.AddTransient<HomeViewModel>();
+            services.AddTransient<PortTimingViewModel>();
+            services.AddTransient<VehiclesViewModelBase>();
+
+            services.AddTransient<AuslassMainViewModel>();
+            services.AddTransient<AuslassAnwendungViewModel>();
+            services.AddTransient<AuslassTheorieViewModel>();
+
+            services.AddTransient<EinlassMainViewModel>();
+            services.AddTransient<EinlassKanalViewModel>();
+            services.AddTransient<EinlassVergaserViewModel>();
+
+            services.AddTransient<MotorMainViewModel>();
+            services.AddTransient<MotorHubraumViewModel>();
+            services.AddTransient<MotorSteuerdiagrammViewModel>();
+            services.AddTransient<MotorUmrechnungViewModel>();
+            services.AddTransient<MotorVerdichtungViewModel>();
+
+            services.AddTransient<EinstellungenViewModel>();
+
+            services.AddTransient<DynoMainViewModel>();
+            services.AddTransient<DynoAusrollenViewModel>();
+            services.AddTransient<DynoDataViewModel>();
+            services.AddTransient<DynoDiagnosisViewModel>();
+            services.AddTransient<DynoGeschwindigkeitViewModel>();
+            services.AddTransient<DynoRuntimeViewModel>();
+            services.AddTransient<DynoAudioViewModel>();
+        }
+
+        private static void RegisterPopups(IServiceCollection services)
+        {
+            // Register popup view models and views.
+            // CommunityToolkit.Maui PopupService maps VM-type -> popup view with TryAdd
+            // (FIRST registration wins), so each VM type may map to exactly one popup.
+            // The previously-registered DynoCreationPopup/EnvironmentPopup were dead
+            // code — shadowed by these and therefore never shown.
+            services.AddTransientPopup<VehiclePopup, VehiclesViewModel>();
+            services.AddTransientPopup<PortTimingPopup, PortTimingViewModel>();
+        }
+    }
+}
