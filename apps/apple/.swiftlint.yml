@@ -1,0 +1,15 @@
+disabled_rules:
+  - trailing_comma
+  - line_length
+  - file_length
+  - type_body_length
+  - function_body_length
+  - identifier_name
+  - function_parameter_count
+  - cyclomatic_complexity
+opt_in_rules:
+  - empty_count
+included:
+  - Packages/SimTuningKit/Sources
+  - SimTuningIOS
+  - SimTuningIOSUITests
