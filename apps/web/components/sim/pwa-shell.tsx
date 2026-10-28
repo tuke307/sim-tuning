@@ -1,14 +1,21 @@
 'use client';
 
 import React, { useState, useSyncExternalStore } from 'react';
-import { CloudOff, House, UserRound } from 'lucide-react';
+import { Car, CloudOff, Cog, Gauge, UserRound, Waves, Wind } from 'lucide-react';
 import { Button } from '@sim-tuning/ui/components/ui/button';
 import { useAuth } from '@/providers/auth/auth-context';
 import { useLocale } from '@/providers/i18n/locale-context';
+import { SimDataProvider } from '@/providers/sim/sim-data-context';
 import { HomeView } from './home-view';
 import { SettingsView } from './settings-view';
+import { VehiclesView } from './vehicles/vehicles-view';
+import { MotorView } from './motor/motor-view';
+import { EinlassView } from './einlass/einlass-view';
+import { AuslassView } from './auslass/auslass-view';
+import { DynoView } from './dyno/dyno-view';
 
-export type NavTab = 'home' | 'profile';
+export type ModuleTab = 'vehicles' | 'motor' | 'einlass' | 'auslass' | 'dyno';
+export type NavTab = 'home' | ModuleTab | 'profile';
 
 function subscribeOnline(onChange: () => void): () => void {
   window.addEventListener('online', onChange);
@@ -20,6 +27,14 @@ function subscribeOnline(onChange: () => void): () => void {
 }
 
 export function PwaShell() {
+  return (
+    <SimDataProvider>
+      <Shell />
+    </SimDataProvider>
+  );
+}
+
+function Shell() {
   const [activeTab, setActiveTab] = useState<NavTab>('home');
   const { isAuthenticated, user } = useAuth();
   const { t } = useLocale();
@@ -34,8 +49,11 @@ export function PwaShell() {
     label: string;
     icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
   }> = [
-    { id: 'home', label: t.nav.home, icon: House },
-    { id: 'profile', label: t.nav.profile, icon: UserRound },
+    { id: 'vehicles', label: t.vehicles.title, icon: Car },
+    { id: 'motor', label: t.motor.title, icon: Cog },
+    { id: 'einlass', label: t.einlass.title, icon: Wind },
+    { id: 'auslass', label: t.auslass.title, icon: Waves },
+    { id: 'dyno', label: t.dyno.title, icon: Gauge },
   ];
 
   const syncStatusText = !isOnline
@@ -130,7 +148,12 @@ export function PwaShell() {
       </header>
 
       <main className="mx-auto w-full max-w-5xl min-w-0 flex-1 overflow-x-hidden px-4 pt-5 pb-28 sm:pt-8 md:pb-12">
-        {activeTab === 'home' && <HomeView />}
+        {activeTab === 'home' && <HomeView onNavigate={setActiveTab} />}
+        {activeTab === 'vehicles' && <VehiclesView />}
+        {activeTab === 'motor' && <MotorView />}
+        {activeTab === 'einlass' && <EinlassView />}
+        {activeTab === 'auslass' && <AuslassView />}
+        {activeTab === 'dyno' && <DynoView />}
         {activeTab === 'profile' && <SettingsView />}
       </main>
 

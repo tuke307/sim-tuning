@@ -2,11 +2,12 @@
 
 import React from 'react';
 import { Car, Cog, Gauge, Waves, Wind } from 'lucide-react';
-import { Badge } from '@sim-tuning/ui/components/ui/badge';
 import { Card } from '@sim-tuning/ui/components/ui/card';
 import { useLocale } from '@/providers/i18n/locale-context';
 
-type ModuleKey = 'vehicles' | 'motor' | 'einlass' | 'auslass' | 'dyno';
+import type { ModuleTab } from './pwa-shell';
+
+type ModuleKey = ModuleTab;
 
 const MODULES: Array<{
   key: ModuleKey;
@@ -19,7 +20,7 @@ const MODULES: Array<{
   { key: 'dyno', icon: Gauge },
 ];
 
-export function HomeView() {
+export function HomeView({ onNavigate }: { onNavigate: (tab: ModuleKey) => void }) {
   const { t } = useLocale();
 
   return (
@@ -38,21 +39,22 @@ export function HomeView() {
         <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {MODULES.map(({ key, icon: Icon }) => (
             <li key={key}>
-              <Card
+              <button
+                type="button"
                 data-testid={`home-module-${key}`}
-                className="flex h-full flex-col gap-2 rounded-[1.25rem] p-5"
+                onClick={() => onNavigate(key)}
+                className="h-full w-full text-left"
               >
-                <div className="flex items-center justify-between gap-2">
+                <Card className="hover:bg-secondary/40 flex h-full flex-col gap-2 rounded-[1.25rem] p-5 transition-colors">
                   <span className="flex items-center gap-2.5">
                     <Icon className="text-primary h-5 w-5" />
                     <span className="font-semibold">{t.home.modules[key].title}</span>
                   </span>
-                  <Badge variant="secondary" className="rounded-full text-xs">
-                    {t.home.comingSoon}
-                  </Badge>
-                </div>
-                <p className="text-muted-foreground text-[0.8125rem]">{t.home.modules[key].desc}</p>
-              </Card>
+                  <p className="text-muted-foreground text-[0.8125rem]">
+                    {t.home.modules[key].desc}
+                  </p>
+                </Card>
+              </button>
             </li>
           ))}
         </ul>
