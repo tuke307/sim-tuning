@@ -31,6 +31,18 @@
       "types": "./dist/utils/crypto.util.d.ts",
       "default": "./dist/utils/crypto.util.js"
     },
+    "./logic": {
+      "types": "./dist/logic/index.d.ts",
+      "default": "./dist/logic/index.js"
+    },
+    "./units": {
+      "types": "./dist/units/index.d.ts",
+      "default": "./dist/units/index.js"
+    },
+    "./audio": {
+      "types": "./dist/audio/index.d.ts",
+      "default": "./dist/audio/index.js"
+    },
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
