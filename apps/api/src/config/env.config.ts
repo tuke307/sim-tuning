@@ -48,7 +48,7 @@ export function getJwtRefreshSecret(): string {
 export const REFRESH_TOKEN_EXPIRY_MS = Number(process.env.REFRESH_TOKEN_EXPIRY_MS) || 604800000;
 
 export const DATABASE_URL =
-  process.env.DATABASE_URL || `postgresql://postgres:postgres@localhost:5432/sim_tuning`;
+  process.env.DATABASE_URL || `postgresql://simtuning@localhost:5450/simtuning_dev`;
 
 export const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
 export const COOKIE_DOMAIN = process.env.COOKIE_DOMAIN || undefined;

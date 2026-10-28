@@ -39,7 +39,7 @@ SimTuning (`sim-tuning`) is a two-stroke engine simulation and dyno tuning app: 
 ## Local environment
 
 - `docker compose -f compose.dev.yml up -d` starts the stack: `db`, `redis`, `mailpit`, `caddy`, `web`, `api`, `email-worker`, `db-migrate`.
-- Host ports are offset so the stack can run next to luki-fitti: Postgres `5438`, Redis `6383`, Caddy `8083`, web `3005`, api `3006`, Mailpit `8026` (SMTP `1026`).
+- The dev stack is its own compose project (`sim-tuning-dev`) with database `simtuning_dev`, user `simtuning` and named volumes; host ports: Postgres `5450`, Redis `6390`, Caddy `8090`, web `3010`, api `3011`, Mailpit `8030` (SMTP `1030`).
 - Env files per app: `<app>/.env.local` (samples in `<app>/.env.sample`). Never commit `.env*.local`.
 - Inside docker, services reach each other by **service name** (`db`, `redis`, `api`), not `localhost`.
 - Next.js server-side fetch needs the **absolute** API URL — set `SERVER_API_URL=http://api:3001/api` (mirrors `API_URL`).
