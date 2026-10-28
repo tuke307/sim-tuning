@@ -13,17 +13,21 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: 1,
   reporter: 'html',
-  webServer: {
-    // Bring up the full dev stack (api + web + workers) via turbo from the
-    // monorepo root. Locally reuses an already-running `yarn dev`; CI starts
-    // fresh. Raise timeout if the cold start (turbo + next dev + api + prisma)
-    // needs longer.
-    command: 'yarn run dev',
-    cwd: resolve(__dirname, '../..'),
-    url: 'http://localhost:3000',
-    reuseExistingServer: !process.env.CI,
-    timeout: 180_000,
-  },
+  // With PLAYWRIGHT_BASE_URL set, tests run against an already running server (e.g. a module dev
+  // server on its own port) and no stack is started.
+  webServer: process.env.PLAYWRIGHT_BASE_URL
+    ? undefined
+    : {
+        // Bring up the full dev stack (api + web + workers) via turbo from the
+        // monorepo root. Locally reuses an already-running `yarn dev`; CI starts
+        // fresh. Raise timeout if the cold start (turbo + next dev + api + prisma)
+        // needs longer.
+        command: 'yarn run dev',
+        cwd: resolve(__dirname, '../..'),
+        url: 'http://localhost:3000',
+        reuseExistingServer: !process.env.CI,
+        timeout: 180_000,
+      },
   use: {
     baseURL: process.env.PLAYWRIGHT_BASE_URL ?? 'http://localhost:3000',
     trace: 'on-first-retry',

@@ -11,7 +11,7 @@
     "start": "next start --hostname 0.0.0.0 --port 3000",
     "clean": "rm -rf .next",
     "lint": "eslint . --max-warnings 0",
-    "test": "node --import tsx --test lib/**/*.spec.ts",
+    "test": "node --import tsx --test 'lib/**/*.spec.ts'",
     "test:e2e": "playwright test --grep-invert \"doc:\"",
     "test:e2e:chromium": "playwright test --project=chromium --grep-invert \"doc:\"",
     "test:e2e:mobile": "playwright test --project=mobile",
