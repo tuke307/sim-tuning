@@ -4,7 +4,7 @@ import { STARTER_VEHICLES } from '@sim-tuning/common/catalog';
 import { DynoExportSchema } from '@sim-tuning/common/schemas';
 import { clearAllLocalData } from '@/lib/offline/offline-store';
 import { LocalRepository } from './local-repository';
-import { ReadOnlyVehicleError } from './repository';
+import { ReadOnlyEnvironmentError, ReadOnlyVehicleError } from './repository';
 
 describe('LocalRepository (guest mode, in-memory fallback)', () => {
   beforeEach(async () => {
@@ -61,5 +61,18 @@ describe('LocalRepository (guest mode, in-memory fallback)', () => {
     const importedDyno = await repo.getDyno(imported.id);
     assert.deepEqual(importedDyno?.drehzahl, exported.dyno.drehzahl);
     assert.equal((await repo.getVehicle(vehicle.id))?.dynoId, dyno.id);
+  });
+});
+
+describe('LocalRepository environments', () => {
+  it('treats starter environments as read-only like the API (403)', async () => {
+    await clearAllLocalData();
+    const repo = new LocalRepository();
+    const [starter] = await repo.listEnvironments();
+    await assert.rejects(
+      repo.updateEnvironment(starter!.id, { name: 'x' }),
+      ReadOnlyEnvironmentError,
+    );
+    await assert.rejects(repo.deleteEnvironment(starter!.id), ReadOnlyEnvironmentError);
   });
 });

@@ -46,6 +46,13 @@ export class ReadOnlyVehicleError extends Error {
   }
 }
 
+export class ReadOnlyEnvironmentError extends Error {
+  constructor() {
+    super('Starter environments are read-only.');
+    this.name = 'ReadOnlyEnvironmentError';
+  }
+}
+
 export class NotFoundError extends Error {
   constructor(what: string) {
     super(`${what} not found`);

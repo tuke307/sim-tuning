@@ -21,7 +21,12 @@ import {
   upsertDyno,
   vehicleToInput,
 } from './model';
-import { NotFoundError, ReadOnlyVehicleError, type SimRepository } from './repository';
+import {
+  NotFoundError,
+  ReadOnlyEnvironmentError,
+  ReadOnlyVehicleError,
+  type SimRepository,
+} from './repository';
 
 export interface GuestData {
   vehicles: VehicleDto[];
@@ -160,8 +165,9 @@ export class LocalRepository implements SimRepository {
 
   updateEnvironment(id: string, input: Partial<EnvironmentInputDto>) {
     return this.mutate((state) => {
-      const env = state.environments.find((e) => e.id === id && !e.isSystem);
+      const env = state.environments.find((e) => e.id === id);
       if (!env) throw new NotFoundError('Environment');
+      if (env.isSystem) throw new ReadOnlyEnvironmentError();
       const updated: EnvironmentDto = {
         ...env,
         name: input.name ?? env.name,
@@ -177,9 +183,9 @@ export class LocalRepository implements SimRepository {
 
   deleteEnvironment(id: string) {
     return this.mutate((state) => {
-      if (!state.environments.some((e) => e.id === id && !e.isSystem)) {
-        throw new NotFoundError('Environment');
-      }
+      const env = state.environments.find((e) => e.id === id);
+      if (!env) throw new NotFoundError('Environment');
+      if (env.isSystem) throw new ReadOnlyEnvironmentError();
       state.environments = state.environments.filter((e) => e.id !== id);
       state.dynos = state.dynos.map((d) =>
         d.environmentId === id ? { ...d, environmentId: null } : d,
