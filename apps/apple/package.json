@@ -1,0 +1,15 @@
+{
+  "name": "@sim-tuning/apple",
+  "version": "3.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "scripts": {
+    "build": "swift build --package-path Packages/SimTuningKit",
+    "test": "swift test --package-path Packages/SimTuningKit",
+    "xcodegen": "xcodegen generate",
+    "build:ios": "xcodegen generate && xcodebuild -project SimTuning.xcodeproj -scheme SimTuningIOS -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build",
+    "test:e2e:ios": "xcodegen generate && xcodebuild test -project SimTuning.xcodeproj -scheme SimTuningIOS -destination 'platform=iOS Simulator,name=iPhone 17 Pro' -only-testing:SimTuningIOSUITests CODE_SIGNING_ALLOWED=NO",
+    "lint": "swift build --package-path Packages/SimTuningKit",
+    "clean": "swift package --package-path Packages/SimTuningKit clean"
+  }
+}
