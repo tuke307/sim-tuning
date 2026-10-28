@@ -14,6 +14,13 @@ test.describe('PWA Shell, Navigation & Preferences', () => {
       await expect(page.getByTestId(`home-module-${key}`)).toBeVisible();
     }
 
+    await page.getByTestId('home-module-motor').click();
+    await expect(page.getByRole('heading', { name: 'Engine', exact: true })).toBeVisible();
+
+    for (const tab of ['vehicles', 'einlass', 'auslass', 'dyno'] as const) {
+      await navigateToTab(page, tab);
+    }
+
     await navigateToTab(page, 'profile');
     await expect(page.getByRole('heading', { name: 'Profile & Preferences' })).toBeVisible();
 

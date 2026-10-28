@@ -1,4 +1,10 @@
 import type { TranslationDictionary } from '../types';
+import { deSim } from './de/sim';
+import { deVehicles } from './de/vehicles';
+import { deMotor } from './de/motor';
+import { deEinlass } from './de/einlass';
+import { deAuslass } from './de/auslass';
+import { deDyno } from './de/dyno';
 
 export const de = {
   common: {
@@ -100,6 +106,12 @@ export const de = {
     sendDeletionLinkBtn: 'Lösch-Bestätigungslink senden',
     sendingBtn: 'Wird gesendet …',
   },
+  sim: deSim,
+  vehicles: deVehicles,
+  motor: deMotor,
+  einlass: deEinlass,
+  auslass: deAuslass,
+  dyno: deDyno,
   auth: {
     signInTab: 'Anmelden',
     createAccountTab: 'Konto erstellen',

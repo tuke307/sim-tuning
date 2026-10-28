@@ -1,3 +1,10 @@
+import { enSim } from './en/sim';
+import { enVehicles } from './en/vehicles';
+import { enMotor } from './en/motor';
+import { enEinlass } from './en/einlass';
+import { enAuslass } from './en/auslass';
+import { enDyno } from './en/dyno';
+
 export const en = {
   common: {
     cancel: 'Cancel',
@@ -97,6 +104,12 @@ export const en = {
     sendDeletionLinkBtn: 'Send Deletion Confirmation Email',
     sendingBtn: 'Sending…',
   },
+  sim: enSim,
+  vehicles: enVehicles,
+  motor: enMotor,
+  einlass: enEinlass,
+  auslass: enAuslass,
+  dyno: enDyno,
   auth: {
     signInTab: 'Sign In',
     createAccountTab: 'Create Account',

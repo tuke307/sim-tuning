@@ -4,7 +4,7 @@
  */
 import { expect, type Page } from '@playwright/test';
 
-export type ShellTab = 'home' | 'profile';
+export type ShellTab = 'home' | 'vehicles' | 'motor' | 'einlass' | 'auslass' | 'dyno' | 'profile';
 
 /**
  * Navigate to a main PWA tab, automatically picking the desktop horizontal nav
@@ -12,6 +12,11 @@ export type ShellTab = 'home' | 'profile';
  */
 export async function navigateToTab(page: Page, tab: ShellTab): Promise<void> {
   // Profile lives in the header avatar on every viewport, so it uses a single shared test id.
+  // Home is reached through the brand button in the header.
+  if (tab === 'home') {
+    await page.getByRole('button', { name: /SimTuning (Home|Start)/ }).click();
+    return;
+  }
   if (tab === 'profile') {
     const sharedBtn = page.getByTestId(`nav-${tab}`);
     await expect(sharedBtn).toBeVisible({ timeout: 10_000 });

@@ -60,5 +60,6 @@
     "generate": {
       "dependsOn": ["^generate"]
     }
-  }
+  },
+  "agentGuidance": false
 }
