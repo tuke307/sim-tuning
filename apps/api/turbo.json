@@ -1,0 +1,24 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "extends": ["//"],
+  "tasks": {
+    "build": {
+      "env": [
+        "BCRYPT_SALT_ROUNDS",
+        "JWT_REFRESH_SECRET",
+        "REFRESH_TOKEN_EXPIRY_MS",
+        "EMAIL_MAX_ATTEMPTS",
+        "EMAIL_RETRY_DELAY_MS",
+        "REDIS_URL",
+        "UMAMI_URL",
+        "UMAMI_WEBSITE_ID",
+        "UMAMI_ALLOWED_HOSTNAMES",
+        "COOKIE_DOMAIN",
+        "SMTP_REJECT_UNAUTHORIZED",
+        "EMAIL_VERIFICATION_EXPIRY_MS",
+        "PASSWORD_RESET_EXPIRY_MS",
+        "ACCOUNT_DELETION_EXPIRY_MS"
+      ]
+    }
+  }
+}

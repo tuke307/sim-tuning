@@ -1,0 +1,21 @@
+info:
+  name: confirm-delete-account
+  type: http
+  seq: 12
+
+http:
+  method: POST
+  url: "{{API_URL}}:{{API_PORT}}/api/auth/confirm-delete-account"
+  body:
+    type: json
+    data: |-
+      {
+        "token": "PASTE_ACCOUNT_DELETION_TOKEN_FROM_EMAIL"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

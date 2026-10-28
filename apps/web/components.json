@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "default",
+  "rsc": true,
+  "tsx": true,
+  "tailwind": {
+    "config": "",
+    "css": "../../packages/ui/src/globals.css",
+    "baseColor": "neutral",
+    "cssVariables": false
+  },
+  "iconLibrary": "lucide",
+  "aliases": {
+    "components": "@/components",
+    "utils": "@/utils",
+    "lib": "@/lib",
+    "hooks": "@/hooks",
+    "ui": "@sim-tuning/ui/components/ui"
+  }
+}

@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+
+set -e
+
+# Ensure Homebrew's Node is available when Git provides a minimal PATH.
+if ! command -v node >/dev/null 2>&1 && [ -x "/opt/homebrew/bin/node" ]; then
+	export PATH="/opt/homebrew/bin:$PATH"
+fi
+
+lint-staged

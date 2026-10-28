@@ -1,0 +1,31 @@
+info:
+  name: verify-email
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{API_URL}}:{{API_PORT}}/api/auth/verify-email"
+  body:
+    type: json
+    data: |-
+      {
+        "token": "PASTE-VERIFICATION-TOKEN-FROM-EMAIL"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        if (bru.cookies.has('csrfToken')) {
+          const csrfToken = bru.cookies.get('csrfToken');
+          bru.setEnvVar('CSRF_TOKEN', csrfToken);
+          console.log('CSRF Token extracted and set to environment variable:', csrfToken);
+        }
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

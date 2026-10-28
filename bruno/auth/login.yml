@@ -1,0 +1,34 @@
+info:
+  name: login
+  type: http
+  seq: 4
+
+http:
+  method: POST
+  url: "{{API_URL}}:{{API_PORT}}/api/auth/login"
+  body:
+    type: json
+    data: |-
+      {
+        "email": "tonymeissner70@gmail.com",
+        "password": "FAKE-PASSWORD-TEST-123"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        if (bru.cookies.has('csrfToken')) {
+          const csrfToken = bru.cookies.get('csrfToken');
+          bru.setEnvVar('CSRF_TOKEN', csrfToken);
+          console.log('CSRF Token extracted and set to environment variable:', csrfToken);
+        } else {
+          console.warn('CSRF Token cookie not found in the response.');
+        }
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

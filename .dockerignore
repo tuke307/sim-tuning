@@ -1,0 +1,83 @@
+# Node modules
+**/node_modules
+
+# Build outputs
+**/.next
+**/out
+
+# Logs
+**/*.log
+**/npm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+
+# Environment variables
+**/.env*
+**/.env*.local
+
+# OS files
+**/.DS_Store
+**/Thumbs.db
+
+# IDE configurations
+**/.vscode
+**/.idea
+**/*.sublime-project
+**/*.sublime-workspace
+
+# Git files
+**/.git
+**/.gitignore
+
+# Docker files
+**/Dockerfile*
+**/docker-compose.yml
+**/compose.yml
+
+# Turbo cache (can grow to tens of GB — never ship it to the daemon)
+.turbo
+**/.turbo
+
+# Test artifacts
+**/test-results
+**/playwright-report
+**/blob-report
+**/.next-extract
+
+# Local tooling
+graphify-out
+.claude
+apm_modules
+
+# Miscellaneous
+**/*.tgz
+**/*.zip
+**/*.bak
+**/*.tmp
+**/*.swp
+**/.sass-cache
+**/.cache
+**/dist
+**/coverage
+**/tmp
+**/temp
+
+# API uploads
+**/uploads
+
+# Native Apple workspace (built on macOS / Xcode, not in Linux Docker containers)
+apps/apple
+
+# markdown files
+**/README.md
+
+# eslint files
+**/eslint.config*
+
+# nodemon files
+**/nodemon.*.json
+
+# **Ensure 'public' is NOT ignored**
+# If excluding everything, whitelist 'public'
+# **
+# !public

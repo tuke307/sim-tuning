@@ -1,0 +1,12 @@
+{
+  "name": "@sim-tuning/typescript-config",
+  "version": "1.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "typescript": "6.0.3"
+  }
+}

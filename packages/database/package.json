@@ -1,0 +1,50 @@
+{
+  "name": "@sim-tuning/database",
+  "version": "1.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "type": "module",
+  "main": "./dist/client.js",
+  "types": "./dist/client.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/client.d.ts",
+      "default": "./dist/client.js"
+    }
+  },
+  "scripts": {
+    "build": "prisma generate && tsc --build && tsc-alias -p tsconfig.json -f -fe .js",
+    "db:deploy:local": "dotenv -e .env.local -- prisma migrate deploy",
+    "db:deploy": "prisma migrate deploy",
+    "db:migrate:local": "dotenv -e .env.local -- prisma migrate dev --name",
+    "db:migrate": "prisma migrate dev --name",
+    "db:push": "dotenv -e .env.local -- prisma db push",
+    "db:seed": "dotenv -e .env.local -- tsx src/seed.ts",
+    "db:studio": "dotenv -e .env.local -- prisma studio",
+    "db:generate": "prisma generate",
+    "format": "prisma format",
+    "lint": "eslint . --max-warnings 0"
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "7.10.0",
+    "@prisma/client": "7.10.0",
+    "jsonc-parser": "^3.3.1",
+    "prisma": "7.10.0",
+    "prisma-extension-pagination": "^0.7.6"
+  },
+  "devDependencies": {
+    "@sim-tuning/common": "*",
+    "@sim-tuning/eslint-config": "*",
+    "@sim-tuning/logger": "*",
+    "@sim-tuning/typescript-config": "*",
+    "@types/node": "^26.6.4",
+    "@types/react": "^19.3.0",
+    "dotenv-cli": "^11.0.0",
+    "eslint": "^10.12.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "ts-node": "^10.9.2",
+    "tsx": "4.23.15",
+    "typescript": "6.0.3"
+  }
+}

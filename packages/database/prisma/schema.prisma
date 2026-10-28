@@ -1,0 +1,109 @@
+generator client {
+  provider        = "prisma-client"
+  output          = "../src/generated/prisma"
+  moduleFormat    = "esm"
+  engineType      = "client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id                       String    @id @default(uuid())
+  email                    String    @unique
+  name                     String?
+  passwordHash             String
+  emailVerified            Boolean   @default(true)
+  emailVerificationToken   String?   @unique
+  emailVerificationExpires DateTime?
+  passwordResetToken       String?   @unique
+  passwordResetExpires     DateTime?
+  accountDeletionToken     String?   @unique
+  accountDeletionExpires   DateTime?
+  failedLoginAttempts      Int       @default(0)
+  lockedUntil              DateTime?
+  lastLoginAt              DateTime?
+  createdAt                DateTime  @default(now())
+  updatedAt                DateTime  @updatedAt
+
+  preferences   UserPreferences?
+  refreshTokens RefreshToken[]
+  emails        Email[]
+}
+
+model UserPreferences {
+  id                String   @id @default(uuid())
+  userId            String   @unique
+  theme             String   @default("system")
+  language          String   @default("system")
+  /// Decimal places after a unit conversion (v2 UnitSettings.RoundingAccuracy).
+  roundingAccuracy  Int      @default(2)
+  /// Round values when the displayed unit changes (v2 UnitSettings.RoundOnUnitChange).
+  roundOnUnitChange Boolean  @default(true)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+enum EmailTemplateType {
+  ACCOUNT_CONFIRMATION
+  PASSWORD_RESET
+  ACCOUNT_DELETION
+}
+
+enum EmailStatus {
+  PROCESSING
+  PENDING
+  SENT
+  FAILED
+}
+
+model EmailTemplate {
+  id        Int               @id @default(autoincrement())
+  name      String
+  subject   String
+  htmlFile  String            @unique
+  type      EmailTemplateType @unique
+  updatedAt DateTime          @updatedAt
+
+  emails Email[]
+}
+
+model Email {
+  id              Int         @id @default(autoincrement())
+  recipientEmail  String
+  subject         String
+  content         String
+  scheduledAt     DateTime    @default(now())
+  sentAt          DateTime?
+  status          EmailStatus @default(PENDING)
+  attempts        Int         @default(0)
+  lastAttemptAt   DateTime?
+  errorMessage    String?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  emailTemplateId Int
+  userId          String?
+
+  emailTemplate EmailTemplate @relation(fields: [emailTemplateId], references: [id])
+  user          User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([emailTemplateId])
+  @@index([userId])
+  @@index([status, scheduledAt])
+}
