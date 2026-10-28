@@ -14,7 +14,12 @@ import type { EnvironmentDto, VehicleDto } from '@sim-tuning/common/schemas';
 import { ROUNDING_ACCURACY } from '@sim-tuning/common/schemas';
 import { useAuth } from '@/providers/auth/auth-context';
 import { ApiRepository } from '@/lib/data/api-repository';
-import { LocalRepository } from '@/lib/data/local-repository';
+import { LocalRepository, type GuestData } from '@/lib/data/local-repository';
+import {
+  isGuestDataEmpty,
+  migrateGuestData,
+  type GuestMigrationResult,
+} from '@/lib/data/guest-migration';
 import type { SimRepository } from '@/lib/data/repository';
 
 const SELECTED_VEHICLE_KEY = 'sim_tuning_selected_vehicle';
@@ -34,6 +39,10 @@ interface SimDataContextValue {
   setVehicle: (vehicle: VehicleDto) => void;
   /** Unit rounding from the user's preferences (v2 UnitSettings). */
   rounding: UnitRoundingOptions;
+  /** Guest data left on this device after signing in, waiting to be moved into the account. */
+  pendingGuestData: GuestData | null;
+  importGuestData: () => Promise<GuestMigrationResult>;
+  discardGuestData: () => Promise<void>;
 }
 
 const SimDataContext = createContext<SimDataContextValue | null>(null);
@@ -51,6 +60,22 @@ export function SimDataProvider({ children }: { children: ReactNode }) {
   const [selectedId, setSelectedId] = useState<string | null>(() =>
     typeof window === 'undefined' ? null : window.localStorage.getItem(SELECTED_VEHICLE_KEY),
   );
+
+  const [pendingGuestData, setPendingGuestData] = useState<GuestData | null>(null);
+
+  useEffect(() => {
+    if (repository.kind !== 'api') return;
+    let cancelled = false;
+    new LocalRepository()
+      .snapshotOwnData()
+      .then((data) => {
+        if (!cancelled) setPendingGuestData(isGuestDataEmpty(data) ? null : data);
+      })
+      .catch(() => undefined);
+    return () => {
+      cancelled = true;
+    };
+  }, [repository]);
 
   const refresh = useCallback(async () => {
     try {
@@ -102,6 +127,20 @@ export function SimDataProvider({ children }: { children: ReactNode }) {
     );
   }, []);
 
+  const importGuestData = useCallback(async () => {
+    if (!pendingGuestData) return { vehicles: 0, environments: 0, dynos: 0 };
+    const result = await migrateGuestData(pendingGuestData, repository);
+    await new LocalRepository().clearOwnData();
+    setPendingGuestData(null);
+    await refresh();
+    return result;
+  }, [pendingGuestData, repository, refresh]);
+
+  const discardGuestData = useCallback(async () => {
+    await new LocalRepository().clearOwnData();
+    setPendingGuestData(null);
+  }, []);
+
   const selectedVehicle =
     vehicles.find((v) => v.id === selectedId) ??
     vehicles.find((v) => !v.isSystem) ??
@@ -128,6 +167,9 @@ export function SimDataProvider({ children }: { children: ReactNode }) {
       refresh,
       setVehicle,
       rounding,
+      pendingGuestData,
+      importGuestData,
+      discardGuestData,
     }),
     [
       repository,
@@ -140,6 +182,9 @@ export function SimDataProvider({ children }: { children: ReactNode }) {
       refresh,
       setVehicle,
       rounding,
+      pendingGuestData,
+      importGuestData,
+      discardGuestData,
     ],
   );
 

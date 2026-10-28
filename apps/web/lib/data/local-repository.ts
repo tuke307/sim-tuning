@@ -23,6 +23,12 @@ import {
 } from './model';
 import { NotFoundError, ReadOnlyVehicleError, type SimRepository } from './repository';
 
+export interface GuestData {
+  vehicles: VehicleDto[];
+  environments: EnvironmentDto[];
+  dynos: DynoDto[];
+}
+
 interface LocalState {
   version: 1;
   vehicles: VehicleDto[];
@@ -74,6 +80,25 @@ export class LocalRepository implements SimRepository {
     if (!vehicle) throw new NotFoundError('Vehicle');
     if (vehicle.isSystem) throw new ReadOnlyVehicleError();
     return vehicle;
+  }
+
+  /** Everything the guest created on this device (starter content excluded). */
+  async snapshotOwnData(): Promise<GuestData> {
+    const state = await this.load();
+    return {
+      vehicles: state.vehicles.filter((v) => !v.isSystem),
+      environments: state.environments.filter((e) => !e.isSystem),
+      dynos: state.dynos,
+    };
+  }
+
+  /** Removes all guest-created data (after it was moved into an account, or discarded). */
+  clearOwnData() {
+    return this.mutate((state) => {
+      state.vehicles = state.vehicles.filter((v) => v.isSystem);
+      state.environments = state.environments.filter((e) => e.isSystem);
+      state.dynos = [];
+    });
   }
 
   async listVehicles() {

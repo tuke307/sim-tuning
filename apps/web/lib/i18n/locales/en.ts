@@ -42,6 +42,12 @@ export const en = {
     title: 'SimTuning',
     subtitle: 'Simulate, calculate and measure your two-stroke engine.',
     modulesTitle: 'Modules',
+    guestImportTitle: 'Data from guest mode',
+    guestImportDesc:
+      '{vehicles} vehicles and {dynos} dyno runs are still saved only on this device. Move them into your account?',
+    guestImportBtn: 'Move to account',
+    guestDiscardBtn: 'Discard',
+    guestImportDone: 'Moved {vehicles} vehicles into your account.',
     comingSoon: 'Coming soon',
     modules: {
       vehicles: {

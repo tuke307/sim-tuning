@@ -43,6 +43,12 @@ export const de = {
     title: 'SimTuning',
     subtitle: 'Simuliere, berechne und vermiss deinen Zweitaktmotor.',
     modulesTitle: 'Module',
+    guestImportTitle: 'Daten aus dem Gastmodus',
+    guestImportDesc:
+      '{vehicles} Fahrzeuge und {dynos} Dyno-Läufe sind nur auf diesem Gerät gespeichert. In dein Konto übernehmen?',
+    guestImportBtn: 'Ins Konto übernehmen',
+    guestDiscardBtn: 'Verwerfen',
+    guestImportDone: '{vehicles} Fahrzeuge in dein Konto übernommen.',
     comingSoon: 'Bald verfügbar',
     modules: {
       vehicles: {
