@@ -1,0 +1,15 @@
+info:
+  name: delete-vehicle
+  type: http
+  seq: 6
+
+http:
+  method: DELETE
+  url: "{{API_URL}}:{{API_PORT}}/api/vehicles/{{VEHICLE_ID}}"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

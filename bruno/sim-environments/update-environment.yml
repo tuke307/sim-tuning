@@ -1,0 +1,21 @@
+info:
+  name: update-environment
+  type: http
+  seq: 3
+
+http:
+  method: PATCH
+  url: "{{API_URL}}:{{API_PORT}}/api/environments/{{ENVIRONMENT_ID}}"
+  body:
+    type: json
+    data: |-
+      {
+        "temperaturT": 298.15
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
