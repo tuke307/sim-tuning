@@ -2,7 +2,7 @@
 
 Two-stroke engine simulation and dyno tuning for **Web (PWA)** and **iPhone (iOS 18+)**.
 
-> **v3 rewrite in progress.** This branch replaces the .NET MAUI app (branch `v2.0.0`) with a
+> **v3 rewrite in progress.** This branch replaces the .NET MAUI app (kept on branch `v2`) with a
 > TypeScript monorepo. The phased plan is in [`docs/v3-rewrite-plan.md`](docs/v3-rewrite-plan.md).
 > Phase 0 (scaffold: auth, email, PWA shell, settings) is in place; the tuning modules follow.
 
@@ -100,4 +100,4 @@ local projects: Postgres `5438`, Redis `6383`, Caddy `8083`, web `3005`, api `30
 
 ## Legacy v2 (.NET MAUI)
 
-The previous app lives on branch `v2.0.0` and stays there unchanged until the v3 cutover.
+The previous .NET MAUI app lives on branch `v2` and stays there unchanged.

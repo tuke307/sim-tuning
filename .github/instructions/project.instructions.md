@@ -9,7 +9,7 @@ description: 'Project orientation for sim-tuning — what the product is, monore
 
 SimTuning (`sim-tuning`) is a two-stroke engine simulation and dyno tuning app: engine geometry (displacement, compression, port timing diagram), intake resonance and carburettor sizing, exhaust (expansion chamber) design, and a dyno that derives power curves from recorded engine sound (spectrogram → RPM points → DBSCAN clusters) and GPS speed / coast-down runs. Offline-first PWA plus a native iOS app.
 
-`v3` is a full rewrite of the former .NET MAUI app (branch `v2.0.0`). The migration plan lives in `docs/v3-rewrite-plan.md`. German domain names are kept 1:1 from v2 (`Motor`, `Einlass`, `Auslass`, `Auspuff`, `Ueberstroemer`, `Vergaser`, `Ausrollen`, `Geschwindigkeit`, field names like `hubL`, `bohrungD`) — do not translate them in code or the database; the UI is bilingual (EN/DE).
+`v3` is a full rewrite of the former .NET MAUI app (kept on branch `v2`). The migration plan lives in `docs/v3-rewrite-plan.md`. German domain names are kept 1:1 from v2 (`Motor`, `Einlass`, `Auslass`, `Auspuff`, `Ueberstroemer`, `Vergaser`, `Ausrollen`, `Geschwindigkeit`, field names like `hubL`, `bohrungD`) — do not translate them in code or the database; the UI is bilingual (EN/DE).
 
 ## Monorepo map
 
@@ -39,7 +39,7 @@ SimTuning (`sim-tuning`) is a two-stroke engine simulation and dyno tuning app: 
 ## Local environment
 
 - `docker compose -f compose.dev.yml up -d` starts the stack: `db`, `redis`, `mailpit`, `caddy`, `web`, `api`, `email-worker`, `db-migrate`.
-- Host ports are offset so the stack can run next to luki-fitti: Postgres `5438`, Redis `6383`, Caddy `8083`, web `3005`, api `3006`.
+- Host ports are offset so the stack can run next to luki-fitti: Postgres `5438`, Redis `6383`, Caddy `8083`, web `3005`, api `3006`, Mailpit `8026` (SMTP `1026`).
 - Env files per app: `<app>/.env.local` (samples in `<app>/.env.sample`). Never commit `.env*.local`.
 - Inside docker, services reach each other by **service name** (`db`, `redis`, `api`), not `localhost`.
 - Next.js server-side fetch needs the **absolute** API URL — set `SERVER_API_URL=http://api:3001/api` (mirrors `API_URL`).

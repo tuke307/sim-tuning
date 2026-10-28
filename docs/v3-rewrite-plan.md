@@ -1,6 +1,7 @@
 # SimTuning v3 — Complete Rewrite Plan
 
-Branch: `v3` (orphan, no shared history with `v2.0.0`). Becomes the default branch at cutover.
+Branch: v3 work is rebased onto `main` (which holds v2) and merged there; the .NET tree is removed
+in the same change. The frozen .NET MAUI app stays on branch `v2`.
 Reference stack: `luki-fitti` (same author) — identical tooling, folder layout and conventions.
 
 ## Decisions
@@ -8,7 +9,7 @@ Reference stack: `luki-fitti` (same author) — identical tooling, folder layout
 | Topic        | Decision                                                                                  |
 | ------------ | ----------------------------------------------------------------------------------------- |
 | Scope        | Mirror luki-fitti: `web` + `api` + `email-worker` + `apple` (iOS only — no watchOS/widgets) |
-| History      | Orphan branch; `v2.0.0` stays as the frozen .NET MAUI legacy branch                        |
+| History      | Rebased onto `main`; branch `v2` stays as the frozen .NET MAUI legacy branch               |
 | Naming       | Keep German domain terms 1:1 (`Auslass`, `Einlass`, `Ueberstroemer`, `Ausrollen`, `hubL`…) |
 | Audio dyno   | Client-side only (Web Audio + TS DSP in browser, AVAudioEngine + vDSP on iOS)              |
 | .NET         | Removed entirely — no `src/`, `.sln`, `csproj`, csharpier, stylecop, `global.json`         |
@@ -175,8 +176,8 @@ Phases 7–11 can run in parallel after 6 (apple only needs 1–4).
 
 ## 7. Cutover
 1. Parity checklist (one row per v2 view) signed off.
-2. Tag `v2.0.0` head as `v2-final`; mark branch read-only / archived in README.
-3. `gh repo edit tuke307/sim-tuning --default-branch v3` (repo default today: `v2.0.0`).
+2. Tag the `v2` head as `v2-final`; mark the branch read-only / archived in README.
+3. Default branch is already `main`; merging v3 into `main` replaces the .NET app there.
 4. Retarget open PRs; update store listings / links to the PWA.
 
 ## 8. Risks & open points
