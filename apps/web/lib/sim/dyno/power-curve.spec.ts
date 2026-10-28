@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { getLeistung, wattToPs } from '@sim-tuning/common/logic';
+import { getLeistungskurve, wattToPs } from '@sim-tuning/common/logic';
 import { DynoExportSchema } from '@sim-tuning/common/schemas';
 import {
   airDensity,
@@ -12,7 +12,7 @@ import {
 import { pickRecorderMimeType, safeFileName, validateAudioFile } from './audio-input';
 import { fillTemplate } from './format';
 
-describe('power curve (v2 DynoDiagnosisViewModel)', () => {
+describe('power curve (v2 range logic, v3 physics)', () => {
   const drehzahl = [
     { zeit: 0, drehzahl: 3000 },
     { zeit: 500, drehzahl: 4000 },
@@ -27,10 +27,17 @@ describe('power curve (v2 DynoDiagnosisViewModel)', () => {
       curve.map((p) => p.drehzahl),
       [4000, 5000],
     );
-    const expected = wattToPs(
-      getLeistung(4000, 0.5, 1.2, 0.8, 14, 0.277, 170, 0.005, 9.81, 0.75, 0),
-    );
-    assert.equal(curve[0]!.ps, expected);
+    const [first] = getLeistungskurve(drehzahl.slice(0, 4), 14, 0.277, {
+      masse: 170,
+      luftdichte: 1.2,
+      cw: 0.8,
+      frontA: 0.75,
+      rollwiderstand: 0.005,
+      steigung: 0,
+    });
+    assert.equal(curve[0]!.ps, wattToPs(first!.watt));
+    // Physically plausible for a moped (v2 formula produced ~1e14 PS).
+    assert.ok(curve.every((p) => p.ps > 0 && p.ps < 50));
     assert.equal(peakPower(curve)!.drehzahl, 5000);
   });
 
