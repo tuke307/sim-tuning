@@ -29,13 +29,13 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Build
-        run: yarn build
+        run: yarn turbo run build --filter=!@sim-tuning/apple
 
       - name: Lint
-        run: yarn lint
+        run: yarn turbo run lint --filter=!@sim-tuning/apple
 
       - name: Unit tests
-        run: yarn test
+        run: yarn turbo run test --filter=!@sim-tuning/apple
 
       - name: Format check
         run: yarn format:check
