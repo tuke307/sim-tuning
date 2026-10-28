@@ -1,0 +1,5 @@
+// Shared build settings. Signing is configured locally (leave DEVELOPMENT_TEAM empty in git);
+// CI and local verification builds use CODE_SIGNING_ALLOWED=NO.
+SWIFT_VERSION = 6.0
+MARKETING_VERSION = 3.0.0
+CURRENT_PROJECT_VERSION = 1

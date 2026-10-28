@@ -1,0 +1,3 @@
+#include "Shared.xcconfig"
+// Local API (apps/api). Override at runtime with the SIMTUNING_API_BASE_URL environment variable.
+SIMTUNING_API_BASE_URL = http:/$()/localhost:3001
