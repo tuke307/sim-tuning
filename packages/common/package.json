@@ -43,6 +43,10 @@
       "types": "./dist/audio/index.d.ts",
       "default": "./dist/audio/index.js"
     },
+    "./catalog": {
+      "types": "./dist/catalog/index.d.ts",
+      "default": "./dist/catalog/index.js"
+    },
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"

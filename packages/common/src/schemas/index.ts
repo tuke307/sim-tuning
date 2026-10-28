@@ -217,3 +217,4 @@ export const AnalyticsCollectSchema = z.discriminatedUnion('type', [
 ]);
 
 export type AnalyticsCollectDto = z.infer<typeof AnalyticsCollectSchema>;
+export * from './sim';
