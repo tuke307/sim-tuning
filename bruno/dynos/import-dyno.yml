@@ -1,0 +1,62 @@
+info:
+  name: import-dyno
+  type: http
+  seq: 5
+
+http:
+  method: POST
+  url: "{{API_URL}}:{{API_PORT}}/api/dynos/import"
+  body:
+    type: json
+    data: |-
+      {
+        "format": "sim-tuning-dyno",
+        "version": 3,
+        "exportedAt": "2026-05-01T10:05:00.000Z",
+        "vehicle": {
+          "name": "Importiert",
+          "gewicht": 80,
+          "motor": {
+            "name": "M541",
+            "hubL": 0.044
+          }
+        },
+        "dyno": {
+          "name": "Importierter Lauf",
+          "active": true,
+          "drehzahl": [
+            {
+              "zeit": 0,
+              "drehzahl": 2000
+            },
+            {
+              "zeit": 0.5,
+              "drehzahl": 5500
+            }
+          ],
+          "dynoPs": [
+            {
+              "drehzahl": 5500,
+              "ps": 6.1
+            }
+          ]
+        }
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        const body = res.getBody();
+        const value = body?.data?.id;
+        if (value) {
+          bru.setEnvVar('VEHICLE_ID', value);
+          console.log('VEHICLE_ID set to', value);
+        }
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
