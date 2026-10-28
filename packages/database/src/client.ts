@@ -30,6 +30,19 @@ export type {
   RefreshToken,
   EmailTemplate,
   Email,
+  Environment,
+  Vehicle,
+  Motor,
+  Einlass,
+  Vergaser,
+  Auslass,
+  Auspuff,
+  Ueberstroemer,
+  Dyno,
+  Drehzahl,
+  DynoPs,
+  Ausrollen,
+  Geschwindigkeit,
 } from './generated/prisma/client';
 
 export { EmailTemplateType, EmailStatus } from './generated/prisma/client';

@@ -1,8 +1,8 @@
 generator client {
-  provider        = "prisma-client"
-  output          = "../src/generated/prisma"
-  moduleFormat    = "esm"
-  engineType      = "client"
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "esm"
+  engineType   = "client"
 }
 
 datasource db {
@@ -30,6 +30,8 @@ model User {
   preferences   UserPreferences?
   refreshTokens RefreshToken[]
   emails        Email[]
+  vehicles      Vehicle[]
+  environments  Environment[]
 }
 
 model UserPreferences {
@@ -106,4 +108,247 @@ model Email {
   @@index([emailTemplateId])
   @@index([userId])
   @@index([status, scheduledAt])
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SimTuning domain (v2 entities, German names kept, values in field base units)
+// Rows with `userId = null` and a `systemKey` are shared read-only starter content.
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Environment {
+  id          String   @id @default(uuid())
+  userId      String?
+  systemKey   String?  @unique
+  name        String
+  temperaturT Float?
+  luftdruckP  Float?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user  User?  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  dynos Dyno[]
+
+  @@index([userId])
+}
+
+model Vehicle {
+  id           String   @id @default(uuid())
+  userId       String?
+  systemKey    String?  @unique
+  name         String
+  beschreibung String?
+  gewicht      Float?
+  motorId      String?  @unique
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user  User?  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  motor Motor? @relation(fields: [motorId], references: [id], onDelete: SetNull)
+  dyno  Dyno?
+
+  @@index([userId])
+}
+
+model Motor {
+  id              String   @id @default(uuid())
+  name            String
+  bohrungD        Float?
+  brennraumV      Float?
+  deachsierungL   Float?
+  heizwertU       Float?
+  hubL            Float?
+  hubraumV        Float?
+  kolbenG         Float?
+  kurbelgehaeuseV Float?
+  pleulL          Float?
+  resonanzU       Float?
+  verdichtungV    Float?
+  zuendzeitpunkt  Float?
+  zylinderAnz     Float?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  vehicle       Vehicle?
+  einlass       Einlass?
+  auslass       Auslass?
+  ueberstroemer Ueberstroemer?
+}
+
+model Einlass {
+  id           String   @id @default(uuid())
+  motorId      String   @unique
+  breiteB      Float?
+  durchmesserD Float?
+  flaecheA     Float?
+  hoeheH       Float?
+  laengeL      Float?
+  luftBedarf   Float?
+  steuerzeitSZ Float?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  motor    Motor     @relation(fields: [motorId], references: [id], onDelete: Cascade)
+  vergaser Vergaser?
+}
+
+model Vergaser {
+  id           String   @id @default(uuid())
+  einlassId    String   @unique
+  benzinLuftF  Float?
+  durchmesserD Float?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  einlass Einlass @relation(fields: [einlassId], references: [id], onDelete: Cascade)
+}
+
+model Auslass {
+  id           String   @id @default(uuid())
+  motorId      String   @unique
+  breiteB      Float?
+  durchmesserD Float?
+  flaecheA     Float?
+  hoeheH       Float?
+  laengeL      Float?
+  steuerzeitSZ Float?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  motor   Motor    @relation(fields: [motorId], references: [id], onDelete: Cascade)
+  auspuff Auspuff?
+}
+
+model Auspuff {
+  id            String   @id @default(uuid())
+  auslassId     String   @unique
+  abgasT        Float?
+  abgasV        Float?
+  diffusorD     Float?
+  diffusorD1    Float?
+  diffusorD2    Float?
+  diffusorD3    Float?
+  diffusorL     Float?
+  diffusorL1    Float?
+  diffusorL2    Float?
+  diffusorL3    Float?
+  diffusorStage Int      @default(0)
+  diffusorW     Float?
+  diffusorW1    Float?
+  diffusorW2    Float?
+  diffusorW3    Float?
+  endrohrD      Float?
+  endrohrL      Float?
+  gegenkonusD   Float?
+  gegenkonusL   Float?
+  gegenKonusW   Float?
+  gesamtL       Float?
+  kruemmerD     Float?
+  kruemmerF     Float?
+  kruemmerL     Float?
+  kruemmerW     Float?
+  mittelteilD   Float?
+  mittelteilF   Float?
+  mittelteilL   Float?
+  resonanzL     Float?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  auslass Auslass @relation(fields: [auslassId], references: [id], onDelete: Cascade)
+}
+
+model Ueberstroemer {
+  id           String   @id @default(uuid())
+  motorId      String   @unique
+  anzahl       Float?
+  breiteB      Float?
+  flaecheA     Float?
+  hoeheH       Float?
+  steuerzeitSZ Float?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  motor Motor @relation(fields: [motorId], references: [id], onDelete: Cascade)
+}
+
+model Dyno {
+  id            String   @id @default(uuid())
+  vehicleId     String   @unique
+  environmentId String?
+  name          String
+  beschreibung  String?
+  active        Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  vehicle         Vehicle           @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  environment     Environment?      @relation(fields: [environmentId], references: [id], onDelete: SetNull)
+  drehzahl        Drehzahl[]
+  dynoPs          DynoPs[]
+  ausrollen       Ausrollen[]
+  geschwindigkeit Geschwindigkeit[]
+}
+
+/// RPM over time from the audio dyno (v2 table `DynoAudio`).
+model Drehzahl {
+  id       String @id @default(uuid())
+  dynoId   String
+  position Int
+  zeit     Float
+  drehzahl Float
+
+  dyno Dyno @relation(fields: [dynoId], references: [id], onDelete: Cascade)
+
+  @@index([dynoId, position])
+}
+
+model DynoPs {
+  id       String @id @default(uuid())
+  dynoId   String
+  position Int
+  drehzahl Float
+  ps       Float
+
+  dyno Dyno @relation(fields: [dynoId], references: [id], onDelete: Cascade)
+
+  @@index([dynoId, position])
+}
+
+/// GPS samples of a coast-down run.
+model Ausrollen {
+  id               String    @id @default(uuid())
+  dynoId           String
+  position         Int
+  latitude         Float
+  longitude        Float
+  speed            Float?
+  accuracy         Float?
+  altitude         Float?
+  altitudeAccuracy Float?
+  heading          Float?
+  headingAccuracy  Float?
+  zeitpunkt        DateTime?
+
+  dyno Dyno @relation(fields: [dynoId], references: [id], onDelete: Cascade)
+
+  @@index([dynoId, position])
+}
+
+/// GPS samples of an acceleration run.
+model Geschwindigkeit {
+  id               String    @id @default(uuid())
+  dynoId           String
+  position         Int
+  latitude         Float
+  longitude        Float
+  speed            Float?
+  accuracy         Float?
+  altitude         Float?
+  altitudeAccuracy Float?
+  heading          Float?
+  headingAccuracy  Float?
+  zeitpunkt        DateTime?
+
+  dyno Dyno @relation(fields: [dynoId], references: [id], onDelete: Cascade)
+
+  @@index([dynoId, position])
 }

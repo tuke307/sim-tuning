@@ -6,3 +6,4 @@ export * from './api/params/order-by.params';
 export * from './logic';
 export * from './units';
 export * from './audio';
+export * from './catalog';

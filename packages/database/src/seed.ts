@@ -1,5 +1,6 @@
 import prisma from './client';
 import logger from '@sim-tuning/logger';
+import { STARTER_ENVIRONMENTS, STARTER_VEHICLES } from '@sim-tuning/common/catalog';
 
 async function main(): Promise<void> {
   try {
@@ -48,9 +49,54 @@ async function main(): Promise<void> {
           type: 'ACCOUNT_DELETION',
         },
       });
+
+      for (const env of STARTER_ENVIRONMENTS) {
+        const { systemKey, ...data } = env;
+        await tx.environment.upsert({
+          where: { systemKey },
+          update: data,
+          create: { systemKey, ...data },
+        });
+      }
+
+      // Starter vehicles are shared read-only templates (userId = null). They are only created
+      // once; later edits to the catalog do not overwrite rows (users duplicate them instead).
+      for (const vehicle of STARTER_VEHICLES) {
+        const existing = await tx.vehicle.findUnique({ where: { systemKey: vehicle.systemKey } });
+        if (existing) continue;
+        const { motor } = vehicle;
+        await tx.vehicle.create({
+          data: {
+            systemKey: vehicle.systemKey,
+            name: vehicle.name,
+            beschreibung: vehicle.beschreibung,
+            gewicht: vehicle.gewicht,
+            motor: {
+              create: {
+                name: motor.name,
+                hubL: motor.hubL,
+                bohrungD: motor.bohrungD,
+                pleulL: motor.pleulL,
+                deachsierungL: motor.deachsierungL,
+                resonanzU: motor.resonanzU,
+                hubraumV: motor.hubraumV,
+                brennraumV: motor.brennraumV,
+                kurbelgehaeuseV: motor.kurbelgehaeuseV,
+                einlass: {
+                  create: { steuerzeitSZ: motor.einlassSteuerzeitSZ, vergaser: { create: {} } },
+                },
+                auslass: {
+                  create: { steuerzeitSZ: motor.auslassSteuerzeitSZ, auspuff: { create: {} } },
+                },
+                ueberstroemer: { create: { steuerzeitSZ: motor.ueberstroemerSteuerzeitSZ } },
+              },
+            },
+          },
+        });
+      }
     });
 
-    logger.info('SimTuning email templates seeded successfully');
+    logger.info('SimTuning email templates, environments and starter vehicles seeded');
   } catch (error) {
     logger.error('Error seeding SimTuning database:', error);
     await prisma.$disconnect();
