@@ -9,21 +9,22 @@ the standard `ApiResponse<T>` envelope (`{ success, data, message? }`) and requi
 ## Ownership rules (deny by default)
 
 - Rows with `userId = null` and a `systemKey` are **shared starter content** (v2 seed). Every
-  signed-in user can read them; nobody can update or delete them through the API.
+  signed-in user can read them; updating or deleting them returns `403` (read-only). Vehicles
+  can be duplicated instead.
 - All other rows belong to exactly one user. Reading/updating/deleting another user's row returns
   `404` (never `403`, so ids cannot be probed).
 - A dyno belongs to the vehicle's owner. Dynos of system vehicles cannot be created.
 
 ## Vehicles
 
-| Method | Path                      | Body                                                                    | Response                                                                                                       |
-| ------ | ------------------------- | ----------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| GET    | `/vehicles`               | –                                                                       | `VehicleDto[]` (system vehicles first, then own, by name)                                                      |
-| GET    | `/vehicles/:id`           | –                                                                       | `VehicleDto`                                                                                                   |
-| POST   | `/vehicles`               | `VehicleInputDto`                                                       | `VehicleDto` (creates motor + einlass/vergaser + auslass/auspuff + ueberstroemer, missing parts created empty) |
-| PATCH  | `/vehicles/:id`           | `VehicleInputDto` (partial nested allowed: only provided fields change) | `VehicleDto`                                                                                                   |
-| DELETE | `/vehicles/:id`           | –                                                                       | `null` (cascades motor parts and dyno)                                                                         |
-| POST   | `/vehicles/:id/duplicate` | `{ name?: string }`                                                     | `VehicleDto` (deep copy owned by the caller; works for system vehicles)                                        |
+| Method | Path                      | Body                                                                                  | Response                                                                                                       |
+| ------ | ------------------------- | ------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| GET    | `/vehicles`               | –                                                                                     | `VehicleDto[]` (system vehicles first, then own, by name)                                                      |
+| GET    | `/vehicles/:id`           | –                                                                                     | `VehicleDto`                                                                                                   |
+| POST   | `/vehicles`               | `VehicleInputDto`                                                                     | `VehicleDto` (creates motor + einlass/vergaser + auslass/auspuff + ueberstroemer, missing parts created empty) |
+| PATCH  | `/vehicles/:id`           | `Partial<VehicleInputDto>` (nested parts partial, `motor.name` optional; null clears) | `VehicleDto`                                                                                                   |
+| DELETE | `/vehicles/:id`           | –                                                                                     | `null` (cascades motor parts and dyno)                                                                         |
+| POST   | `/vehicles/:id/duplicate` | `{ name?: string }`                                                                   | `VehicleDto` (deep copy owned by the caller; works for system vehicles)                                        |
 
 `VehicleDto.motor` is always fully nested (`einlass.vergaser`, `auslass.auspuff`, `ueberstroemer`).
 
