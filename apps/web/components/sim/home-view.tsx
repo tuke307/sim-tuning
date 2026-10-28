@@ -1,8 +1,11 @@
 'use client';
 
 import React from 'react';
-import { Car, Cog, Gauge, Waves, Wind } from 'lucide-react';
+import { Car, CloudUpload, Cog, Gauge, Waves, Wind } from 'lucide-react';
+import { Button } from '@sim-tuning/ui/components/ui/button';
 import { Card } from '@sim-tuning/ui/components/ui/card';
+import { toast } from '@sim-tuning/ui/components/ui/sonner';
+import { useSimData } from '@/providers/sim/sim-data-context';
 import { useLocale } from '@/providers/i18n/locale-context';
 
 import type { ModuleTab } from './pwa-shell';
@@ -32,6 +35,8 @@ export function HomeView({ onNavigate }: { onNavigate: (tab: ModuleKey) => void 
         <p className="text-muted-foreground text-sm">{t.home.subtitle}</p>
       </div>
 
+      <GuestImportCard />
+
       <section aria-labelledby="home-modules-title" className="space-y-3">
         <h2 id="home-modules-title" className="text-[0.9375rem] font-semibold">
           {t.home.modulesTitle}
@@ -60,5 +65,55 @@ export function HomeView({ onNavigate }: { onNavigate: (tab: ModuleKey) => void 
         </ul>
       </section>
     </div>
+  );
+}
+
+/** Offers to move guest-mode data into the account right after signing in (Phase 10). */
+function GuestImportCard() {
+  const { t, format } = useLocale();
+  const { pendingGuestData, importGuestData, discardGuestData } = useSimData();
+  const [busy, setBusy] = React.useState(false);
+  if (!pendingGuestData) return null;
+  const counts = {
+    vehicles: pendingGuestData.vehicles.length,
+    dynos: pendingGuestData.dynos.length,
+  };
+  return (
+    <Card data-testid="guest-import-card" className="space-y-3 rounded-[1.25rem] p-5">
+      <h2 className="flex items-center gap-2 text-[0.9375rem] font-semibold">
+        <CloudUpload className="text-primary h-5 w-5" />
+        {t.home.guestImportTitle}
+      </h2>
+      <p className="text-muted-foreground text-[0.8125rem]">
+        {format(t.home.guestImportDesc, counts)}
+      </p>
+      <div className="flex flex-wrap gap-2">
+        <Button
+          type="button"
+          disabled={busy}
+          onClick={async () => {
+            setBusy(true);
+            try {
+              const result = await importGuestData();
+              toast.success(format(t.home.guestImportDone, { vehicles: result.vehicles }));
+            } catch {
+              toast.error(t.sim.errorGeneric);
+            } finally {
+              setBusy(false);
+            }
+          }}
+        >
+          {t.home.guestImportBtn}
+        </Button>
+        <Button
+          type="button"
+          variant="secondary"
+          disabled={busy}
+          onClick={() => void discardGuestData()}
+        >
+          {t.home.guestDiscardBtn}
+        </Button>
+      </div>
+    </Card>
   );
 }
