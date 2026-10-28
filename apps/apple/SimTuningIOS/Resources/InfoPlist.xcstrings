@@ -1,0 +1,34 @@
+{
+  "sourceLanguage" : "de",
+  "strings" : {
+    "CFBundleDisplayName" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "SimTuning" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "SimTuning" } }
+      }
+    },
+    "NSLocationAlwaysAndWhenInUseUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Nur wenn du es in der Messfahrt aktivierst, zeichnet SimTuning auch bei gesperrtem Bildschirm weiter auf." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Only if you enable it for a test run, SimTuning keeps recording while the screen is locked." } }
+      }
+    },
+    "NSLocationWhenInUseUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "SimTuning zeichnet während einer Messfahrt Geschwindigkeit und Position auf, um Beschleunigung und Ausrollen für den Dyno auszuwerten." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "SimTuning records speed and position during a test run to evaluate acceleration and coast-down for the dyno." } }
+      }
+    },
+    "NSMicrophoneUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "SimTuning nimmt das Motorgeräusch auf, um daraus die Drehzahlkurve für den Audio-Dyno zu berechnen. Die Aufnahme wird nur auf dem Gerät ausgewertet." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "SimTuning records the engine sound to compute the RPM curve for the audio dyno. The recording is analysed on this device only." } }
+      }
+    }
+  },
+  "version" : "1.0"
+}

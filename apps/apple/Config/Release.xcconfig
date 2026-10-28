@@ -1,0 +1,2 @@
+#include "Shared.xcconfig"
+SIMTUNING_API_BASE_URL = https:/$()/simtuning.tony-luke.de
