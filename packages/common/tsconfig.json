@@ -1,0 +1,14 @@
+{
+  "extends": "@sim-tuning/typescript-config/library.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "types": ["node"],
+    "paths": {
+      "@sim-tuning/common/*": ["./src/*"],
+      "@/*": ["./src/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist", "src/**/*.spec.ts"],
+  "include": ["src", "src/**/*.json"]
+}

@@ -1,0 +1,251 @@
+@import 'tailwindcss';
+@source "../../../apps/**/*.{ts,tsx}";
+@source "../../../components/**/*.{ts,tsx}";
+@source "../**/*.{ts,tsx}";
+
+@import 'tw-animate-css';
+
+@plugin 'tailwindcss-animate';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+
+  --color-set-warmup: var(--set-warmup);
+  --color-set-dropset: var(--set-dropset);
+  --color-set-stretch: var(--set-stretch);
+
+  --color-scrim: var(--scrim);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 4px);
+  --radius-sm: calc(var(--radius) - 6px);
+
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/*
+ * Apple-aligned palette: system grays for surfaces, one ember accent for primary actions,
+ * progress and the live workout. Light mode mirrors iOS grouped backgrounds; dark mode uses
+ * true black with elevated #1C1C1E-style cards.
+ */
+@layer base {
+  :root,
+  .light {
+    color-scheme: light;
+    --background: oklch(0.965 0.004 286);
+    --foreground: oklch(0.2 0.006 286);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.2 0.006 286);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.2 0.006 286);
+    --primary: oklch(0.53 0.17 42);
+    --primary-foreground: oklch(1 0 0);
+    --secondary: oklch(0.935 0.004 286);
+    --secondary-foreground: oklch(0.24 0.006 286);
+    --muted: oklch(0.935 0.004 286);
+    --muted-foreground: oklch(0.5 0.01 286);
+    --accent: oklch(0.53 0.17 42);
+    --accent-foreground: oklch(1 0 0);
+    --destructive: oklch(0.56 0.21 27);
+    --destructive-foreground: oklch(1 0 0);
+    --success: oklch(0.55 0.14 150);
+    --success-foreground: oklch(1 0 0);
+    --warning: oklch(0.52 0.12 70);
+    --warning-foreground: oklch(1 0 0);
+    /* Set types — kept clear of the green/amber/red effort scale. Text and badges reach 4.5:1. */
+    --set-warmup: oklch(0.48 0.14 240);
+    --set-dropset: oklch(0.52 0.19 300);
+    --set-stretch: oklch(0.48 0.09 195);
+    --scrim: oklch(0.2 0.006 286);
+    --border: oklch(0.9 0.004 286);
+    --input: oklch(0.9 0.004 286);
+    --ring: oklch(0.53 0.17 42);
+    --radius: 0.875rem;
+    --chart-1: oklch(0.62 0.17 42);
+    --chart-2: oklch(0.6 0.02 286);
+    --chart-3: oklch(0.72 0.13 80);
+    --chart-4: oklch(0.55 0.12 260);
+    --chart-5: oklch(0.6 0.13 150);
+    --material-bar: oklch(0.985 0.002 286 / 0.78);
+  }
+
+  .dark {
+    color-scheme: dark;
+    --background: oklch(0 0 0);
+    --foreground: oklch(0.98 0 0);
+    --card: oklch(0.22 0.004 286);
+    --card-foreground: oklch(0.98 0 0);
+    --popover: oklch(0.27 0.004 286);
+    --popover-foreground: oklch(0.98 0 0);
+    --primary: oklch(0.72 0.16 50);
+    --primary-foreground: oklch(0.18 0.02 50);
+    --secondary: oklch(0.29 0.004 286);
+    --secondary-foreground: oklch(0.96 0 0);
+    --muted: oklch(0.29 0.004 286);
+    --muted-foreground: oklch(0.73 0.008 286);
+    --accent: oklch(0.72 0.16 50);
+    --accent-foreground: oklch(0.18 0.02 50);
+    --destructive: oklch(0.68 0.2 25);
+    --destructive-foreground: oklch(0.18 0.02 25);
+    --success: oklch(0.76 0.17 150);
+    --success-foreground: oklch(0.18 0.03 150);
+    --warning: oklch(0.82 0.15 85);
+    --warning-foreground: oklch(0.2 0.03 85);
+    --set-warmup: oklch(0.74 0.13 240);
+    --set-dropset: oklch(0.72 0.17 300);
+    --set-stretch: oklch(0.78 0.11 195);
+    --scrim: oklch(0 0 0);
+    --border: oklch(0.32 0.004 286);
+    --input: oklch(0.32 0.004 286);
+    --ring: oklch(0.72 0.16 50);
+    --chart-1: oklch(0.72 0.16 50);
+    --chart-2: oklch(0.62 0.02 286);
+    --chart-3: oklch(0.8 0.13 85);
+    --chart-4: oklch(0.65 0.12 260);
+    --chart-5: oklch(0.72 0.15 150);
+    --material-bar: oklch(0.2 0.004 286 / 0.72);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Root size stays at the browser default so rem-based type follows the person's text setting. */
+  html {
+    font-size: 100%;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family:
+      -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, 'Segoe UI', Roboto,
+      'Helvetica Neue', Arial, sans-serif;
+    font-feature-settings: 'kern';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overscroll-behavior-y: none;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+    letter-spacing: -0.015em;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: color-mix(in oklch, var(--primary) 28%, transparent);
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family:
+      -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  /* Large numerals (weights, reps, timers) use SF Rounded where available. */
+  .font-rounded {
+    font-family:
+      ui-rounded,
+      'SF Pro Rounded',
+      -apple-system,
+      BlinkMacSystemFont,
+      system-ui,
+      sans-serif;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Liquid Glass-inspired material, reserved for floating navigation and controls. */
+  .material-bar {
+    background-color: var(--material-bar);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    backdrop-filter: blur(24px) saturate(180%);
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .material-bar {
+      background-color: var(--card);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+
+  .pt-safe {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

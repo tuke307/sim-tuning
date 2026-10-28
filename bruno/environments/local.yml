@@ -1,0 +1,8 @@
+name: local
+variables:
+  - name: API_URL
+    value: http://localhost
+  - name: API_PORT
+    value: "3001"
+  - name: EMAIL_WORKER_PORT
+    value: "3002"

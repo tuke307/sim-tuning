@@ -1,7 +1,61 @@
 lockfile_version: '1'
-generated_at: '2026-04-30T22:09:26.685868+00:00'
+generated_at: '2026-10-28T21:12:36.693066+00:00'
 dependencies: []
 deployments:
+- kind: project-relative
+  target: claude
+  value: .claude/rules/git.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:b4160743ae9c4ef2d8db46996cdb5800533e28e0853df293b5ba9e4afde8e772
+- kind: project-relative
+  target: claude
+  value: .claude/rules/nestjs.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:a3b8e1e322128e42c4df55405ffa9215ec4393cc0623770648f48b70c8382e96
+- kind: project-relative
+  target: claude
+  value: .claude/rules/nextjs-tailwind.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:3c141570a0895c9844d5c45fdbb6afce9b550c2d04b70f9818e6f8b1da45bf6a
+- kind: project-relative
+  target: claude
+  value: .claude/rules/nextjs.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:77dc7629c26081f27bba0bef3ee2c4667e852578403208215a0b40244f24c1d2
+- kind: project-relative
+  target: claude
+  value: .claude/rules/project.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:82fec5a01bc24e600795e31746129b7c5ce5d19ccfa1320aa4973d4bf722b9cb
+- kind: project-relative
+  target: claude
+  value: .claude/rules/reactjs.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:a38734c67a5ffe359c740136cb430e9e3897dc4327c8d192840f27fadd94fab6
 - kind: project-relative
   target: claude
   value: .claude/rules/security-and-owasp.md
@@ -11,7 +65,786 @@ deployments:
   - .
   active_owner: .
   content_hash: sha256:70d89a747d26467aebd9ee57011d5474d92eef11763feacb75bca078d430b73b
+- kind: project-relative
+  target: claude
+  value: .claude/rules/typescript-5-es2022.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:608a027d3c1d31fd67ca62dda97472d79c504bca31cfbc46d20bd41c3f6e294c
+- kind: project-relative
+  target: claude
+  value: .claude/rules/typescript.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:701f3124eeb736d199d561e07041be53e4a248d43afa9fad162a7ce7e4df9c31
+- kind: project-relative
+  target: claude
+  value: .claude/skills/ui-ux-pro-max
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/ui-ux-pro-max/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:07b87b8998b51b9c234df031e31aa2a85cf86abeaa05efd984c2f66ca7f06d68
+- kind: project-relative
+  target: claude
+  value: .claude/skills/ui-ux-pro-max/data/charts.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:77d32cf4d9e78f80795baf391e1cc8f9ee137351aab29ca682938ec9d8ebe7e4
+- kind: project-relative
+  target: claude
+  value: .claude/skills/ui-ux-pro-max/data/colors.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:19a74a1fe858f92dc9213553bb6b8326b7f32dc6bfc0857668e2b4da32322f8a
+- kind: project-relative
+  target: claude
+  value: .claude/skills/ui-ux-pro-max/data/icons.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:351fe61ba45b8146c66de6ea7d67297654639d79a94f537b4d0bad570058c28f
+- kind: project-relative
+  target: claude
+  value: .claude/skills/ui-ux-pro-max/data/landing.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:51021dbadc40b0305c42f80c270eb515420440afe9f3482dfd048dc2475dbfbd
+- kind: project-relative
+  target: claude
+  value: .claude/skills/ui-ux-pro-max/data/products.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:6f9c9be6fdb53a415af273dac6221e87a418d1600da2ee39f974b997e880050e
+- kind: project-relative
+  target: claude
+  value: .claude/skills/ui-ux-pro-max/data/react-performance.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:904c8afcda229629545912dde0e8ac37503757131f0169f80b016f1f58c4fd3f
+- kind: project-relative
+  target: claude
+  value: .claude/skills/ui-ux-pro-max/data/stacks/astro.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:ad18dae3ab6d148d37d144592df80dc1825b6c9e86d9d2d68fdda77434206a37
+- kind: project-relative
+  target: claude
+  value: .claude/skills/ui-ux-pro-max/data/stacks/flutter.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:fe36d404c799781e8ba6e9a8179b45799ed5126a545528550cd2eb0f2346e8c5
+- kind: project-relative
+  target: claude
+  value: .claude/skills/ui-ux-pro-max/data/stacks/html-tailwind.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:7aef38e75c53559470afcfa91580a9917ca8b7dbf8b92110389e23e93703ac52
+- kind: project-relative
+  target: claude
+  value: .claude/skills/ui-ux-pro-max/data/stacks/jetpack-compose.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:6c8fd4b0391c342c12b0af15610cd5becbeccaef0bbe8dcfc01d928c3195d93e
+- kind: project-relative
+  target: claude
+  value: .claude/skills/ui-ux-pro-max/data/stacks/nextjs.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:e828ccc04843742f52f545a068e8a9ab0d2b97c0e771f7e93bf0cef74da05554
+- kind: project-relative
+  target: claude
+  value: .claude/skills/ui-ux-pro-max/data/stacks/nuxt-ui.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:05d6e74501b2b6a636faed32450622759f49a5bcafad971f5f4e7eba0eb7be71
+- kind: project-relative
+  target: claude
+  value: .claude/skills/ui-ux-pro-max/data/stacks/nuxtjs.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:f7a3f2d9542856d00199f85c6c023b7c284cc698e2e6e12d61afce2edacb24d6
+- kind: project-relative
+  target: claude
+  value: .claude/skills/ui-ux-pro-max/data/stacks/react-native.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:077aefc81d194895ecf7936b3ed298b978e36961f183e3a275f8acda19b5f621
+- kind: project-relative
+  target: claude
+  value: .claude/skills/ui-ux-pro-max/data/stacks/react.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:e5624ab41d33427d88e41d07581ce4eca59b37b36ab72a6ad43a9c8e2d0a1c72
+- kind: project-relative
+  target: claude
+  value: .claude/skills/ui-ux-pro-max/data/stacks/shadcn.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:395c2e415ef6f48a474acccdc8eb2c7258a6ed751a5037ba171a2d8823e02ded
+- kind: project-relative
+  target: claude
+  value: .claude/skills/ui-ux-pro-max/data/stacks/svelte.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:71af52d64f266c88070b91dbbaa900c2f8074b6baae9f35eaea6ba9cec6fd803
+- kind: project-relative
+  target: claude
+  value: .claude/skills/ui-ux-pro-max/data/stacks/swiftui.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:c9c2d2510f8e66281a2514e8dd0125a6b653b9ef53a71281b5e7dfe003d5b569
+- kind: project-relative
+  target: claude
+  value: .claude/skills/ui-ux-pro-max/data/stacks/vue.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:c2724915d3c11cd67263f25896cff721f787a0fdd8326002d31e9f5806dfd8f8
+- kind: project-relative
+  target: claude
+  value: .claude/skills/ui-ux-pro-max/data/styles.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:663ac9775e6f5b874b32d930fa0951591c45e39cde8ac7033278f42a0881c037
+- kind: project-relative
+  target: claude
+  value: .claude/skills/ui-ux-pro-max/data/typography.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:64695e05ac335ba534aff396c4ba9241c642f80ea53b424251d2669b71c4772b
+- kind: project-relative
+  target: claude
+  value: .claude/skills/ui-ux-pro-max/data/ui-reasoning.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:58fc52fff69f62709f8c7dd460de6f6693699ea820f24287f3301a427c2b554e
+- kind: project-relative
+  target: claude
+  value: .claude/skills/ui-ux-pro-max/data/ux-guidelines.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:e01943c433b2cad3040f19389b3b0455673758a569b7a927b5bedf65c989cb96
+- kind: project-relative
+  target: claude
+  value: .claude/skills/ui-ux-pro-max/data/web-interface.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:10bfc24e09a6a15db8309e6ef9b6881e1d4af97dffb7c99418aefb8e30df7d54
+- kind: project-relative
+  target: claude
+  value: .claude/skills/ui-ux-pro-max/scripts/core.py
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:5459d1f04eea03dfb913742d0c03edc5065ac67f6227e4807fa87699662588cb
+- kind: project-relative
+  target: claude
+  value: .claude/skills/ui-ux-pro-max/scripts/design_system.py
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:4da1d341f3c7749df51b51db4a543a48a427c3c746eb0e9882a1ab86acf3bb54
+- kind: project-relative
+  target: claude
+  value: .claude/skills/ui-ux-pro-max/scripts/search.py
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:e924de555714fe612398d36f30c1d2514339a881d68a018fdbdc0b5589330de3
+- kind: project-relative
+  target: copilot
+  value: .github/instructions/git.instructions.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:c7e4ce3056be0f4418b91876e7431a7a5d535a0a17b6460393d9f332fde00a5a
+- kind: project-relative
+  target: copilot
+  value: .github/instructions/nestjs.instructions.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:8920c88accf66d889e955271e1cfb2faa5b4cf0cadd926521959758c7eac407d
+- kind: project-relative
+  target: copilot
+  value: .github/instructions/nextjs-tailwind.instructions.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:f664aed1749ff7f5c220c3222dc9766c16903d02a7a4c07f152095b88c6f89b2
+- kind: project-relative
+  target: copilot
+  value: .github/instructions/nextjs.instructions.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:3f4ae9da04edb5467de9d2ac18dac4440dc608de2a492f44c115b1ee3915cfba
+- kind: project-relative
+  target: copilot
+  value: .github/instructions/project.instructions.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:34a4ea0fe917f070d35844a14ffee4ab414710a497e23a3337c8509410054369
+- kind: project-relative
+  target: copilot
+  value: .github/instructions/reactjs.instructions.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:0b435067818457b041ba5851c2193d4cac3b34e74125013edae139428a97da97
+- kind: project-relative
+  target: copilot
+  value: .github/instructions/security-and-owasp.instructions.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:bac0e3e3d77ade85d3dac02bb69a59ac827f5a728a7befaad245412f6ed0ec85
+- kind: project-relative
+  target: copilot
+  value: .github/instructions/typescript-5-es2022.instructions.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:393392a9a1637b4651e2f3dee767b91548bba68dc93fbaab069018fff559fd9a
+- kind: project-relative
+  target: copilot
+  value: .github/instructions/typescript.instructions.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:0d3d19b9501bbfbdabdf69617828e7f131bee4bb9170c12e18e5abf9d092c87a
+- kind: project-relative
+  target: copilot
+  value: .github/skills/ui-ux-pro-max
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: null
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/ui-ux-pro-max
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: null
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/ui-ux-pro-max/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:07b87b8998b51b9c234df031e31aa2a85cf86abeaa05efd984c2f66ca7f06d68
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/ui-ux-pro-max/data/charts.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:77d32cf4d9e78f80795baf391e1cc8f9ee137351aab29ca682938ec9d8ebe7e4
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/ui-ux-pro-max/data/colors.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:19a74a1fe858f92dc9213553bb6b8326b7f32dc6bfc0857668e2b4da32322f8a
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/ui-ux-pro-max/data/icons.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:351fe61ba45b8146c66de6ea7d67297654639d79a94f537b4d0bad570058c28f
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/ui-ux-pro-max/data/landing.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:51021dbadc40b0305c42f80c270eb515420440afe9f3482dfd048dc2475dbfbd
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/ui-ux-pro-max/data/products.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:6f9c9be6fdb53a415af273dac6221e87a418d1600da2ee39f974b997e880050e
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/ui-ux-pro-max/data/react-performance.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:904c8afcda229629545912dde0e8ac37503757131f0169f80b016f1f58c4fd3f
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/ui-ux-pro-max/data/stacks/astro.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:ad18dae3ab6d148d37d144592df80dc1825b6c9e86d9d2d68fdda77434206a37
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/ui-ux-pro-max/data/stacks/flutter.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:fe36d404c799781e8ba6e9a8179b45799ed5126a545528550cd2eb0f2346e8c5
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/ui-ux-pro-max/data/stacks/html-tailwind.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:7aef38e75c53559470afcfa91580a9917ca8b7dbf8b92110389e23e93703ac52
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/ui-ux-pro-max/data/stacks/jetpack-compose.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:6c8fd4b0391c342c12b0af15610cd5becbeccaef0bbe8dcfc01d928c3195d93e
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/ui-ux-pro-max/data/stacks/nextjs.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:e828ccc04843742f52f545a068e8a9ab0d2b97c0e771f7e93bf0cef74da05554
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/ui-ux-pro-max/data/stacks/nuxt-ui.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:05d6e74501b2b6a636faed32450622759f49a5bcafad971f5f4e7eba0eb7be71
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/ui-ux-pro-max/data/stacks/nuxtjs.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:f7a3f2d9542856d00199f85c6c023b7c284cc698e2e6e12d61afce2edacb24d6
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/ui-ux-pro-max/data/stacks/react-native.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:077aefc81d194895ecf7936b3ed298b978e36961f183e3a275f8acda19b5f621
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/ui-ux-pro-max/data/stacks/react.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:e5624ab41d33427d88e41d07581ce4eca59b37b36ab72a6ad43a9c8e2d0a1c72
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/ui-ux-pro-max/data/stacks/shadcn.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:395c2e415ef6f48a474acccdc8eb2c7258a6ed751a5037ba171a2d8823e02ded
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/ui-ux-pro-max/data/stacks/svelte.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:71af52d64f266c88070b91dbbaa900c2f8074b6baae9f35eaea6ba9cec6fd803
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/ui-ux-pro-max/data/stacks/swiftui.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:c9c2d2510f8e66281a2514e8dd0125a6b653b9ef53a71281b5e7dfe003d5b569
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/ui-ux-pro-max/data/stacks/vue.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:c2724915d3c11cd67263f25896cff721f787a0fdd8326002d31e9f5806dfd8f8
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/ui-ux-pro-max/data/styles.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:663ac9775e6f5b874b32d930fa0951591c45e39cde8ac7033278f42a0881c037
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/ui-ux-pro-max/data/typography.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:64695e05ac335ba534aff396c4ba9241c642f80ea53b424251d2669b71c4772b
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/ui-ux-pro-max/data/ui-reasoning.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:58fc52fff69f62709f8c7dd460de6f6693699ea820f24287f3301a427c2b554e
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/ui-ux-pro-max/data/ux-guidelines.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:e01943c433b2cad3040f19389b3b0455673758a569b7a927b5bedf65c989cb96
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/ui-ux-pro-max/data/web-interface.csv
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:10bfc24e09a6a15db8309e6ef9b6881e1d4af97dffb7c99418aefb8e30df7d54
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/ui-ux-pro-max/scripts/core.py
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:5459d1f04eea03dfb913742d0c03edc5065ac67f6227e4807fa87699662588cb
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/ui-ux-pro-max/scripts/design_system.py
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:4da1d341f3c7749df51b51db4a543a48a427c3c746eb0e9882a1ab86acf3bb54
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/ui-ux-pro-max/scripts/search.py
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:e924de555714fe612398d36f30c1d2514339a881d68a018fdbdc0b5589330de3
 local_deployed_files:
+- .agents/skills/ui-ux-pro-max
+- .agents/skills/ui-ux-pro-max/SKILL.md
+- .agents/skills/ui-ux-pro-max/data/charts.csv
+- .agents/skills/ui-ux-pro-max/data/colors.csv
+- .agents/skills/ui-ux-pro-max/data/icons.csv
+- .agents/skills/ui-ux-pro-max/data/landing.csv
+- .agents/skills/ui-ux-pro-max/data/products.csv
+- .agents/skills/ui-ux-pro-max/data/react-performance.csv
+- .agents/skills/ui-ux-pro-max/data/stacks/astro.csv
+- .agents/skills/ui-ux-pro-max/data/stacks/flutter.csv
+- .agents/skills/ui-ux-pro-max/data/stacks/html-tailwind.csv
+- .agents/skills/ui-ux-pro-max/data/stacks/jetpack-compose.csv
+- .agents/skills/ui-ux-pro-max/data/stacks/nextjs.csv
+- .agents/skills/ui-ux-pro-max/data/stacks/nuxt-ui.csv
+- .agents/skills/ui-ux-pro-max/data/stacks/nuxtjs.csv
+- .agents/skills/ui-ux-pro-max/data/stacks/react-native.csv
+- .agents/skills/ui-ux-pro-max/data/stacks/react.csv
+- .agents/skills/ui-ux-pro-max/data/stacks/shadcn.csv
+- .agents/skills/ui-ux-pro-max/data/stacks/svelte.csv
+- .agents/skills/ui-ux-pro-max/data/stacks/swiftui.csv
+- .agents/skills/ui-ux-pro-max/data/stacks/vue.csv
+- .agents/skills/ui-ux-pro-max/data/styles.csv
+- .agents/skills/ui-ux-pro-max/data/typography.csv
+- .agents/skills/ui-ux-pro-max/data/ui-reasoning.csv
+- .agents/skills/ui-ux-pro-max/data/ux-guidelines.csv
+- .agents/skills/ui-ux-pro-max/data/web-interface.csv
+- .agents/skills/ui-ux-pro-max/scripts/core.py
+- .agents/skills/ui-ux-pro-max/scripts/design_system.py
+- .agents/skills/ui-ux-pro-max/scripts/search.py
+- .claude/rules/git.md
+- .claude/rules/nestjs.md
+- .claude/rules/nextjs-tailwind.md
+- .claude/rules/nextjs.md
+- .claude/rules/project.md
+- .claude/rules/reactjs.md
 - .claude/rules/security-and-owasp.md
+- .claude/rules/typescript-5-es2022.md
+- .claude/rules/typescript.md
+- .claude/skills/ui-ux-pro-max
+- .claude/skills/ui-ux-pro-max/SKILL.md
+- .claude/skills/ui-ux-pro-max/data/charts.csv
+- .claude/skills/ui-ux-pro-max/data/colors.csv
+- .claude/skills/ui-ux-pro-max/data/icons.csv
+- .claude/skills/ui-ux-pro-max/data/landing.csv
+- .claude/skills/ui-ux-pro-max/data/products.csv
+- .claude/skills/ui-ux-pro-max/data/react-performance.csv
+- .claude/skills/ui-ux-pro-max/data/stacks/astro.csv
+- .claude/skills/ui-ux-pro-max/data/stacks/flutter.csv
+- .claude/skills/ui-ux-pro-max/data/stacks/html-tailwind.csv
+- .claude/skills/ui-ux-pro-max/data/stacks/jetpack-compose.csv
+- .claude/skills/ui-ux-pro-max/data/stacks/nextjs.csv
+- .claude/skills/ui-ux-pro-max/data/stacks/nuxt-ui.csv
+- .claude/skills/ui-ux-pro-max/data/stacks/nuxtjs.csv
+- .claude/skills/ui-ux-pro-max/data/stacks/react-native.csv
+- .claude/skills/ui-ux-pro-max/data/stacks/react.csv
+- .claude/skills/ui-ux-pro-max/data/stacks/shadcn.csv
+- .claude/skills/ui-ux-pro-max/data/stacks/svelte.csv
+- .claude/skills/ui-ux-pro-max/data/stacks/swiftui.csv
+- .claude/skills/ui-ux-pro-max/data/stacks/vue.csv
+- .claude/skills/ui-ux-pro-max/data/styles.csv
+- .claude/skills/ui-ux-pro-max/data/typography.csv
+- .claude/skills/ui-ux-pro-max/data/ui-reasoning.csv
+- .claude/skills/ui-ux-pro-max/data/ux-guidelines.csv
+- .claude/skills/ui-ux-pro-max/data/web-interface.csv
+- .claude/skills/ui-ux-pro-max/scripts/core.py
+- .claude/skills/ui-ux-pro-max/scripts/design_system.py
+- .claude/skills/ui-ux-pro-max/scripts/search.py
+- .github/instructions/git.instructions.md
+- .github/instructions/nestjs.instructions.md
+- .github/instructions/nextjs-tailwind.instructions.md
+- .github/instructions/nextjs.instructions.md
+- .github/instructions/project.instructions.md
+- .github/instructions/reactjs.instructions.md
+- .github/instructions/security-and-owasp.instructions.md
+- .github/instructions/typescript-5-es2022.instructions.md
+- .github/instructions/typescript.instructions.md
+- .github/skills/ui-ux-pro-max
 local_deployed_file_hashes:
+  .agents/skills/ui-ux-pro-max/SKILL.md: sha256:07b87b8998b51b9c234df031e31aa2a85cf86abeaa05efd984c2f66ca7f06d68
+  .agents/skills/ui-ux-pro-max/data/charts.csv: sha256:77d32cf4d9e78f80795baf391e1cc8f9ee137351aab29ca682938ec9d8ebe7e4
+  .agents/skills/ui-ux-pro-max/data/colors.csv: sha256:19a74a1fe858f92dc9213553bb6b8326b7f32dc6bfc0857668e2b4da32322f8a
+  .agents/skills/ui-ux-pro-max/data/icons.csv: sha256:351fe61ba45b8146c66de6ea7d67297654639d79a94f537b4d0bad570058c28f
+  .agents/skills/ui-ux-pro-max/data/landing.csv: sha256:51021dbadc40b0305c42f80c270eb515420440afe9f3482dfd048dc2475dbfbd
+  .agents/skills/ui-ux-pro-max/data/products.csv: sha256:6f9c9be6fdb53a415af273dac6221e87a418d1600da2ee39f974b997e880050e
+  .agents/skills/ui-ux-pro-max/data/react-performance.csv: sha256:904c8afcda229629545912dde0e8ac37503757131f0169f80b016f1f58c4fd3f
+  .agents/skills/ui-ux-pro-max/data/stacks/astro.csv: sha256:ad18dae3ab6d148d37d144592df80dc1825b6c9e86d9d2d68fdda77434206a37
+  .agents/skills/ui-ux-pro-max/data/stacks/flutter.csv: sha256:fe36d404c799781e8ba6e9a8179b45799ed5126a545528550cd2eb0f2346e8c5
+  .agents/skills/ui-ux-pro-max/data/stacks/html-tailwind.csv: sha256:7aef38e75c53559470afcfa91580a9917ca8b7dbf8b92110389e23e93703ac52
+  .agents/skills/ui-ux-pro-max/data/stacks/jetpack-compose.csv: sha256:6c8fd4b0391c342c12b0af15610cd5becbeccaef0bbe8dcfc01d928c3195d93e
+  .agents/skills/ui-ux-pro-max/data/stacks/nextjs.csv: sha256:e828ccc04843742f52f545a068e8a9ab0d2b97c0e771f7e93bf0cef74da05554
+  .agents/skills/ui-ux-pro-max/data/stacks/nuxt-ui.csv: sha256:05d6e74501b2b6a636faed32450622759f49a5bcafad971f5f4e7eba0eb7be71
+  .agents/skills/ui-ux-pro-max/data/stacks/nuxtjs.csv: sha256:f7a3f2d9542856d00199f85c6c023b7c284cc698e2e6e12d61afce2edacb24d6
+  .agents/skills/ui-ux-pro-max/data/stacks/react-native.csv: sha256:077aefc81d194895ecf7936b3ed298b978e36961f183e3a275f8acda19b5f621
+  .agents/skills/ui-ux-pro-max/data/stacks/react.csv: sha256:e5624ab41d33427d88e41d07581ce4eca59b37b36ab72a6ad43a9c8e2d0a1c72
+  .agents/skills/ui-ux-pro-max/data/stacks/shadcn.csv: sha256:395c2e415ef6f48a474acccdc8eb2c7258a6ed751a5037ba171a2d8823e02ded
+  .agents/skills/ui-ux-pro-max/data/stacks/svelte.csv: sha256:71af52d64f266c88070b91dbbaa900c2f8074b6baae9f35eaea6ba9cec6fd803
+  .agents/skills/ui-ux-pro-max/data/stacks/swiftui.csv: sha256:c9c2d2510f8e66281a2514e8dd0125a6b653b9ef53a71281b5e7dfe003d5b569
+  .agents/skills/ui-ux-pro-max/data/stacks/vue.csv: sha256:c2724915d3c11cd67263f25896cff721f787a0fdd8326002d31e9f5806dfd8f8
+  .agents/skills/ui-ux-pro-max/data/styles.csv: sha256:663ac9775e6f5b874b32d930fa0951591c45e39cde8ac7033278f42a0881c037
+  .agents/skills/ui-ux-pro-max/data/typography.csv: sha256:64695e05ac335ba534aff396c4ba9241c642f80ea53b424251d2669b71c4772b
+  .agents/skills/ui-ux-pro-max/data/ui-reasoning.csv: sha256:58fc52fff69f62709f8c7dd460de6f6693699ea820f24287f3301a427c2b554e
+  .agents/skills/ui-ux-pro-max/data/ux-guidelines.csv: sha256:e01943c433b2cad3040f19389b3b0455673758a569b7a927b5bedf65c989cb96
+  .agents/skills/ui-ux-pro-max/data/web-interface.csv: sha256:10bfc24e09a6a15db8309e6ef9b6881e1d4af97dffb7c99418aefb8e30df7d54
+  .agents/skills/ui-ux-pro-max/scripts/core.py: sha256:5459d1f04eea03dfb913742d0c03edc5065ac67f6227e4807fa87699662588cb
+  .agents/skills/ui-ux-pro-max/scripts/design_system.py: sha256:4da1d341f3c7749df51b51db4a543a48a427c3c746eb0e9882a1ab86acf3bb54
+  .agents/skills/ui-ux-pro-max/scripts/search.py: sha256:e924de555714fe612398d36f30c1d2514339a881d68a018fdbdc0b5589330de3
+  .claude/rules/git.md: sha256:b4160743ae9c4ef2d8db46996cdb5800533e28e0853df293b5ba9e4afde8e772
+  .claude/rules/nestjs.md: sha256:a3b8e1e322128e42c4df55405ffa9215ec4393cc0623770648f48b70c8382e96
+  .claude/rules/nextjs-tailwind.md: sha256:3c141570a0895c9844d5c45fdbb6afce9b550c2d04b70f9818e6f8b1da45bf6a
+  .claude/rules/nextjs.md: sha256:77dc7629c26081f27bba0bef3ee2c4667e852578403208215a0b40244f24c1d2
+  .claude/rules/project.md: sha256:82fec5a01bc24e600795e31746129b7c5ce5d19ccfa1320aa4973d4bf722b9cb
+  .claude/rules/reactjs.md: sha256:a38734c67a5ffe359c740136cb430e9e3897dc4327c8d192840f27fadd94fab6
   .claude/rules/security-and-owasp.md: sha256:70d89a747d26467aebd9ee57011d5474d92eef11763feacb75bca078d430b73b
+  .claude/rules/typescript-5-es2022.md: sha256:608a027d3c1d31fd67ca62dda97472d79c504bca31cfbc46d20bd41c3f6e294c
+  .claude/rules/typescript.md: sha256:701f3124eeb736d199d561e07041be53e4a248d43afa9fad162a7ce7e4df9c31
+  .claude/skills/ui-ux-pro-max/SKILL.md: sha256:07b87b8998b51b9c234df031e31aa2a85cf86abeaa05efd984c2f66ca7f06d68
+  .claude/skills/ui-ux-pro-max/data/charts.csv: sha256:77d32cf4d9e78f80795baf391e1cc8f9ee137351aab29ca682938ec9d8ebe7e4
+  .claude/skills/ui-ux-pro-max/data/colors.csv: sha256:19a74a1fe858f92dc9213553bb6b8326b7f32dc6bfc0857668e2b4da32322f8a
+  .claude/skills/ui-ux-pro-max/data/icons.csv: sha256:351fe61ba45b8146c66de6ea7d67297654639d79a94f537b4d0bad570058c28f
+  .claude/skills/ui-ux-pro-max/data/landing.csv: sha256:51021dbadc40b0305c42f80c270eb515420440afe9f3482dfd048dc2475dbfbd
+  .claude/skills/ui-ux-pro-max/data/products.csv: sha256:6f9c9be6fdb53a415af273dac6221e87a418d1600da2ee39f974b997e880050e
+  .claude/skills/ui-ux-pro-max/data/react-performance.csv: sha256:904c8afcda229629545912dde0e8ac37503757131f0169f80b016f1f58c4fd3f
+  .claude/skills/ui-ux-pro-max/data/stacks/astro.csv: sha256:ad18dae3ab6d148d37d144592df80dc1825b6c9e86d9d2d68fdda77434206a37
+  .claude/skills/ui-ux-pro-max/data/stacks/flutter.csv: sha256:fe36d404c799781e8ba6e9a8179b45799ed5126a545528550cd2eb0f2346e8c5
+  .claude/skills/ui-ux-pro-max/data/stacks/html-tailwind.csv: sha256:7aef38e75c53559470afcfa91580a9917ca8b7dbf8b92110389e23e93703ac52
+  .claude/skills/ui-ux-pro-max/data/stacks/jetpack-compose.csv: sha256:6c8fd4b0391c342c12b0af15610cd5becbeccaef0bbe8dcfc01d928c3195d93e
+  .claude/skills/ui-ux-pro-max/data/stacks/nextjs.csv: sha256:e828ccc04843742f52f545a068e8a9ab0d2b97c0e771f7e93bf0cef74da05554
+  .claude/skills/ui-ux-pro-max/data/stacks/nuxt-ui.csv: sha256:05d6e74501b2b6a636faed32450622759f49a5bcafad971f5f4e7eba0eb7be71
+  .claude/skills/ui-ux-pro-max/data/stacks/nuxtjs.csv: sha256:f7a3f2d9542856d00199f85c6c023b7c284cc698e2e6e12d61afce2edacb24d6
+  .claude/skills/ui-ux-pro-max/data/stacks/react-native.csv: sha256:077aefc81d194895ecf7936b3ed298b978e36961f183e3a275f8acda19b5f621
+  .claude/skills/ui-ux-pro-max/data/stacks/react.csv: sha256:e5624ab41d33427d88e41d07581ce4eca59b37b36ab72a6ad43a9c8e2d0a1c72
+  .claude/skills/ui-ux-pro-max/data/stacks/shadcn.csv: sha256:395c2e415ef6f48a474acccdc8eb2c7258a6ed751a5037ba171a2d8823e02ded
+  .claude/skills/ui-ux-pro-max/data/stacks/svelte.csv: sha256:71af52d64f266c88070b91dbbaa900c2f8074b6baae9f35eaea6ba9cec6fd803
+  .claude/skills/ui-ux-pro-max/data/stacks/swiftui.csv: sha256:c9c2d2510f8e66281a2514e8dd0125a6b653b9ef53a71281b5e7dfe003d5b569
+  .claude/skills/ui-ux-pro-max/data/stacks/vue.csv: sha256:c2724915d3c11cd67263f25896cff721f787a0fdd8326002d31e9f5806dfd8f8
+  .claude/skills/ui-ux-pro-max/data/styles.csv: sha256:663ac9775e6f5b874b32d930fa0951591c45e39cde8ac7033278f42a0881c037
+  .claude/skills/ui-ux-pro-max/data/typography.csv: sha256:64695e05ac335ba534aff396c4ba9241c642f80ea53b424251d2669b71c4772b
+  .claude/skills/ui-ux-pro-max/data/ui-reasoning.csv: sha256:58fc52fff69f62709f8c7dd460de6f6693699ea820f24287f3301a427c2b554e
+  .claude/skills/ui-ux-pro-max/data/ux-guidelines.csv: sha256:e01943c433b2cad3040f19389b3b0455673758a569b7a927b5bedf65c989cb96
+  .claude/skills/ui-ux-pro-max/data/web-interface.csv: sha256:10bfc24e09a6a15db8309e6ef9b6881e1d4af97dffb7c99418aefb8e30df7d54
+  .claude/skills/ui-ux-pro-max/scripts/core.py: sha256:5459d1f04eea03dfb913742d0c03edc5065ac67f6227e4807fa87699662588cb
+  .claude/skills/ui-ux-pro-max/scripts/design_system.py: sha256:4da1d341f3c7749df51b51db4a543a48a427c3c746eb0e9882a1ab86acf3bb54
+  .claude/skills/ui-ux-pro-max/scripts/search.py: sha256:e924de555714fe612398d36f30c1d2514339a881d68a018fdbdc0b5589330de3
+  .github/instructions/git.instructions.md: sha256:c7e4ce3056be0f4418b91876e7431a7a5d535a0a17b6460393d9f332fde00a5a
+  .github/instructions/nestjs.instructions.md: sha256:8920c88accf66d889e955271e1cfb2faa5b4cf0cadd926521959758c7eac407d
+  .github/instructions/nextjs-tailwind.instructions.md: sha256:f664aed1749ff7f5c220c3222dc9766c16903d02a7a4c07f152095b88c6f89b2
+  .github/instructions/nextjs.instructions.md: sha256:3f4ae9da04edb5467de9d2ac18dac4440dc608de2a492f44c115b1ee3915cfba
+  .github/instructions/project.instructions.md: sha256:34a4ea0fe917f070d35844a14ffee4ab414710a497e23a3337c8509410054369
+  .github/instructions/reactjs.instructions.md: sha256:0b435067818457b041ba5851c2193d4cac3b34e74125013edae139428a97da97
+  .github/instructions/security-and-owasp.instructions.md: sha256:bac0e3e3d77ade85d3dac02bb69a59ac827f5a728a7befaad245412f6ed0ec85
+  .github/instructions/typescript-5-es2022.instructions.md: sha256:393392a9a1637b4651e2f3dee767b91548bba68dc93fbaab069018fff559fd9a
+  .github/instructions/typescript.instructions.md: sha256:0d3d19b9501bbfbdabdf69617828e7f131bee4bb9170c12e18e5abf9d092c87a

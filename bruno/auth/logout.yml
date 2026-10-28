@@ -1,0 +1,24 @@
+info:
+  name: logout
+  type: http
+  seq: 11
+
+http:
+  method: POST
+  url: "{{API_URL}}:{{API_PORT}}/api/auth/logout"
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        if (res.getStatus() === 200 || res.getStatus() === 201) {
+          bru.deleteEnvVar('CSRF_TOKEN');
+          console.log('Logout successful. CSRF_TOKEN cleared.');
+        }
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

@@ -1,0 +1,74 @@
+<mjml>
+  <mj-head>
+    <mj-title>Confirm Your SimTuning Account</mj-title>
+    <mj-preview>Activate your SimTuning account to start syncing your vehicles and dyno runs.</mj-preview>
+    <mj-attributes>
+      <mj-all font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif" />
+      <mj-text color="#E2E8F0" font-size="15px" line-height="24px" />
+      <mj-button
+        background-color="#CCFF00"
+        color="#0B0D10"
+        border-radius="12px"
+        font-size="15px"
+        font-weight="800"
+        inner-padding="14px 28px"
+      />
+    </mj-attributes>
+    <mj-style>
+      .card {
+        border: 1px solid #1E293B;
+        border-radius: 20px;
+      }
+      .muted {
+        color: #94A3B8;
+        font-size: 12px;
+        line-height: 18px;
+      }
+      .link {
+        color: #CCFF00;
+        text-decoration: underline;
+        word-break: break-all;
+      }
+      .brand-accent {
+        color: #CCFF00;
+      }
+    </mj-style>
+  </mj-head>
+  <mj-body background-color="#0B0D10">
+    <mj-wrapper padding="32px 16px" background-color="#11151C" css-class="card">
+      <mj-section padding="16px 24px 8px">
+        <mj-column>
+          <mj-text align="center" font-size="22px" font-weight="900" letter-spacing="1px" padding="0">
+            SIM<span class="brand-accent">TUNING</span>
+          </mj-text>
+          <mj-text align="center" css-class="muted" padding="4px 0 16px">
+            Two-Stroke Simulation &amp; Dyno Tuning
+          </mj-text>
+          <mj-divider border-color="#1E293B" border-width="1px" />
+          <mj-text align="center" font-size="22px" font-weight="800" padding="16px 0 8px">
+            Confirm Your Email Address
+          </mj-text>
+          <mj-text padding="8px 0">
+            Hey <strong>{{ name }}</strong>,
+          </mj-text>
+          <mj-text padding="0 0 16px">
+            Welcome to SimTuning! Please confirm your email address (<strong>{{ email }}</strong>) by clicking the button below to activate your account and synchronize your vehicles, engine setups, and dyno runs across devices.
+          </mj-text>
+          <mj-button href="{{ confirmation_url }}" align="center" padding="8px 0 20px">
+            Confirm Account &amp; Start Tuning
+          </mj-button>
+          <mj-text css-class="muted" padding="8px 0 0">
+            Or copy and paste this activation link into your browser:
+          </mj-text>
+          <mj-text font-size="12px" padding="4px 0 16px">
+            <a class="link" href="{{ confirmation_url }}" target="_blank">{{ confirmation_url }}</a>
+          </mj-text>
+          <mj-divider border-color="#1E293B" border-width="1px" />
+          <mj-text align="center" css-class="muted" padding="12px 0 0" font-size="11px">
+            This confirmation link is valid for 24 hours. If you did not create a SimTuning account, you can safely ignore this email.
+          </mj-text>
+        </mj-column>
+      </mj-section>
+    </mj-wrapper>
+  </mj-body>
+</mjml>

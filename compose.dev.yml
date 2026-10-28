@@ -1,0 +1,104 @@
+services:
+  db:
+    image: postgres:latest
+    restart: always
+    ports:
+      - 5438:5432 # offset from kds (5434), marienmuehle (5435), luki-fitti (5436), langfuse (5437)
+    env_file:
+      - ./packages/database/.env.production.local
+    environment:
+      # Pin the Postgres session timezone to UTC so timestamp storage and
+      # CURRENT_TIMESTAMP match the app's UTC convention.
+      - TZ=UTC
+      - PGTZ=UTC
+    networks:
+      - sim_tuning_network
+  db-migrate:
+    build:
+      context: .
+      dockerfile: ./packages/database/Dockerfile.migration
+    restart: 'no' # Run once and exit
+    env_file:
+      - ./packages/database/.env.production.local
+    depends_on:
+      - db
+      - redis
+    networks:
+      - sim_tuning_network
+  caddy:
+    image: caddy:alpine
+    restart: always
+    ports:
+      - 8083:80 # offset from kds (80) and luki-fitti (8082)
+    volumes:
+      - ./Caddyfile.dev:/etc/caddy/Caddyfile:ro
+    depends_on:
+      - web
+      - api
+    networks:
+      - sim_tuning_network
+  web:
+    build:
+      context: .
+      dockerfile: ./apps/web/Dockerfile
+    restart: always
+    env_file:
+      - ./apps/web/.env.production.local
+    ports:
+      - 3005:3000 # offset from kds/marienmuehle (3000), luki-fitti (3002) and langfuse (3004)
+    networks:
+      - sim_tuning_network
+  api:
+    build:
+      context: .
+      dockerfile: ./apps/api/Dockerfile
+    restart: always
+    env_file:
+      - ./apps/api/.env.production.local
+    ports:
+      - 3006:3001 # offset from kds/marienmuehle (3001) and luki-fitti (3003)
+    depends_on:
+      - db-migrate
+      - redis
+      - mailpit
+    networks:
+      - sim_tuning_network
+  email-worker:
+    build:
+      context: .
+      dockerfile: ./apps/email-worker/Dockerfile
+    restart: always
+    env_file:
+      - ./apps/email-worker/.env.production.local
+    depends_on:
+      - db-migrate
+      - redis
+      - mailpit
+    networks:
+      - sim_tuning_network
+  mailpit:
+    image: axllent/mailpit:latest
+    restart: always
+    ports:
+      - 1026:1025 # SMTP server (offset from luki-fitti 1025)
+      - 8026:8025 # Web UI & HTTP API (http://localhost:8026, offset from luki-fitti 8025)
+    networks:
+      - sim_tuning_network
+  redis:
+    image: redis:alpine
+    restart: always
+    ports:
+      - 6383:6379 # offset from langfuse (6379), kds (6380), marienmuehle (6381), luki-fitti (6382)
+    command: redis-server --appendonly yes
+    networks:
+      - sim_tuning_network
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+networks:
+  sim_tuning_network:
+    driver: bridge

@@ -1,0 +1,64 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalEnv": [
+    "NODE_ENV",
+    "API_PORT",
+    "JWT_SECRET",
+    "ACCESS_TOKEN_EXPIRY_MS",
+    "DATABASE_URL",
+    "FRONTEND_URL",
+    "SMTP_HOST",
+    "SMTP_PORT",
+    "SMTP_USER",
+    "SMTP_PASS",
+    "EMAIL_FROM",
+    "LOG_LEVEL",
+    "SEED_USER_EMAIL",
+    "CI",
+    "PLAYWRIGHT_BASE_URL",
+    "MAILPIT_URL",
+    "TEST_USER_EMAIL",
+    "TEST_USER_PASSWORD",
+    "TEST_USER_NAME",
+    "API_URL",
+    "NEXT_RUNTIME"
+  ],
+  "tasks": {
+    "build": {
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**", "public/dist/**"],
+      "dependsOn": ["^build"]
+    },
+    "db:generate": {
+      "cache": false
+    },
+    "db:migrate": {
+      "cache": false,
+      "persistent": true
+    },
+    "db:deploy": {
+      "cache": false
+    },
+    "db:push": {},
+    "db:seed": {},
+    "test": {
+      "outputs": ["coverage/**"],
+      "dependsOn": []
+    },
+    "lint": {
+      "dependsOn": ["^lint"]
+    },
+    "dev": {
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "cache": false,
+      "persistent": true,
+      "dependsOn": ["^build"]
+    },
+    "clean": {
+      "cache": false
+    },
+    "generate": {
+      "dependsOn": ["^generate"]
+    }
+  }
+}

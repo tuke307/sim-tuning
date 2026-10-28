@@ -1,0 +1,15 @@
+{
+  "extends": "@sim-tuning/typescript-config/nestjs.json",
+  "compilerOptions": {
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "rootDir": ".",
+    "outDir": "dist",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "typeRoots": ["./node_modules/@types", "../../node_modules/@types"]
+  },
+  "exclude": ["node_modules", "dist"],
+  "include": ["src", "src/**/*.json"]
+}

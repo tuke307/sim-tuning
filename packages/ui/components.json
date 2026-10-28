@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "default",
+  "rsc": true,
+  "tsx": true,
+  "tailwind": {
+    "config": "",
+    "css": "src/globals.css",
+    "baseColor": "neutral",
+    "cssVariables": false
+  },
+  "iconLibrary": "lucide",
+  "aliases": {
+    "components": "@sim-tuning/ui/components",
+    "utils": "@sim-tuning/ui/lib/utils",
+    "ui": "@sim-tuning/ui/components/ui",
+    "lib": "@sim-tuning/ui/lib",
+    "hooks": "@sim-tuning/ui/hooks"
+  },
+  "registries": {
+    "@mapcn": "https://mapcn.dev/r/{name}.json"
+  }
+}
