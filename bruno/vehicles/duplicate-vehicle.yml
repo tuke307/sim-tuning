@@ -1,0 +1,21 @@
+info:
+  name: duplicate-vehicle
+  type: http
+  seq: 5
+
+http:
+  method: POST
+  url: "{{API_URL}}:{{API_PORT}}/api/vehicles/{{VEHICLE_ID}}/duplicate"
+  body:
+    type: json
+    data: |-
+      {
+        "name": "Simson S51 Tuning"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

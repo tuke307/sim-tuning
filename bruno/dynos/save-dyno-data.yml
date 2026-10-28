@@ -1,0 +1,52 @@
+info:
+  name: save-dyno-data
+  type: http
+  seq: 3
+
+http:
+  method: PUT
+  url: "{{API_URL}}:{{API_PORT}}/api/dynos/{{DYNO_ID}}/data"
+  body:
+    type: json
+    data: |-
+      {
+        "drehzahl": [
+          {
+            "zeit": 0,
+            "drehzahl": 2000
+          },
+          {
+            "zeit": 0.5,
+            "drehzahl": 5500
+          },
+          {
+            "zeit": 1,
+            "drehzahl": 7800
+          }
+        ],
+        "dynoPs": [
+          {
+            "drehzahl": 5500,
+            "ps": 6.1
+          },
+          {
+            "drehzahl": 7800,
+            "ps": 7.4
+          }
+        ],
+        "ausrollen": [
+          {
+            "latitude": 52.52,
+            "longitude": 13.405,
+            "speed": 16.7,
+            "zeitpunkt": "2026-05-01T10:00:00.000Z"
+          }
+        ]
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
