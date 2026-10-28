@@ -1,4 +1,4 @@
-import { getLeistung, wattToPs } from '@sim-tuning/common/logic';
+import { getLeistungskurve, wattToPs } from '@sim-tuning/common/logic';
 import {
   MAX_DYNO_POINTS,
   type DrehzahlPointDto,
@@ -21,7 +21,7 @@ export interface DiagnosisParams {
   luftdichte: number;
 }
 
-/** v2 constants passed to `DynoLogic.GetLeistung`. */
+/** v2 constants (`DynoDiagnosisViewModel`). */
 export const DIAGNOSIS_CONSTANTS = {
   radius: 0.277,
   rollwiderstand: 0.005,
@@ -56,10 +56,10 @@ export function airDensity(
 }
 
 /**
- * Port of v2 `DynoDiagnosisViewModel.RefreshPlot`: takes the stored RPM curve up to (excluding)
- * its maximum, drops the first point (t = 0 would divide by zero) and computes the power for
- * every point with `DynoLogic.GetLeistung` (t in s). v2 plotted the raw watt value labelled as PS;
- * v3 converts with `wattToPs`. Non-finite results are skipped.
+ * v2 `DynoDiagnosisViewModel.RefreshPlot` range logic (curve up to its RPM maximum) with v3
+ * physics: v2 `DynoLogic.GetLeistung` multiplied by 60 instead of dividing and used the absolute
+ * time as Δt (≈10¹⁴ PS). v3 uses `getLeistungskurve` (speed from gearing, acceleration by central
+ * differences) and converts W → PS. Non-finite results are skipped.
  */
 export function computePowerCurve(
   drehzahl: readonly DrehzahlPointDto[],
@@ -70,28 +70,19 @@ export function computePowerCurve(
   for (let i = 1; i < drehzahl.length; i++) {
     if (drehzahl[i]!.drehzahl > drehzahl[maxIndex]!.drehzahl) maxIndex = i;
   }
-  const range = drehzahl.slice(1, maxIndex);
-  const out: DynoPsPointDto[] = [];
-  for (const point of range) {
-    const t = point.zeit / 1000;
-    if (t === 0 || point.drehzahl === 0) continue;
-    const watt = getLeistung(
-      point.drehzahl,
-      t,
-      params.luftdichte,
-      params.cw,
-      params.gesamtuebersetzung,
-      DIAGNOSIS_CONSTANTS.radius,
-      params.gewicht,
-      DIAGNOSIS_CONSTANTS.rollwiderstand,
-      DIAGNOSIS_CONSTANTS.gravity,
-      params.frontA,
-      DIAGNOSIS_CONSTANTS.steigung,
-    );
-    const ps = wattToPs(watt);
-    if (Number.isFinite(ps)) out.push({ drehzahl: point.drehzahl, ps });
-  }
-  return out.slice(0, MAX_DYNO_POINTS);
+  const range = drehzahl.slice(0, maxIndex + 1);
+  return getLeistungskurve(range, params.gesamtuebersetzung, DIAGNOSIS_CONSTANTS.radius, {
+    masse: params.gewicht,
+    luftdichte: params.luftdichte,
+    cw: params.cw,
+    frontA: params.frontA,
+    rollwiderstand: DIAGNOSIS_CONSTANTS.rollwiderstand,
+    steigung: DIAGNOSIS_CONSTANTS.steigung,
+    gravity: DIAGNOSIS_CONSTANTS.gravity,
+  })
+    .map((p) => ({ drehzahl: p.drehzahl, ps: wattToPs(p.watt) }))
+    .filter((p) => Number.isFinite(p.ps))
+    .slice(0, MAX_DYNO_POINTS);
 }
 
 /** Peak of a power curve (or `null` for an empty curve). */
