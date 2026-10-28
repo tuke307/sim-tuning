@@ -1,0 +1,232 @@
+﻿<ContentView
+	x:Class="SimTuning.Maui.UI.Views.Einlass.EinlassVergaserView"
+	xmlns="http://schemas.microsoft.com/dotnet/maui/global"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	x:DataType="EinlassVergaserViewModel"
+	xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
+    <ContentView.Resources>
+        <Style
+			x:Key="InvalidEntryStyle"
+			TargetType="Entry">
+            <Setter
+				Property="BackgroundColor"
+				Value="#FFC182" />
+        </Style>
+    </ContentView.Resources>
+
+    <ScrollView>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!--  Vergasergröße  -->
+            <Border Grid.Row="0">
+                <StackLayout>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <Label
+							Grid.Column="0"
+							Style="{StaticResource LabelTitleStyle}"
+							Text="Vergasergröße" />
+
+                        <ImageButton
+							Grid.Column="1"
+							Command="{Binding ShowHelperVehiclesCommand}"
+							Source="{StaticResource IconAtvMedium}" />
+                    </Grid>
+
+                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <!--Hubraum Volumen-->
+                        <HorizontalStackLayout Grid.Row="0">
+                            <Label
+								Text="Hubraum- Volumen"
+								WidthRequest="60"
+								VerticalOptions="Center" />
+
+                            <Entry
+								Keyboard="Numeric"
+								Text="{Binding Hubvolumen}"
+								WidthRequest="200"
+								VerticalOptions="Center">
+                                <Entry.Behaviors>
+                                    <toolkit:TextValidationBehavior
+										MinimumLength="1"
+										InvalidStyle="{StaticResource InvalidEntryStyle}" />
+                                </Entry.Behaviors>
+                            </Entry>
+
+                            <Picker
+								VerticalOptions="Center"
+								ItemsSource="{Binding Path=VolumeQuantityUnits, Mode=OneTime}"
+								ItemDisplayBinding="{Binding Abbreviation}"
+								SelectedItem="{Binding UnitHubvolumen}" />
+                        </HorizontalStackLayout>
+
+                        <!--Resonanzdrehzahl-->
+                        <HorizontalStackLayout Grid.Row="1">
+                            <Label
+								Text="Resonanzdrehzahl"
+								WidthRequest="60"
+								VerticalOptions="Center" />
+
+                            <Entry
+								Keyboard="Numeric"
+								Text="{Binding Resonanzdrehzahl}"
+								WidthRequest="200"
+								VerticalOptions="Center">
+                                <Entry.Behaviors>
+                                    <toolkit:TextValidationBehavior
+										MinimumLength="1"
+										InvalidStyle="{StaticResource InvalidEntryStyle}" />
+                                </Entry.Behaviors>
+                            </Entry>
+
+                            <Label VerticalOptions="Center">
+                                1/min
+                            </Label>
+                        </HorizontalStackLayout>
+
+                        <!--Vergasergroeße-->
+                        <HorizontalStackLayout
+							Grid.Row="2"
+							Margin="0,30,0,0">
+                            <Label
+								Text="Ø Vergaser"
+								WidthRequest="60"
+								VerticalOptions="Center" />
+
+                            <Entry
+								Keyboard="Numeric"
+								Text="{Binding Vergasergroeße}"
+								WidthRequest="200"
+								IsEnabled="False"
+								IsReadOnly="True"
+								VerticalOptions="Center">
+                                <Entry.Behaviors>
+                                    <toolkit:TextValidationBehavior
+										MinimumLength="1"
+										InvalidStyle="{StaticResource InvalidEntryStyle}" />
+                                </Entry.Behaviors>
+                            </Entry>
+
+                            <Picker
+								VerticalOptions="Center"
+								ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+								ItemDisplayBinding="{Binding Abbreviation}"
+								SelectedItem="{Binding UnitVergasergroeße}" />
+                        </HorizontalStackLayout>
+                    </Grid>
+                </StackLayout>
+            </Border>
+
+            <!--  Hauptdüsendurchmesser  -->
+            <Border Grid.Row="1">
+                <StackLayout>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <Label
+							Grid.Column="0"
+							Style="{StaticResource LabelTitleStyle}"
+							Text="Hauptdüsendurchmesser" />
+
+                        <ImageButton
+							Grid.Column="1"
+							Command="{Binding ShowHelperVehiclesCommand}"
+							Source="{StaticResource IconAtvMedium}" />
+                    </Grid>
+
+                    <BoxView Style="{StaticResource DividerBoxViewStyle}" />
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <!--Vergasergroeße-->
+                        <HorizontalStackLayout Grid.Row="0">
+                            <Label
+								Text="Ø Vergaser"
+								WidthRequest="60"
+								VerticalOptions="Center" />
+
+                            <Entry
+								Keyboard="Numeric"
+								Text="{Binding Vergasergroeße}"
+								WidthRequest="200"
+								VerticalOptions="Center">
+                                <Entry.Behaviors>
+                                    <toolkit:TextValidationBehavior
+										MinimumLength="1"
+										InvalidStyle="{StaticResource InvalidEntryStyle}" />
+                                </Entry.Behaviors>
+                            </Entry>
+
+                            <Picker
+								VerticalOptions="Center"
+								ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+								ItemDisplayBinding="{Binding Abbreviation}"
+								SelectedItem="{Binding UnitVergasergroeße}" />
+                        </HorizontalStackLayout>
+
+                        <!--HauptdueseD-->
+                        <HorizontalStackLayout
+							Grid.Row="2"
+							Margin="0,30,0,0">
+                            <Label
+								Text="Ø Hauptdüse"
+								WidthRequest="60"
+								VerticalOptions="Center" />
+
+                            <Entry
+								Keyboard="Numeric"
+								Text="{Binding HauptdueseD}"
+								WidthRequest="200"
+								IsEnabled="False"
+								IsReadOnly="True"
+								VerticalOptions="Center">
+                                <Entry.Behaviors>
+                                    <toolkit:TextValidationBehavior
+										MinimumLength="1"
+										InvalidStyle="{StaticResource InvalidEntryStyle}" />
+                                </Entry.Behaviors>
+                            </Entry>
+
+                            <Picker
+								VerticalOptions="Center"
+								ItemsSource="{Binding Path=LengthQuantityUnits, Mode=OneTime}"
+								ItemDisplayBinding="{Binding Abbreviation}"
+								SelectedItem="{Binding UnitHauptdueseD}" />
+                        </HorizontalStackLayout>
+                    </Grid>
+                </StackLayout>
+            </Border>
+        </Grid>
+    </ScrollView>
+</ContentView>

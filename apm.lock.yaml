@@ -1,0 +1,17 @@
+lockfile_version: '1'
+generated_at: '2026-04-30T22:09:26.685868+00:00'
+dependencies: []
+deployments:
+- kind: project-relative
+  target: claude
+  value: .claude/rules/security-and-owasp.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:70d89a747d26467aebd9ee57011d5474d92eef11763feacb75bca078d430b73b
+local_deployed_files:
+- .claude/rules/security-and-owasp.md
+local_deployed_file_hashes:
+  .claude/rules/security-and-owasp.md: sha256:70d89a747d26467aebd9ee57011d5474d92eef11763feacb75bca078d430b73b
