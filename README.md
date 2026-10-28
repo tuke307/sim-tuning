@@ -80,8 +80,8 @@ yarn db:seed
 yarn dev
 ```
 
-Local docker stack (`docker compose -f compose.dev.yml up -d`) uses host ports offset from other
-local projects: Postgres `5438`, Redis `6383`, Caddy `8083`, web `3005`, api `3006`, Mailpit `8026` (SMTP `1026`).
+Local docker stack (`docker compose -f compose.dev.yml up -d`, project `sim-tuning-dev`) uses its own
+database `simtuning_dev` (user `simtuning`, volume `simtuning_dev_pgdata`) and host ports Postgres `5450`, Redis `6390`, Caddy `8090`, web `3010`, api `3011`, Mailpit `8030` (SMTP `1030`).
 
 ---
 

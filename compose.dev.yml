@@ -1,9 +1,13 @@
+# Own compose project, database, user and volumes so local SimTuning data never mixes with
+# other stacks (e.g. luki-fitti). Host ports use a dedicated block: 5450/6390/8090/3010/3011/1030/8030.
+name: sim-tuning-dev
+
 services:
   db:
     image: postgres:latest
     restart: always
     ports:
-      - 5438:5432 # offset from kds (5434), marienmuehle (5435), luki-fitti (5436), langfuse (5437)
+      - 5450:5432
     env_file:
       - ./packages/database/.env.production.local
     environment:
@@ -11,6 +15,10 @@ services:
       # CURRENT_TIMESTAMP match the app's UTC convention.
       - TZ=UTC
       - PGTZ=UTC
+      - POSTGRES_DB=simtuning_dev
+      - POSTGRES_USER=simtuning
+    volumes:
+      - simtuning_dev_pgdata:/var/lib/postgresql
     networks:
       - sim_tuning_network
   db-migrate:
@@ -29,7 +37,7 @@ services:
     image: caddy:alpine
     restart: always
     ports:
-      - 8083:80 # offset from kds (80) and luki-fitti (8082)
+      - 8090:80
     volumes:
       - ./Caddyfile.dev:/etc/caddy/Caddyfile:ro
     depends_on:
@@ -45,7 +53,7 @@ services:
     env_file:
       - ./apps/web/.env.production.local
     ports:
-      - 3005:3000 # offset from kds/marienmuehle (3000), luki-fitti (3002) and langfuse (3004)
+      - 3010:3000
     networks:
       - sim_tuning_network
   api:
@@ -56,7 +64,7 @@ services:
     env_file:
       - ./apps/api/.env.production.local
     ports:
-      - 3006:3001 # offset from kds/marienmuehle (3001) and luki-fitti (3003)
+      - 3011:3001
     depends_on:
       - db-migrate
       - redis
@@ -80,16 +88,18 @@ services:
     image: axllent/mailpit:latest
     restart: always
     ports:
-      - 1026:1025 # SMTP server (offset from luki-fitti 1025)
-      - 8026:8025 # Web UI & HTTP API (http://localhost:8026, offset from luki-fitti 8025)
+      - 1030:1025 # SMTP server
+      - 8030:8025 # Web UI & HTTP API (http://localhost:8030)
     networks:
       - sim_tuning_network
   redis:
     image: redis:alpine
     restart: always
     ports:
-      - 6383:6379 # offset from langfuse (6379), kds (6380), marienmuehle (6381), luki-fitti (6382)
+      - 6390:6379
     command: redis-server --appendonly yes
+    volumes:
+      - simtuning_dev_redis:/data
     networks:
       - sim_tuning_network
     healthcheck:
@@ -98,6 +108,10 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
+
+volumes:
+  simtuning_dev_pgdata:
+  simtuning_dev_redis:
 
 networks:
   sim_tuning_network:

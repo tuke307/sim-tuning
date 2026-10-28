@@ -148,7 +148,8 @@ No watch target, no widgets. Mac support via "Designed for iPad" (replaces MacCa
 ## 5. Infra & CI
 - `compose.yml` / `compose.dev.yml`: db, db-migrate, redis, mailpit, api, web, email-worker, caddy.
   Ports must not collide with luki-fitti (5436/8082/3002/3003/6382) or langfuse (5437/3004/6379):
-  proposal `5438`, `8083`, `3005` (web), `3006` (api), `6383`, Mailpit `1026`/`8026`.
+  dev stack uses `5450`, `8090`, `3010` (web), `3011` (api), `6390`, Mailpit `1030`/`8030`, its own
+  compose project `sim-tuning-dev`, database `simtuning_dev`, user `simtuning` and volumes.
 - Images: `ghcr.io/tuke307/sim-tuning-{web,api,email-worker,db-migrate}`.
 - `.github/workflows/production.yaml` copied; trigger on push to `v3` until cutover, then the default branch.
 - Domain: `simtuning.tony-luke.de` (already used by v2 for demo data).

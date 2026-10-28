@@ -2,11 +2,11 @@
  * Mailpit HTTP API client for E2E email-link verification tests.
  *
  * Mailpit (`compose.dev.yml` service `mailpit`) listens on:
- *   - SMTP: `localhost:1026`
- *   - HTTP API & Web UI: `http://localhost:8026`
+ *   - SMTP: `localhost:1030`
+ *   - HTTP API & Web UI: `http://localhost:8030`
  */
 
-export const MAILPIT_URL = process.env.MAILPIT_URL ?? 'http://localhost:8026';
+export const MAILPIT_URL = process.env.MAILPIT_URL ?? 'http://localhost:8030';
 
 export interface MailpitSummaryMessage {
   ID: string;

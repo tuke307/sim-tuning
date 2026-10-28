@@ -1,5 +1,5 @@
 lockfile_version: '1'
-generated_at: '2026-10-28T21:50:27.320807+00:00'
+generated_at: '2026-10-28T21:54:27.456467+00:00'
 dependencies: []
 deployments:
 - kind: project-relative
@@ -46,7 +46,7 @@ deployments:
   owners:
   - .
   active_owner: .
-  content_hash: sha256:41a25de95e3130cc193a6410c9f9269a218eb1f6665d77e3aa6b259db6195fc1
+  content_hash: sha256:652ec438d429632c5a03f6a6956e3d905e08c45ab1fcd3a6faabebc8d3623241
 - kind: project-relative
   target: claude
   value: .claude/rules/reactjs.md
@@ -388,7 +388,7 @@ deployments:
   owners:
   - .
   active_owner: .
-  content_hash: sha256:22c5c50f06ee85d284ec39584d9e7152aba91d4c01af71c4b7b744031aa90f89
+  content_hash: sha256:3444a91be7ea690117fc683494b71c689909990d19a3263fbf2a500e1e09b5bd
 - kind: project-relative
   target: copilot
   value: .github/instructions/reactjs.instructions.md
@@ -806,7 +806,7 @@ local_deployed_file_hashes:
   .claude/rules/nestjs.md: sha256:a3b8e1e322128e42c4df55405ffa9215ec4393cc0623770648f48b70c8382e96
   .claude/rules/nextjs-tailwind.md: sha256:3c141570a0895c9844d5c45fdbb6afce9b550c2d04b70f9818e6f8b1da45bf6a
   .claude/rules/nextjs.md: sha256:77dc7629c26081f27bba0bef3ee2c4667e852578403208215a0b40244f24c1d2
-  .claude/rules/project.md: sha256:41a25de95e3130cc193a6410c9f9269a218eb1f6665d77e3aa6b259db6195fc1
+  .claude/rules/project.md: sha256:652ec438d429632c5a03f6a6956e3d905e08c45ab1fcd3a6faabebc8d3623241
   .claude/rules/reactjs.md: sha256:a38734c67a5ffe359c740136cb430e9e3897dc4327c8d192840f27fadd94fab6
   .claude/rules/security-and-owasp.md: sha256:70d89a747d26467aebd9ee57011d5474d92eef11763feacb75bca078d430b73b
   .claude/rules/typescript-5-es2022.md: sha256:608a027d3c1d31fd67ca62dda97472d79c504bca31cfbc46d20bd41c3f6e294c
@@ -843,7 +843,7 @@ local_deployed_file_hashes:
   .github/instructions/nestjs.instructions.md: sha256:8920c88accf66d889e955271e1cfb2faa5b4cf0cadd926521959758c7eac407d
   .github/instructions/nextjs-tailwind.instructions.md: sha256:f664aed1749ff7f5c220c3222dc9766c16903d02a7a4c07f152095b88c6f89b2
   .github/instructions/nextjs.instructions.md: sha256:3f4ae9da04edb5467de9d2ac18dac4440dc608de2a492f44c115b1ee3915cfba
-  .github/instructions/project.instructions.md: sha256:22c5c50f06ee85d284ec39584d9e7152aba91d4c01af71c4b7b744031aa90f89
+  .github/instructions/project.instructions.md: sha256:3444a91be7ea690117fc683494b71c689909990d19a3263fbf2a500e1e09b5bd
   .github/instructions/reactjs.instructions.md: sha256:0b435067818457b041ba5851c2193d4cac3b34e74125013edae139428a97da97
   .github/instructions/security-and-owasp.instructions.md: sha256:bac0e3e3d77ade85d3dac02bb69a59ac827f5a728a7befaad245412f6ed0ec85
   .github/instructions/typescript-5-es2022.instructions.md: sha256:393392a9a1637b4651e2f3dee767b91548bba68dc93fbaab069018fff559fd9a
