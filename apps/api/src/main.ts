@@ -11,13 +11,21 @@ import { HttpExceptionFilter } from './filters/http-exception.filter';
 import { LoggingInterceptor } from './interceptors/logging.interceptor';
 import { ApiResponseInterceptor } from './interceptors/api-response.interceptor';
 
+/** docs/sim-api.md: request bodies up to 5 MB (MAX_DYNO_POINTS per series). */
+const JSON_BODY_LIMIT = '5mb';
+
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     // Route Nest's own framework logs through Winston so every line is JSON in
     // production (see @sim-tuning/logger NestLoggerService). Keeps Loki's | json parser
     // from erroring on bootstrap/routing output like "Mapped {/api/media, GET}".
     logger: new NestLoggerService(),
+    // Registered below with an explicit limit (dyno series uploads/imports up to 5 MB).
+    bodyParser: false,
   });
+
+  app.useBodyParser('json', { limit: JSON_BODY_LIMIT });
+  app.useBodyParser('urlencoded', { limit: '100kb', extended: true });
 
   // Security middleware
   app.use(

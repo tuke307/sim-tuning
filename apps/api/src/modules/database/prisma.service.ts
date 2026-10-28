@@ -49,4 +49,59 @@ export class PrismaService implements OnModuleInit, OnModuleDestroy {
   get email(): typeof prisma.email {
     return prisma.email;
   }
+
+  get environment(): typeof prisma.environment {
+    return prisma.environment;
+  }
+
+  get vehicle(): typeof prisma.vehicle {
+    return prisma.vehicle;
+  }
+
+  get motor(): typeof prisma.motor {
+    return prisma.motor;
+  }
+
+  get einlass(): typeof prisma.einlass {
+    return prisma.einlass;
+  }
+
+  get vergaser(): typeof prisma.vergaser {
+    return prisma.vergaser;
+  }
+
+  get auslass(): typeof prisma.auslass {
+    return prisma.auslass;
+  }
+
+  get auspuff(): typeof prisma.auspuff {
+    return prisma.auspuff;
+  }
+
+  get ueberstroemer(): typeof prisma.ueberstroemer {
+    return prisma.ueberstroemer;
+  }
+
+  get dyno(): typeof prisma.dyno {
+    return prisma.dyno;
+  }
+
+  get drehzahl(): typeof prisma.drehzahl {
+    return prisma.drehzahl;
+  }
+
+  get dynoPs(): typeof prisma.dynoPs {
+    return prisma.dynoPs;
+  }
+
+  get ausrollen(): typeof prisma.ausrollen {
+    return prisma.ausrollen;
+  }
+
+  get geschwindigkeit(): typeof prisma.geschwindigkeit {
+    return prisma.geschwindigkeit;
+  }
 }
+
+/** Interactive transaction client passed to `prisma.$transaction(async (tx) => …)`. */
+export type PrismaTx = Parameters<Parameters<PrismaService['$transaction']>[0]>[0];
