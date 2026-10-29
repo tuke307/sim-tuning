@@ -197,3 +197,20 @@ extension View {
             }
     }
 }
+
+/// SimTuning logo from `assets/brand` (vector asset). `.mark` drops the TUNING wordmark for
+/// small sizes where it would not be legible.
+struct BrandLogo: View {
+    enum Variant { case full, mark }
+    var variant: Variant = .full
+    var size: CGFloat
+
+    var body: some View {
+        Image(variant == .full ? "Logo" : "LogoMark")
+            .resizable()
+            .interpolation(.high)
+            .scaledToFit()
+            .frame(width: size, height: size)
+            .accessibilityLabel(Text(verbatim: "SimTuning"))
+    }
+}

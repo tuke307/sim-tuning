@@ -1,5 +1,14 @@
-const CACHE_NAME = 'sim-tuning-shell-v3';
-const STATIC_ASSETS = ['/manifest.webmanifest', '/icon-192.svg', '/icon-512.svg'];
+const CACHE_NAME = 'sim-tuning-shell-v4';
+const STATIC_ASSETS = [
+  '/manifest.webmanifest',
+  '/icon.svg',
+  '/logo.svg',
+  '/logo-mark.svg',
+  '/apple-touch-icon.png',
+  '/icon-192.png',
+  '/icon-512.png',
+  '/icon-maskable-512.png',
+];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
