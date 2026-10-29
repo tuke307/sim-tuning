@@ -20,6 +20,7 @@ export function VehiclesView() {
 
   return (
     <ModulePage
+      module="vehicles"
       title={t.vehicles.title}
       subtitle={t.vehicles.subtitle}
       showVehicle={false}
@@ -31,7 +32,7 @@ export function VehiclesView() {
       onTabChange={setTab}
     >
       {error && (
-        <Card role="alert" className="text-destructive rounded-[1.25rem] p-4 text-sm">
+        <Card role="alert" className="text-destructive rounded-md p-4 text-sm">
           {t.sim.errorGeneric}
         </Card>
       )}
@@ -51,7 +52,7 @@ export function VehiclesView() {
             <VehicleEditor key={selectedVehicle.id} vehicle={selectedVehicle} />
           ) : (
             !loading && (
-              <Card className="text-muted-foreground rounded-[1.25rem] p-5 text-sm">
+              <Card className="text-muted-foreground rounded-md p-5 text-sm">
                 {t.vehicles.editorEmpty}
               </Card>
             )

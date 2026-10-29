@@ -13,6 +13,7 @@ import { MotorView } from './motor/motor-view';
 import { EinlassView } from './einlass/einlass-view';
 import { AuslassView } from './auslass/auslass-view';
 import { DynoView } from './dyno/dyno-view';
+import { MODULE_META, type SimModule } from './shared/modules';
 
 export type ModuleTab = 'vehicles' | 'motor' | 'einlass' | 'auslass' | 'dyno';
 export type NavTab = 'home' | ModuleTab | 'profile';
@@ -71,21 +72,22 @@ function Shell() {
 
   return (
     <div className="bg-background text-foreground flex min-h-dvh w-full max-w-full flex-col overflow-x-hidden">
-      <header className="material-bar pt-safe sticky top-0 z-40 border-b border-border/60">
-        <div className="mx-auto flex h-14 max-w-5xl items-center justify-between gap-3 px-4">
+      <header className="bg-background pt-safe sticky top-0 z-40 border-b">
+        <div className="mx-auto flex h-14 max-w-5xl items-stretch justify-between gap-3 px-4">
           <Button
             type="button"
             variant="ghost"
             onClick={() => setActiveTab('home')}
             aria-label={t.a11y.homeButton}
-            className="h-auto shrink-0 rounded-md px-0 text-[1.0625rem] font-semibold tracking-tight hover:bg-transparent"
+            className="font-display h-auto shrink-0 self-center px-1 text-[1.125rem] font-bold tracking-[0.12em] uppercase hover:bg-transparent"
           >
             SimTuning
           </Button>
 
-          <nav aria-label={t.nav.primaryNavAria} className="hidden items-center gap-1 md:flex">
+          <nav aria-label={t.nav.primaryNavAria} className="hidden items-stretch md:flex">
             {navItems.map((item) => {
               const isCurrent = activeTab === item.id;
+              const meta = MODULE_META[item.id as SimModule];
               return (
                 <button
                   key={item.id}
@@ -93,13 +95,18 @@ function Shell() {
                   data-testid={`desktop-nav-${item.id}`}
                   aria-current={isCurrent ? 'page' : undefined}
                   onClick={() => setActiveTab(item.id)}
-                  className={`h-9 rounded-full px-4 text-[0.9375rem] transition-colors duration-150 ${
-                    isCurrent
-                      ? 'bg-secondary text-foreground font-semibold'
-                      : 'text-muted-foreground hover:text-foreground font-medium'
+                  className={`font-display relative flex items-center gap-2 px-3.5 text-[0.8125rem] font-semibold tracking-[0.08em] uppercase outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring lg:px-4 ${
+                    isCurrent ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
                   }`}
                 >
+                  <span className="font-data text-[0.6875rem] font-normal tracking-normal opacity-80">
+                    {meta.sheet}
+                  </span>
                   {item.label}
+                  <span
+                    aria-hidden
+                    className={`absolute inset-x-2 bottom-0 h-0.5 ${isCurrent ? meta.bg : 'bg-transparent'}`}
+                  />
                 </button>
               );
             })}
@@ -114,9 +121,9 @@ function Shell() {
               <span
                 data-testid="header-sync-badge"
                 title={syncStatusText}
-                className="text-muted-foreground flex h-11 min-w-11 items-center justify-center gap-1.5 rounded-full px-2.5 text-[0.8125rem] font-medium"
+                className="text-warning flex h-11 min-w-11 items-center justify-center gap-1.5 px-2 text-[0.75rem] font-semibold tracking-[0.06em] uppercase"
               >
-                <CloudOff className="h-4 w-4" />
+                <CloudOff className="h-4 w-4" aria-hidden />
                 <span className="hidden sm:inline">{t.shell.offline}</span>
               </span>
             )}
@@ -127,19 +134,21 @@ function Shell() {
               aria-label={t.nav.profileAria}
               aria-current={activeTab === 'profile' ? 'page' : undefined}
               onClick={() => setActiveTab('profile')}
-              className="flex size-11 shrink-0 items-center justify-center rounded-full"
+              className="flex size-11 shrink-0 items-center justify-center rounded-md outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
             >
               <span
-                className={`flex size-9 items-center justify-center rounded-full text-[0.8125rem] font-semibold transition-shadow ${
-                  isAuthenticated && initials
-                    ? 'bg-primary/12 text-primary'
-                    : 'bg-secondary text-muted-foreground'
-                } ${activeTab === 'profile' ? 'ring-primary ring-offset-background ring-2 ring-offset-2' : ''}`}
+                className={`font-data flex size-9 items-center justify-center rounded-full border text-[0.8125rem] font-semibold ${
+                  activeTab === 'profile'
+                    ? 'border-primary text-primary'
+                    : isAuthenticated && initials
+                      ? 'border-foreground/60 text-foreground'
+                      : 'border-border text-muted-foreground'
+                }`}
               >
                 {isAuthenticated && initials ? (
                   initials
                 ) : (
-                  <UserRound className="h-[18px] w-[18px]" />
+                  <UserRound className="h-[18px] w-[18px]" strokeWidth={1.75} aria-hidden />
                 )}
               </span>
             </button>
@@ -157,34 +166,37 @@ function Shell() {
         {activeTab === 'profile' && <SettingsView />}
       </main>
 
-      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-40 flex flex-col items-center gap-2 px-3 pb-[max(env(safe-area-inset-bottom),0.5rem)] md:pb-6">
-        <nav
-          aria-label={t.nav.mobileNavAria}
-          className="material-bar pointer-events-auto w-full max-w-md rounded-full border border-border/60 p-1 shadow-[0_8px_30px_rgb(0_0_0/0.12)] md:hidden"
-        >
-          <div className="grid" style={{ gridTemplateColumns: `repeat(${navItems.length}, 1fr)` }}>
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              const isCurrent = activeTab === item.id;
-              return (
-                <button
-                  key={item.id}
-                  type="button"
-                  data-testid={`mobile-nav-${item.id}`}
-                  aria-current={isCurrent ? 'page' : undefined}
-                  onClick={() => setActiveTab(item.id)}
-                  className={`flex h-14 flex-col items-center justify-center gap-0.5 rounded-full text-[0.6875rem] font-medium transition-colors duration-150 ${
-                    isCurrent ? 'bg-secondary text-primary' : 'text-muted-foreground'
-                  }`}
-                >
-                  <Icon className="h-[22px] w-[22px]" strokeWidth={isCurrent ? 2.2 : 1.8} />
-                  <span>{item.label}</span>
-                </button>
-              );
-            })}
-          </div>
-        </nav>
-      </div>
+      <nav
+        aria-label={t.nav.mobileNavAria}
+        className="bg-card fixed inset-x-0 bottom-0 z-40 border-t pb-[env(safe-area-inset-bottom)] md:hidden"
+      >
+        <div className="grid" style={{ gridTemplateColumns: `repeat(${navItems.length}, 1fr)` }}>
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            const isCurrent = activeTab === item.id;
+            const meta = MODULE_META[item.id as SimModule];
+            return (
+              <button
+                key={item.id}
+                type="button"
+                data-testid={`mobile-nav-${item.id}`}
+                aria-current={isCurrent ? 'page' : undefined}
+                onClick={() => setActiveTab(item.id)}
+                className={`relative flex h-14 min-w-0 flex-col items-center justify-center gap-1 text-[0.6875rem] font-semibold tracking-[0.04em] uppercase outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring ${
+                  isCurrent ? 'text-foreground' : 'text-muted-foreground'
+                }`}
+              >
+                <span
+                  aria-hidden
+                  className={`absolute inset-x-3 top-0 h-0.5 ${isCurrent ? meta.bg : 'bg-transparent'}`}
+                />
+                <Icon className="h-5 w-5" strokeWidth={isCurrent ? 2 : 1.5} />
+                <span className="max-w-full truncate px-0.5">{item.label}</span>
+              </button>
+            );
+          })}
+        </div>
+      </nav>
     </div>
   );
 }

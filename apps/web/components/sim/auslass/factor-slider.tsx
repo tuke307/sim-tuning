@@ -40,7 +40,7 @@ export function FactorSlider({
         </Label>
         <output
           htmlFor={id}
-          className="font-rounded text-sm font-semibold tabular-nums"
+          className="font-data text-sm"
           data-testid={testId ? `${testId}-value` : undefined}
         >
           {hasValue ? value.toFixed(1) : '–'}
@@ -57,7 +57,7 @@ export function FactorSlider({
         data-testid={testId}
         aria-valuetext={hasValue ? value.toFixed(1) : undefined}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="accent-primary focus-visible:ring-ring h-2 w-full cursor-pointer rounded-full focus-visible:ring-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+        className="accent-primary h-11 w-full cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
       />
       <div className="text-muted-foreground flex justify-between text-xs" aria-hidden>
         <span>

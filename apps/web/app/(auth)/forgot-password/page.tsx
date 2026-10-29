@@ -40,14 +40,16 @@ export default function ForgotPasswordPage() {
 
   return (
     <div className="bg-background flex min-h-dvh items-center justify-center p-4">
-      <Card className="w-full max-w-md space-y-6 rounded-3xl p-6 sm:p-8">
+      <Card className="w-full max-w-md space-y-6 rounded-md p-6 sm:p-8">
         <div className="flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5">
-            <div className="bg-primary text-primary-foreground flex h-10 w-10 items-center justify-center rounded-xl font-semibold">
+            <div className="border-primary text-primary flex h-10 w-10 items-center justify-center rounded-md border">
               <Gauge className="h-5 w-5" />
             </div>
             <div>
-              <span className="text-[1.0625rem] font-semibold">SimTuning</span>
+              <span className="font-display block text-[1.125rem] font-bold tracking-[0.12em] uppercase">
+                SimTuning
+              </span>
               <span className="text-muted-foreground block text-xs">{t.nav.tagline}</span>
             </div>
           </Link>
@@ -60,7 +62,7 @@ export default function ForgotPasswordPage() {
 
         {submittedMessage ? (
           <div className="space-y-4">
-            <div className="border-primary/40 bg-primary/12 text-primary flex items-start gap-2.5 rounded-2xl border p-4 text-xs leading-relaxed">
+            <div className="border-primary/50 bg-primary/8 text-foreground flex items-start gap-2.5 rounded-md border p-4 text-xs leading-relaxed">
               <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" />
               <span>{submittedMessage}</span>
             </div>

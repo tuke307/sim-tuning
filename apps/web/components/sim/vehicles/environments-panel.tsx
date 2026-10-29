@@ -145,7 +145,7 @@ export function EnvironmentsPanel() {
   const pUnit = UNITS[FIELD_BASE_UNITS.environment.luftdruckP].abbreviation;
 
   return (
-    <Card className="space-y-4 rounded-[1.25rem] p-5">
+    <Card className="space-y-4 rounded-md p-5">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h2 className="text-[0.9375rem] font-semibold">{t.vehicles.environmentsTitle}</h2>
@@ -174,12 +174,12 @@ export function EnvironmentsPanel() {
             <li
               key={env.id}
               data-testid={`environment-item-${env.id}`}
-              className="bg-secondary/50 flex items-center gap-3 rounded-2xl px-4 py-3"
+              className="bg-raised flex items-center gap-3 rounded-md px-4 py-3"
             >
               <CloudSun className="text-primary h-5 w-5 shrink-0" aria-hidden />
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-semibold">{env.name}</p>
-                <p className="text-muted-foreground text-xs tabular-nums">
+                <p className="text-muted-foreground text-xs font-data">
                   {env.temperaturT !== null ? `${format(env.temperaturT)} ${tUnit}` : '–'} ·{' '}
                   {env.luftdruckP !== null ? `${format(env.luftdruckP)} ${pUnit}` : '–'}
                 </p>

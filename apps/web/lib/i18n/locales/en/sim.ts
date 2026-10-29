@@ -12,4 +12,13 @@ export const enSim = {
   results: 'Results',
   inputs: 'Inputs',
   errorGeneric: 'Something went wrong. Please try again.',
+  titleBlock: 'Title block',
+  sheet: 'Sheet',
+  engine: 'Engine',
+  date: 'Date',
+  partsList: 'Parts list',
+  pos: 'Pos.',
+  designation: 'Designation',
+  value: 'Value',
+  unit: 'Unit',
 };

@@ -55,14 +55,16 @@ export default function ResetPasswordPage() {
 
   return (
     <div className="bg-background flex min-h-dvh items-center justify-center p-4">
-      <Card className="w-full max-w-md space-y-6 rounded-3xl p-6 sm:p-8">
+      <Card className="w-full max-w-md space-y-6 rounded-md p-6 sm:p-8">
         <div className="flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5">
-            <div className="bg-primary text-primary-foreground flex h-10 w-10 items-center justify-center rounded-xl font-semibold">
+            <div className="border-primary text-primary flex h-10 w-10 items-center justify-center rounded-md border">
               <Gauge className="h-5 w-5" />
             </div>
             <div>
-              <span className="text-[1.0625rem] font-semibold">SimTuning</span>
+              <span className="font-display block text-[1.125rem] font-bold tracking-[0.12em] uppercase">
+                SimTuning
+              </span>
               <span className="text-muted-foreground block text-xs">{t.nav.tagline}</span>
             </div>
           </Link>
@@ -75,7 +77,7 @@ export default function ResetPasswordPage() {
 
         {!token ? (
           <div className="space-y-4">
-            <div className="border-destructive/40 bg-destructive/10 text-destructive flex items-start gap-2.5 rounded-2xl border p-3.5 text-xs">
+            <div className="border-destructive/60 bg-destructive/8 text-destructive flex items-start gap-2.5 rounded-md border p-3.5 text-xs">
               <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
               <span>
                 No password reset token was found in the URL. Please request a new password reset
@@ -88,7 +90,7 @@ export default function ResetPasswordPage() {
           </div>
         ) : successMessage ? (
           <div className="space-y-4 py-2 text-center">
-            <div className="bg-primary/12 text-primary mx-auto flex h-12 w-12 items-center justify-center rounded-full">
+            <div className="border-primary text-primary mx-auto flex border h-12 w-12 items-center justify-center rounded-full">
               <CheckCircle2 className="h-7 w-7" />
             </div>
             <p className="text-sm font-bold">{successMessage}</p>
