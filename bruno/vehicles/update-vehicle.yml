@@ -1,0 +1,33 @@
+info:
+  name: update-vehicle
+  type: http
+  seq: 4
+
+http:
+  method: PATCH
+  url: "{{API_URL}}:{{API_PORT}}/api/vehicles/{{VEHICLE_ID}}"
+  body:
+    type: json
+    data: |-
+      {
+        "gewicht": 82,
+        "motor": {
+          "einlass": {
+            "vergaser": {
+              "durchmesserD": 0.017
+            }
+          },
+          "auslass": {
+            "auspuff": {
+              "kruemmerD": null
+            }
+          }
+        }
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

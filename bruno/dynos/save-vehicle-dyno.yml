@@ -1,0 +1,35 @@
+info:
+  name: save-vehicle-dyno
+  type: http
+  seq: 2
+
+http:
+  method: PUT
+  url: "{{API_URL}}:{{API_PORT}}/api/vehicles/{{VEHICLE_ID}}/dyno"
+  body:
+    type: json
+    data: |-
+      {
+        "name": "Prüfstandslauf 1",
+        "beschreibung": "Erster Lauf",
+        "active": true,
+        "environmentId": "{{ENVIRONMENT_ID}}"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        const body = res.getBody();
+        const value = body?.data?.id;
+        if (value) {
+          bru.setEnvVar('DYNO_ID', value);
+          console.log('DYNO_ID set to', value);
+        }
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

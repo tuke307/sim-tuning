@@ -1,0 +1,35 @@
+opencollection: 1.0.0
+
+info:
+  name: sim-tuning
+config:
+  proxy:
+    inherit: true
+    config:
+      protocol: http
+      hostname: ""
+      port: ""
+      auth:
+        username: ""
+        password: ""
+      bypassProxy: ""
+
+request:
+  scripts:
+    - type: before-request
+      code: |-
+        // Retrieve the CSRF token from environment variables
+        const csrfToken = bru.getEnvVar('CSRF_TOKEN');
+
+        if (csrfToken) {
+          req.setHeader('X-CSRF-Token', csrfToken);
+          console.log('X-CSRF-Token header set to:', csrfToken);
+        } else {
+          console.warn('CSRF_TOKEN environment variable is not set.');
+        }
+bundled: false
+extensions:
+  bruno:
+    ignore:
+      - node_modules
+      - .git

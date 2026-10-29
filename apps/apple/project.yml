@@ -1,0 +1,58 @@
+name: SimTuning
+options:
+  bundleIdPrefix: de.tonyluke
+  deploymentTarget:
+    iOS: "18.0"
+  xcodeVersion: "27.0"
+  generateEmptyDirectories: true
+  developmentLanguage: de
+
+configFiles:
+  Debug: Config/Debug.xcconfig
+  Release: Config/Release.xcconfig
+
+packages:
+  SimTuningKit:
+    path: Packages/SimTuningKit
+
+targets:
+  SimTuningIOS:
+    type: application
+    platform: iOS
+    deploymentTarget: "18.0"
+    scheme:
+      testTargets:
+        - SimTuningIOSUITests
+    sources:
+      - path: SimTuningIOS
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: de.tonyluke.simtuning
+        PRODUCT_NAME: SimTuning
+        INFOPLIST_FILE: SimTuningIOS/Info.plist
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        SWIFT_VERSION: "6.0"
+        SWIFT_STRICT_CONCURRENCY: complete
+        TARGETED_DEVICE_FAMILY: "1"
+        LOCALIZATION_PREFERS_STRING_CATALOGS: YES
+        SWIFT_EMIT_LOC_STRINGS: YES
+        DEVELOPMENT_TEAM: ""
+    dependencies:
+      - package: SimTuningKit
+        product: SimTuningKit
+
+  SimTuningIOSUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    deploymentTarget: "18.0"
+    sources:
+      - path: SimTuningIOSUITests
+    dependencies:
+      - target: SimTuningIOS
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: de.tonyluke.simtuning.uitests
+        GENERATE_INFOPLIST_FILE: YES
+        SWIFT_VERSION: "6.0"
+        TEST_TARGET_NAME: SimTuningIOS
+        DEVELOPMENT_TEAM: ""

@@ -1,6 +1,57 @@
 {
-	"devDependencies": {
-		"@prettier/plugin-xml": "^3.2.2",
-		"prettier": "^3.1.1"
-	}
+  "name": "sim-tuning",
+  "private": true,
+  "license": "UNLICENSED",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "prisma": {
+    "schema": "packages/database/prisma/schema.prisma",
+    "seed": "tsx packages/database/src/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "7.10.0"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^21.2.3",
+    "@commitlint/config-conventional": "^21.2.3",
+    "@types/node": "^26.6.4",
+    "baseline-browser-mapping": "^2.11.27",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.6.0",
+    "prettier": "^3.9.9",
+    "tsc-alias": "^1.9.7",
+    "typescript": "6.0.3",
+    "turbo": "^2.11.7"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "clean": "turbo run clean",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "prepare": "husky",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "update": "ncu --deep -u",
+    "db:deploy": "turbo run db:deploy",
+    "db:migrate": "turbo run db:migrate",
+    "db:generate": "turbo run db:generate",
+    "db:push": "turbo run db:push",
+    "db:seed": "turbo run db:seed"
+  },
+  "yarn": {
+    "overrides": {
+      "glob": "9.3.5"
+    }
+  },
+  "engines": {
+    "node": ">=22",
+    "yarn": ">=1.22.22"
+  },
+  "packageManager": "yarn@1.22.22",
+  "resolutions": {
+    "typescript": "6.0.3"
+  }
 }

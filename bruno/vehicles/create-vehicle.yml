@@ -1,0 +1,58 @@
+info:
+  name: create-vehicle
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{API_URL}}:{{API_PORT}}/api/vehicles"
+  body:
+    type: json
+    data: |-
+      {
+        "name": "Simson S51",
+        "beschreibung": "Mein Moped",
+        "gewicht": 80,
+        "motor": {
+          "name": "M541",
+          "hubL": 0.044,
+          "bohrungD": 0.038,
+          "pleulL": 0.085,
+          "einlass": {
+            "steuerzeitSZ": 130,
+            "vergaser": {
+              "durchmesserD": 0.016,
+              "benzinLuftF": 14.7
+            }
+          },
+          "auslass": {
+            "steuerzeitSZ": 180,
+            "auspuff": {
+              "diffusorStage": 1,
+              "kruemmerD": 0.028
+            }
+          },
+          "ueberstroemer": {
+            "anzahl": 2,
+            "steuerzeitSZ": 120
+          }
+        }
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        const body = res.getBody();
+        const value = body?.data?.id;
+        if (value) {
+          bru.setEnvVar('VEHICLE_ID', value);
+          console.log('VEHICLE_ID set to', value);
+        }
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

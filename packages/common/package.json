@@ -1,0 +1,88 @@
+{
+  "name": "@sim-tuning/common",
+  "version": "1.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./api/*": {
+      "types": "./dist/api/*.d.ts",
+      "default": "./dist/api/*.js"
+    },
+    "./schemas": {
+      "types": "./dist/schemas/index.d.ts",
+      "default": "./dist/schemas/index.js"
+    },
+    "./enums": {
+      "types": "./dist/enums/index.d.ts",
+      "default": "./dist/enums/index.js"
+    },
+    "./utils": {
+      "types": "./dist/utils/index.d.ts",
+      "default": "./dist/utils/index.js"
+    },
+    "./utils/client": {
+      "types": "./dist/utils/client.d.ts",
+      "default": "./dist/utils/client.js"
+    },
+    "./utils/crypto": {
+      "types": "./dist/utils/crypto.util.d.ts",
+      "default": "./dist/utils/crypto.util.js"
+    },
+    "./logic": {
+      "types": "./dist/logic/index.d.ts",
+      "default": "./dist/logic/index.js"
+    },
+    "./units": {
+      "types": "./dist/units/index.d.ts",
+      "default": "./dist/units/index.js"
+    },
+    "./audio": {
+      "types": "./dist/audio/index.d.ts",
+      "default": "./dist/audio/index.js"
+    },
+    "./catalog": {
+      "types": "./dist/catalog/index.d.ts",
+      "default": "./dist/catalog/index.js"
+    },
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc --build && tsc-alias -p tsconfig.json -f -fe .js",
+    "lint": "eslint . --max-warnings 0",
+    "test": "node --import tsx --test 'src/**/*.spec.ts'"
+  },
+  "dependencies": {
+    "date-fns": "^4.4.0",
+    "date-fns-tz": "^3.2.0",
+    "zod": "^4.6.5"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "^11.0.0",
+    "@nestjs/swagger": "^11.0.0",
+    "reflect-metadata": "^0.2.2"
+  },
+  "peerDependenciesMeta": {
+    "@nestjs/common": {
+      "optional": true
+    },
+    "@nestjs/swagger": {
+      "optional": true
+    },
+    "reflect-metadata": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@sim-tuning/eslint-config": "*",
+    "@sim-tuning/typescript-config": "*",
+    "eslint": "^10.12.0",
+    "tsx": "4.23.15",
+    "typescript": "6.0.3"
+  }
+}

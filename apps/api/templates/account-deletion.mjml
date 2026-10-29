@@ -1,0 +1,77 @@
+<mjml>
+  <mj-head>
+    <mj-title>Confirm Account Deletion — SimTuning</mj-title>
+    <mj-preview>Confirm your request to permanently delete your SimTuning account.</mj-preview>
+    <mj-attributes>
+      <mj-all font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif" />
+      <mj-text color="#E2E8F0" font-size="15px" line-height="24px" />
+      <mj-button
+        background-color="#EF4444"
+        color="#FFFFFF"
+        border-radius="12px"
+        font-size="15px"
+        font-weight="800"
+        inner-padding="14px 28px"
+      />
+    </mj-attributes>
+    <mj-style>
+      .card {
+        border: 1px solid #1E293B;
+        border-radius: 20px;
+      }
+      .muted {
+        color: #94A3B8;
+        font-size: 12px;
+        line-height: 18px;
+      }
+      .link {
+        color: #F87171;
+        text-decoration: underline;
+        word-break: break-all;
+      }
+      .brand-accent {
+        color: #CCFF00;
+      }
+    </mj-style>
+  </mj-head>
+  <mj-body background-color="#0B0D10">
+    <mj-wrapper padding="32px 16px" background-color="#11151C" css-class="card">
+      <mj-section padding="16px 24px 8px">
+        <mj-column>
+          <mj-text align="center" font-size="22px" font-weight="900" letter-spacing="1px" padding="0">
+            SIM<span class="brand-accent">TUNING</span>
+          </mj-text>
+          <mj-text align="center" css-class="muted" padding="4px 0 16px">
+            Two-Stroke Simulation &amp; Dyno Tuning
+          </mj-text>
+          <mj-divider border-color="#1E293B" border-width="1px" />
+          <mj-text align="center" font-size="22px" font-weight="800" padding="16px 0 8px">
+            Confirm Account Deletion
+          </mj-text>
+          <mj-text padding="8px 0">
+            Hey <strong>{{ name }}</strong>,
+          </mj-text>
+          <mj-text padding="0 0 16px">
+            We received a request to permanently delete your SimTuning account (<strong>{{ email }}</strong>) and all associated vehicles, engine setups, and dyno runs.
+          </mj-text>
+          <mj-text padding="0 0 16px">
+            Click the button below to open the confirmation page in your browser and finalize the deletion of your account:
+          </mj-text>
+          <mj-button href="{{{ delete_account_url }}}" align="center" padding="8px 0 20px">
+            Review &amp; Confirm Account Deletion
+          </mj-button>
+          <mj-text css-class="muted" padding="8px 0 0">
+            Or copy and paste this link into your browser:
+          </mj-text>
+          <mj-text font-size="12px" padding="4px 0 16px">
+            <a class="link" href="{{{ delete_account_url }}}" target="_blank">{{{ delete_account_url }}}</a>
+          </mj-text>
+          <mj-divider border-color="#1E293B" border-width="1px" />
+          <mj-text align="center" css-class="muted" padding="12px 0 0" font-size="11px">
+            This account deletion link expires in {{ expiry_minutes }} minutes. If you did not request to delete your account, your data remains safe and you can ignore this email.
+          </mj-text>
+        </mj-column>
+      </mj-section>
+    </mj-wrapper>
+  </mj-body>
+</mjml>

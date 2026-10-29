@@ -1,0 +1,30 @@
+ARG NODE_VERSION=24
+FROM node:${NODE_VERSION}-slim AS base
+
+# Stage 1: Prune monorepo to only what @sim-tuning/database needs
+FROM base AS prepare
+WORKDIR /app
+RUN yarn global add turbo
+COPY . .
+RUN turbo prune @sim-tuning/database --docker
+
+# Stage 2: Install dependencies
+FROM base AS runner
+WORKDIR /app
+# Run in UTC (see api Dockerfile): timestamp math assumes a UTC process.
+ENV TZ=UTC
+
+COPY --from=prepare /app/out/json/ .
+RUN yarn install
+
+COPY --from=prepare /app/out/full/ .
+
+# Uncomment and use build args to enable remote caching
+# ARG TURBO_TEAM
+# ENV TURBO_TEAM=$TURBO_TEAM
+
+# ARG TURBO_TOKEN
+# ENV TURBO_TOKEN=$TURBO_TOKEN
+
+# Command to run migrations
+CMD ["yarn", "turbo", "run", "db:deploy"]

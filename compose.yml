@@ -1,0 +1,141 @@
+services:
+  sim-tuning-db-migrate:
+    image: ghcr.io/tuke307/sim-tuning-db-migrate:latest
+    pull_policy: always
+    restart: 'no'
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+    networks:
+      - sim_tuning_network
+    healthcheck:
+      test: ['CMD', 'echo', 'Migration container - no persistent health check needed']
+      interval: 30s
+      timeout: 10s
+      retries: 1
+      start_period: 10s
+
+  sim-tuning-web:
+    image: ghcr.io/tuke307/sim-tuning-web:latest
+    pull_policy: always
+    restart: always
+    environment:
+      - TZ=UTC
+      - NODE_ENV=${NODE_ENV}
+      - HOSTNAME=0.0.0.0
+      - API_URL=http://sim-tuning-api:3001/api
+      - JWT_SECRET=${JWT_SECRET}
+    depends_on:
+      sim-tuning-api:
+        condition: service_healthy
+    networks:
+      - sim_tuning_network
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'node',
+          '-e',
+          "fetch('http://localhost:3000').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    labels:
+      - 'app.project=sim-tuning'
+      - 'app.service=web'
+
+  sim-tuning-api:
+    image: ghcr.io/tuke307/sim-tuning-api:latest
+    pull_policy: always
+    restart: always
+    environment:
+      - API_PORT=${API_PORT}
+      - TZ=UTC
+      - NODE_ENV=${NODE_ENV}
+      - BCRYPT_SALT_ROUNDS=${BCRYPT_SALT_ROUNDS}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}
+      - ACCESS_TOKEN_EXPIRY_MS=${ACCESS_TOKEN_EXPIRY_MS}
+      - REFRESH_TOKEN_EXPIRY_MS=${REFRESH_TOKEN_EXPIRY_MS}
+      - DATABASE_URL=${DATABASE_URL}
+      - FRONTEND_URL=${FRONTEND_URL}
+      - COOKIE_DOMAIN=${COOKIE_DOMAIN}
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASS=${SMTP_PASS}
+      - EMAIL_FROM=${EMAIL_FROM}
+      - EMAIL_RETRY_DELAY_MS=${EMAIL_RETRY_DELAY_MS}
+      - EMAIL_MAX_ATTEMPTS=${EMAIL_MAX_ATTEMPTS}
+      - REDIS_URL=${REDIS_URL}
+      - UMAMI_URL=${UMAMI_URL}
+      - UMAMI_WEBSITE_ID=${UMAMI_WEBSITE_ID}
+      - UMAMI_ALLOWED_HOSTNAMES=${UMAMI_ALLOWED_HOSTNAMES}
+    depends_on:
+      sim-tuning-db-migrate:
+        condition: service_completed_successfully
+    networks:
+      - sim_tuning_network
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'node',
+          '-e',
+          "fetch('http://localhost:'+(process.env.API_PORT||3001)+'/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    labels:
+      # Attach to the same caddy_1 site block as web, routing /api/* to this container
+      - 'caddy_1=https://simtuning.tony-luke.de'
+      - 'caddy_1.0_handle=/api/*'
+      - 'caddy_1.0_handle.reverse_proxy={{upstreams 3001}}'
+      - 'app.project=sim-tuning'
+      - 'app.service=api'
+
+  sim-tuning-email-worker:
+    image: ghcr.io/tuke307/sim-tuning-email-worker:latest
+    pull_policy: always
+    restart: always
+    environment:
+      - TZ=UTC
+      - NODE_ENV=${NODE_ENV}
+      - EMAIL_WORKER_PORT=${EMAIL_WORKER_PORT}
+      - DATABASE_URL=${DATABASE_URL}
+      - FRONTEND_URL=${FRONTEND_URL}
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASS=${SMTP_PASS}
+      - EMAIL_FROM=${EMAIL_FROM}
+      - EMAIL_RETRY_DELAY_MS=${EMAIL_RETRY_DELAY_MS}
+      - EMAIL_MAX_ATTEMPTS=${EMAIL_MAX_ATTEMPTS}
+      - REDIS_URL=${REDIS_URL}
+    depends_on:
+      sim-tuning-db-migrate:
+        condition: service_completed_successfully
+    networks:
+      - sim_tuning_network
+    labels:
+      - 'app.project=sim-tuning'
+      - 'app.service=email-worker'
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'node',
+          '-e',
+          "fetch('http://localhost:'+(process.env.EMAIL_WORKER_PORT||3002)+'/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+
+networks:
+  sim_tuning_network:
+    driver: bridge

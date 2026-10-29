@@ -1,101 +1,103 @@
 # SimTuning
 
-A .NET MAUI app for two-stroke engine simulation & dyno tuning (exhaust/resonance, intake,
-engine, and dyno/audio modules). Targets **.NET 11** (`net11.0-ios`, `net11.0-maccatalyst`,
-`net11.0-windows`, `net11.0-android`).
+Two-stroke engine simulation and dyno tuning for **Web (PWA)** and **iPhone (iOS 18+)**.
 
-> The codebase was recently migrated from .NET 10 to .NET 11 (TFMs, NuGet, modern C#, DI,
-> async, security hardening, dead-code removal, and a real test suite). See
-> [PR #108](https://github.com/tuke307/sim-tuning/pull/108) for the full modernization summary.
+> **v3 rewrite in progress.** This branch replaces the .NET MAUI app (kept on branch `v2`) with a
+> TypeScript monorepo. The phased plan is in [`docs/v3-rewrite-plan.md`](docs/v3-rewrite-plan.md).
+> Phase 0 (scaffold: auth, email, PWA shell, settings) is in place; the tuning modules follow.
 
-## Developing
+---
 
-This project targets the **.NET 11 SDK** (currently the `11.0.100-preview.6` preview).
-`global.json` pins the exact version (`allowPrerelease: true`), so install that SDK and the
-workloads below.
+## Modules
 
-- SDK: <https://dotnet.microsoft.com/en-us/download/dotnet/11.0>
-- `global.json` → `"version": "11.0.100-preview.6.26359.118"`
+- **Vehicles:** vehicles with engine, intake, exhaust and transfer port data.
+- **Engine (Motor):** displacement, compression, port timing diagram (Steuerdiagramm) and conversions.
+- **Intake (Einlass):** intake resonance length and carburettor sizing.
+- **Exhaust (Auslass):** expansion chamber theory and full exhaust layout.
+- **Dyno:** power curves from recorded engine sound (spectrogram → RPM → DBSCAN clusters, computed
+  on-device) and GPS speed / coast-down runs.
+- **Bilingual (`EN` / `DE`):** German domain names are kept from v2; the UI is translated.
 
-## Setup
+---
 
-```bash
-sudo dotnet workload restore     # installs maui-ios, maui-maccatalyst
-cd src/
-dotnet build
+## Monorepo Structure
+
+```text
+sim-tuning/
+├── apps/
+│   ├── web/            # Next.js 16 + React 19 + Tailwind CSS v4 PWA
+│   ├── api/            # NestJS 12 REST API (Express 5, Swagger, Cookie + Bearer Auth)
+│   ├── email-worker/   # BullMQ transactional email worker (MJML templates)
+│   └── apple/          # (planned) Native Swift 6 iOS 18 app + SimTuningKit
+└── packages/
+    ├── common/         # Shared Zod schemas, DTOs, enums, utils (physics & DSP to come)
+    ├── database/       # Prisma 7 PostgreSQL schema, migrations & seed script
+    ├── ui/             # Shared Radix UI / shadcn-style accessible components
+    └── logger/         # Structured Winston logger
 ```
 
-> On macOS, also make sure Xcode is selected (`sudo xcode-select -s
-> /Applications/Xcode.app/Contents/Developer`) and its license accepted
-> (`sudo xcodebuild -license accept`).
+---
 
-## Running the App
+## Quick Start
 
-### Using Visual Studio Code (Recommended)
+### 1. Prerequisites
 
-1. Install the **.NET MAUI** extension in VS Code
-2. Press `F5` or use the Run menu
-3. Select target: macOS, iOS Simulator, or iOS Device
+- **Node.js** `>= 22` and **Yarn** `1.22+`
+- **PostgreSQL** and **Redis** (for API & email worker) — or use `compose.dev.yml`
 
-### Command Line
+### 2. Environment Setup
 
-#### macOS (Mac Catalyst)
+Copy the sample environment files to `.env.local`:
 
 ```bash
-cd src/SimTuning.Maui.App
-# Build the app
-dotnet build -f net11.0-maccatalyst -p:RuntimeIdentifier=maccatalyst-arm64
-
-# Open the app
-open bin/Debug/net11.0-maccatalyst/maccatalyst-arm64/SimTuning.app
+cp packages/database/.env.sample packages/database/.env.local
+cp apps/api/.env.sample apps/api/.env.local
+cp apps/email-worker/.env.sample apps/email-worker/.env.local
+cp apps/web/.env.sample apps/web/.env.local
 ```
 
-#### iOS Simulator (requires compatible Xcode/SDK)
+| Variable                  | Workspace                         | Description                                                                           |
+| :------------------------ | :-------------------------------- | :------------------------------------------------------------------------------------ |
+| `DATABASE_URL`            | `database`, `api`, `email-worker` | PostgreSQL connection URL                                                             |
+| `REDIS_URL`               | `api`, `email-worker`             | Redis URL for BullMQ and access-token revocation                                      |
+| `JWT_SECRET`              | `api`, `web`                      | Access token signing secret (`>= 32` chars in production)                             |
+| `JWT_REFRESH_SECRET`      | `api`                             | Refresh token signing secret (`>= 32` chars in production)                            |
+| `FRONTEND_URL`            | `api`                             | Allowed CORS origin (default `http://localhost:3000`)                                 |
+| `API_PORT`                | `api`, `web`                      | Backend port (default `3001`)                                                         |
+| `UMAMI_URL`               | `api`                             | Self-hosted Umami base URL                                                            |
+| `UMAMI_WEBSITE_ID`        | `api`                             | Umami website ID; pageview forwarding is off when unset or outside production         |
+| `UMAMI_ALLOWED_HOSTNAMES` | `api`                             | Comma-separated hostnames to forward pageviews for (default `simtuning.tony-luke.de`) |
+
+### 3. Install, Migrate & Run
 
 ```bash
-cd src/SimTuning.Maui.App
-# List available simulators and boot one
-xcrun simctl list devices available | grep iPhone
-xcrun simctl boot <SIMULATOR_UDID>
+yarn install
+yarn db:generate
+yarn db:deploy
+yarn db:seed
 
-# Build for iOS simulator
-dotnet build -f net11.0-ios -p:RuntimeIdentifier=iossimulator-arm64
+# Start development servers
+yarn dev
 ```
 
-> **Note:** the `net11.0-ios` app build needs an iOS simulator runtime that matches the
-> installed Xcode. If the iOS build fails with a simulator-runtime mismatch, run
-> `xcodebuild -downloadPlatform iOS`. The MacCatalyst target builds green without it.
+Local docker stack (`docker compose -f compose.dev.yml up -d`, project `sim-tuning-dev`) uses its own
+database `simtuning_dev` (user `simtuning`, volume `simtuning_dev_pgdata`) and host ports Postgres `5450`, Redis `6390`, Caddy `8090`, web `3010`, api `3011`, Mailpit `8030` (SMTP `1030`).
 
-## Tests
+---
 
-The `SimTuning.Test` project is a plain `net11.0` xUnit suite (51 tests) — no MAUI host
-required, so it runs in the headless test runner:
+## Common Scripts
 
-```bash
-dotnet test src/SimTuning.Test
-```
+| Command                              | Description                                 |
+| :----------------------------------- | :------------------------------------------ |
+| `yarn dev`                           | Start development servers across workspaces |
+| `yarn build`                         | Build all packages and applications         |
+| `yarn test`                          | Run unit tests (`common`, `api`, `web`)     |
+| `yarn lint`                          | Run TypeScript and ESLint checks            |
+| `yarn db:migrate -- <name>`          | Create and apply a new Prisma migration     |
+| `yarn --cwd apps/api openapi:export` | Export Swagger OpenAPI spec for the iOS app |
 
-## Formatting
+---
 
-C# is formatted with **csharpier** (config in `.csharpierrc.json`, `useTabs: false`); XAML and
-other files use **prettier** (config in `.prettierrc.json`).
+## Legacy v2 (.NET MAUI)
 
-```bash
-# C# — csharpier (global tool: `dotnet tool install -g csharpier`)
-dotnet csharpier .
-
-# XAML / JSON / Markdown — prettier
-npx prettier --write "**/*.xaml"
-```
-
-> ⚠️ Do **not** run `csharpier` recursively on the whole tree if a `prettier` is also in scope —
-> a phantom `prettier` can reformat ~70 unrelated C# files. Format the C# and XAML sets
-> separately as shown above.
-
-# Platforms
-
-| Platform | Tested | Deployed |
-| -------- | ------ | -------- |
-| Windows  | ✅     | ✅       |
-| macOS    | ✅     | ✅       |
-| iOS      | ✅     | ✅       |
+The previous .NET MAUI app lives on branch `v2` and stays there unchanged.
