@@ -13,6 +13,7 @@ struct DiagnosisView: View {
     @State private var uebersetzung: Double?
     @State private var frontA: Double? = 0.6
     @State private var gewicht: Double?
+    @State private var highlighted: Int?
 
     private var curve: [DynoPsPointDto] {
         guard let cw, let uebersetzung, uebersetzung != 0, let frontA, let gewicht else { return [] }
@@ -23,7 +24,7 @@ struct DiagnosisView: View {
     }
 
     var body: some View {
-        Form {
+        SheetForm(module: .dyno, subsheet: 3, subtitle: "Diagnose") {
             Section("Fahrzeug") {
                 NumberField("Gewicht inkl. Fahrer", value: $gewicht, unit: "kg")
                 NumberField("Luftwiderstandsbeiwert (cw)", value: $cw)
@@ -32,21 +33,48 @@ struct DiagnosisView: View {
             }
             if dyno.drehzahl.isEmpty {
                 Section {
-                    Text("Noch keine Drehzahlkurve. Nimm zuerst einen Audio-Dyno auf.").foregroundStyle(.secondary)
+                    Text("Noch keine Drehzahlkurve. Nimm zuerst einen Audio-Dyno auf.").foregroundStyle(Theme.mutedForeground)
                 }
             } else if !curve.isEmpty {
                 let points = curve
-                Section {
+                let peak = points.max(by: { $0.ps < $1.ps })
+                Section("Zeichnung") {
                     Chart {
                         ForEach(Array(DynoView.downsample(points, max: 400).enumerated()), id: \.offset) { _, point in
                             LineMark(x: .value("U/min", point.drehzahl), y: .value("PS", point.ps))
+                                .foregroundStyle(Theme.dyno)
+                                .lineStyle(StrokeStyle(lineWidth: 2))
+                        }
+                        if let peak {
+                            // Dimension line from the axis to the peak, callout ① at the peak.
+                            RuleMark(x: .value("U/min", peak.drehzahl), yStart: .value("PS", 0), yEnd: .value("PS", peak.ps))
+                                .foregroundStyle(Theme.primary)
+                                .lineStyle(StrokeStyle(lineWidth: 1, dash: [4, 3]))
+                            PointMark(x: .value("U/min", peak.drehzahl), y: .value("PS", peak.ps))
+                                .foregroundStyle(Theme.primary)
+                                .symbolSize(30)
+                                .annotation(position: .top, alignment: .center, spacing: 4) {
+                                    Callout(number: 1, highlighted: highlighted == 1)
+                                        .background(Circle().fill(Theme.card))
+                                }
                         }
                     }
+                    .chartXAxisLabel(position: .bottom, alignment: .trailing) { Text(verbatim: "U/min").stUnitStyle() }
+                    .chartYAxisLabel(position: .leading, alignment: .top) { Text(verbatim: "PS").stUnitStyle() }
+                    .stChartStyle()
                     .frame(height: 260)
                     .accessibilityLabel(Text("Leistungskurve"))
-                    if let peak = points.max(by: { $0.ps < $1.ps }) {
-                        ResultRow(title: "Maximale Leistung", value: "\(model.format(peak.ps, unit: "PS")) @ \(model.format(peak.drehzahl, unit: "U/min"))")
-                    }
+                    .padding(Theme.Spacing.s)
+                    .background(Theme.card)
+                    .drawingRow()
+                }
+                if let peak {
+                    Stueckliste(items: [
+                        .init(pos: 1, title: "Maximale Leistung", value: model.format(peak.ps), unit: "PS"),
+                        .init(pos: 2, title: "bei Drehzahl", value: model.format(peak.drehzahl), unit: "U/min"),
+                    ], highlighted: $highlighted)
+                }
+                Section {
                     Button("Leistungskurve speichern", systemImage: "square.and.arrow.down") {
                         Task {
                             let data = DynoDataInputDto(dynoPs: Array(points.prefix(maxDynoPoints)))
