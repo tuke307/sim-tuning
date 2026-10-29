@@ -90,7 +90,7 @@ struct GpsRunView: View {
     }
 
     var body: some View {
-        Form {
+        SheetForm(module: .dyno, subsheet: 2, subtitle: "GPS-Messfahrt") {
             Section {
                 Picker("Messung", selection: $mode) {
                     ForEach(Mode.allCases) { Text($0.title).tag($0) }
@@ -106,7 +106,7 @@ struct GpsRunView: View {
                 if recorder.isRecording {
                     LabeledContent("Geschwindigkeit") {
                         Text(verbatim: model.format(recorder.lastSpeedKmh, unit: "km/h"))
-                            .font(.title2.monospacedDigit())
+                            .font(.stData(.title2, weight: .semibold))
                     }
                     LabeledContent("Messpunkte") { Text(verbatim: "\(recorder.samples.count)") }
                     Button("Messfahrt beenden", systemImage: "stop.circle.fill", role: .destructive) { recorder.stop() }
@@ -120,7 +120,7 @@ struct GpsRunView: View {
                     }
                 }
                 if recorder.authorizationDenied {
-                    Text("Kein Standortzugriff. Bitte in den Einstellungen erlauben.").foregroundStyle(.red)
+                    Text("Kein Standortzugriff. Bitte in den Einstellungen erlauben.").foregroundStyle(Theme.destructive)
                 }
             }
             let chartSamples = recorder.samples.isEmpty ? stored : recorder.samples
@@ -130,9 +130,11 @@ struct GpsRunView: View {
                         ForEach(Array(DynoView.downsample(chartSamples, max: 400).enumerated()), id: \.offset) { index, sample in
                             if let speed = sample.speed {
                                 LineMark(x: .value("Messpunkt", index), y: .value("km/h", speed * 3.6))
+                                    .foregroundStyle(Theme.dyno)
                             }
                         }
                     }
+                    .stChartStyle()
                     .frame(height: 200)
                 }
             }

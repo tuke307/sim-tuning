@@ -30,6 +30,23 @@ yarn workspace @sim-tuning/apple test:e2e:ios  # UI tests on a simulator
 `SIMTUNING_API_BASE_URL` (environment variable) overrides the xcconfig value; only HTTPS or
 `http://localhost` is accepted. Signing: set your team locally in Xcode, never commit it.
 
+## Design ("Werkstattzeichnung")
+
+Tokens from `DESIGN.md` (repository root) live in `SimTuningIOS/Design/Theme.swift`: adaptive
+dark/light colours with Increase Contrast variants, module colours (`Module`), fonts
+(`.stHeading` condensed SF Pro, `.stData` SF Mono, `.stUnit` small caps), spacing and the 4 pt
+radius. `Design/Werkstatt.swift` holds the Schriftfeld (title block), Callout, Stückliste, drawing
+grid and draw-in helpers; `Design/ChartStyle.swift` styles Swift Charts. Screens use `SheetForm` /
+`SheetList` (grouped lists on the drafting-table background). New installs start dark; Profil ›
+Design can switch to light or follow the system.
+
+Design screenshots from the UI tests (Steuerdiagramm, Auspuff, dark and light):
+
+```sh
+TEST_RUNNER_SIMTUNING_SCREENSHOT_DIR=$PWD/.build/screenshots xcodebuild test \
+  -project SimTuning.xcodeproj -scheme SimTuningIOS -destination 'id=<simulator udid>'
+```
+
 ## Parity
 
 `Tests/SimTuningLogicTests/Fixtures` are byte-identical copies of

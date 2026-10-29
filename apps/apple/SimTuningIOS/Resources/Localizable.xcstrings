@@ -341,6 +341,16 @@
         }
       }
     },
+    "Benennung": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Description"
+          }
+        }
+      }
+    },
     "Beschleunigung": {
       "localizations": {
         "en": {
@@ -367,6 +377,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Please confirm your email address."
+          }
+        }
+      }
+    },
+    "Blatt %@ · %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sheet %1$@ · %2$@"
+          }
+        }
+      }
+    },
+    "Blatt %@ · %@ · %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sheet %1$@ · %2$@ · %3$@"
           }
         }
       }
@@ -471,6 +501,16 @@
         }
       }
     },
+    "Die Positionen sind in der Stückliste beschrieben.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The items are described in the parts list."
+          }
+        }
+      }
+    },
     "Differenz": {
       "localizations": {
         "en": {
@@ -497,6 +537,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Diffuser D / L"
+          }
+        }
+      }
+    },
+    "Diffusordurchmesser": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diffuser diameter"
+          }
+        }
+      }
+    },
+    "Diffusorlänge": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diffuser length"
           }
         }
       }
@@ -691,6 +751,16 @@
         }
       }
     },
+    "Einheit": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unit"
+          }
+        }
+      }
+    },
     "Einheiten": {
       "localizations": {
         "en": {
@@ -722,6 +792,16 @@
       }
     },
     "Einlasssteuerwinkel": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Intake timing"
+          }
+        }
+      }
+    },
+    "Einlasssteuerzeit": {
       "localizations": {
         "en": {
           "stringUnit": {
@@ -1001,6 +1081,16 @@
         }
       }
     },
+    "Gegenkonuslänge": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Baffle cone length"
+          }
+        }
+      }
+    },
     "Gegenkonuswinkel": {
       "localizations": {
         "en": {
@@ -1067,6 +1157,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Main jet"
+          }
+        }
+      }
+    },
+    "Hebt die Position in der Zeichnung hervor": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Highlights the item in the drawing"
           }
         }
       }
@@ -1421,6 +1521,16 @@
         }
       }
     },
+    "Maße in mm": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dimensions in mm"
+          }
+        }
+      }
+    },
     "Messfahrt beenden": {
       "localizations": {
         "en": {
@@ -1511,12 +1621,32 @@
         }
       }
     },
+    "Mittelteildurchmesser": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Belly diameter"
+          }
+        }
+      }
+    },
     "Mittelteilfaktor": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Belly factor"
+          }
+        }
+      }
+    },
+    "Mittelteillänge": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Belly length"
           }
         }
       }
@@ -1697,6 +1827,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Con-rod length"
+          }
+        }
+      }
+    },
+    "Pos": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Item"
+          }
+        }
+      }
+    },
+    "Position %lld": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Item %lld"
+          }
+        }
+      }
+    },
+    "Position %lld, %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Item %1$lld, %2$@"
           }
         }
       }
@@ -1921,6 +2081,16 @@
         }
       }
     },
+    "Stückliste": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parts list"
+          }
+        }
+      }
+    },
     "System": {
       "localizations": {
         "en": {
@@ -2031,6 +2201,16 @@
         }
       }
     },
+    "Wert": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Value"
+          }
+        }
+      }
+    },
     "Werte aus Fahrzeug übernehmen": {
       "localizations": {
         "en": {
@@ -2121,6 +2301,16 @@
         }
       }
     },
+    "bei Drehzahl": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "at engine speed"
+          }
+        }
+      }
+    },
     "km/h": {
       "localizations": {
         "en": {
@@ -2147,6 +2337,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Transfer"
+          }
+        }
+      }
+    },
+    "Überströmersteuerzeit": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Transfer timing"
           }
         }
       }

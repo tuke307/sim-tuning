@@ -5,7 +5,7 @@ import SwiftUI
 struct EinlassView: View {
     var body: some View {
         NavigationStack {
-            List {
+            SheetList(module: .einlass) {
                 NavigationLink {
                     EinlassKanalView()
                 } label: {
@@ -43,7 +43,7 @@ struct EinlassKanalView: View {
     }
 
     var body: some View {
-        Form {
+        SheetForm(module: .einlass, subsheet: 1, subtitle: "Kanal") {
             Section("Eingaben") {
                 NumberField("Einlassfläche", value: $flaecheMm2, unit: "mm²")
                 NumberField("Einlasssteuerwinkel", value: $steuerwinkel, unit: "°KW")
@@ -99,7 +99,7 @@ struct VergaserView: View {
     }
 
     var body: some View {
-        Form {
+        SheetForm(module: .einlass, subsheet: 2, subtitle: "Vergaser") {
             Section("Vergasergröße") {
                 NumberField("Hubraum", value: $hubraumCm3, unit: "cm³")
                 NumberField("Resonanzdrehzahl", value: $resonanzU, unit: "U/min")

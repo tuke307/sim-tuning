@@ -8,7 +8,8 @@ import SwiftUI
 /// User preferences (mirrors `UpdatePreferencesSchema`): language, theme and unit rounding.
 struct Preferences: Codable, Equatable {
     var language: LanguagePreference = .system
-    var theme: ThemePreference = .system
+    /// New installs start in the dark "Werkstattzeichnung" look; `.system` follows the device.
+    var theme: ThemePreference = .dark
     var roundingAccuracy: Int = RoundingAccuracy.default
     var roundOnUnitChange = true
 
@@ -90,19 +91,22 @@ final class AppModel {
         }
     }
 
-    /// `--uitesting` runs fully offline with in-memory storage and a fresh selection.
+    /// `--uitesting` runs fully offline with in-memory storage and a fresh selection
+    /// (`--uitesting-light` additionally starts in the light appearance).
     static func makeDefault() -> AppModel {
-        let uiTesting = ProcessInfo.processInfo.arguments.contains("--uitesting")
-        if uiTesting {
+        let arguments = ProcessInfo.processInfo.arguments
+        if arguments.contains("--uitesting") {
             let suite = "uitesting"
             let defaults = UserDefaults(suiteName: suite)!
             defaults.removePersistentDomain(forName: suite)
-            return AppModel(
+            let model = AppModel(
                 client: APIClient(tokenStore: InMemoryTokenStore()),
                 localRepository: LocalRepository(fileURL: nil),
                 defaults: defaults,
                 isUITesting: true
             )
+            if arguments.contains("--uitesting-light") { model.preferences.theme = .light }
+            return model
         }
         return AppModel(client: APIClient(), localRepository: LocalRepository(),
                         defaults: .standard, isUITesting: false)

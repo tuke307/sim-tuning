@@ -15,12 +15,12 @@ struct DynoView: View {
 
     var body: some View {
         NavigationStack {
-            List {
+            SheetList(module: .dyno) {
                 if let vehicle = model.selectedVehicle {
                     if vehicle.isSystem {
                         Section {
                             Text("Startfahrzeuge sind schreibgeschützt. Dupliziere das Fahrzeug, um einen Dyno anzulegen.")
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(Theme.mutedForeground)
                             Button("Fahrzeug duplizieren", systemImage: "plus.square.on.square") {
                                 Task {
                                     if let copy = await model.perform({ try await $0.duplicateVehicle(id: vehicle.id, name: nil) }) {
@@ -103,8 +103,10 @@ struct DynoView: View {
                 Chart {
                     ForEach(Array(Self.downsample(dyno.drehzahl, max: 400).enumerated()), id: \.offset) { _, point in
                         LineMark(x: .value("Zeit (ms)", point.zeit), y: .value("U/min", point.drehzahl))
+                            .foregroundStyle(Theme.dyno)
                     }
                 }
+                .stChartStyle()
                 .frame(height: 200)
                 .accessibilityLabel(Text("Drehzahlverlauf"))
             }
