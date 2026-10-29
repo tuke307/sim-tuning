@@ -9,13 +9,13 @@ struct VehiclesView: View {
 
     var body: some View {
         NavigationStack {
-            List {
+            SheetList(module: .vehicles) {
                 let system = model.vehicles.filter(\.isSystem)
                 let own = model.vehicles.filter { !$0.isSystem }
                 Section("Eigene Fahrzeuge") {
                     if own.isEmpty {
                         Text("Noch keine eigenen Fahrzeuge. Dupliziere ein Startfahrzeug oder lege ein neues an.")
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(Theme.mutedForeground)
                     }
                     ForEach(own) { row($0) }
                 }
@@ -64,12 +64,14 @@ struct VehiclesView: View {
         } label: {
             HStack(alignment: .firstTextBaseline) {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(verbatim: vehicle.name).font(.headline)
+                    Text(verbatim: vehicle.name)
+                        .font(.stHeading(.headline))
+                        .foregroundStyle(Theme.foreground)
                     if let motor = vehicle.motor {
                         Text(verbatim: [motor.name, motor.hubraumV.map { model.format($0 / 1000, unit: "cm³") }]
                             .compactMap { $0 }.joined(separator: " · "))
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
+                            .font(.stData(.subheadline, weight: .regular))
+                            .foregroundStyle(Theme.mutedForeground)
                     }
                 }
                 Spacer()
@@ -95,7 +97,7 @@ struct VehiclesView: View {
                     }
                 }
             }
-            .tint(.indigo)
+            .tint(Theme.einlass)
         }
         .contextMenu {
             Button("Duplizieren", systemImage: "plus.square.on.square") {
@@ -108,7 +110,7 @@ struct VehiclesView: View {
         }
         .swipeActions(edge: .leading) {
             if !vehicle.isSystem {
-                Button("Bearbeiten", systemImage: "pencil") { editing = vehicle }.tint(.orange)
+                Button("Bearbeiten", systemImage: "pencil") { editing = vehicle }.tint(Theme.motor)
             }
         }
     }
@@ -136,25 +138,29 @@ struct VehicleEditView: View {
 
     var body: some View {
         NavigationStack {
-            Form {
-                Section("Fahrzeug") {
-                    TextField("Name", text: $name)
-                        .accessibilityIdentifier("vehicle.edit.name")
-                    TextField("Beschreibung", text: $beschreibung, axis: .vertical)
-                    NumberField("Gewicht", value: $gewicht, unit: "kg")
+            List {
+                Group {
+                    Section("Fahrzeug") {
+                        TextField("Name", text: $name)
+                            .accessibilityIdentifier("vehicle.edit.name")
+                        TextField("Beschreibung", text: $beschreibung, axis: .vertical)
+                        NumberField("Gewicht", value: $gewicht, unit: "kg")
+                    }
+                    Section("Motor") {
+                        TextField("Motorname", text: $motorName)
+                        NumberField("Hubraum", value: $hubraumCm3, unit: "cm³")
+                        NumberField("Hub", value: $hubL, unit: "mm")
+                        NumberField("Bohrung", value: $bohrungD, unit: "mm")
+                        NumberField("Pleuellänge", value: $pleulL, unit: "mm")
+                        NumberField("Deachsierung", value: $deachsierungL, unit: "mm")
+                        NumberField("Brennraum", value: $brennraumCm3, unit: "cm³")
+                        NumberField("Kurbelgehäuse", value: $kurbelgehaeuseCm3, unit: "cm³")
+                        NumberField("Resonanzdrehzahl", value: $resonanzU, unit: "U/min")
+                    }
                 }
-                Section("Motor") {
-                    TextField("Motorname", text: $motorName)
-                    NumberField("Hubraum", value: $hubraumCm3, unit: "cm³")
-                    NumberField("Hub", value: $hubL, unit: "mm")
-                    NumberField("Bohrung", value: $bohrungD, unit: "mm")
-                    NumberField("Pleuellänge", value: $pleulL, unit: "mm")
-                    NumberField("Deachsierung", value: $deachsierungL, unit: "mm")
-                    NumberField("Brennraum", value: $brennraumCm3, unit: "cm³")
-                    NumberField("Kurbelgehäuse", value: $kurbelgehaeuseCm3, unit: "cm³")
-                    NumberField("Resonanzdrehzahl", value: $resonanzU, unit: "U/min")
-                }
+                .stRows()
             }
+            .stScreen()
             .navigationTitle(vehicle == nil ? "Neues Fahrzeug" : "Fahrzeug bearbeiten")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

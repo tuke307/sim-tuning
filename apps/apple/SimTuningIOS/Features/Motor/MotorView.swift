@@ -5,7 +5,7 @@ import SwiftUI
 struct MotorView: View {
     var body: some View {
         NavigationStack {
-            List {
+            SheetList(module: .motor) {
                 NavigationLink {
                     HubraumCalculatorView()
                 } label: {
@@ -52,7 +52,7 @@ struct HubraumCalculatorView: View {
     }
 
     var body: some View {
-        Form {
+        SheetForm(module: .motor, subsheet: 1, subtitle: "Hubraum") {
             Section("Eingaben") {
                 NumberField("Hubraum", value: $hubraumCm3, unit: "cm³", identifier: "hubraum.hubraum")
                 NumberField("Hub", value: $hubMm, unit: "mm", identifier: "hubraum.hub")
@@ -126,7 +126,7 @@ struct VerdichtungCalculatorView: View {
     }
 
     var body: some View {
-        Form {
+        SheetForm(module: .motor, subsheet: 2, subtitle: "Verdichtung") {
             Section("Eingaben") {
                 NumberField("Hubraum", value: $hubraumCm3, unit: "cm³", identifier: "verdichtung.hubraum")
                 NumberField("Brennraum", value: $brennraumCm3, unit: "cm³", identifier: "verdichtung.brennraum")
@@ -165,140 +165,6 @@ struct VerdichtungCalculatorView: View {
     }
 }
 
-// MARK: - Steuerdiagramm
-
-struct SteuerdiagrammView: View {
-    @Environment(AppModel.self) private var model
-    @State private var einlass: Double?
-    @State private var auslass: Double?
-    @State private var ueberstroemer: Double?
-
-    var body: some View {
-        Form {
-            Section("Steuerzeiten") {
-                NumberField("Einlass", value: $einlass, unit: "°KW", identifier: "steuer.einlass")
-                NumberField("Auslass", value: $auslass, unit: "°KW", identifier: "steuer.auslass")
-                NumberField("Überströmer", value: $ueberstroemer, unit: "°KW", identifier: "steuer.ueberstroemer")
-            }
-            Section("Diagramm") {
-                SteuerdiagrammShape(geometry: EngineLogic.getSteuerdiagramm(
-                    einlass: einlass ?? 0, auslass: auslass ?? 0, ueberstroemer: ueberstroemer ?? 0))
-                    .frame(maxWidth: .infinity)
-                    .aspectRatio(1, contentMode: .fit)
-                    .padding(.vertical, 8)
-                    .accessibilityElement()
-                    .accessibilityLabel(Text("Steuerdiagramm"))
-                    .accessibilityValue(Text(accessibilitySummary))
-                HStack(spacing: 16) {
-                    LegendItem(color: .blue, title: "Einlass")
-                    LegendItem(color: .red, title: "Auslass")
-                    LegendItem(color: .green, title: "Überströmer")
-                }
-                .font(.footnote)
-            }
-            Section("Steuerwinkel") {
-                angleRows("Einlass", einlass.map { EngineLogic.getSteuerwinkelOeffnet(einlass: $0) },
-                          einlass.map { EngineLogic.getSteuerwinkelSchliesst(einlass: $0) })
-                angleRows("Auslass", auslass.map { EngineLogic.getSteuerwinkelOeffnet(auslass: $0) },
-                          auslass.map { EngineLogic.getSteuerwinkelSchliesst(auslass: $0) })
-                angleRows("Überströmer", ueberstroemer.map { EngineLogic.getSteuerwinkelOeffnet(ueberstroemer: $0) },
-                          ueberstroemer.map { EngineLogic.getSteuerwinkelSchliesst(ueberstroemer: $0) })
-                if let auslass, let ueberstroemer {
-                    ResultRow(title: "Vorauslass", value: model.format(
-                        EngineLogic.getVorauslass(auslassSW: auslass, ueberstroemerSW: ueberstroemer), unit: "°KW"))
-                }
-            }
-            VehicleActionsSection(apply: apply, save: save)
-        }
-        .moduleChrome("Steuerdiagramm")
-        .onAppear { if einlass == nil && auslass == nil { apply() } }
-    }
-
-    private var accessibilitySummary: String {
-        [("Einlass", einlass), ("Auslass", auslass), ("Überströmer", ueberstroemer)]
-            .compactMap { name, value in value.map { "\(name) \(model.format($0)) °KW" } }
-            .joined(separator: ", ")
-    }
-
-    @ViewBuilder
-    private func angleRows(_ title: LocalizedStringKey, _ open: Double?, _ close: Double?) -> some View {
-        if let open, let close {
-            LabeledContent {
-                Text(verbatim: "\(model.format(open))° → \(model.format(close))°")
-                    .font(.body.monospacedDigit())
-            } label: {
-                Text(title)
-            }
-        }
-    }
-
-    private func apply() {
-        guard let motor = model.selectedVehicle?.motor else { return }
-        einlass = motor.einlass?.steuerzeitSZ
-        auslass = motor.auslass?.steuerzeitSZ
-        ueberstroemer = motor.ueberstroemer?.steuerzeitSZ
-    }
-
-    private func save() {
-        var motor = MotorInputDto()
-        motor.einlass = EinlassInputDto(steuerzeitSZ: .some(einlass))
-        motor.auslass = AuslassInputDto(steuerzeitSZ: .some(auslass))
-        motor.ueberstroemer = UeberstroemerInputDto(steuerzeitSZ: .some(ueberstroemer))
-        Task { await model.saveToSelectedVehicle(VehicleInputDto(motor: motor)) }
-    }
-}
-
-struct LegendItem: View {
-    let color: Color
-    let title: LocalizedStringKey
-
-    var body: some View {
-        HStack(spacing: 4) {
-            Circle().fill(color).frame(width: 10, height: 10).accessibilityHidden(true)
-            Text(title)
-        }
-    }
-}
-
-/// Draws the v2 port timing diagram from `EngineLogic.getSteuerdiagramm` (600×600 design space).
-struct SteuerdiagrammShape: View {
-    let geometry: EngineLogic.SteuerdiagrammGeometry
-
-    var body: some View {
-        Canvas { context, size in
-            let scale = min(size.width, size.height) / geometry.size
-            func point(_ x: Double, _ y: Double) -> CGPoint { CGPoint(x: x * scale, y: y * scale) }
-            let c = geometry.center
-            let r = geometry.radius
-            let circle = Path(ellipseIn: CGRect(x: (c - r) * scale, y: (c - r) * scale,
-                                                width: 2 * r * scale, height: 2 * r * scale))
-            context.stroke(circle, with: .color(.primary), lineWidth: 2)
-            var axes = Path()
-            axes.move(to: point(c, c - r))
-            axes.addLine(to: point(c, c + r))
-            axes.move(to: point(c - r, c))
-            axes.addLine(to: point(c + r, c))
-            context.stroke(axes, with: .color(.secondary), style: StrokeStyle(lineWidth: 1, dash: [6, 6]))
-            for line in geometry.lines where line.angle != 0 {
-                var path = Path()
-                path.move(to: point(line.x1, line.y1))
-                path.addLine(to: point(line.x2, line.y2))
-                let color: Color = switch line.port {
-                case .einlass: .blue
-                case .auslass: .red
-                case .ueberstroemer: .green
-                }
-                context.stroke(path, with: .color(color),
-                               style: StrokeStyle(lineWidth: 3, dash: line.edge == .schliesst ? [8, 4] : []))
-            }
-            for label in geometry.labels {
-                context.draw(Text(verbatim: label.text).font(.caption.bold()),
-                             at: point(label.x, label.y), anchor: .topLeading)
-            }
-        }
-    }
-}
-
 // MARK: - Umrechnung
 
 struct UmrechnungView: View {
@@ -328,7 +194,7 @@ struct UmrechnungView: View {
     }
 
     var body: some View {
-        Form {
+        SheetForm(module: .motor, subsheet: 4, subtitle: "Umrechnung") {
             Section("Kurbeltrieb") {
                 NumberField("Hub", value: $hubMm, unit: "mm")
                 NumberField("Pleuellänge", value: $pleulMm, unit: "mm")
