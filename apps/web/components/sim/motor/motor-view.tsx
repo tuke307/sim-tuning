@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { ModulePage } from '@/components/sim/shared/module-page';
+import { useSubTab } from '@/lib/navigation/nav-state';
 import { useLocale } from '@/providers/i18n/locale-context';
 import { useSimData } from '@/providers/sim/sim-data-context';
 import { HubraumPanel } from './hubraum-panel';
@@ -9,13 +10,13 @@ import { SteuerdiagrammPanel } from './steuerdiagramm-panel';
 import { UmrechnungPanel } from './umrechnung-panel';
 import { VerdichtungPanel } from './verdichtung-panel';
 
-type MotorTab = 'hubraum' | 'verdichtung' | 'steuerdiagramm' | 'umrechnung';
+const MOTOR_TABS = ['hubraum', 'verdichtung', 'steuerdiagramm', 'umrechnung'] as const;
 
 /** v2 MotorMainView: Hubraum, Verdichtung, Steuerdiagramm and Umrechnung calculators. */
 export function MotorView() {
   const { t } = useLocale();
   const { selectedVehicle } = useSimData();
-  const [tab, setTab] = useState<MotorTab>('hubraum');
+  const [tab, setTab] = useSubTab(MOTOR_TABS, 'hubraum');
 
   return (
     <ModulePage
@@ -32,7 +33,7 @@ export function MotorView() {
       onTabChange={setTab}
     >
       {selectedVehicle && (
-        // Inputs default from the selected vehicle; switching vehicles re-seeds them.
+        // Inputs are per-vehicle work drafts seeded from the selected vehicle.
         <div key={selectedVehicle.id} data-testid={`motor-panel-${tab}`}>
           {tab === 'hubraum' && <HubraumPanel vehicle={selectedVehicle} />}
           {tab === 'verdichtung' && <VerdichtungPanel vehicle={selectedVehicle} />}

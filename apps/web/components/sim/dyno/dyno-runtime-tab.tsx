@@ -26,6 +26,7 @@ import { DynoScatterChart, type ScatterSeriesSpec } from './dyno-charts';
 import { DynoNotice, type NoticeMessage } from './dyno-notice';
 import { useAudioRecorder } from './use-audio-recorder';
 import { useGpsRun, type GpsError } from './use-gps-run';
+import { useSaveToDyno } from './use-save-to-dyno';
 
 /** Run phases: a 2px top rule in a state colour; the phase name is always spelled out too. */
 const PHASE_STYLES: Record<RunPhase, string> = {
@@ -62,6 +63,7 @@ export function DynoRuntimeTab({
   const { t } = useLocale();
   const r = t.dyno.runtime;
   const { repository } = useSimData();
+  const saveToDyno = useSaveToDyno(vehicle, dyno, onDynoChange);
   const run = useGpsRun();
   const recorder = useAudioRecorder();
   const [recordAudio, setRecordAudio] = useState(true);
@@ -109,15 +111,16 @@ export function DynoRuntimeTab({
   };
 
   const save = async () => {
-    if (!dyno || readOnly) return;
+    if (readOnly) return;
     setSaving(true);
     try {
-      const saved = await repository.saveDynoData(dyno.id, {
-        geschwindigkeit: run.state.geschwindigkeit,
-        ausrollen: run.state.ausrollen,
-      });
-      onDynoChange(saved);
-      setNotice({ kind: 'success', text: r.saved });
+      const saved = await saveToDyno((target) =>
+        repository.saveDynoData(target.id, {
+          geschwindigkeit: run.state.geschwindigkeit,
+          ausrollen: run.state.ausrollen,
+        }),
+      );
+      if (saved) setNotice({ kind: 'success', text: r.saved });
     } catch {
       setNotice({ kind: 'error', text: t.sim.errorGeneric });
     } finally {
@@ -167,7 +170,7 @@ export function DynoRuntimeTab({
           <p className="text-muted-foreground text-sm">
             {r.speed}: <span className="text-foreground font-data">{speedKmh.toFixed(1)} km/h</span>
           </p>
-          <p className="text-muted-foreground text-xs">
+          <p className="text-muted-foreground text-[0.8125rem]">
             {fillTemplate(r.samples, {
               acceleration: run.state.geschwindigkeit.length,
               rollout: run.state.ausrollen.length,
@@ -229,7 +232,7 @@ export function DynoRuntimeTab({
           {phase === 'done' && (
             <Button
               type="button"
-              disabled={!dyno || readOnly || saving || !hasRunData}
+              disabled={readOnly || saving || !hasRunData}
               onClick={() => void save()}
               data-testid="dyno-run-save"
             >
@@ -238,8 +241,10 @@ export function DynoRuntimeTab({
             </Button>
           )}
         </div>
-        {phase === 'done' && (!dyno || readOnly) && (
-          <p className="text-muted-foreground text-xs">{r.needDyno}</p>
+        {phase === 'done' && hasRunData && (readOnly || !dyno) && (
+          <p className="text-muted-foreground text-[0.8125rem]">
+            {readOnly ? t.dyno.readOnlyDyno : r.needDyno}
+          </p>
         )}
         <DynoNotice
           message={

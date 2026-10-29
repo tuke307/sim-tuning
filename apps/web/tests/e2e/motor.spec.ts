@@ -21,8 +21,8 @@ test.describe('Motor module (guest mode)', () => {
     await expect(page.getByTestId('motor-hubraum-bohrung')).toContainText('39.99');
     await expect(page.getByTestId('motor-hubraum-kolben')).toContainText('39.96');
     await expect(page.getByTestId('motor-hubraum-grinding-1')).toContainText('40.19');
-    // Starter vehicles are read-only.
-    await expect(page.getByTestId('motor-hubraum-apply')).toBeDisabled();
+    // Starter vehicles are read-only: saving creates an own copy.
+    await expect(page.getByTestId('motor-hubraum-apply')).toHaveText('Save as my vehicle');
 
     await page.getByTestId('motor-hubraum-hub').fill('');
     await expect(page.getByTestId('motor-hubraum-bohrung')).toHaveText('–');
@@ -78,7 +78,7 @@ test.describe('Motor module (guest mode)', () => {
     await page.getByTestId('module-tab-steuerdiagramm').click();
     await page.getByTestId('motor-steuerdiagramm-preset').selectOption('lang');
     await page.getByTestId('motor-steuerdiagramm-apply').click();
-    await expect(page.getByText('Saved to vehicle')).toBeVisible();
+    await expect(page.getByText('Saved', { exact: true })).toBeVisible();
 
     await navigateToTab(page, 'vehicles');
     await expect(page.getByTestId('vehicle-field-auslass-steuerzeitSZ')).toHaveValue('185');

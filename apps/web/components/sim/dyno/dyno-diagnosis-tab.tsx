@@ -169,7 +169,7 @@ export function DynoDiagnosisTab({
         <DynoNotice message={notice} testId="dyno-diag-notice" />
         {curve.length > 0 && (
           <>
-            {!computed && <p className="text-muted-foreground text-xs">{d.stored}</p>}
+            {!computed && <p className="text-muted-foreground text-[0.8125rem]">{d.stored}</p>}
             <div className="grid grid-cols-2 gap-2">
               <ResultValue label={d.peak} value={peak?.ps} unit="PS" testId="dyno-diag-peak" />
               <ResultValue label={d.peakAt} value={peak?.drehzahl} unit="U/min" />

@@ -7,7 +7,7 @@ async function openEditableAuslass(page: Page): Promise<void> {
   await navigateToTab(page, 'auslass');
   await expect(page.getByRole('heading', { name: 'Exhaust', exact: true })).toBeVisible();
   await expect(page.getByTestId('read-only-banner')).toBeVisible();
-  await expect(page.getByTestId('auslass-theorie-save')).toBeDisabled();
+  await expect(page.getByTestId('auslass-theorie-save')).toHaveText('Save as my vehicle');
   await page.getByRole('button', { name: 'Duplicate to edit' }).click();
   await expect(page.getByTestId('read-only-banner')).toBeHidden();
 }
@@ -33,7 +33,9 @@ test.describe('Auslass module (guest mode)', () => {
 
     await page.getByTestId('auslass-theorie-flaecheA').fill('200');
     // Flange area 1.1–1.5 × port area (Rechensheet-2Takt): 200 mm² → 16.7–19.5 mm.
-    await expect(page.getByTestId('auslass-theorie-kruemmerDRange')).toHaveText(/16\.7 – 19\.5\s*mm/);
+    await expect(page.getByTestId('auslass-theorie-kruemmerDRange')).toHaveText(
+      /16\.7 – 19\.5\s*mm/,
+    );
 
     // Speed of sound in the exhaust gas, √(1.32·295·T) (Rechensheet-2Takt).
     await page.getByTestId('auslass-theorie-gasT').fill('550');

@@ -40,7 +40,7 @@ export default function VerifyEmailPage() {
               <span className="font-display block text-[1.125rem] font-bold tracking-[0.12em] uppercase">
                 SimTuning
               </span>
-              <span className="text-muted-foreground block text-xs">
+              <span className="text-muted-foreground block text-[0.8125rem]">
                 Account Email Confirmation
               </span>
             </div>
@@ -51,7 +51,9 @@ export default function VerifyEmailPage() {
           <div className="space-y-3 py-6 text-center">
             <RefreshCw className="text-primary mx-auto h-10 w-10 animate-spin" />
             <h1 className="font-display text-xl font-bold">Verifying Your Account...</h1>
-            <p className="text-muted-foreground text-xs">Activating your SimTuning account.</p>
+            <p className="text-muted-foreground text-[0.8125rem]">
+              Activating your SimTuning account.
+            </p>
           </div>
         ) : verifiedSuccess ? (
           <div className="space-y-4 py-4 text-center">
@@ -59,7 +61,7 @@ export default function VerifyEmailPage() {
               <CheckCircle2 className="h-8 w-8" />
             </div>
             <h1 className="font-display text-2xl font-bold">Email Confirmed!</h1>
-            <p className="text-muted-foreground text-xs leading-relaxed">
+            <p className="text-muted-foreground text-[0.8125rem] leading-relaxed">
               Your SimTuning account is now active and signed in. Your vehicles and dyno runs will
               synchronize automatically across all your devices.
             </p>
@@ -69,7 +71,7 @@ export default function VerifyEmailPage() {
           </div>
         ) : (
           <div className="space-y-4">
-            <div className="border-destructive/60 bg-destructive/8 text-destructive flex items-start gap-2.5 rounded-md border p-3.5 text-xs">
+            <div className="border-destructive/60 bg-destructive/8 text-destructive flex items-start gap-2.5 rounded-md border p-3.5 text-[0.8125rem]">
               <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
               <div>
                 <p className="font-bold">Confirmation Link Invalid or Expired</p>
@@ -80,7 +82,7 @@ export default function VerifyEmailPage() {
             </div>
 
             {infoMessage && (
-              <div className="border-primary/50 bg-primary/8 text-foreground flex items-center gap-2 rounded-md border p-3 text-xs font-medium">
+              <div className="border-primary/50 bg-primary/8 text-foreground flex items-center gap-2 rounded-md border p-3 text-[0.8125rem] font-medium">
                 <MailCheck className="h-4 w-4 shrink-0" />
                 <span>{infoMessage}</span>
               </div>
@@ -94,16 +96,22 @@ export default function VerifyEmailPage() {
               }}
               className="space-y-3 border-t pt-4"
             >
-              <p className="text-muted-foreground text-xs">
+              <label
+                htmlFor="resend-email"
+                className="text-muted-foreground block text-[0.8125rem]"
+              >
                 Enter your email address below to receive a fresh 24-hour confirmation link:
-              </p>
+              </label>
               <Input
+                id="resend-email"
+                name="email"
+                autoComplete="email"
                 type="email"
                 required
                 value={resendEmail}
                 onChange={(e) => setResendEmail(e.target.value)}
                 placeholder="tuner@example.com"
-                className="h-10 text-xs"
+                className="h-10"
               />
               <Button type="submit" variant="secondary" disabled={loading} className="w-full">
                 <MailCheck className="h-4 w-4" /> Resend Confirmation Email
@@ -111,7 +119,7 @@ export default function VerifyEmailPage() {
             </form>
 
             <div className="border-t pt-3 text-center">
-              <Button variant="link" asChild className="text-xs">
+              <Button variant="link" asChild className="text-[0.8125rem]">
                 <Link href="/login">Back to Sign In</Link>
               </Button>
             </div>

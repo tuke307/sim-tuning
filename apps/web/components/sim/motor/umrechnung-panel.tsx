@@ -1,13 +1,15 @@
 'use client';
 
-import React, { useId, useState } from 'react';
+import React, { useId } from 'react';
 import type { SteuerdiagrammPort } from '@sim-tuning/common/logic';
 import type { VehicleDto } from '@sim-tuning/common/schemas';
 import { FIELD_BASE_UNITS, UNITS } from '@sim-tuning/common/units';
 import { Label } from '@sim-tuning/ui/components/ui/label';
 import { NativeSelect } from '@sim-tuning/ui/components/ui/native-select';
 import { Tabs, TabsList, TabsTrigger } from '@sim-tuning/ui/components/ui/tabs';
-import { Section } from '@/components/sim/shared/module-page';
+import { DraftNotice, Section } from '@/components/sim/shared/module-page';
+import { useWorkDraft } from '@/hooks/useWorkDraft';
+import { workDraftKey } from '@/lib/sim/drafts/work-draft';
 import { ResultValue, UnitNumberField } from '@/components/sim/shared/unit-number-field';
 import {
   computeDistanceToOT,
@@ -21,6 +23,22 @@ import { useLocale } from '@/providers/i18n/locale-context';
 
 const KW = '°KW';
 const MM = UNITS.millimeter.abbreviation;
+const PANEL = 'motor.umrechnung';
+
+interface UmrechnungDraft {
+  hubL: number | null;
+  pleulL: number | null;
+  deachsierungL: number | null;
+  degree: number | null;
+  kante: Steuerkante;
+  vorher: number | null;
+  nachher: number | null;
+}
+
+/** Geometry comes from the vehicle; the conversion inputs are scratch values. */
+const VEHICLE_FIELDS = ['hubL', 'pleulL', 'deachsierungL'] as const;
+const isKante = (draft: UmrechnungDraft) =>
+  draft.kante === 'unterkante' || draft.kante === 'oberkante';
 
 /** v2 MotorUmrechnungView: crank radius, distance to TDC and port timing change in ° and mm. */
 export function UmrechnungPanel({ vehicle }: { vehicle: VehicleDto }) {
@@ -29,13 +47,23 @@ export function UmrechnungPanel({ vehicle }: { vehicle: VehicleDto }) {
   const portSelectId = useId();
   const edgeLabelId = useId();
   const motor = vehicle.motor;
-  const [hubL, setHubL] = useState<number | null>(motor?.hubL ?? null);
-  const [pleulL, setPleulL] = useState<number | null>(motor?.pleulL ?? null);
-  const [deachsierungL, setDeachsierungL] = useState<number | null>(motor?.deachsierungL ?? 0);
-  const [degree, setDegree] = useState<number | null>(null);
-  const [kante, setKante] = useState<Steuerkante>('unterkante');
-  const [vorher, setVorher] = useState<number | null>(null);
-  const [nachher, setNachher] = useState<number | null>(null);
+  const { draft, setDraft, dirty, reset } = useWorkDraft<UmrechnungDraft>(
+    workDraftKey(vehicle.id, PANEL),
+    () => ({
+      hubL: motor?.hubL ?? null,
+      pleulL: motor?.pleulL ?? null,
+      deachsierungL: motor?.deachsierungL ?? 0,
+      degree: null,
+      kante: 'unterkante',
+      vorher: null,
+      nachher: null,
+    }),
+    { compare: VEHICLE_FIELDS, validate: isKante },
+  );
+  const { hubL, pleulL, deachsierungL, degree, kante, vorher, nachher } = draft;
+  const set = (key: Exclude<keyof UmrechnungDraft, 'kante'>) => (value: number | null) =>
+    setDraft((d) => ({ ...d, [key]: value }));
+  const setKante = (value: Steuerkante) => setDraft((d) => ({ ...d, kante: value }));
 
   const hubradius = computeHubradius({ hubL, pleulL, deachsierungL });
   const distance = computeDistanceToOT({ pleulL, hubradius, deachsierungL, degree });
@@ -64,21 +92,21 @@ export function UmrechnungPanel({ vehicle }: { vehicle: VehicleDto }) {
               label={u.hub}
               value={hubL}
               baseUnit={FIELD_BASE_UNITS.motor.hubL}
-              onChange={setHubL}
+              onChange={set('hubL')}
               testId="motor-umrechnung-hub"
             />
             <UnitNumberField
               label={u.pleuel}
               value={pleulL}
               baseUnit={FIELD_BASE_UNITS.motor.pleulL}
-              onChange={setPleulL}
+              onChange={set('pleulL')}
               testId="motor-umrechnung-pleuel"
             />
             <UnitNumberField
               label={u.deachsierung}
               value={deachsierungL}
               baseUnit={FIELD_BASE_UNITS.motor.deachsierungL}
-              onChange={setDeachsierungL}
+              onChange={set('deachsierungL')}
               testId="motor-umrechnung-deachsierung"
             />
             <ResultValue
@@ -91,6 +119,7 @@ export function UmrechnungPanel({ vehicle }: { vehicle: VehicleDto }) {
           <p className="text-muted-foreground min-h-4 text-xs">
             {hubradius === null ? t.motor.missingInputs : ''}
           </p>
+          <DraftNotice dirty={dirty} onReset={reset} testId="motor-umrechnung-draft" />
         </Section>
         <Section title={u.distanceTitle}>
           <div className="grid gap-4 sm:grid-cols-2">
@@ -98,7 +127,7 @@ export function UmrechnungPanel({ vehicle }: { vehicle: VehicleDto }) {
               label={u.distanceDegree}
               value={degree}
               suffix={KW}
-              onChange={setDegree}
+              onChange={set('degree')}
               testId="motor-umrechnung-degree"
             />
             <ResultValue
@@ -123,8 +152,7 @@ export function UmrechnungPanel({ vehicle }: { vehicle: VehicleDto }) {
               const port = e.target.value as SteuerdiagrammPort;
               const value = vehicleTimings[port];
               if (typeof value !== 'number') return;
-              setVorher(value);
-              setKante(steuerkanteForPort(port));
+              setDraft((d) => ({ ...d, vorher: value, kante: steuerkanteForPort(port) }));
             }}
             data-testid="motor-umrechnung-port"
           >
@@ -159,14 +187,14 @@ export function UmrechnungPanel({ vehicle }: { vehicle: VehicleDto }) {
             label={u.vorher}
             value={vorher}
             suffix={KW}
-            onChange={setVorher}
+            onChange={set('vorher')}
             testId="motor-umrechnung-vorher"
           />
           <UnitNumberField
             label={u.nachher}
             value={nachher}
             suffix={KW}
-            onChange={setNachher}
+            onChange={set('nachher')}
             testId="motor-umrechnung-nachher"
           />
         </div>

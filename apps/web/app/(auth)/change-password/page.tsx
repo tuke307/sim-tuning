@@ -39,11 +39,13 @@ export default function ChangePasswordPage() {
         <form onSubmit={handleSubmit} className="space-y-4">
           <h1 className="font-display text-xl font-bold">{t.auth.changePasswordTitle}</h1>
           <div className="space-y-1.5">
-            <Label htmlFor="current-password" className="text-xs font-semibold">
+            <Label htmlFor="current-password" className="text-[0.8125rem] font-semibold">
               {t.auth.currentPasswordLabel}
             </Label>
             <Input
               id="current-password"
+              name="current-password"
+              autoComplete="current-password"
               type="password"
               required
               value={currentPassword}
@@ -53,11 +55,13 @@ export default function ChangePasswordPage() {
             />
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="new-password" className="text-xs font-semibold">
+            <Label htmlFor="new-password" className="text-[0.8125rem] font-semibold">
               {t.auth.newPasswordLabel}
             </Label>
             <Input
               id="new-password"
+              name="new-password"
+              autoComplete="new-password"
               type="password"
               required
               value={newPassword}
@@ -66,8 +70,8 @@ export default function ChangePasswordPage() {
               className="h-10"
             />
           </div>
-          {error && <p className="text-destructive text-xs">{error}</p>}
-          {message && <p className="text-primary text-xs">{message}</p>}
+          {error && <p className="text-destructive text-[0.8125rem]">{error}</p>}
+          {message && <p className="text-primary text-[0.8125rem]">{message}</p>}
           <div className="flex items-center justify-between pt-2">
             <Button type="button" variant="ghost" size="sm" asChild>
               <Link href="/">{t.common.cancel}</Link>

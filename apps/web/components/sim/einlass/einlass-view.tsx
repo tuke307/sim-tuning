@@ -1,19 +1,20 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { ModulePage } from '@/components/sim/shared/module-page';
+import { useSubTab } from '@/lib/navigation/nav-state';
 import { useLocale } from '@/providers/i18n/locale-context';
 import { useSimData } from '@/providers/sim/sim-data-context';
 import { EinlassKanal } from './einlass-kanal';
 import { EinlassVergaser } from './einlass-vergaser';
 
-type EinlassTab = 'kanal' | 'vergaser';
+const EINLASS_TABS = ['kanal', 'vergaser'] as const;
 
 /** Intake module (v2 `EinlassMainView`): Kanal and Vergaser sub-tabs. */
 export function EinlassView() {
   const { t } = useLocale();
   const { selectedVehicle } = useSimData();
-  const [tab, setTab] = useState<EinlassTab>('kanal');
+  const [tab, setTab] = useSubTab(EINLASS_TABS, 'kanal');
 
   return (
     <ModulePage
@@ -29,7 +30,7 @@ export function EinlassView() {
     >
       {selectedVehicle &&
         (tab === 'kanal' ? (
-          // Keyed by vehicle so the draft is re-initialised when another vehicle is picked.
+          // Keyed by vehicle so each vehicle gets its own work draft.
           <EinlassKanal key={selectedVehicle.id} vehicle={selectedVehicle} />
         ) : (
           <EinlassVergaser key={selectedVehicle.id} vehicle={selectedVehicle} />

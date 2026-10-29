@@ -11,9 +11,11 @@ export const deDyno: TranslationDictionary['dyno'] = {
     runtime: 'Messung',
     diagnosis: 'Diagnose',
   },
-  noDyno: 'Dieses Fahrzeug hat noch keinen Dyno. Lege ihn unter Daten an.',
-  goToData: 'Dyno anlegen',
-  readOnlyDyno: 'Dupliziere das Starter-Fahrzeug, um einen Dyno dafür anzulegen.',
+  noDyno:
+    'Noch kein Dyno. Du musst ihn nicht vorher anlegen – beim Speichern unter Audio oder Messung wird er automatisch erstellt.',
+  duplicateVehicle: 'Fahrzeug duplizieren',
+  readOnlyDyno:
+    'Starter-Fahrzeuge sind schreibgeschützt. Dupliziere das Fahrzeug, um Kurven und Messungen dafür zu speichern.',
   data: {
     sectionTitle: 'Dyno',
     createTitle: 'Neuer Dyno',
@@ -62,6 +64,18 @@ export const deDyno: TranslationDictionary['dyno'] = {
     sourceRecording: 'Aufnahme',
     sourceDemo: 'Demo-Aufnahme',
     recording: 'Aufnahme läuft…',
+    recordHint: 'Der Bildschirm bleibt während der Aufnahme an. Lass die App im Vordergrund.',
+    elapsed: 'Aufnahmedauer',
+    level: 'Eingangspegel',
+    levelLow: 'Pegel niedrig',
+    levelOk: 'Pegel ok',
+    levelClipping: 'Pegel übersteuert',
+    quietWarning:
+      'Kein Motorgeräusch erkannt? Prüfe, ob das Mikrofon frei ist und zum Motor zeigt.',
+    interrupted:
+      'Die App ging in den Hintergrund, daher wurde die Aufnahme beendet. Alles bis dahin Aufgenommene wurde übernommen.',
+    interruptedEmpty:
+      'Die App ging in den Hintergrund, bevor etwas aufgenommen wurde. Starte die Aufnahme bitte erneut.',
     decoding: 'Audio wird dekodiert…',
     micDenied:
       'Der Mikrofonzugriff wurde verweigert. Erlaube ihn in den Browser-Einstellungen, um aufzunehmen.',
@@ -109,7 +123,7 @@ export const deDyno: TranslationDictionary['dyno'] = {
     shownOf: '{shown} von {total} Punkten angezeigt',
     saveCurve: 'Als Drehzahlkurve speichern',
     curveSaved: 'Drehzahlkurve gespeichert',
-    needDyno: 'Lege unter Daten einen Dyno an, um die Kurve zu speichern.',
+    needDyno: 'Beim Speichern wird der Dyno für dieses Fahrzeug automatisch angelegt.',
     storedCurve: 'Gespeicherte Drehzahlkurve: {count} Punkte',
   },
   runtime: {
@@ -143,7 +157,7 @@ export const deDyno: TranslationDictionary['dyno'] = {
     save: 'Messung speichern',
     saved: 'Messung gespeichert',
     audioReady: 'Motorgeräusch aufgenommen – analysiere es unter Audio.',
-    needDyno: 'Lege unter Daten einen Dyno an, um Messungen zu speichern.',
+    needDyno: 'Beim Speichern wird der Dyno für dieses Fahrzeug automatisch angelegt.',
     accelerationTitle: 'Beschleunigung',
     rolloutTitle: 'Ausrollen',
     timeAxis: 'Zeit in s',

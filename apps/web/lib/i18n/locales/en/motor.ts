@@ -6,9 +6,6 @@ export const enMotor = {
   tabVerdichtung: 'Compression',
   tabSteuerdiagramm: 'Diagram',
   tabUmrechnung: 'Convert',
-  applyToVehicle: 'Apply to vehicle',
-  applied: 'Saved to vehicle',
-  applyReadOnlyHint: 'Duplicate the starter vehicle to save results.',
   resetToVehicle: 'Reset to vehicle values',
   missingInputs: 'Fill in all inputs to see results.',
   hubraum: {

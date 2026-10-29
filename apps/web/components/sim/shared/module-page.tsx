@@ -1,11 +1,14 @@
 'use client';
 
 import React, { type ReactNode } from 'react';
-import { Copy, Lock } from 'lucide-react';
+import { Check, Copy, Loader2, Lock, PencilLine, RotateCcw, Save } from 'lucide-react';
+import type { VehicleDto, VehicleInputDto } from '@sim-tuning/common/schemas';
 import { Button } from '@sim-tuning/ui/components/ui/button';
 import { NativeSelect } from '@sim-tuning/ui/components/ui/native-select';
 import { Tabs, TabsList, TabsTrigger } from '@sim-tuning/ui/components/ui/tabs';
 import { cn } from '@sim-tuning/ui/lib/utils';
+import { useSaveToVehicle } from '@/hooks/useSaveToVehicle';
+import { confirmLeave } from '@/lib/navigation/leave-guard';
 import { useLocale } from '@/providers/i18n/locale-context';
 import { useSimData } from '@/providers/sim/sim-data-context';
 import { MODULE_META, type SimModule } from './modules';
@@ -19,7 +22,13 @@ export function VehicleSelect({ className }: { className?: string }) {
       aria-label={t.sim.selectVehicle}
       data-testid="vehicle-select"
       value={selectedVehicle?.id ?? ''}
-      onChange={(e) => selectVehicle(e.target.value || null)}
+      onChange={(e) => {
+        const id = e.target.value || null;
+        // A dirty vehicle editor may veto or save first; the controlled value snaps back on cancel.
+        void confirmLeave().then((ok) => {
+          if (ok) selectVehicle(id);
+        });
+      }}
       className={cn('w-auto max-w-[16rem]', className)}
     >
       {vehicles.map((v) => (
@@ -28,6 +37,115 @@ export function VehicleSelect({ className }: { className?: string }) {
         </option>
       ))}
     </NativeSelect>
+  );
+}
+
+/**
+ * Quiet marker for calculator inputs that differ from the vehicle's stored values, with an action
+ * that re-seeds them from the vehicle.
+ */
+export function DraftNotice({
+  dirty,
+  onReset,
+  testId,
+}: {
+  dirty: boolean;
+  onReset: () => void;
+  testId?: string;
+}) {
+  const { t } = useLocale();
+  if (!dirty) return null;
+  return (
+    <div
+      data-testid={testId}
+      className="text-muted-foreground flex flex-wrap items-center gap-x-3 gap-y-1 text-xs"
+    >
+      <span className="flex items-center gap-1.5">
+        <PencilLine className="h-3.5 w-3.5 shrink-0" aria-hidden />
+        {t.sim.draftUnsaved}
+      </span>
+      <Button
+        type="button"
+        size="xs"
+        variant="ghost"
+        onClick={onReset}
+        data-testid={testId ? `${testId}-reset` : undefined}
+      >
+        <RotateCcw className="h-3.5 w-3.5" aria-hidden />
+        {t.sim.draftReset}
+      </Button>
+    </div>
+  );
+}
+
+/**
+ * "Im Fahrzeug speichern" for calculator panels. On a starter vehicle it reads "Als eigenes
+ * Fahrzeug speichern" and saves into a new copy (see `useSaveToVehicle`).
+ */
+export function SaveToVehicleButton({
+  buildUpdate,
+  onSaved,
+  draft,
+  hint,
+  disabled,
+  testId,
+  size,
+  variant,
+}: {
+  buildUpdate: (motorName: string) => Partial<VehicleInputDto> | null;
+  onSaved?: (saved: VehicleDto) => (() => void) | void;
+  /** Draft state of the panel for the "not saved to vehicle" marker. */
+  draft?: { dirty: boolean; onReset: () => void };
+  hint?: string;
+  disabled?: boolean;
+  testId?: string;
+  size?: 'default' | 'sm';
+  variant?: 'default' | 'accent';
+}) {
+  const { t } = useLocale();
+  const { status, saved, isStarter, canSave, save } = useSaveToVehicle({ buildUpdate, onSaved });
+  return (
+    <div className="space-y-2 pt-1">
+      {draft && (
+        <DraftNotice
+          dirty={draft.dirty}
+          onReset={draft.onReset}
+          testId={testId ? `${testId}-draft` : undefined}
+        />
+      )}
+      <div className="flex flex-wrap items-center gap-3">
+        <Button
+          type="button"
+          size={size}
+          variant={variant}
+          onClick={() => void save()}
+          disabled={disabled || !canSave}
+          data-testid={testId}
+        >
+          {status === 'saving' ? (
+            <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+          ) : saved ? (
+            <Check className="h-4 w-4" aria-hidden />
+          ) : isStarter ? (
+            <Copy className="h-4 w-4" aria-hidden />
+          ) : (
+            <Save className="h-4 w-4" aria-hidden />
+          )}
+          {isStarter ? t.sim.saveAsCopy : t.sim.saveToVehicle}
+        </Button>
+        <span role="status" aria-live="polite" className="text-[0.8125rem]">
+          {saved && (
+            <span className="text-muted-foreground flex items-center gap-1">
+              <Check className="h-4 w-4" aria-hidden />
+              {t.sim.saved}
+            </span>
+          )}
+          {status === 'error' && <span className="text-destructive">{t.sim.errorGeneric}</span>}
+        </span>
+      </div>
+      {hint && <p className="text-muted-foreground text-xs">{hint}</p>}
+      {isStarter && <p className="text-muted-foreground text-xs">{t.sim.saveAsCopyHint}</p>}
+    </div>
   );
 }
 

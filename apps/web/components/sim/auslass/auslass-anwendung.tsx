@@ -8,11 +8,12 @@ import { Button } from '@sim-tuning/ui/components/ui/button';
 import { Label } from '@sim-tuning/ui/components/ui/label';
 import { NativeSelect } from '@sim-tuning/ui/components/ui/native-select';
 import { PositionHighlightProvider, Stueckliste } from '@/components/sim/shared/drawing';
-import { Section } from '@/components/sim/shared/module-page';
+import { SaveToVehicleButton, Section } from '@/components/sim/shared/module-page';
 import { ResultValue, UnitNumberField } from '@/components/sim/shared/unit-number-field';
+import { useWorkDraft } from '@/hooks/useWorkDraft';
+import { workDraftKey } from '@/lib/sim/drafts/work-draft';
 import { AuspuffDrawing } from './auspuff-drawing';
 import { FactorSlider } from './factor-slider';
-import { SaveMotorButton } from './save-motor-button';
 import {
   anwendungDraftFromVehicle,
   buildAnwendungUpdate,
@@ -27,6 +28,10 @@ import {
 } from '@/lib/sim/auslass/auslass-helpers';
 import { useLocale } from '@/providers/i18n/locale-context';
 import { useSimData } from '@/providers/sim/sim-data-context';
+
+const PANEL = 'auslass.anwendung';
+const isKnownStage = (draft: AnwendungDraft) =>
+  (DIFFUSOR_STAGES as readonly number[]).includes(draft.diffusorStage);
 
 type RowKey = keyof ReturnType<typeof useLocale>['t']['auslass']['anwendung']['rows'];
 
@@ -84,8 +89,11 @@ export function AuslassAnwendung({ vehicle }: { vehicle: VehicleDto }) {
   const { t } = useLocale();
   const a = t.auslass.anwendung;
   const stageId = useId();
-  const readOnly = vehicle.isSystem;
-  const [draft, setDraft] = useState<AnwendungDraft>(() => anwendungDraftFromVehicle(vehicle));
+  const { draft, setDraft, dirty, reset, commit } = useWorkDraft<AnwendungDraft>(
+    workDraftKey(vehicle.id, PANEL),
+    () => anwendungDraftFromVehicle(vehicle),
+    { validate: isKnownStage },
+  );
   const [calc, setCalc] = useState<{ outcome: AnwendungOutcome; draftJson: string } | null>(null);
   const set = (key: keyof AnwendungDraft) => (value: number | null) =>
     setDraft((d) => ({ ...d, [key]: value }));
@@ -106,7 +114,6 @@ export function AuslassAnwendung({ vehicle }: { vehicle: VehicleDto }) {
       baseUnit={opts.baseUnit}
       suffix={opts.suffix}
       onChange={set(key)}
-      readOnly={readOnly}
       testId={`auslass-anwendung-${key}`}
     />
   );
@@ -130,7 +137,6 @@ export function AuslassAnwendung({ vehicle }: { vehicle: VehicleDto }) {
             label={a.kruemmerF}
             value={draft.kruemmerF}
             onChange={set('kruemmerF')}
-            readOnly={readOnly}
             testId="auslass-anwendung-kruemmerF"
           />
           {field('kruemmerW', { suffix: '°' })}
@@ -156,7 +162,6 @@ export function AuslassAnwendung({ vehicle }: { vehicle: VehicleDto }) {
               id={stageId}
               data-testid="auslass-anwendung-diffusorStage"
               value={draft.diffusorStage}
-              disabled={readOnly}
               onChange={(e) =>
                 setDraft((d) => ({ ...d, diffusorStage: Number(e.target.value) as DiffusorStage }))
               }
@@ -209,7 +214,9 @@ export function AuslassAnwendung({ vehicle }: { vehicle: VehicleDto }) {
 
         {ok && <AnwendungResult outcome={ok} stale={stale} />}
 
-        <SaveMotorButton
+        <SaveToVehicleButton
+          onSaved={(saved) => commit(workDraftKey(saved.id, PANEL))}
+          draft={{ dirty, onReset: reset }}
           buildUpdate={(name) =>
             ok && !stale ? buildAnwendungUpdate(name, draft, ok.result, ok.gesamtL) : null
           }

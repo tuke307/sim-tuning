@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 import { Card } from '@sim-tuning/ui/components/ui/card';
 import { ModulePage } from '@/components/sim/shared/module-page';
+import { confirmLeave } from '@/lib/navigation/leave-guard';
+import { useSubTab } from '@/lib/navigation/nav-state';
 import { useLocale } from '@/providers/i18n/locale-context';
 import { useSimData } from '@/providers/sim/sim-data-context';
 import { CreateVehicleDialog } from './create-vehicle-dialog';
@@ -10,12 +12,12 @@ import { EnvironmentsPanel } from './environments-panel';
 import { VehicleEditor } from './vehicle-editor';
 import { VehicleList } from './vehicle-list';
 
-type VehiclesTab = 'vehicles' | 'environments';
+const VEHICLES_TABS = ['vehicles', 'environments'] as const;
 
 export function VehiclesView() {
   const { t } = useLocale();
   const { vehicles, selectedVehicle, selectVehicle, loading, error } = useSimData();
-  const [tab, setTab] = useState<VehiclesTab>('vehicles');
+  const [tab, setTab] = useSubTab(VEHICLES_TABS, 'vehicles');
   const [createOpen, setCreateOpen] = useState(false);
 
   return (
@@ -44,8 +46,19 @@ export function VehiclesView() {
             <VehicleList
               vehicles={vehicles}
               selectedId={selectedVehicle?.id ?? null}
-              onSelect={selectVehicle}
-              onCreate={() => setCreateOpen(true)}
+              onSelect={(id) => {
+                if (id === selectedVehicle?.id) return;
+                // The open editor may hold unsaved changes: let it save, discard or cancel first.
+                void confirmLeave().then((ok) => {
+                  if (ok) selectVehicle(id);
+                });
+              }}
+              onCreate={() => {
+                // Creating selects the new vehicle, which replaces the open editor.
+                void confirmLeave().then((ok) => {
+                  if (ok) setCreateOpen(true);
+                });
+              }}
             />
           </div>
           {selectedVehicle ? (
