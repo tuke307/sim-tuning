@@ -110,7 +110,7 @@ describe('audio analysis (worker logic)', () => {
     assert.deepEqual(posted, [{ type: 'error', id: 2, error: 'tooShort' }]);
   });
 
-  it('analyzes the demo recording with v2 parity (points, clusters) and progress', () => {
+  it('analyzes the demo recording (v2 point count, joined tracks) and progress', () => {
     const posted: WorkerResponse[] = [];
     handleWorkerMessage(
       {
@@ -136,10 +136,12 @@ describe('audio analysis (worker logic)', () => {
       result.result.clusters.map((c) => c.length),
       reference.clusters.map((c) => c.length),
     );
-    assert.equal(result.result.clusters.length, 15, 'v2 golden cluster count');
+    // v2's 15 DBSCAN clusters; the two halves of the firing-frequency track are joined.
+    assert.equal(result.result.clusters.length, 12);
+    assert.equal(result.result.fundamental, reference.fundamental);
     assert.equal(result.result.columns, 912);
-    const largest = [...result.result.clusters].sort((a, b) => b.length - a.length)[0]!;
-    assert.ok(fitDrehzahlCurve(largest).length > 100);
+    const track = result.result.clusters[result.result.fundamental]!;
+    assert.ok(fitDrehzahlCurve(track).length > 1000);
   });
 });
 

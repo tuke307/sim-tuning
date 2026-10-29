@@ -23,7 +23,7 @@ const draft: AnwendungDraft = {
   auslassLaengeL: 100,
   auslassSteuerzeitSZ: 190,
   auslassFlaecheA: 20,
-  abgasT: 548.69,
+  abgasT: 500,
   kruemmerF: 10,
   kruemmerW: 2,
   mittelteilF: 2.9,
@@ -45,7 +45,7 @@ const vehicle = {
       steuerzeitSZ: 190,
       flaecheA: 20,
       auspuff: {
-        abgasT: 548.69,
+        abgasT: 500,
         kruemmerD: 30,
         kruemmerF: 10,
         kruemmerW: 2,
@@ -64,17 +64,18 @@ describe('auslass helpers — Theorie', () => {
   it('prefills from the vehicle and computes every v2 value', () => {
     const theorie = theorieDraftFromVehicle(vehicle);
     assert.equal(theorie.flaecheA, 20);
-    assert.equal(theorie.gasT, 548.69);
+    assert.equal(theorie.gasT, 500);
     const result = computeTheorie(theorie);
     assert.equal(result.kruemmerL, auslass.getKruemmerLaenge(30, 10, 0));
-    assert.equal(result.gasV, auslass.getGasGeschwindigkeit(548.69));
-    assert.equal(result.resonanzL, auslass.getResonanzLaenge(190, 548.69, 8000));
+    assert.equal(result.gasV, 548.69);
+    // Rechensheet-2Takt: 500 °C → c = 548.69 m/s → 1 085.95 mm.
+    assert.equal(result.resonanzL, 1085.95);
     // 20 mm² = 0.2 cm² → formula gives cm → displayed in mm.
     const cm = auslass.getKruemmerDurchmesser(0.2, 10);
     assert.ok(result.kruemmerDRange);
     assert.ok(Math.abs(result.kruemmerDRange[0] - cm * 10) < 1e-9);
     assert.ok(
-      Math.abs(result.kruemmerDRange[1] - auslass.getKruemmerDurchmesser(0.2, 20) * 10) < 1e-9,
+      Math.abs(result.kruemmerDRange[1] - auslass.getKruemmerDurchmesser(0.2, 50) * 10) < 1e-9,
     );
   });
 

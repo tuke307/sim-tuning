@@ -35,27 +35,22 @@ describe('einlass helpers — Kanal', () => {
       steuerzeitSZ: 136,
       kurbelgehaeuseV: 148800,
       resonanzU: 5750,
-      durchmesserD: 18,
     });
     assert.deepEqual(kanalDraftFromVehicle(null), {
       flaecheA: null,
       steuerzeitSZ: null,
       kurbelgehaeuseV: null,
       resonanzU: null,
-      durchmesserD: null,
     });
   });
 
-  it('converts to cm², cm³ and cm before calling the v2 formula', () => {
+  it('converts to cm² and cm³ before calling the formula', () => {
     const draft = kanalDraftFromVehicle(vehicle);
-    assert.equal(
-      computeKanalResonanzLaenge(draft),
-      einlass.getResonanzLaenge(3, 136, 148.8, 5750, 1.8),
-    );
+    assert.equal(computeKanalResonanzLaenge(draft), einlass.getResonanzLaenge(3, 136, 148.8, 5750));
   });
 
   it('returns null for incomplete or non-finite input', () => {
-    const draft: KanalDraft = { ...kanalDraftFromVehicle(vehicle), durchmesserD: null };
+    const draft: KanalDraft = { ...kanalDraftFromVehicle(vehicle), flaecheA: null };
     assert.equal(computeKanalResonanzLaenge(draft), null);
     assert.equal(
       computeKanalResonanzLaenge({ ...kanalDraftFromVehicle(vehicle), resonanzU: 0 }),
@@ -69,7 +64,7 @@ describe('einlass helpers — Kanal', () => {
         name: 'M 53',
         kurbelgehaeuseV: 148800,
         resonanzU: 5750,
-        einlass: { flaecheA: 300, steuerzeitSZ: 136, durchmesserD: 18 },
+        einlass: { flaecheA: 300, steuerzeitSZ: 136 },
       },
     });
   });

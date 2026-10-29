@@ -1,18 +1,28 @@
 import { roundTo, truncate } from '../utils/round.util';
 
-/** Exhaust calculations, ported 1:1 from v2 `AuslassLogic` (golden-tested). */
+/** Exhaust calculations, ported from v2 `AuslassLogic` (golden-tested unless noted). */
 
-/** Exhaust gas velocity (m/s) from gas temperature (°C): `331 + 0.6·T`. */
+/** Isentropic exponent and gas constant of two-stroke exhaust gas (Rechensheet-2Takt). */
+const ABGAS_KAPPA = 1.32;
+const ABGAS_R = 295;
+
+/**
+ * Speed of sound in the exhaust gas (m/s) from the gas temperature (°C):
+ * `c = √(κ·R·T)` with κ = 1.32, R = 295 J/(kg·K) (Rechensheet-2Takt `Resonanzkörper!F24`,
+ * typically 540–560 m/s). v2 used the air approximation `331 + 0.6·T`, which overestimates hot
+ * exhaust gas by ~15 %.
+ */
 export function getGasGeschwindigkeit(abgastemperatur: number): number {
-  return roundTo(331 + 0.6 * abgastemperatur, 2);
+  return roundTo(Math.sqrt(ABGAS_KAPPA * ABGAS_R * (abgastemperatur + 273.15)), 2);
 }
 
 /**
- * Header diameter from the exhaust port area. v2 quirk kept: `percentage / 100` is an integer
- * division, so percentages below 100 do not enlarge the area.
+ * Header (flange) diameter from the exhaust port area: the flange area is the port area enlarged
+ * by `percentage` (Rechensheet-2Takt: 1.1–1.5 × port area, i.e. 10–50 %). v2 truncated
+ * `percentage / 100`, so every percentage below 100 gave the bare port diameter.
  */
 export function getKruemmerDurchmesser(auslassflaeche: number, percentage = 10): number {
-  const factor = 1 + truncate(percentage / 100);
+  const factor = 1 + percentage / 100;
   return roundTo((Math.sqrt(auslassflaeche * factor) / Math.sqrt(Math.PI)) * 2, 2);
 }
 
@@ -25,15 +35,32 @@ export function getKruemmerLaenge(
   return roundTo(drehmomentfaktor * kruemmerdurchmesser - auslassLaenge, 2);
 }
 
-/** Tuned length (mm) from exhaust timing (°KW), gas velocity/temperature and resonance rpm. */
+/**
+ * Tuned length (mm) `l = c·φ / (12·n)` from exhaust timing `φ` (°KW), speed of sound `c` (m/s,
+ * see `getGasGeschwindigkeit`) and resonance rpm `n` (Bitterli §7.2; Rechensheet-2Takt
+ * `Resonanzkörper!F29`). v2 passed the gas temperature in °C as `c`.
+ */
 export function getResonanzLaenge(
+  auslassSteuerwinkel: number,
+  schallgeschwindigkeit: number,
+  resonanzDrehzahl: number,
+): number {
+  return roundTo(
+    ((auslassSteuerwinkel * schallgeschwindigkeit) / ((360 * 2 * resonanzDrehzahl) / 60)) * 1000,
+    2,
+  );
+}
+
+/** Tuned length (mm) directly from the exhaust gas temperature (°C). */
+export function getResonanzLaengeFromTemperatur(
   auslassSteuerwinkel: number,
   abgasTemperatur: number,
   resonanzDrehzahl: number,
 ): number {
-  return roundTo(
-    ((auslassSteuerwinkel * abgasTemperatur) / ((360 * 2 * resonanzDrehzahl) / 60)) * 1000,
-    2,
+  return getResonanzLaenge(
+    auslassSteuerwinkel,
+    getGasGeschwindigkeit(abgasTemperatur),
+    resonanzDrehzahl,
   );
 }
 
@@ -91,7 +118,7 @@ const v = (value: number | null | undefined) => value ?? 0;
  */
 export function calculateAuspuff(input: AuspuffInput): AuspuffResult {
   const { auslass, auspuff } = input;
-  const resonanzL = getResonanzLaenge(
+  const resonanzL = getResonanzLaengeFromTemperatur(
     v(auslass.steuerzeitSZ),
     v(auspuff.abgasT),
     v(input.resonanzU),

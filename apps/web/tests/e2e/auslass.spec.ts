@@ -32,15 +32,18 @@ test.describe('Auslass module (guest mode)', () => {
     await expect(page.getByTestId('auslass-theorie-kruemmerL')).toHaveText(/^300\s*mm$/);
 
     await page.getByTestId('auslass-theorie-flaecheA').fill('200');
-    await expect(page.getByTestId('auslass-theorie-kruemmerDRange')).toHaveText(/16 – 16\s*mm/);
+    // Flange area 1.1–1.5 × port area (Rechensheet-2Takt): 200 mm² → 16.7–19.5 mm.
+    await expect(page.getByTestId('auslass-theorie-kruemmerDRange')).toHaveText(/16\.7 – 19\.5\s*mm/);
 
+    // Speed of sound in the exhaust gas, √(1.32·295·T) (Rechensheet-2Takt).
     await page.getByTestId('auslass-theorie-gasT').fill('550');
-    await expect(page.getByTestId('auslass-theorie-gasV')).toHaveText(/661/);
+    await expect(page.getByTestId('auslass-theorie-gasV')).toHaveText(/566\.16/);
 
     await expect(page.getByTestId('auslass-theorie-resonanzU')).not.toHaveValue('');
     await page.getByTestId('auslass-theorie-resonanzU').fill('5000');
     await page.getByTestId('auslass-theorie-steuerzeitSZ').fill('190');
-    await page.getByTestId('auslass-theorie-abgasT').fill('548.69');
+    // 500 °C → c = 548.69 m/s → l = c·φ / (12·n).
+    await page.getByTestId('auslass-theorie-abgasT').fill('500');
     await expect(page.getByTestId('auslass-theorie-resonanzL')).toHaveText(/1,737\.52/);
 
     await page.getByTestId('auslass-theorie-save').click();
@@ -56,7 +59,7 @@ test.describe('Auslass module (guest mode)', () => {
     await expect(page.getByTestId('auslass-anwendung-stage-hint')).toBeVisible();
 
     await fillAnwendung(page, {
-      abgasT: '548.69',
+      abgasT: '500',
       resonanzU: '8000',
       auslassDurchmesserD: '28',
       auslassLaengeL: '60',
@@ -121,7 +124,7 @@ test.describe('Auslass module (guest mode)', () => {
     await openEditableAuslass(page);
     await page.getByTestId('module-tab-anwendung').click();
     await fillAnwendung(page, {
-      abgasT: '548.69',
+      abgasT: '500',
       resonanzU: '8000',
       auslassDurchmesserD: '28',
       auslassLaengeL: '60',

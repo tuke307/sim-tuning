@@ -16,11 +16,9 @@ export function getCylinderHoleDiameter(hubraum: number, hub: number): number {
   return roundTo((2 * Math.sqrt(hubraum / hub)) / Math.sqrt(Math.PI), 2);
 }
 
-/**
- * v2 quirk: uses `π·d/4·h` (not `d²`). Unused by the v2 UI; kept for parity.
- */
+/** Displacement `π·d²/4·h` (mm³ from mm), rounded to 1 decimal. v2 omitted the square. */
 export function getDisplacement(bohrungsdurchmesser: number, hub: number): number {
-  return roundTo(((Math.PI * bohrungsdurchmesser) / 4) * hub, 1);
+  return roundTo(((Math.PI * bohrungsdurchmesser ** 2) / 4) * hub, 1);
 }
 
 /** Piston distance below TDC (mm) for a crank angle in °KW, with connecting rod and offset. */

@@ -59,14 +59,6 @@ export function EinlassKanal({ vehicle }: { vehicle: VehicleDto }) {
           readOnly={readOnly}
           testId="einlass-kanal-kurbelgehaeuseV"
         />
-        <UnitNumberField
-          label={k.durchmesserD}
-          value={draft.durchmesserD}
-          baseUnit={FIELD_BASE_UNITS.einlass.durchmesserD}
-          onChange={set('durchmesserD')}
-          readOnly={readOnly}
-          testId="einlass-kanal-durchmesserD"
-        />
       </div>
       <ResultValue
         label={k.resonanzL}

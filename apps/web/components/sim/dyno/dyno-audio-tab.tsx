@@ -4,7 +4,7 @@ import React, { useId, useMemo, useRef, useState } from 'react';
 import { Download, FileAudio, Filter, Mic, Play, Save, Sparkles, Square, X } from 'lucide-react';
 import {
   AUDIO_FFT_SIZES,
-  calculateClusters,
+  calculateTracks,
   encodeWavMono,
   fitDrehzahlCurve,
   type DrehzahlPoint,
@@ -49,6 +49,8 @@ interface ClusterFilter {
   result: AnalysisResult;
   epsilon: number;
   clusters: DrehzahlPoint[][];
+  /** Suggested engine-speed track, -1 if none. */
+  fundamental: number;
 }
 
 interface ClusterSelection {
@@ -172,11 +174,18 @@ export function DynoAudioTab({
     if (!result) return;
     const sameEpsilon = analysis.state.options?.epsilon === options.epsilon;
     // Re-clustering existing points is cheap (grid DBSCAN), so a changed ε runs on the main thread.
-    const clusters = sameEpsilon
-      ? result.clusters
-      : calculateClusters(result.points, options.epsilon);
-    setFilter({ result, epsilon: options.epsilon, clusters });
-    setSelection(null);
+    const tracks = sameEpsilon
+      ? { clusters: result.clusters, fundamental: result.fundamental }
+      : calculateTracks(result.points, options.epsilon);
+    const next: ClusterFilter = { result, epsilon: options.epsilon, ...tracks };
+    setFilter(next);
+    // Pre-select the engine's firing-frequency track; harmonics are often the larger clusters.
+    const suggested = next.clusters[next.fundamental];
+    setSelection(
+      suggested
+        ? { filter: next, index: next.fundamental, fit: fitDrehzahlCurve(suggested) }
+        : null,
+    );
   };
 
   const pickCluster = (value: string) => {

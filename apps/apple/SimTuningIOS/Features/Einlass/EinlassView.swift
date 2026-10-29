@@ -23,22 +23,20 @@ struct EinlassView: View {
 }
 
 /// v2 `EinlassKanalViewModel`: resonance length from port area (cm²), timing (°KW), crankcase
-/// volume (cm³), resonance rpm and intake pipe diameter (cm). Formula and scaling as in v2.
+/// volume (cm³) and resonance rpm, `l = 3 062 500·φ²·F / (n²·V)` (Rieck, Rechensheet-2Takt).
 struct EinlassKanalView: View {
     @Environment(AppModel.self) private var model
     @State private var flaecheMm2: Double?
     @State private var steuerwinkel: Double?
     @State private var kurbelgehaeuseCm3: Double?
     @State private var resonanzU: Double?
-    @State private var durchmesserMm: Double?
 
     private var resonanzlaenge: Double? {
-        guard let flaecheMm2, let steuerwinkel, let kurbelgehaeuseCm3, let resonanzU, let durchmesserMm,
-              resonanzU != 0, durchmesserMm != 0 else { return nil }
+        guard let flaecheMm2, let steuerwinkel, let kurbelgehaeuseCm3, let resonanzU,
+              resonanzU != 0, kurbelgehaeuseCm3 != 0 else { return nil }
         return EinlassLogic.getResonanzLaenge(
             einlassflaeche: flaecheMm2 / 100, einlasssteuerwinkel: steuerwinkel,
-            kurbelgehausevolumen: kurbelgehaeuseCm3, resonanzdrehzahl: resonanzU,
-            ansaugleitungsdurchmesser: durchmesserMm / 10
+            kurbelgehausevolumen: kurbelgehaeuseCm3, resonanzdrehzahl: resonanzU
         )
     }
 
@@ -49,14 +47,13 @@ struct EinlassKanalView: View {
                 NumberField("Einlasssteuerwinkel", value: $steuerwinkel, unit: "°KW")
                 NumberField("Kurbelgehäusevolumen", value: $kurbelgehaeuseCm3, unit: "cm³")
                 NumberField("Resonanzdrehzahl", value: $resonanzU, unit: "U/min")
-                NumberField("Ansaugleitungsdurchmesser", value: $durchmesserMm, unit: "mm")
             }
             Section {
-                ResultRow(title: "Resonanzlänge", value: model.format(resonanzlaenge))
+                ResultRow(title: "Resonanzlänge", value: model.format(resonanzlaenge, unit: "mm"))
             } header: {
                 Text("Ergebnis")
             } footer: {
-                Text("Formel und Skalierung wie in SimTuning v2.")
+                Text("Nach Rieck: n = 1750·φ / √(V·l / F).")
             }
             VehicleActionsSection(apply: apply, save: save)
         }
@@ -70,15 +67,13 @@ struct EinlassKanalView: View {
         steuerwinkel = motor.einlass?.steuerzeitSZ
         kurbelgehaeuseCm3 = motor.kurbelgehaeuseV.map { $0 / 1000 }
         resonanzU = motor.resonanzU
-        durchmesserMm = motor.einlass?.durchmesserD
     }
 
     private func save() {
         var motor = MotorInputDto()
         motor.resonanzU = .some(resonanzU)
         motor.kurbelgehaeuseV = .some(kurbelgehaeuseCm3.map { $0 * 1000 })
-        motor.einlass = EinlassInputDto(durchmesserD: .some(durchmesserMm), flaecheA: .some(flaecheMm2),
-                                        steuerzeitSZ: .some(steuerwinkel))
+        motor.einlass = EinlassInputDto(flaecheA: .some(flaecheMm2), steuerzeitSZ: .some(steuerwinkel))
         Task { await model.saveToSelectedVehicle(VehicleInputDto(motor: motor)) }
     }
 }

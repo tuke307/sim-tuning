@@ -30,9 +30,8 @@ test.describe('Einlass module (guest mode)', () => {
 
     await page.getByTestId('einlass-kanal-flaecheA').fill('300');
     await page.getByTestId('einlass-kanal-steuerzeitSZ').fill('130');
-    await page.getByTestId('einlass-kanal-durchmesserD').fill('18');
-    // v2 formula incl. its scaling quirk (golden-tested in @sim-tuning/common).
-    await expect(page.getByTestId('einlass-kanal-resonanzL')).toHaveText(/8,868,934\.33/);
+    // l = 3 062 500·φ²·F / (n²·V) with F = 3 cm², φ = 130°, n = 5 000, V = 142.8 cm³.
+    await expect(page.getByTestId('einlass-kanal-resonanzL')).toHaveText(/434\.93/);
 
     await page.getByTestId('einlass-kanal-save').click();
     await expect(page.getByText('Saved', { exact: true })).toBeVisible();
@@ -40,7 +39,6 @@ test.describe('Einlass module (guest mode)', () => {
     await page.reload();
     await navigateToTab(page, 'einlass');
     await expect(page.getByTestId('einlass-kanal-flaecheA')).toHaveValue('300');
-    await expect(page.getByTestId('einlass-kanal-durchmesserD')).toHaveValue('18');
   });
 
   test('sizes the carburettor and main jet', async ({ page }) => {

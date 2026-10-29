@@ -27,7 +27,9 @@ import { getLeistung } from './dyno';
 /**
  * Golden values produced by running the real v2 `SimTuning.Core` (.NET) with the same inputs
  * (see docs/v3-rewrite-plan.md, "numeric parity"). Exact equality is expected: the port keeps
- * .NET banker's rounding and integer-division quirks.
+ * .NET banker's rounding. Formulas that v2 got wrong (intake/exhaust resonance length, speed of
+ * sound, header diameter, displacement) are pinned to the literature instead — see the
+ * "literature" suite below and docs/extracted/AUDIT-logic-vs-literature.md.
  */
 const golden = JSON.parse(
   readFileSync(fileURLToPath(new URL('../__fixtures__/v2-golden.json', import.meta.url)), 'utf8'),
@@ -46,8 +48,6 @@ describe('v2 parity — EngineLogic', () => {
     assert.equal(getCompression(49900, 5880), g('compression2'));
     assert.equal(getCylinderHoleDiameter(50000, 17000), g('cylinderHoleDiameter'));
     assert.equal(getCylinderHoleDiameter(49900, 44), g('cylinderHoleDiameter2'));
-    assert.equal(getDisplacement(38, 17000), g('displacement'));
-    assert.equal(getDisplacement(38, 44), g('displacement2'));
     assert.equal(getDistanceToOT(44, 22, 2, 120), g('distanceToOT'));
     assert.equal(getDistanceToOT(95, 22, 2, 67.5), g('distanceToOT2'));
     assert.equal(getHubRadius(44, 44, 2), g('hubRadius'));
@@ -110,9 +110,7 @@ describe('v2 parity — EngineLogic', () => {
 });
 
 describe('v2 parity — EinlassLogic', () => {
-  it('matches resonance length and carburettor sizing', () => {
-    assert.equal(einlass.getResonanzLaenge(20, 120, 17000, 8000, 20), g('einlassResonanz'));
-    assert.equal(einlass.getResonanzLaenge(300, 135, 149700, 5500, 16), g('einlassResonanz2'));
+  it('matches carburettor sizing', () => {
     assert.equal(einlass.getVergaserDurchmesser(50000, 8000, 0.9), g('vergaserD'));
     assert.equal(einlass.getVergaserDurchmesser(49900, 5500, 0.85), g('vergaserD2'));
     assert.equal(einlass.getVergaserHauptduesenDurchmesser(18, 0.95), g('hauptduese'));
@@ -122,11 +120,7 @@ describe('v2 parity — EinlassLogic', () => {
 
 describe('v2 parity — AuslassLogic', () => {
   it('matches the single formulas', () => {
-    assert.equal(auslass.getGasGeschwindigkeit(550), g('gasV'));
-    assert.equal(auslass.getKruemmerDurchmesser(2, 10), g('kruemmerD'));
-    assert.equal(auslass.getKruemmerDurchmesser(400, 150), g('kruemmerD2'));
     assert.equal(auslass.getKruemmerLaenge(20, 20, 20), g('kruemmerL'));
-    assert.equal(auslass.getResonanzLaenge(180, 550, 8000), g('auslassResonanz'));
     assert.equal(auslass.getVehiclePortDuration(180, 8000), g('portDuration'));
   });
 
@@ -136,7 +130,9 @@ describe('v2 parity — AuslassLogic', () => {
         resonanzU: 8000,
         auslass: { laengeL: 100, steuerzeitSZ: 190, durchmesserD: 45.83, flaecheA: 20 },
         auspuff: {
-          abgasT: 548.69,
+          // v2 users typed the speed of sound (548.69 m/s) into this field; 500 °C gives exactly
+          // that speed of sound, so the v2 golden chamber still applies.
+          abgasT: 500,
           diffusorStage: stage,
           diffusorW1: 7.5,
           kruemmerF: 10,
@@ -170,5 +166,36 @@ describe('v2 parity — DynoLogic', () => {
       getLeistung(4500, 2, 1.18, 0.8, 9, 0.3, 160, 0.015, 9.81, 0.7, 0.05),
       g('leistung2') as number,
     );
+  });
+});
+
+describe('literature — formulas v2 got wrong', () => {
+  it('displacement π·d²/4·h', () => {
+    assert.equal(getDisplacement(38, 44), 49901.1); // S 51: 49,8 cm³ (Werkstatthandbuch)
+    assert.equal(getDisplacement(45, 44), 69979); // S 70: 70 cm³
+  });
+
+  it('intake resonance length l = 3 062 500·φ²·F / (n²·V)', () => {
+    // Rechensheet-2Takt `Berechnung!O42`: F = 10 cm², φ = 360°, n = 9 500, V = 290 cm³ → 151.65 cm
+    assert.equal(einlass.getResonanzLaenge(10, 360, 290, 9500), 1516.48);
+    assert.equal(einlass.getResonanzLaenge(3, 135, 149.7, 5500), 369.76);
+  });
+
+  it('speed of sound c = √(1.32·295·T) in the exhaust gas', () => {
+    // Rechensheet-2Takt `Resonanzkörper!F24` at 500 °C: 548.69 m/s (guide 540–560 m/s)
+    assert.equal(auslass.getGasGeschwindigkeit(500), 548.69);
+    assert.equal(auslass.getGasGeschwindigkeit(550), 566.16);
+  });
+
+  it('exhaust resonance length l = c·φ / (12·n)', () => {
+    // Rechensheet-2Takt `Resonanzkörper!F29`: φ = 190°, n = 8 000, 500 °C → 1 085.96 mm
+    assert.equal(auslass.getResonanzLaenge(190, 548.69, 8000), 1085.95);
+    assert.equal(auslass.getResonanzLaengeFromTemperatur(190, 500, 8000), 1085.95);
+  });
+
+  it('header diameter from 1.1–1.5 × port area', () => {
+    // Rechensheet-2Takt `Resonanzkörper!I25/I27`: port 1 100 mm² → 39.25 / 45.83 mm
+    assert.equal(auslass.getKruemmerDurchmesser(1100, 10), 39.25);
+    assert.equal(auslass.getKruemmerDurchmesser(1100, 50), 45.83);
   });
 });

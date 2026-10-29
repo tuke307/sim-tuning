@@ -23,7 +23,7 @@ struct AuslassView: View {
     }
 }
 
-/// v2 `AuslassTheorieViewModel`: gas velocity, header diameter range, header and tuned length.
+/// v2 `AuslassTheorieViewModel`: speed of sound, header diameter range, header and tuned length.
 struct AuslassTheorieView: View {
     @Environment(AppModel.self) private var model
     @State private var abgasT: Double?
@@ -37,7 +37,7 @@ struct AuslassTheorieView: View {
         SheetForm(module: .auslass, subsheet: 1, subtitle: "Theorie") {
             Section("Abgas") {
                 NumberField("Abgastemperatur", value: $abgasT, unit: "°C")
-                ResultRow(title: "Gasgeschwindigkeit", value: model.format(abgasT.map {
+                ResultRow(title: "Schallgeschwindigkeit", value: model.format(abgasT.map {
                     AuslassLogic.getGasGeschwindigkeit(abgastemperatur: $0)
                 }, unit: "m/s"))
             }
@@ -45,7 +45,7 @@ struct AuslassTheorieView: View {
                 NumberField("Auslassfläche", value: $flaecheMm2, unit: "mm²")
                 if let flaecheMm2 {
                     let a = AuslassLogic.getKruemmerDurchmesser(auslassflaeche: flaecheMm2 / 100, percentage: 10)
-                    let b = AuslassLogic.getKruemmerDurchmesser(auslassflaeche: flaecheMm2 / 100, percentage: 20)
+                    let b = AuslassLogic.getKruemmerDurchmesser(auslassflaeche: flaecheMm2 / 100, percentage: 50)
                     ResultRow(title: "Krümmerdurchmesser", value: "\(model.format(a)) – \(model.format(b)) cm")
                 }
                 NumberField("Krümmerdurchmesser", value: $kruemmerD, unit: "mm")

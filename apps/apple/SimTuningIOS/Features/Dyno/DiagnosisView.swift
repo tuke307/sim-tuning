@@ -3,7 +3,7 @@ import SimTuningAPI
 import SimTuningLogic
 import SwiftUI
 
-/// v2 `DynoDiagnosisViewModel`: power curve from the stored RPM series with the v2 constants.
+/// v2 `DynoDiagnosisViewModel`: power curve from the stored RPM series (v3 physics, v2 constants).
 struct DiagnosisView: View {
     @Environment(AppModel.self) private var model
     let dyno: DynoDto
@@ -85,7 +85,7 @@ struct DiagnosisView: View {
                 } header: {
                     Text("Leistung")
                 } footer: {
-                    Text("Formel und Konstanten wie in SimTuning v2 (Luftdichte 1,2, Radradius 0,277 m, Rollwiderstand 0,005).")
+                    Text("Fahrwiderstände × Geschwindigkeit (Luftdichte 1,2, Radradius 0,277 m, Rollwiderstand 0,005).")
                 }
             }
         }
