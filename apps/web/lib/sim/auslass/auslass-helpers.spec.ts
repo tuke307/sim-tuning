@@ -161,4 +161,21 @@ describe('auslass helpers — drawing', () => {
     assert.equal(wide.width, 2440);
     assert.equal(wide.height, 1000);
   });
+
+  it('crops to the content plus padding on request', () => {
+    const geometry = {
+      width: 2000,
+      height: 1000,
+      segments: [{ kind: 'frame' as const, x1: 100, y1: 700, x2: 500, y2: 800 }],
+      rects: [],
+      valueLabels: [],
+      partLabels: [],
+    };
+    assert.deepEqual(getAuspuffViewBox(geometry, 50, { crop: true }), {
+      x: 50,
+      y: 650,
+      width: 500,
+      height: 200,
+    });
+  });
 });

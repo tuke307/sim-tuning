@@ -331,10 +331,13 @@ const LABEL_ALLOWANCE_Y = 30;
 /**
  * ViewBox of the drawing: the v2 canvas (`0 0 2000 1000`) when everything fits, otherwise the
  * canvas grown (with padding) to the content, so long pipes are scaled down instead of clipped.
+ * With `crop`, the viewBox hugs the content (plus padding) instead, so the chamber fills the
+ * drawing area rather than sitting in the lower third of the v2 canvas.
  */
 export function getAuspuffViewBox(
   geometry: ReturnType<typeof auslass.getAuspuffGeometry>,
   padding = 40,
+  { crop = false }: { crop?: boolean } = {},
 ): { x: number; y: number; width: number; height: number } {
   const xs: number[] = [];
   const ys: number[] = [];
@@ -359,6 +362,14 @@ export function getAuspuffViewBox(
   const contentMinY = Math.min(...finiteYs);
   const contentMaxX = Math.max(...finiteXs);
   const contentMaxY = Math.max(...finiteYs);
+  if (crop) {
+    return {
+      x: contentMinX - padding,
+      y: contentMinY - padding,
+      width: contentMaxX - contentMinX + padding * 2,
+      height: contentMaxY - contentMinY + padding * 2,
+    };
+  }
   const fits =
     contentMinX >= 0 &&
     contentMinY >= 0 &&

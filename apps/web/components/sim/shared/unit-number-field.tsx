@@ -73,24 +73,26 @@ export function UnitNumberField({
               next === null || !baseUnit || !unit ? next : convertUnit(next, unit, baseUnit),
             );
           }}
-          className="tabular-nums"
+          className="font-data"
         />
         {baseUnit && units.length > 1 ? (
-          <NativeSelect
-            aria-label={`${label} unit`}
-            value={unit}
-            onChange={(e) => setUnit(e.target.value as UnitId)}
-            className="w-auto shrink-0"
-          >
-            {units.map((u) => (
-              <option key={u} value={u}>
-                {UNITS[u].abbreviation}
-              </option>
-            ))}
-          </NativeSelect>
+          <div className="shrink-0">
+            <NativeSelect
+              aria-label={`${label} unit`}
+              value={unit}
+              onChange={(e) => setUnit(e.target.value as UnitId)}
+              className="font-data w-auto"
+            >
+              {units.map((u) => (
+                <option key={u} value={u}>
+                  {UNITS[u].abbreviation}
+                </option>
+              ))}
+            </NativeSelect>
+          </div>
         ) : (
           (suffix ?? (baseUnit ? UNITS[baseUnit].abbreviation : null)) && (
-            <span className="text-muted-foreground shrink-0 text-[0.8125rem]">
+            <span className="unit-caps text-muted-foreground font-data min-w-8 shrink-0 text-[0.8125rem]">
               {suffix ?? (baseUnit ? UNITS[baseUnit].abbreviation : '')}
             </span>
           )
@@ -119,11 +121,13 @@ export function ResultValue({
   });
   const ok = value !== null && value !== undefined && Number.isFinite(value);
   return (
-    <div className="bg-secondary/50 rounded-2xl px-4 py-3">
-      <p className="text-muted-foreground text-xs">{label}</p>
-      <p data-testid={testId} className="font-rounded text-lg font-semibold tabular-nums">
+    <div className="bg-card min-w-0 rounded-md border px-3 py-2.5">
+      <p className="text-muted-foreground text-[0.75rem] leading-snug">{label}</p>
+      <p data-testid={testId} className="font-data mt-1 text-[1.25rem] leading-tight">
         {ok ? format(value) : '–'}
-        {ok && unit ? <span className="text-muted-foreground ml-1 text-sm">{unit}</span> : null}
+        {ok && unit ? (
+          <span className="unit-caps text-muted-foreground ml-1.5 text-[0.875rem]">{unit}</span>
+        ) : null}
       </p>
     </div>
   );

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Car, CloudUpload, Cog, Gauge, Waves, Wind } from 'lucide-react';
+import { Car, ChevronRight, CloudUpload, Cog, Gauge, Waves, Wind } from 'lucide-react';
 import { Button } from '@sim-tuning/ui/components/ui/button';
 import { Card } from '@sim-tuning/ui/components/ui/card';
 import { toast } from '@sim-tuning/ui/components/ui/sonner';
@@ -9,6 +9,7 @@ import { useSimData } from '@/providers/sim/sim-data-context';
 import { useLocale } from '@/providers/i18n/locale-context';
 
 import type { ModuleTab } from './pwa-shell';
+import { MODULE_META } from './shared/modules';
 
 type ModuleKey = ModuleTab;
 
@@ -28,40 +29,58 @@ export function HomeView({ onNavigate }: { onNavigate: (tab: ModuleKey) => void 
 
   return (
     <div className="space-y-6 pb-12">
-      <div>
-        <h1 className="font-display text-2xl font-bold tracking-tight sm:text-3xl">
+      <div className="space-y-1.5">
+        <h1 className="font-display text-[2rem] leading-none font-bold tracking-[0.08em] sm:text-[2.5rem]">
           {t.home.title}
         </h1>
-        <p className="text-muted-foreground text-sm">{t.home.subtitle}</p>
+        <p className="text-muted-foreground max-w-[60ch] text-[0.9375rem]">{t.home.subtitle}</p>
       </div>
 
       <GuestImportCard />
 
-      <section aria-labelledby="home-modules-title" className="space-y-3">
-        <h2 id="home-modules-title" className="text-[0.9375rem] font-semibold">
+      {/* Blattverzeichnis: the module list as a drawing index. */}
+      <section aria-labelledby="home-modules-title" className="bg-card rounded-md border">
+        <h2
+          id="home-modules-title"
+          className="font-display border-b px-4 py-2.5 text-[0.875rem] font-semibold"
+        >
           {t.home.modulesTitle}
         </h2>
-        <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {MODULES.map(({ key, icon: Icon }) => (
-            <li key={key}>
-              <button
-                type="button"
-                data-testid={`home-module-${key}`}
-                onClick={() => onNavigate(key)}
-                className="h-full w-full text-left"
-              >
-                <Card className="hover:bg-secondary/40 flex h-full flex-col gap-2 rounded-[1.25rem] p-5 transition-colors">
-                  <span className="flex items-center gap-2.5">
-                    <Icon className="text-primary h-5 w-5" />
-                    <span className="font-semibold">{t.home.modules[key].title}</span>
+        <ul className="divide-y">
+          {MODULES.map(({ key, icon: Icon }) => {
+            const meta = MODULE_META[key];
+            return (
+              <li key={key}>
+                <button
+                  type="button"
+                  data-testid={`home-module-${key}`}
+                  onClick={() => onNavigate(key)}
+                  className="group hover:bg-raised grid min-h-16 w-full grid-cols-[3rem_minmax(0,1fr)_auto] items-center gap-x-3 py-3 pr-4 text-left outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring sm:grid-cols-[3.5rem_12rem_minmax(0,1fr)_auto]"
+                >
+                  <span className="row-span-2 flex justify-center self-center sm:row-span-1">
+                    <span
+                      className={`font-data text-muted-foreground border-t-2 px-1 pt-1 text-[0.8125rem] ${meta.border}`}
+                    >
+                      {String(meta.sheet).padStart(2, '0')}
+                    </span>
                   </span>
-                  <p className="text-muted-foreground text-[0.8125rem]">
+                  <span className="flex min-w-0 items-center gap-2.5">
+                    <Icon className={`h-5 w-5 shrink-0 ${meta.text}`} aria-hidden />
+                    <span className="font-display text-[1rem] font-semibold tracking-[0.06em] uppercase">
+                      {t.home.modules[key].title}
+                    </span>
+                  </span>
+                  <span className="text-muted-foreground col-start-2 row-start-2 pt-0.5 text-[0.8125rem] sm:col-start-3 sm:row-start-1 sm:pt-0">
                     {t.home.modules[key].desc}
-                  </p>
-                </Card>
-              </button>
-            </li>
-          ))}
+                  </span>
+                  <ChevronRight
+                    className="text-muted-foreground group-hover:text-foreground col-start-3 row-span-2 row-start-1 h-4 w-4 sm:col-start-4 sm:row-span-1"
+                    aria-hidden
+                  />
+                </button>
+              </li>
+            );
+          })}
         </ul>
       </section>
     </div>
@@ -79,9 +98,9 @@ function GuestImportCard() {
     dynos: pendingGuestData.dynos.length,
   };
   return (
-    <Card data-testid="guest-import-card" className="space-y-3 rounded-[1.25rem] p-5">
+    <Card data-testid="guest-import-card" className="space-y-3 p-4">
       <h2 className="flex items-center gap-2 text-[0.9375rem] font-semibold">
-        <CloudUpload className="text-primary h-5 w-5" />
+        <CloudUpload className="text-primary h-5 w-5" aria-hidden />
         {t.home.guestImportTitle}
       </h2>
       <p className="text-muted-foreground text-[0.8125rem]">

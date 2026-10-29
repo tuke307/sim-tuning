@@ -75,7 +75,12 @@ test.describe('Auslass module (guest mode)', () => {
 
     const svg = page.getByTestId('auspuff-drawing');
     await expect(svg).toBeVisible();
-    await expect(svg).toHaveAttribute('viewBox', '0 0 2000 1000');
+    // The drawing is cropped to the chamber (plus padding) instead of the empty v2 canvas.
+    const viewBox = (await svg.getAttribute('viewBox'))!.split(' ').map(Number);
+    expect(viewBox).toHaveLength(4);
+    expect(viewBox[2]).toBeLessThan(2000);
+    expect(viewBox[3]).toBeLessThan(1000);
+    expect(viewBox[3]).toBeGreaterThan(0);
     await expect(svg).toHaveAttribute('role', 'img');
     await expect(svg.locator('[data-kind="dimension"]').first()).toHaveAttribute(
       'marker-end',
@@ -85,9 +90,12 @@ test.describe('Auslass module (guest mode)', () => {
     await expect(page.getByTestId('auspuff-part-endrohr')).toHaveText('Stinger');
     await expect(page.getByTestId('auspuff-value-LK')).toBeVisible();
 
-    await expect(page.getByTestId('auslass-anwendung-row-resonanzL')).toHaveText(/1,085\.95 mm/);
-    await expect(page.getByTestId('auslass-anwendung-row-kruemmerL')).toHaveText(/220 mm/);
-    await expect(page.getByTestId('auslass-anwendung-row-endrohrL')).toHaveText(/250 mm/);
+    // Stückliste: value and unit live in separate columns (Pos · Benennung · Wert · Einheit).
+    await expect(page.getByTestId('auslass-anwendung-row-resonanzL')).toHaveText(/^1,085\.95$/);
+    await expect(page.getByTestId('auslass-anwendung-row-resonanzL-unit')).toHaveText('mm');
+    await expect(page.getByTestId('auslass-anwendung-row-kruemmerL')).toHaveText(/^220$/);
+    await expect(page.getByTestId('auslass-anwendung-row-endrohrL')).toHaveText(/^250$/);
+    await expect(page.getByTestId('auslass-anwendung-row-endrohrL-unit')).toHaveText('mm');
 
     await page.getByTestId('auslass-anwendung-save').click();
     await expect(page.getByText('Saved', { exact: true })).toBeVisible();
@@ -97,8 +105,8 @@ test.describe('Auslass module (guest mode)', () => {
     await expect(page.getByTestId('auslass-anwendung-diffusorW1')).toBeHidden();
     await expect(page.getByTestId('auslass-anwendung-save')).toBeDisabled();
     await page.getByTestId('auslass-anwendung-calculate').click();
-    await expect(page.getByTestId('auslass-anwendung-row-diffusorL1')).toHaveText(/^0 mm$/);
-    await expect(page.getByTestId('auslass-anwendung-row-diffusorL2')).toHaveText(/^0 mm$/);
+    await expect(page.getByTestId('auslass-anwendung-row-diffusorL1')).toHaveText(/^0$/);
+    await expect(page.getByTestId('auslass-anwendung-row-diffusorL2')).toHaveText(/^0$/);
 
     // Saved values are prefilled after a reload.
     await page.reload();

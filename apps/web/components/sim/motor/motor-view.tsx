@@ -19,6 +19,7 @@ export function MotorView() {
 
   return (
     <ModulePage
+      module="motor"
       title={t.motor.title}
       subtitle={t.motor.subtitle}
       tabs={[

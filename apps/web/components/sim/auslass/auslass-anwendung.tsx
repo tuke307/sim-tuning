@@ -7,15 +7,7 @@ import { FIELD_BASE_UNITS, type UnitId } from '@sim-tuning/common/units';
 import { Button } from '@sim-tuning/ui/components/ui/button';
 import { Label } from '@sim-tuning/ui/components/ui/label';
 import { NativeSelect } from '@sim-tuning/ui/components/ui/native-select';
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@sim-tuning/ui/components/ui/table';
+import { PositionHighlightProvider, Stueckliste } from '@/components/sim/shared/drawing';
 import { Section } from '@/components/sim/shared/module-page';
 import { ResultValue, UnitNumberField } from '@/components/sim/shared/unit-number-field';
 import { AuspuffDrawing } from './auspuff-drawing';
@@ -77,10 +69,19 @@ function resultRows(result: AuspuffResult, input: AuspuffInput, gesamtL: number)
   return rows;
 }
 
+/** Code of the matching dimension label on the drawing (stage ≥ 2 numbers the diffusor cones). */
+function drawingCode(row: ResultRow, stage: number): string | undefined {
+  if (stage >= 2) {
+    if (row.key === 'diffusorL1') return 'LD1';
+    if (row.key === 'diffusorL2') return 'LD2';
+    if (row.key === 'diffusorL3') return 'LD3';
+  }
+  return row.code;
+}
+
 /** v2 `AuslassAnwendungView`: full expansion chamber calculation and drawing. */
 export function AuslassAnwendung({ vehicle }: { vehicle: VehicleDto }) {
   const { t } = useLocale();
-  const { rounding } = useSimData();
   const a = t.auslass.anwendung;
   const stageId = useId();
   const readOnly = vehicle.isSystem;
@@ -94,9 +95,6 @@ export function AuslassAnwendung({ vehicle }: { vehicle: VehicleDto }) {
   const outcome = calc?.outcome ?? null;
   const stale = calc !== null && calc.draftJson !== draftJson;
   const ok = outcome?.status === 'ok' ? outcome : null;
-  const fmt = new Intl.NumberFormat(undefined, {
-    maximumFractionDigits: rounding.roundingAccuracy,
-  });
 
   const field = (
     key: Exclude<keyof AnwendungDraft, 'diffusorStage'>,
@@ -209,55 +207,7 @@ export function AuslassAnwendung({ vehicle }: { vehicle: VehicleDto }) {
           {ok && stale && <p className="text-muted-foreground">{a.stale}</p>}
         </div>
 
-        {ok && (
-          <div className={stale ? 'space-y-4 opacity-60' : 'space-y-4'}>
-            <div className="grid gap-3 sm:grid-cols-2">
-              <ResultValue
-                label={a.rows.resonanzL}
-                value={ok.result.resonanzL}
-                unit="mm"
-                testId="auslass-anwendung-resonanzL"
-              />
-              <ResultValue
-                label={a.rows.gesamtL}
-                value={ok.gesamtL}
-                unit="mm"
-                testId="auslass-anwendung-gesamtL"
-              />
-            </div>
-            <AuspuffDrawing geometry={ok.geometry} />
-            <div className="overflow-x-auto">
-              <Table data-testid="auslass-anwendung-results">
-                <TableCaption className="sr-only">{a.resultTable}</TableCaption>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead scope="col">{a.colPart}</TableHead>
-                    <TableHead scope="col">{a.colCode}</TableHead>
-                    <TableHead scope="col" className="text-right">
-                      {a.colValue}
-                    </TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {resultRows(ok.result, ok.input, ok.gesamtL).map((row) => (
-                    <TableRow key={row.key}>
-                      <TableHead scope="row" className="font-normal">
-                        {a.rows[row.key]}
-                      </TableHead>
-                      <TableCell className="text-muted-foreground">{row.code ?? '–'}</TableCell>
-                      <TableCell
-                        className="text-right tabular-nums"
-                        data-testid={`auslass-anwendung-row-${row.key}`}
-                      >
-                        {fmt.format(row.value)} mm
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          </div>
-        )}
+        {ok && <AnwendungResult outcome={ok} stale={stale} />}
 
         <SaveMotorButton
           buildUpdate={(name) =>
@@ -268,5 +218,63 @@ export function AuslassAnwendung({ vehicle }: { vehicle: VehicleDto }) {
         />
       </Section>
     </div>
+  );
+}
+
+/** Result block: key lengths, the dimensioned drawing and the Stückliste, linked by callouts. */
+function AnwendungResult({
+  outcome: ok,
+  stale,
+}: {
+  outcome: Extract<AnwendungOutcome, { status: 'ok' }>;
+  stale: boolean;
+}) {
+  const { t } = useLocale();
+  const { rounding } = useSimData();
+  const a = t.auslass.anwendung;
+  const fmt = new Intl.NumberFormat(undefined, {
+    maximumFractionDigits: rounding.roundingAccuracy,
+  });
+  const rows = resultRows(ok.result, ok.input, ok.gesamtL);
+  const positions: Record<string, number> = {};
+  rows.forEach((row, i) => {
+    const code = drawingCode(row, ok.input.auspuff.diffusorStage);
+    if (code) positions[code] = i + 1;
+  });
+  return (
+    <PositionHighlightProvider>
+      <div className={stale ? 'space-y-4 opacity-60' : 'space-y-4'}>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <ResultValue
+            label={a.rows.resonanzL}
+            value={ok.result.resonanzL}
+            unit="mm"
+            testId="auslass-anwendung-resonanzL"
+          />
+          <ResultValue
+            label={a.rows.gesamtL}
+            value={ok.gesamtL}
+            unit="mm"
+            testId="auslass-anwendung-gesamtL"
+          />
+        </div>
+        <AuspuffDrawing geometry={ok.geometry} positions={positions} />
+        <Stueckliste
+          caption={a.resultTable}
+          testId="auslass-anwendung-results"
+          rows={rows.map((row, i) => ({
+            key: row.key,
+            pos: i + 1,
+            label: a.rows[row.key],
+            code: row.code,
+            value: fmt.format(row.value),
+            unit: 'mm',
+            rowTestId: `auslass-anwendung-pos-${row.key}`,
+            valueTestId: `auslass-anwendung-row-${row.key}`,
+            unitTestId: `auslass-anwendung-row-${row.key}-unit`,
+          }))}
+        />
+      </div>
+    </PositionHighlightProvider>
   );
 }

@@ -27,13 +27,14 @@ import { DynoNotice, type NoticeMessage } from './dyno-notice';
 import { useAudioRecorder } from './use-audio-recorder';
 import { useGpsRun, type GpsError } from './use-gps-run';
 
+/** Run phases: a 2px top rule in a state colour; the phase name is always spelled out too. */
 const PHASE_STYLES: Record<RunPhase, string> = {
-  pre: 'bg-secondary',
-  countdownAcceleration: 'bg-amber-500/20',
-  acceleration: 'bg-emerald-600/25',
-  countdownRollout: 'bg-amber-500/20',
-  rollout: 'bg-sky-500/25',
-  done: 'bg-secondary',
+  pre: 'bg-border',
+  countdownAcceleration: 'bg-warning',
+  acceleration: 'bg-success',
+  countdownRollout: 'bg-warning',
+  rollout: 'bg-mod-einlass',
+  done: 'bg-border',
 };
 
 interface DynoRuntimeTabProps {
@@ -149,27 +150,22 @@ export function DynoRuntimeTab({
         <div
           data-testid="dyno-run-state"
           data-phase={phase}
-          className={cn(
-            'flex flex-col items-center gap-2 rounded-2xl px-4 py-8 text-center transition-colors',
-            PHASE_STYLES[phase],
-          )}
+          className="bg-raised relative flex flex-col items-center gap-2 overflow-hidden rounded-md border px-4 py-8 text-center"
         >
-          <p className="text-lg font-semibold">{r.phase[phase]}</p>
+          <span aria-hidden className={cn('absolute inset-x-0 top-0 h-0.5', PHASE_STYLES[phase])} />
+          <p className="font-display text-lg font-semibold tracking-[0.06em] uppercase">
+            {r.phase[phase]}
+          </p>
           {isCountdown && (
-            <p className="font-rounded text-5xl font-bold tabular-nums" aria-live="polite">
+            <p className="font-data text-5xl" aria-live="polite">
               {Math.ceil(run.state.countdownMs / 1000)}
             </p>
           )}
           {isMeasuring && (
-            <p className="font-rounded text-4xl font-bold tabular-nums">
-              {formatStopwatch(run.state.elapsedMs)}
-            </p>
+            <p className="font-data text-4xl">{formatStopwatch(run.state.elapsedMs)}</p>
           )}
           <p className="text-muted-foreground text-sm">
-            {r.speed}:{' '}
-            <span className="text-foreground font-semibold tabular-nums">
-              {speedKmh.toFixed(1)} km/h
-            </span>
+            {r.speed}: <span className="text-foreground font-data">{speedKmh.toFixed(1)} km/h</span>
           </p>
           <p className="text-muted-foreground text-xs">
             {fillTemplate(r.samples, {
@@ -301,7 +297,7 @@ function RunChart({
     {
       key: 'speed',
       name: title,
-      color: coastDown ? '#0ea5e9' : '#16a34a',
+      color: coastDown ? 'var(--chart-2)' : 'var(--chart-4)',
       points: points.map((p) => ({ x: p.t, y: p.speed * MS_TO_KMH })),
     },
   ];

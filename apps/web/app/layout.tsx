@@ -12,10 +12,8 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   viewportFit: 'cover',
-  themeColor: [
-    { media: '(prefers-color-scheme: dark)', color: '#000000' },
-    { media: '(prefers-color-scheme: light)', color: '#F2F2F7' },
-  ],
+  // Dark ("drafting table at night") is the default theme regardless of the system setting.
+  themeColor: '#111614',
 };
 
 export const metadata: Metadata = {
@@ -28,7 +26,7 @@ export const metadata: Metadata = {
   applicationName: 'SimTuning',
   appleWebApp: {
     capable: true,
-    statusBarStyle: 'default',
+    statusBarStyle: 'black',
     title: 'SimTuning',
   },
   formatDetection: {
