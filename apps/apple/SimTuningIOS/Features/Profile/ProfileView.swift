@@ -15,6 +15,18 @@ struct ProfileView: View {
         @Bindable var model = model
         NavigationStack {
             List {
+                Section {
+                    VStack(spacing: Theme.Spacing.s) {
+                        BrandLogo(size: 112)
+                        Text(verbatim: "SimTuning")
+                            .font(.stHeading(.title3, weight: .bold))
+                            .foregroundStyle(Theme.foreground)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, Theme.Spacing.m)
+                    .accessibilityElement(children: .combine)
+                }
+                .listRowBackground(Color.clear)
                 Group {
                     if model.isSignedIn {
                         Section("Konto") {

@@ -1,0 +1,29 @@
+<!-- SimTuning logo (vector recreation of docs/logo.svg). Source of truth for all brand rasters: run scripts/generate-brand-assets.swift. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="160" height="160">
+<title>SimTuning</title>
+<defs>
+<radialGradient id="teal" cx="42%" cy="48%" r="58%">
+<stop offset="0" stop-color="#2EC6CF"/>
+<stop offset="0.6" stop-color="#29ABB4"/>
+<stop offset="1" stop-color="#22888F"/>
+</radialGradient>
+</defs>
+<circle cx="512" cy="512" r="500" fill="url(#teal)"/>
+<g fill="#000" stroke="#000">
+<path d="M752 275C700 258 640 244 575 242C520 240 470 262 470 300C470 340 540 352 610 372C700 398 782 432 782 510C782 640 640 688 505 685C410 683 320 655 270 618L255 585C330 583 430 580 470 568C510 556 528 538 528 515C528 480 470 462 400 440C300 410 245 380 245 300C245 230 380 168 505 168C590 168 660 185 720 213Z"/>
+<g fill="none" stroke-width="17" stroke-linecap="round">
+<path d="M130 268Q60 430 133 590"/>
+<path d="M207 205Q100 418 213 632"/>
+<path d="M855 268Q925 430 855 590"/>
+<path d="M773 212Q885 425 780 640"/>
+</g>
+<g fill="none" stroke-width="24" stroke-linecap="round" stroke-linejoin="round">
+<path d="M249 754H313M281 754V873"/>
+<path d="M356 754V838Q356 873 382 873Q408 873 408 838V754"/>
+<path d="M461 873V754L509 873V754"/>
+<path d="M565 754V873"/>
+<path d="M617 873V754L665 873V754"/>
+<path d="M769 770Q764 754 743 754Q717 754 717 780V847Q717 873 743 873Q769 873 769 847V820H747"/>
+</g>
+</g>
+</svg>

@@ -3,6 +3,7 @@
 import React, { useState, useSyncExternalStore } from 'react';
 import { Car, CloudOff, Cog, Gauge, UserRound, Waves, Wind } from 'lucide-react';
 import { Button } from '@sim-tuning/ui/components/ui/button';
+import BrandLogo from '@/components/brand/BrandLogo';
 import { useAuth } from '@/providers/auth/auth-context';
 import { useLocale } from '@/providers/i18n/locale-context';
 import { SimDataProvider } from '@/providers/sim/sim-data-context';
@@ -79,8 +80,9 @@ function Shell() {
             variant="ghost"
             onClick={() => setActiveTab('home')}
             aria-label={t.a11y.homeButton}
-            className="font-display h-auto shrink-0 self-center px-1 text-[1.125rem] font-bold tracking-[0.12em] uppercase hover:bg-transparent"
+            className="font-display h-auto shrink-0 gap-2 self-center px-1 text-[1.125rem] font-bold tracking-[0.12em] uppercase hover:bg-transparent"
           >
+            <BrandLogo variant="mark" size={28} decorative />
             SimTuning
           </Button>
 

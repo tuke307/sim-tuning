@@ -2,7 +2,8 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Gauge, Mail, CheckCircle2, ArrowLeft } from 'lucide-react';
+import { Mail, CheckCircle2, ArrowLeft } from 'lucide-react';
+import BrandLogo from '@/components/brand/BrandLogo';
 import { Button } from '@sim-tuning/ui/components/ui/button';
 import { Card } from '@sim-tuning/ui/components/ui/card';
 import { Input } from '@sim-tuning/ui/components/ui/input';
@@ -43,9 +44,7 @@ export default function ForgotPasswordPage() {
       <Card className="w-full max-w-md space-y-6 rounded-md p-6 sm:p-8">
         <div className="flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5">
-            <div className="border-primary text-primary flex h-10 w-10 items-center justify-center rounded-md border">
-              <Gauge className="h-5 w-5" />
-            </div>
+            <BrandLogo variant="mark" size={40} decorative />
             <div>
               <span className="font-display block text-[1.125rem] font-bold tracking-[0.12em] uppercase">
                 SimTuning

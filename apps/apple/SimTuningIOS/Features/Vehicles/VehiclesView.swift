@@ -33,6 +33,9 @@ struct VehiclesView: View {
             .refreshable { await model.reload() }
             .navigationTitle("Fahrzeuge")
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    BrandLogo(variant: .mark, size: 30)
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Fahrzeug anlegen", systemImage: "plus") { creating = true }
                         .accessibilityIdentifier("vehicles.add")
