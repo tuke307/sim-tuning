@@ -35,7 +35,7 @@ export default function ChangePasswordPage() {
 
   return (
     <div className="bg-background flex min-h-dvh items-center justify-center p-4">
-      <Card className="w-full max-w-sm rounded-3xl p-6">
+      <Card className="w-full max-w-sm rounded-md p-6">
         <form onSubmit={handleSubmit} className="space-y-4">
           <h1 className="font-display text-xl font-bold">{t.auth.changePasswordTitle}</h1>
           <div className="space-y-1.5">

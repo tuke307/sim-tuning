@@ -27,14 +27,14 @@ export function DynoNotice({
       role={message.kind === 'error' ? 'alert' : 'status'}
       data-testid={testId}
       className={cn(
-        'flex items-start gap-2 rounded-2xl px-3 py-2 text-[0.8125rem]',
-        message.kind === 'success' && 'bg-primary/12 text-primary',
-        message.kind === 'error' && 'bg-destructive/12 text-destructive',
-        message.kind === 'info' && 'bg-secondary text-foreground',
+        'flex items-start gap-2 rounded-md border px-3 py-2 text-[0.8125rem]',
+        message.kind === 'success' && 'border-success/60 text-foreground [&>svg]:text-success',
+        message.kind === 'error' && 'border-destructive/70 text-destructive',
+        message.kind === 'info' && 'bg-card text-foreground',
         className,
       )}
     >
-      <Icon className="mt-0.5 h-4 w-4 shrink-0" />
+      <Icon className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
       <span>{message.text}</span>
     </p>
   );

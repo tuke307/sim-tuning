@@ -14,4 +14,13 @@ export const deSim: TranslationDictionary['sim'] = {
   results: 'Ergebnisse',
   inputs: 'Eingaben',
   errorGeneric: 'Etwas ist schiefgelaufen. Bitte versuche es erneut.',
+  titleBlock: 'Schriftfeld',
+  sheet: 'Blatt',
+  engine: 'Motor',
+  date: 'Datum',
+  partsList: 'Stückliste',
+  pos: 'Pos.',
+  designation: 'Benennung',
+  value: 'Wert',
+  unit: 'Einheit',
 };

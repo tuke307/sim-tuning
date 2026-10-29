@@ -173,7 +173,7 @@ export function VehicleEditor({ vehicle }: { vehicle: VehicleDto }) {
       }}
     >
       <ReadOnlyBanner />
-      <div className="bg-card flex flex-wrap items-center gap-2 rounded-[1.25rem] border p-3">
+      <div className="bg-card flex flex-wrap items-center gap-2 rounded-md border p-3">
         {!readOnly && (
           <>
             <Button type="submit" size="sm" disabled={!dirty || !!error || status === 'saving'}>

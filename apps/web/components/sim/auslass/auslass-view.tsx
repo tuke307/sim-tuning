@@ -17,6 +17,7 @@ export function AuslassView() {
 
   return (
     <ModulePage
+      module="auslass"
       title={t.auslass.title}
       subtitle={t.auslass.subtitle}
       tabs={[
