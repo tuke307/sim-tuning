@@ -3,12 +3,9 @@
 import { useCallback, useEffect, useReducer, useState } from 'react';
 import { toGpsSample } from '@/lib/sim/dyno/gps';
 import { initialRunState, isTracking, runReducer } from '@/lib/sim/dyno/runtime';
+import { useWakeLock } from './use-wake-lock';
 
 export type GpsError = 'denied' | 'unavailable' | 'timeout' | 'unsupported' | 'insecure';
-
-interface WakeLockLike {
-  release(): Promise<void>;
-}
 
 /**
  * GPS run state (v2 `DynoRuntimeViewModel`): watches `navigator.geolocation` with high accuracy
@@ -54,30 +51,7 @@ export function useGpsRun() {
     return () => window.clearInterval(id);
   }, [tracking]);
 
-  useEffect(() => {
-    if (!tracking) return;
-    const wakeLock = (
-      navigator as Navigator & {
-        wakeLock?: { request(type: 'screen'): Promise<WakeLockLike> };
-      }
-    ).wakeLock;
-    if (!wakeLock) return;
-    let lock: WakeLockLike | null = null;
-    let released = false;
-    wakeLock
-      .request('screen')
-      .then((acquired) => {
-        if (released) void acquired.release();
-        else lock = acquired;
-      })
-      .catch(() => {
-        // Wake lock is best effort (e.g. denied on low battery).
-      });
-    return () => {
-      released = true;
-      void lock?.release().catch(() => {});
-    };
-  }, [tracking]);
+  useWakeLock(tracking);
 
   const start = useCallback(() => {
     setGpsError(null);

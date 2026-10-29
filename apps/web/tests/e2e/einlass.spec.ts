@@ -7,7 +7,7 @@ async function openEditableEinlass(page: Page): Promise<void> {
   await navigateToTab(page, 'einlass');
   await expect(page.getByRole('heading', { name: 'Intake', exact: true })).toBeVisible();
   await expect(page.getByTestId('read-only-banner')).toBeVisible();
-  await expect(page.getByTestId('einlass-kanal-save')).toBeDisabled();
+  await expect(page.getByTestId('einlass-kanal-save')).toHaveText('Save as my vehicle');
   await page.getByRole('button', { name: 'Duplicate to edit' }).click();
   await expect(page.getByTestId('read-only-banner')).toBeHidden();
 }

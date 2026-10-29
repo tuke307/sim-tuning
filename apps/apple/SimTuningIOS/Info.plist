@@ -30,9 +30,9 @@
     <key>SIMTUNING_API_BASE_URL</key>
     <string>$(SIMTUNING_API_BASE_URL)</string>
     <key>NSMicrophoneUsageDescription</key>
-    <string>SimTuning nimmt das Motorgeräusch auf, um daraus die Drehzahlkurve für den Audio-Dyno zu berechnen. Die Aufnahme wird nur auf dem Gerät ausgewertet.</string>
+    <string>SimTuning nimmt das Motorgeräusch auf, um daraus die Drehzahlkurve für den Audio-Dyno zu berechnen. Die Aufnahme wird nur auf diesem Gerät ausgewertet und verlässt es nie.</string>
     <key>NSLocationWhenInUseUsageDescription</key>
-    <string>SimTuning zeichnet während einer Messfahrt Geschwindigkeit und Position auf, um Beschleunigung und Ausrollen für den Dyno auszuwerten.</string>
+    <string>SimTuning zeichnet nur während einer Messfahrt Geschwindigkeit und Position auf, um Beschleunigung und Ausrollen für den Dyno auszuwerten.</string>
     <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
     <string>Nur wenn du es in der Messfahrt aktivierst, zeichnet SimTuning auch bei gesperrtem Bildschirm weiter auf.</string>
     <key>UIBackgroundModes</key>

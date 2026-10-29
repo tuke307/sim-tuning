@@ -54,11 +54,9 @@ test.describe('PWA Shell, Navigation & Preferences', () => {
     await rounding.selectOption('4');
     await expect(rounding).toHaveValue('4');
 
-    const roundTabs = page.getByTestId('profile-round-on-unit-change-tabs');
-    await roundTabs.getByRole('tab', { name: 'Off' }).click();
-    await expect(roundTabs.getByRole('tab', { name: 'Off' })).toHaveAttribute(
-      'data-state',
-      'active',
-    );
+    const roundSwitch = page.getByRole('switch', { name: 'Round on unit change' });
+    await expect(page.getByTestId('profile-round-on-unit-change-tabs')).toBeChecked();
+    await roundSwitch.click();
+    await expect(roundSwitch).not.toBeChecked();
   });
 });

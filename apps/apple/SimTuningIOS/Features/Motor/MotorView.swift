@@ -40,10 +40,14 @@ struct MotorView: View {
 
 struct HubraumCalculatorView: View {
     @Environment(AppModel.self) private var model
-    @State private var hubraumCm3: Double?
-    @State private var hubMm: Double?
-    @State private var einbauspiel: Double? = 3
-    @State private var drehzahl: Double?
+    @Draft(.hubraum, "hubraumCm3") private var hubraumCm3
+    @Draft(.hubraum, "hubMm") private var hubMm
+    /// Piston clearance in mm (as on the web); `getKolbenDurchmesser` expects 1/100 mm.
+    @Draft(.hubraum, "einbauspielMm", default: Self.defaultEinbauspielMm) private var einbauspiel
+    @Draft(.hubraum, "drehzahl") private var drehzahl
+
+    /// Default piston clearance (Einbauspiel) from v2: 0.03 mm.
+    static let defaultEinbauspielMm = 0.03
 
     /// v2 `MotorHubraumViewModel`: d = f(Vh in cm³, h in cm) → cm.
     private var bohrungMm: Double? {
@@ -56,13 +60,14 @@ struct HubraumCalculatorView: View {
             Section("Eingaben") {
                 NumberField("Hubraum", value: $hubraumCm3, unit: "cm³", identifier: "hubraum.hubraum")
                 NumberField("Hub", value: $hubMm, unit: "mm", identifier: "hubraum.hub")
-                NumberField("Einbauspiel", value: $einbauspiel, unit: "¹⁄₁₀₀ mm")
+                NumberField("Einbauspiel", value: $einbauspiel, unit: "mm", identifier: "hubraum.einbauspiel")
                 NumberField("Drehzahl", value: $drehzahl, unit: "U/min")
             }
             Section("Ergebnis") {
                 ResultRow(title: "Bohrung", value: model.format(bohrungMm, unit: "mm"), identifier: "hubraum.bohrung")
                 ResultRow(title: "Kolbendurchmesser", value: model.format(bohrungMm.map {
-                    EngineLogic.getKolbenDurchmesser(bohrungsdurchmesser: $0, einbauspiel: einbauspiel ?? 0)
+                    EngineLogic.getKolbenDurchmesser(bohrungsdurchmesser: $0,
+                                                     einbauspiel: (einbauspiel ?? Self.defaultEinbauspielMm) * 100)
                 }, unit: "mm"))
                 if let hubMm, let drehzahl {
                     ResultRow(title: "Mittlere Kolbengeschwindigkeit", value: model.format(
@@ -78,10 +83,10 @@ struct HubraumCalculatorView: View {
                     ResultRow(title: "4. Übermaß", value: model.format(grinding.diameter4, unit: "mm"))
                 }
             }
-            VehicleActionsSection(apply: apply, save: save)
+            VehicleActionsSection(calculator: .hubraum, apply: apply, save: save)
         }
-        .moduleChrome("Hubraum")
-        .onAppear { if hubraumCm3 == nil { apply() } }
+        .calculatorChrome("Hubraum")
+        .calculatorDraft(.hubraum, seed: apply)
     }
 
     private func apply() {
@@ -99,7 +104,7 @@ struct HubraumCalculatorView: View {
         if let hubMm, let drehzahl {
             motor.kolbenG = .some(EngineLogic.getKolbenGeschwindigkeit(hub: hubMm / 1000, drehzahl: drehzahl))
         }
-        Task { await model.saveToSelectedVehicle(VehicleInputDto(motor: motor)) }
+        Task { await model.saveToSelectedVehicle(VehicleInputDto(motor: motor), from: .hubraum) }
     }
 }
 
@@ -107,10 +112,10 @@ struct HubraumCalculatorView: View {
 
 struct VerdichtungCalculatorView: View {
     @Environment(AppModel.self) private var model
-    @State private var hubraumCm3: Double?
-    @State private var brennraumCm3: Double?
-    @State private var bohrungMm: Double?
-    @State private var zielVerdichtung: Double?
+    @Draft(.verdichtung, "hubraumCm3") private var hubraumCm3
+    @Draft(.verdichtung, "brennraumCm3") private var brennraumCm3
+    @Draft(.verdichtung, "bohrungMm") private var bohrungMm
+    @Draft(.verdichtung, "zielVerdichtung") private var zielVerdichtung
 
     private var verdichtung: Double? {
         guard let hubraumCm3, let brennraumCm3, brennraumCm3 > 0 else { return nil }
@@ -145,9 +150,10 @@ struct VerdichtungCalculatorView: View {
             } footer: {
                 Text("Negative Werte bedeuten, dass der Brennraum vergrößert werden muss.")
             }
-            VehicleActionsSection(apply: apply, save: save)
+            VehicleActionsSection(calculator: .verdichtung, apply: apply, save: save)
         }
-        .moduleChrome("Verdichtung")
+        .calculatorChrome("Verdichtung")
+        .calculatorDraft(.verdichtung, seed: apply)
     }
 
     private func apply() {
@@ -161,7 +167,7 @@ struct VerdichtungCalculatorView: View {
         var motor = MotorInputDto()
         motor.brennraumV = .some(brennraumCm3.map { $0 * 1000 })
         motor.verdichtungV = .some(verdichtung)
-        Task { await model.saveToSelectedVehicle(VehicleInputDto(motor: motor)) }
+        Task { await model.saveToSelectedVehicle(VehicleInputDto(motor: motor), from: .verdichtung) }
     }
 }
 
@@ -169,13 +175,23 @@ struct VerdichtungCalculatorView: View {
 
 struct UmrechnungView: View {
     @Environment(AppModel.self) private var model
-    @State private var hubMm: Double?
-    @State private var pleulMm: Double?
-    @State private var deachsierungMm: Double? = 0
-    @State private var vorher: Double?
-    @State private var nachher: Double?
-    @State private var edge: Edge = .unterkante
-    @State private var kwGrad: Double?
+    @Draft(.umrechnung, "hubMm") private var hubMm
+    @Draft(.umrechnung, "pleulMm") private var pleulMm
+    @Draft(.umrechnung, "deachsierungMm", default: 0) private var deachsierungMm
+    @Draft(.umrechnung, "vorher") private var vorher
+    @Draft(.umrechnung, "nachher") private var nachher
+    /// Steuerkante as a draft number: 0 = Oberkante, 1 = Unterkante.
+    @Draft(.umrechnung, "edge", default: 1) private var edgeValue
+    @Draft(.umrechnung, "kwGrad") private var kwGrad
+
+    private var edge: Edge {
+        get { edgeValue == 0 ? .oberkante : .unterkante }
+        nonmutating set { edgeValue = newValue == .oberkante ? 0 : 1 }
+    }
+
+    private var edgeBinding: Binding<Edge> {
+        Binding(get: { edge }, set: { edge = $0 })
+    }
 
     enum Edge: String, CaseIterable, Identifiable {
         case oberkante, unterkante
@@ -204,7 +220,7 @@ struct UmrechnungView: View {
             Section("Steuerzeit ändern") {
                 NumberField("Steuerzeit vorher", value: $vorher, unit: "°KW")
                 NumberField("Steuerzeit nachher", value: $nachher, unit: "°KW")
-                Picker("Steuerkante", selection: $edge) {
+                Picker("Steuerkante", selection: edgeBinding) {
                     ForEach(Edge.allCases) { Text($0.title).tag($0) }
                 }
                 if let vorher, let nachher {
@@ -234,10 +250,10 @@ struct UmrechnungView: View {
                                                     deachsierung: deachsierungMm ?? 0, kwgrad: kwGrad), unit: "mm"))
                 }
             }
-            VehicleActionsSection(apply: apply, save: nil)
+            VehicleActionsSection(calculator: .umrechnung, apply: apply, save: nil)
         }
-        .moduleChrome("Umrechnung")
-        .onAppear { if hubMm == nil { apply() } }
+        .calculatorChrome("Umrechnung")
+        .calculatorDraft(.umrechnung, seed: apply)
     }
 
     private func apply() {

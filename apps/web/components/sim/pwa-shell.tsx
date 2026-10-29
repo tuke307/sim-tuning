@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useSyncExternalStore } from 'react';
+import React, { useCallback, useEffect, useSyncExternalStore } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Car, CloudOff, Cog, Gauge, UserRound, Waves, Wind } from 'lucide-react';
 import { Button } from '@sim-tuning/ui/components/ui/button';
 import BrandLogo from '@/components/brand/BrandLogo';
@@ -15,6 +16,9 @@ import { EinlassView } from './einlass/einlass-view';
 import { AuslassView } from './auslass/auslass-view';
 import { DynoView } from './dyno/dyno-view';
 import { MODULE_META, type SimModule } from './shared/modules';
+import { confirmLeave } from '@/lib/navigation/leave-guard';
+import { NAV_SUBTAB_PARAM, NAV_VIEW_PARAM } from '@/lib/navigation/nav-state';
+import { navViewHref, parseNavView } from './home/nav-view';
 
 export type ModuleTab = 'vehicles' | 'motor' | 'einlass' | 'auslass' | 'dyno';
 export type NavTab = 'home' | ModuleTab | 'profile';
@@ -37,9 +41,32 @@ export function PwaShell() {
 }
 
 function Shell() {
-  const [activeTab, setActiveTab] = useState<NavTab>('home');
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const activeTab = parseNavView(searchParams.get(NAV_VIEW_PARAM));
   const { isAuthenticated, user } = useAuth();
-  const { t } = useLocale();
+  const { t, format } = useLocale();
+
+  // Every top-level navigation is a history entry (back/forward, reload and links restore it) and
+  // waits for the unsaved-changes guard. Re-selecting the current view only resets its sub-tab.
+  const setActiveTab = useCallback(
+    (next: NavTab) => {
+      const params = new URLSearchParams(window.location.search);
+      const sameView = parseNavView(params.get(NAV_VIEW_PARAM)) === next;
+      if (sameView && !params.has(NAV_SUBTAB_PARAM)) return;
+      void confirmLeave().then((ok) => {
+        if (!ok) return;
+        if (sameView) router.replace(navViewHref(next), { scroll: false });
+        else router.push(navViewHref(next), { scroll: false });
+      });
+    },
+    [router],
+  );
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [activeTab]);
+
   const isOnline = useSyncExternalStore(
     subscribeOnline,
     () => navigator.onLine,
@@ -57,6 +84,19 @@ function Shell() {
     { id: 'auslass', label: t.auslass.title, icon: Waves },
     { id: 'dyno', label: t.dyno.title, icon: Gauge },
   ];
+
+  const viewLabel =
+    activeTab === 'home'
+      ? null
+      : activeTab === 'profile'
+        ? t.nav.profile
+        : navItems.find((item) => item.id === activeTab)?.label;
+
+  useEffect(() => {
+    document.title = viewLabel
+      ? format(t.nav.documentTitle, { view: viewLabel })
+      : `SimTuning · ${t.nav.tagline}`;
+  }, [viewLabel, format, t.nav.documentTitle, t.nav.tagline]);
 
   const syncStatusText = !isOnline
     ? `${t.shell.offline}. ${t.shell.offlineReady}`

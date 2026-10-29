@@ -30,6 +30,7 @@ import {
 import { Input } from '@sim-tuning/ui/components/ui/input';
 import { Label } from '@sim-tuning/ui/components/ui/label';
 import { NativeSelect } from '@sim-tuning/ui/components/ui/native-select';
+import { Switch } from '@sim-tuning/ui/components/ui/switch';
 import { Tabs, TabsList, TabsTrigger } from '@sim-tuning/ui/components/ui/tabs';
 import { useAuth } from '@/providers/auth/auth-context';
 import { useLocale } from '@/providers/i18n/locale-context';
@@ -39,7 +40,7 @@ import {
   subscribeAnalyticsOptOut,
 } from '@/lib/analytics/opt-out';
 import { type LanguagePreference } from '@sim-tuning/common/enums';
-import { ROUNDING_ACCURACY } from '@sim-tuning/common/schemas';
+import { PASSWORD_RULES, ROUNDING_ACCURACY } from '@sim-tuning/common/schemas';
 
 export function SettingsView() {
   const {
@@ -52,6 +53,7 @@ export function SettingsView() {
     logout,
     updatePreferences,
     error: authError,
+    errorCode: authErrorCode,
     infoMessage: authInfoMessage,
     loading: authLoading,
   } = useAuth();
@@ -70,6 +72,7 @@ export function SettingsView() {
     isAnalyticsOptedOut,
     () => false,
   );
+  const roundOnUnitChange = user?.preferences?.roundOnUnitChange ?? true;
 
   return (
     <div className="space-y-6 pb-12">
@@ -77,7 +80,7 @@ export function SettingsView() {
         <h1 className="font-display text-2xl font-bold tracking-tight sm:text-3xl">
           {t.profile.title}
         </h1>
-        <p className="text-muted-foreground text-sm">{t.profile.subtitle}</p>
+        <p className="text-muted-foreground text-[0.9375rem]">{t.profile.subtitle}</p>
       </div>
 
       {/* Account & Preferences Grid */}
@@ -97,10 +100,10 @@ export function SettingsView() {
           </div>
 
           {user && (
-            <div className="bg-raised rounded-md p-3.5 text-xs">
-              <p className="text-sm font-bold">{user.name || 'Tuner'}</p>
+            <div className="bg-raised rounded-md p-3.5 text-[0.9375rem]">
+              <p className="font-bold">{user.name || 'Tuner'}</p>
               <p className="text-muted-foreground">{user.email}</p>
-              <p className="text-muted-foreground mt-1 text-xs">
+              <p className="text-muted-foreground mt-1 text-[0.8125rem]">
                 {authMode === 'AUTHENTICATED' ? t.profile.authenticatedDesc : t.profile.guestDesc}
               </p>
             </div>
@@ -109,7 +112,7 @@ export function SettingsView() {
           {authMode === 'AUTHENTICATED' ? (
             <div className="space-y-3">
               {authInfoMessage && (
-                <div className="border-primary/50 bg-primary/8 text-foreground flex items-start gap-2 rounded-md border p-3 text-xs">
+                <div className="border-primary/50 bg-primary/8 text-foreground flex items-start gap-2 rounded-md border p-3 text-[0.9375rem]">
                   <MailCheck className="mt-0.5 h-4 w-4 shrink-0" />
                   <span>{authInfoMessage}</span>
                 </div>
@@ -124,10 +127,26 @@ export function SettingsView() {
                   type="button"
                   variant="secondary"
                   onClick={() => void logout()}
-                  className="hover:bg-destructive/20 hover:text-destructive w-fit"
+                  className="w-fit"
                 >
                   <LogOut className="h-4 w-4" /> {t.profile.signOutBtn}
                 </Button>
+              </div>
+
+              {/* Destructive action isolated at the bottom of the card. */}
+              <section
+                aria-labelledby="profile-danger-zone-title"
+                className="border-destructive/40 mt-6 space-y-2 border-t pt-4"
+              >
+                <h3
+                  id="profile-danger-zone-title"
+                  className="font-display text-destructive text-[0.9375rem] font-semibold"
+                >
+                  {t.profile.dangerZoneTitle}
+                </h3>
+                <p className="text-muted-foreground text-[0.8125rem]">
+                  {t.profile.deleteAccountSub}
+                </p>
                 <Button
                   type="button"
                   variant="destructive"
@@ -140,7 +159,7 @@ export function SettingsView() {
                 >
                   <Trash2 className="h-4 w-4" /> {t.profile.deleteAccountBtn}
                 </Button>
-              </div>
+              </section>
             </div>
           ) : (
             <form
@@ -165,35 +184,66 @@ export function SettingsView() {
               </Tabs>
 
               {authTab === 'register' && (
-                <Input
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder={t.profile.yourNamePlaceholder}
-                  className="text-xs"
-                />
+                <div className="space-y-1.5">
+                  <Label htmlFor="profile-auth-name" className="text-[0.8125rem] font-semibold">
+                    {t.auth.nameLabel}
+                  </Label>
+                  <Input
+                    id="profile-auth-name"
+                    name="name"
+                    autoComplete="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </div>
               )}
-              <Input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder={t.profile.emailPlaceholder}
-                className="text-xs"
-              />
-              <Input
-                type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder={t.profile.passwordPlaceholder}
-                className="text-xs"
-              />
+              <div className="space-y-1.5">
+                <Label htmlFor="profile-auth-email" className="text-[0.8125rem] font-semibold">
+                  {t.auth.emailLabel}
+                </Label>
+                <Input
+                  id="profile-auth-email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  inputMode="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="profile-auth-password" className="text-[0.8125rem] font-semibold">
+                  {t.auth.passwordLabel}
+                </Label>
+                <Input
+                  id="profile-auth-password"
+                  name="password"
+                  type="password"
+                  autoComplete={authTab === 'login' ? 'current-password' : 'new-password'}
+                  required
+                  minLength={authTab === 'register' ? PASSWORD_RULES.minLength : undefined}
+                  aria-describedby={
+                    authTab === 'register' ? 'profile-auth-password-hint' : undefined
+                  }
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                {authTab === 'register' && (
+                  <p
+                    id="profile-auth-password-hint"
+                    className="text-muted-foreground text-[0.8125rem]"
+                  >
+                    {t.auth.passwordMinHint}
+                  </p>
+                )}
+              </div>
 
               {authTab === 'login' && (
                 <div className="flex justify-end">
                   <Link
                     href="/forgot-password"
-                    className="text-primary text-xs font-semibold hover:underline"
+                    className="text-primary text-[0.8125rem] font-semibold hover:underline"
                   >
                     {t.profile.forgotPasswordLink}
                   </Link>
@@ -201,7 +251,7 @@ export function SettingsView() {
               )}
 
               {authInfoMessage && (
-                <div className="border-primary/50 bg-primary/8 text-foreground space-y-2 rounded-md border p-3 text-xs">
+                <div className="border-primary/50 bg-primary/8 text-foreground space-y-2 rounded-md border p-3 text-[0.9375rem]">
                   <div className="flex items-start gap-2">
                     <MailCheck className="mt-0.5 h-4 w-4 shrink-0" />
                     <span>{authInfoMessage}</span>
@@ -222,8 +272,10 @@ export function SettingsView() {
 
               {authError && (
                 <div className="space-y-2">
-                  <p className="text-destructive text-xs">{authError}</p>
-                  {authError.toLowerCase().includes('confirm your email') && email.trim() && (
+                  <p role="alert" className="text-destructive text-[0.9375rem]">
+                    {authError}
+                  </p>
+                  {authErrorCode === 'EMAIL_NOT_CONFIRMED' && email.trim() && (
                     <Button
                       type="button"
                       variant="secondary"
@@ -256,7 +308,7 @@ export function SettingsView() {
         <Card className="space-y-4 rounded-md p-5">
           <h2 className="font-display text-lg font-bold">{t.profile.preferencesTitle}</h2>
 
-          <div className="space-y-3 text-xs">
+          <div className="space-y-3 text-[0.9375rem]">
             {/* Language Switcher */}
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div>
@@ -308,7 +360,9 @@ export function SettingsView() {
                   <Ruler className="text-primary h-3.5 w-3.5" />
                   {t.profile.roundingAccuracyLabel}
                 </p>
-                <p className="text-muted-foreground text-xs">{t.profile.roundingAccuracySub}</p>
+                <p className="text-muted-foreground text-[0.8125rem]">
+                  {t.profile.roundingAccuracySub}
+                </p>
               </div>
               <NativeSelect
                 aria-label={t.profile.roundingAccuracyLabel}
@@ -330,46 +384,59 @@ export function SettingsView() {
               </NativeSelect>
             </div>
 
-            <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="flex items-center justify-between gap-4">
               <div>
-                <p className="font-semibold">{t.profile.roundOnUnitChangeLabel}</p>
-                <p className="text-muted-foreground text-xs">{t.profile.roundOnUnitChangeSub}</p>
+                <Label htmlFor="profile-round-on-unit-change" className="font-semibold">
+                  {t.profile.roundOnUnitChangeLabel}
+                </Label>
+                <p
+                  id="profile-round-on-unit-change-sub"
+                  className="text-muted-foreground text-[0.8125rem]"
+                >
+                  {t.profile.roundOnUnitChangeSub}
+                </p>
               </div>
-              <Tabs
+              <Switch
+                id="profile-round-on-unit-change"
                 data-testid="profile-round-on-unit-change-tabs"
-                value={(user?.preferences?.roundOnUnitChange ?? true) ? 'on' : 'off'}
-                onValueChange={(val) => void updatePreferences({ roundOnUnitChange: val === 'on' })}
-              >
-                <TabsList>
-                  <TabsTrigger value="on">{t.profile.enabledOption}</TabsTrigger>
-                  <TabsTrigger value="off">{t.profile.disabledOption}</TabsTrigger>
-                </TabsList>
-              </Tabs>
+                aria-describedby="profile-round-on-unit-change-sub"
+                checked={roundOnUnitChange}
+                onCheckedChange={(checked) =>
+                  void updatePreferences({ roundOnUnitChange: checked })
+                }
+              />
             </div>
 
             {/* Anonymous usage statistics opt-out (device-local, stored in localStorage) */}
-            <div className="flex flex-wrap items-center justify-between gap-2 border-t pt-3">
+            <div className="flex items-center justify-between gap-4 border-t pt-3">
               <div>
-                <p className="flex items-center gap-1.5 font-semibold">
-                  <ShieldCheck className="text-primary h-3.5 w-3.5" />
+                <Label
+                  htmlFor="profile-usage-stats"
+                  className="flex items-center gap-1.5 font-semibold"
+                >
+                  <ShieldCheck className="text-primary h-3.5 w-3.5" aria-hidden />
                   {t.profile.usageStatsLabel}
+                </Label>
+                <p id="profile-usage-stats-sub" className="text-muted-foreground text-[0.8125rem]">
+                  {t.profile.usageStatsSub}
                 </p>
-                <p className="text-muted-foreground text-xs">{t.profile.usageStatsSub}</p>
               </div>
-              <Tabs
-                data-testid="profile-usage-stats-tabs"
-                value={analyticsOptedOut ? 'off' : 'on'}
-                onValueChange={(val) => setAnalyticsOptOut(val === 'off')}
-              >
-                <TabsList>
-                  <TabsTrigger value="on" data-testid="usage-stats-on">
-                    {t.profile.enabledOption}
-                  </TabsTrigger>
-                  <TabsTrigger value="off" data-testid="usage-stats-off">
-                    {t.profile.disabledOption}
-                  </TabsTrigger>
-                </TabsList>
-              </Tabs>
+              <div className="flex shrink-0 items-center gap-2">
+                <span
+                  aria-hidden
+                  className="text-muted-foreground text-[0.8125rem]"
+                  data-testid={analyticsOptedOut ? 'usage-stats-off' : 'usage-stats-on'}
+                >
+                  {analyticsOptedOut ? t.profile.disabledOption : t.profile.enabledOption}
+                </span>
+                <Switch
+                  id="profile-usage-stats"
+                  data-testid="profile-usage-stats-tabs"
+                  aria-describedby="profile-usage-stats-sub"
+                  checked={!analyticsOptedOut}
+                  onCheckedChange={(checked) => setAnalyticsOptOut(!checked)}
+                />
+              </div>
             </div>
           </div>
         </Card>
@@ -402,22 +469,26 @@ export function SettingsView() {
             className="space-y-4"
           >
             <div className="space-y-1.5">
-              <Label htmlFor="delete-account-password" className="text-xs font-semibold">
+              <Label htmlFor="delete-account-password" className="text-[0.8125rem] font-semibold">
                 {t.profile.currentPasswordLabel}
               </Label>
               <Input
                 id="delete-account-password"
+                name="current-password"
+                autoComplete="current-password"
                 type="password"
                 required
                 value={deletePassword}
                 onChange={(e) => setDeletePassword(e.target.value)}
                 placeholder={t.profile.currentPasswordPlaceholder}
-                className="h-10 text-xs"
+                className="h-10"
               />
             </div>
 
             {(deleteError || authError) && (
-              <p className="text-destructive text-xs">{deleteError || authError}</p>
+              <p role="alert" className="text-destructive text-[0.9375rem]">
+                {deleteError || authError}
+              </p>
             )}
 
             <DialogFooter>

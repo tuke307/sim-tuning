@@ -43,6 +43,16 @@ export function DynoDataTab({ vehicle, dyno, readOnly, onDynoChange }: DynoDataT
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState<NoticeMessage | null>(null);
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const [formDynoId, setFormDynoId] = useState(dyno?.id ?? null);
+
+  // A dyno created or replaced elsewhere (auto-created on the first save in Audio/Messung)
+  // refills the form, so the shown name always belongs to the stored dyno.
+  if ((dyno?.id ?? null) !== formDynoId) {
+    setFormDynoId(dyno?.id ?? null);
+    setName(dyno?.name ?? '');
+    setBeschreibung(dyno?.beschreibung ?? '');
+    setEnvironmentId(dyno?.environmentId ?? '');
+  }
 
   const refreshVehicle = async () => {
     const fresh = await repository.getVehicle(vehicle.id);
@@ -191,7 +201,11 @@ export function DynoDataTab({ vehicle, dyno, readOnly, onDynoChange }: DynoDataT
               ))}
             </NativeSelect>
           </div>
-          {readOnly && <p className="text-muted-foreground text-xs">{t.dyno.readOnlyDyno}</p>}
+          {readOnly ? (
+            <p className="text-muted-foreground text-[0.8125rem]">{t.dyno.readOnlyDyno}</p>
+          ) : (
+            !dyno && <p className="text-muted-foreground text-[0.8125rem]">{t.dyno.noDyno}</p>
+          )}
           <div className="flex flex-wrap gap-2">
             <Button type="submit" disabled={disabled} data-testid="dyno-save">
               <Save className="h-4 w-4" />

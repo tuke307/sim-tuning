@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import type { VehicleDto } from '@sim-tuning/common/schemas';
 import { FIELD_BASE_UNITS } from '@sim-tuning/common/units';
-import { Section } from '@/components/sim/shared/module-page';
+import { SaveToVehicleButton, Section } from '@/components/sim/shared/module-page';
 import { ResultValue, UnitNumberField } from '@/components/sim/shared/unit-number-field';
-import { SaveMotorButton } from './save-motor-button';
+import { useWorkDraft } from '@/hooks/useWorkDraft';
+import { workDraftKey } from '@/lib/sim/drafts/work-draft';
 import {
   buildKanalUpdate,
   computeKanalResonanzLaenge,
@@ -14,12 +15,16 @@ import {
 } from '@/lib/sim/einlass/einlass-helpers';
 import { useLocale } from '@/providers/i18n/locale-context';
 
+const PANEL = 'einlass.kanal';
+
 /** v2 `EinlassKanalView`: intake resonance length. */
 export function EinlassKanal({ vehicle }: { vehicle: VehicleDto }) {
   const { t } = useLocale();
   const k = t.einlass.kanal;
-  const readOnly = vehicle.isSystem;
-  const [draft, setDraft] = useState<KanalDraft>(() => kanalDraftFromVehicle(vehicle));
+  const { draft, setDraft, dirty, reset, commit } = useWorkDraft<KanalDraft>(
+    workDraftKey(vehicle.id, PANEL),
+    () => kanalDraftFromVehicle(vehicle),
+  );
   const set = (key: keyof KanalDraft) => (value: number | null) =>
     setDraft((d) => ({ ...d, [key]: value }));
   const resonanzL = computeKanalResonanzLaenge(draft);
@@ -32,7 +37,6 @@ export function EinlassKanal({ vehicle }: { vehicle: VehicleDto }) {
           value={draft.flaecheA}
           baseUnit={FIELD_BASE_UNITS.einlass.flaecheA}
           onChange={set('flaecheA')}
-          readOnly={readOnly}
           testId="einlass-kanal-flaecheA"
         />
         <UnitNumberField
@@ -40,7 +44,6 @@ export function EinlassKanal({ vehicle }: { vehicle: VehicleDto }) {
           value={draft.steuerzeitSZ}
           suffix="°KW"
           onChange={set('steuerzeitSZ')}
-          readOnly={readOnly}
           testId="einlass-kanal-steuerzeitSZ"
         />
         <UnitNumberField
@@ -48,7 +51,6 @@ export function EinlassKanal({ vehicle }: { vehicle: VehicleDto }) {
           value={draft.resonanzU}
           suffix="U/min"
           onChange={set('resonanzU')}
-          readOnly={readOnly}
           testId="einlass-kanal-resonanzU"
         />
         <UnitNumberField
@@ -56,7 +58,6 @@ export function EinlassKanal({ vehicle }: { vehicle: VehicleDto }) {
           value={draft.kurbelgehaeuseV}
           baseUnit={FIELD_BASE_UNITS.motor.kurbelgehaeuseV}
           onChange={set('kurbelgehaeuseV')}
-          readOnly={readOnly}
           testId="einlass-kanal-kurbelgehaeuseV"
         />
       </div>
@@ -67,8 +68,10 @@ export function EinlassKanal({ vehicle }: { vehicle: VehicleDto }) {
         testId="einlass-kanal-resonanzL"
       />
       {resonanzL === null && <p className="text-muted-foreground text-xs">{k.hint}</p>}
-      <SaveMotorButton
+      <SaveToVehicleButton
         buildUpdate={(name) => buildKanalUpdate(name, draft)}
+        onSaved={(saved) => commit(workDraftKey(saved.id, PANEL))}
+        draft={{ dirty, onReset: reset }}
         hint={t.einlass.saveHint}
         testId="einlass-kanal-save"
       />

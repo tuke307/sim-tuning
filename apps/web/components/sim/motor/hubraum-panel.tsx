@@ -1,9 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import type { VehicleDto } from '@sim-tuning/common/schemas';
 import { FIELD_BASE_UNITS, UNITS } from '@sim-tuning/common/units';
 import { Section } from '@/components/sim/shared/module-page';
+import { useWorkDraft } from '@/hooks/useWorkDraft';
+import { workDraftKey } from '@/lib/sim/drafts/work-draft';
 import { ResultValue, UnitNumberField } from '@/components/sim/shared/unit-number-field';
 import { computeHubraum, DEFAULT_EINBAUSPIEL_MM } from '@/lib/sim/motor/calculations';
 import { interpolate } from '@/lib/sim/vehicles/draft';
@@ -11,13 +13,32 @@ import { useLocale } from '@/providers/i18n/locale-context';
 import { ApplyToVehicle } from './apply-to-vehicle';
 
 const MM = UNITS.millimeter.abbreviation;
+const PANEL = 'motor.hubraum';
+
+interface HubraumDraft {
+  hubL: number | null;
+  hubraumV: number | null;
+  einbauspiel: number | null;
+}
+
+/** Fields stored on the vehicle; the piston clearance is a scratch value. */
+const VEHICLE_FIELDS = ['hubL', 'hubraumV'] as const;
 
 /** v2 MotorHubraumView: bore and piston diameter from stroke + displacement, oversize bores. */
 export function HubraumPanel({ vehicle }: { vehicle: VehicleDto }) {
   const { t } = useLocale();
-  const [hubL, setHubL] = useState<number | null>(vehicle.motor?.hubL ?? null);
-  const [hubraumV, setHubraumV] = useState<number | null>(vehicle.motor?.hubraumV ?? null);
-  const [einbauspiel, setEinbauspiel] = useState<number | null>(DEFAULT_EINBAUSPIEL_MM);
+  const { draft, setDraft, dirty, reset, commit } = useWorkDraft<HubraumDraft>(
+    workDraftKey(vehicle.id, PANEL),
+    () => ({
+      hubL: vehicle.motor?.hubL ?? null,
+      hubraumV: vehicle.motor?.hubraumV ?? null,
+      einbauspiel: DEFAULT_EINBAUSPIEL_MM,
+    }),
+    { compare: VEHICLE_FIELDS },
+  );
+  const { hubL, hubraumV, einbauspiel } = draft;
+  const set = (key: keyof HubraumDraft) => (value: number | null) =>
+    setDraft((d) => ({ ...d, [key]: value }));
   const result = computeHubraum({ hubL, hubraumV, einbauspielMm: einbauspiel });
   const grinding = result
     ? [
@@ -36,21 +57,21 @@ export function HubraumPanel({ vehicle }: { vehicle: VehicleDto }) {
             label={t.motor.hubraum.hub}
             value={hubL}
             baseUnit={FIELD_BASE_UNITS.motor.hubL}
-            onChange={setHubL}
+            onChange={set('hubL')}
             testId="motor-hubraum-hub"
           />
           <UnitNumberField
             label={t.motor.hubraum.hubraum}
             value={hubraumV}
             baseUnit={FIELD_BASE_UNITS.motor.hubraumV}
-            onChange={setHubraumV}
+            onChange={set('hubraumV')}
             testId="motor-hubraum-hubraum"
           />
           <UnitNumberField
             label={t.motor.hubraum.einbauspiel}
             value={einbauspiel}
             baseUnit="millimeter"
-            onChange={setEinbauspiel}
+            onChange={set('einbauspiel')}
             hint={t.motor.hubraum.einbauspielHint}
             testId="motor-hubraum-einbauspiel"
           />
@@ -77,6 +98,8 @@ export function HubraumPanel({ vehicle }: { vehicle: VehicleDto }) {
         <ApplyToVehicle
           testId="motor-hubraum-apply"
           patch={result ? { hubL, hubraumV, bohrungD: result.bohrungD } : null}
+          onSaved={(saved) => commit(workDraftKey(saved.id, PANEL))}
+          draft={{ dirty, onReset: reset }}
         />
       </Section>
       <div className="lg:col-span-2">

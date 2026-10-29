@@ -9,6 +9,14 @@ import { ROUNDING_ACCURACY } from '@sim-tuning/common/schemas';
 
 export type AuthMode = 'AUTHENTICATED' | 'OFFLINE_LOCAL' | 'UNAUTHENTICATED';
 
+/**
+ * Machine-readable reason of the last auth error, so the UI never has to match message text.
+ * `EMAIL_NOT_CONFIRMED`: sign-in was refused (403) with valid credentials, which the API does for
+ * accounts whose email is not confirmed yet (and for temporarily locked accounts, where offering
+ * to resend the confirmation is harmless because the API ignores it for confirmed accounts).
+ */
+export type AuthErrorCode = 'EMAIL_NOT_CONFIRMED';
+
 interface AuthContextProps {
   isAuthenticated: boolean;
   authMode: AuthMode;
@@ -24,6 +32,7 @@ interface AuthContextProps {
   continueOfflineLocal: () => void;
   refreshUser: () => Promise<void>;
   error: string | null;
+  errorCode: AuthErrorCode | null;
   infoMessage: string | null;
   loading: boolean;
 }
@@ -59,6 +68,7 @@ export const AuthContext = createContext<AuthContextProps>({
   continueOfflineLocal: () => {},
   refreshUser: async () => {},
   error: null,
+  errorCode: null,
   infoMessage: null,
   loading: true,
 });
@@ -71,6 +81,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<UserDto | null>(null);
   const [authMode, setAuthMode] = useState<AuthMode>('UNAUTHENTICATED');
   const [error, setError] = useState<string | null>(null);
+  const [errorCode, setErrorCode] = useState<AuthErrorCode | null>(null);
   const [infoMessage, setInfoMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -131,6 +142,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = async (email: string, password: string): Promise<boolean> => {
     setLoading(true);
     setError(null);
+    setErrorCode(null);
     setInfoMessage(null);
     try {
       const response = await api.auth.login({ email, password });
@@ -146,6 +158,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       return false;
     } catch (err) {
       trackEvent('login', { status: 'error' });
+      if (err instanceof ApiClientError && err.status === 403) setErrorCode('EMAIL_NOT_CONFIRMED');
       setError(err instanceof Error ? err.message : 'Unable to sign in');
       return false;
     } finally {
@@ -156,6 +169,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const register = async (data: RegisterDto): Promise<boolean> => {
     setLoading(true);
     setError(null);
+    setErrorCode(null);
     setInfoMessage(null);
     try {
       const response = await api.auth.register(data);
@@ -189,6 +203,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const verifyEmail = async (token: string): Promise<boolean> => {
     setLoading(true);
     setError(null);
+    setErrorCode(null);
     setInfoMessage(null);
     try {
       const response = await api.auth.verifyEmail({ token });
@@ -211,6 +226,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const resendConfirmation = async (email: string): Promise<boolean> => {
     setLoading(true);
     setError(null);
+    setErrorCode(null);
     try {
       const response = await api.auth.resendConfirmation({ email });
       if (response.success && response.data) {
@@ -230,6 +246,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = async () => {
     setLoading(true);
     setError(null);
+    setErrorCode(null);
     try {
       await api.auth.logout();
     } catch {
@@ -246,6 +263,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const requestAccountDeletion = async (password: string): Promise<boolean> => {
     setLoading(true);
     setError(null);
+    setErrorCode(null);
     setInfoMessage(null);
     try {
       const response = await api.auth.requestAccountDeletion({ password });
@@ -270,6 +288,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const confirmAccountDeletion = async (token: string): Promise<boolean> => {
     setLoading(true);
     setError(null);
+    setErrorCode(null);
     setInfoMessage(null);
     try {
       const response = await api.auth.confirmAccountDeletion({ token });
@@ -365,6 +384,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         continueOfflineLocal,
         refreshUser,
         error,
+        errorCode,
         infoMessage,
         loading,
       }}

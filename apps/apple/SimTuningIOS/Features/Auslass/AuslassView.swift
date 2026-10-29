@@ -26,12 +26,12 @@ struct AuslassView: View {
 /// v2 `AuslassTheorieViewModel`: speed of sound, header diameter range, header and tuned length.
 struct AuslassTheorieView: View {
     @Environment(AppModel.self) private var model
-    @State private var abgasT: Double?
-    @State private var flaecheMm2: Double?
-    @State private var kruemmerD: Double?
-    @State private var kruemmerF: Double?
-    @State private var steuerzeit: Double?
-    @State private var resonanzU: Double?
+    @Draft(.auslassTheorie, "abgasT") private var abgasT
+    @Draft(.auslassTheorie, "flaecheMm2") private var flaecheMm2
+    @Draft(.auslassTheorie, "kruemmerD") private var kruemmerD
+    @Draft(.auslassTheorie, "kruemmerF") private var kruemmerF
+    @Draft(.auslassTheorie, "steuerzeit") private var steuerzeit
+    @Draft(.auslassTheorie, "resonanzU") private var resonanzU
 
     var body: some View {
         SheetForm(module: .auslass, subsheet: 1, subtitle: "Theorie") {
@@ -64,10 +64,10 @@ struct AuslassTheorieView: View {
                                                                              unit: "mm"))
                 }
             }
-            VehicleActionsSection(apply: apply, save: nil)
+            VehicleActionsSection(calculator: .auslassTheorie, apply: apply, save: nil)
         }
-        .moduleChrome("Theorie")
-        .onAppear { if steuerzeit == nil { apply() } }
+        .calculatorChrome("Theorie")
+        .calculatorDraft(.auslassTheorie, seed: apply)
     }
 
     private func apply() {
@@ -84,20 +84,29 @@ struct AuslassTheorieView: View {
 /// v2 `AuslassAnwendungViewModel`: complete expansion chamber + drawing.
 struct AuslassAnwendungView: View {
     @Environment(AppModel.self) private var model
-    @State private var resonanzU: Double?
-    @State private var laengeL: Double?
-    @State private var steuerzeit: Double?
-    @State private var durchmesserD: Double?
-    @State private var flaecheA: Double?
-    @State private var abgasT: Double?
-    @State private var diffusorStage = 1
-    @State private var diffusorW1: Double?
-    @State private var kruemmerF: Double?
-    @State private var kruemmerW: Double?
-    @State private var mittelteilF: Double?
-    @State private var gegenKonusW: Double?
-    @State private var endrohrL: Double?
-    @State private var endrohrD: Double?
+    @Draft(.auslassAnwendung, "resonanzU") private var resonanzU
+    @Draft(.auslassAnwendung, "laengeL") private var laengeL
+    @Draft(.auslassAnwendung, "steuerzeit") private var steuerzeit
+    @Draft(.auslassAnwendung, "durchmesserD") private var durchmesserD
+    @Draft(.auslassAnwendung, "flaecheA") private var flaecheA
+    @Draft(.auslassAnwendung, "abgasT") private var abgasT
+    @Draft(.auslassAnwendung, "diffusorStage", default: 1) private var diffusorStageValue
+    @Draft(.auslassAnwendung, "diffusorW1") private var diffusorW1
+    @Draft(.auslassAnwendung, "kruemmerF") private var kruemmerF
+    @Draft(.auslassAnwendung, "kruemmerW") private var kruemmerW
+    @Draft(.auslassAnwendung, "mittelteilF") private var mittelteilF
+    @Draft(.auslassAnwendung, "gegenKonusW") private var gegenKonusW
+    @Draft(.auslassAnwendung, "endrohrL") private var endrohrL
+    @Draft(.auslassAnwendung, "endrohrD") private var endrohrD
+
+    private var diffusorStage: Int {
+        get { Int(diffusorStageValue ?? 1) }
+        nonmutating set { diffusorStageValue = Double(newValue) }
+    }
+
+    private var diffusorStageBinding: Binding<Int> {
+        Binding(get: { diffusorStage }, set: { diffusorStage = $0 })
+    }
     @State private var highlighted: Int?
     @State private var drawIn = 0.0
 
@@ -161,7 +170,7 @@ struct AuslassAnwendungView: View {
                 NumberField("Abgastemperatur", value: $abgasT, unit: "°C", identifier: "auspuff.abgasT")
                 NumberField("Krümmerfaktor", value: $kruemmerF, identifier: "auspuff.kruemmerF")
                 NumberField("Krümmerwinkel", value: $kruemmerW, unit: "°", identifier: "auspuff.kruemmerW")
-                Picker("Diffusorstufen", selection: $diffusorStage) {
+                Picker("Diffusorstufen", selection: diffusorStageBinding) {
                     ForEach(0...3, id: \.self) { Text(verbatim: "\($0)").tag($0) }
                 }
                 NumberField("Diffusorwinkel", value: $diffusorW1, unit: "°", identifier: "auspuff.diffusorW")
@@ -176,10 +185,10 @@ struct AuslassAnwendungView: View {
                                 ? "Wie in v2 ist nur der einstufige Diffusor berechnet; mehrstufige Diffusoren ergeben 0."
                                 : nil)
             }
-            VehicleActionsSection(apply: apply, save: save)
+            VehicleActionsSection(calculator: .auslassAnwendung, apply: apply, save: save)
         }
-        .moduleChrome("Anwendung")
-        .onAppear { if resonanzU == nil { apply() } }
+        .calculatorChrome("Anwendung")
+        .calculatorDraft(.auslassAnwendung, seed: apply)
     }
 
     private func apply() {
@@ -228,7 +237,7 @@ struct AuslassAnwendungView: View {
         motor.resonanzU = .some(resonanzU)
         motor.auslass = AuslassInputDto(durchmesserD: .some(durchmesserD), flaecheA: .some(flaecheA),
                                         laengeL: .some(laengeL), steuerzeitSZ: .some(steuerzeit), auspuff: auspuff)
-        Task { await model.saveToSelectedVehicle(VehicleInputDto(motor: motor)) }
+        Task { await model.saveToSelectedVehicle(VehicleInputDto(motor: motor), from: .auslassAnwendung) }
     }
 }
 

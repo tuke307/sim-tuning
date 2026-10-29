@@ -64,19 +64,19 @@ export default function ResetPasswordPage() {
               <span className="font-display block text-[1.125rem] font-bold tracking-[0.12em] uppercase">
                 SimTuning
               </span>
-              <span className="text-muted-foreground block text-xs">{t.nav.tagline}</span>
+              <span className="text-muted-foreground block text-[0.8125rem]">{t.nav.tagline}</span>
             </div>
           </Link>
         </div>
 
         <div>
           <h1 className="font-display text-2xl font-bold">{t.auth.resetTitle}</h1>
-          <p className="text-muted-foreground mt-1 text-xs">{t.auth.resetSub}</p>
+          <p className="text-muted-foreground mt-1 text-[0.8125rem]">{t.auth.resetSub}</p>
         </div>
 
         {!token ? (
           <div className="space-y-4">
-            <div className="border-destructive/60 bg-destructive/8 text-destructive flex items-start gap-2.5 rounded-md border p-3.5 text-xs">
+            <div className="border-destructive/60 bg-destructive/8 text-destructive flex items-start gap-2.5 rounded-md border p-3.5 text-[0.8125rem]">
               <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
               <span>
                 No password reset token was found in the URL. Please request a new password reset
@@ -100,11 +100,13 @@ export default function ResetPasswordPage() {
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-1.5">
-              <Label htmlFor="new-password" className="text-xs font-semibold">
+              <Label htmlFor="new-password" className="text-[0.8125rem] font-semibold">
                 {t.auth.newPasswordLabel}
               </Label>
               <Input
                 id="new-password"
+                name="new-password"
+                autoComplete="new-password"
                 type="password"
                 required
                 value={newPassword}
@@ -115,11 +117,13 @@ export default function ResetPasswordPage() {
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="confirm-password" className="text-xs font-semibold">
+              <Label htmlFor="confirm-password" className="text-[0.8125rem] font-semibold">
                 {t.auth.confirmPasswordLabel}
               </Label>
               <Input
                 id="confirm-password"
+                name="confirm-password"
+                autoComplete="new-password"
                 type="password"
                 required
                 value={confirmPassword}
@@ -129,7 +133,7 @@ export default function ResetPasswordPage() {
               />
             </div>
 
-            {error && <p className="text-destructive text-xs">{error}</p>}
+            {error && <p className="text-destructive text-[0.8125rem]">{error}</p>}
 
             <Button type="submit" size="lg" disabled={loading} className="w-full">
               <KeyRound className="h-4 w-4" />

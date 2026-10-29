@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useId, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useId, useMemo, useRef, useState } from 'react';
 import { Download, FileAudio, Filter, Mic, Play, Save, Sparkles, Square, X } from 'lucide-react';
 import {
   AUDIO_FFT_SIZES,
@@ -9,11 +9,12 @@ import {
   fitDrehzahlCurve,
   type DrehzahlPoint,
 } from '@sim-tuning/common/audio';
-import type { DynoDto } from '@sim-tuning/common/schemas';
+import type { DynoDto, VehicleDto } from '@sim-tuning/common/schemas';
 import { Button } from '@sim-tuning/ui/components/ui/button';
 import { Label } from '@sim-tuning/ui/components/ui/label';
 import { NativeSelect } from '@sim-tuning/ui/components/ui/native-select';
 import { Progress } from '@sim-tuning/ui/components/ui/progress';
+import { cn } from '@sim-tuning/ui/lib/utils';
 import { Section } from '@/components/sim/shared/module-page';
 import { ResultValue, UnitNumberField } from '@/components/sim/shared/unit-number-field';
 import { useLocale } from '@/providers/i18n/locale-context';
@@ -35,10 +36,18 @@ import {
 } from '@/lib/sim/dyno/audio-input';
 import { fillTemplate } from '@/lib/sim/dyno/format';
 import { toDrehzahlSeries } from '@/lib/sim/dyno/power-curve';
+import {
+  classifyLevel,
+  formatClock,
+  meterFraction,
+  type InputLevel,
+  type LevelState,
+} from '@/lib/sim/dyno/recording-level';
 import { DynoScatterChart, seriesColor, type ScatterSeriesSpec } from './dyno-charts';
 import { DynoNotice, type NoticeMessage } from './dyno-notice';
 import { useAudioAnalysis } from './use-audio-analysis';
 import { useAudioRecorder } from './use-audio-recorder';
+import { useSaveToDyno } from './use-save-to-dyno';
 
 export const DEMO_RECORDING_URL = '/demo/dyno-acceleration.wav';
 
@@ -61,6 +70,7 @@ interface ClusterSelection {
 
 interface DynoAudioTabProps {
   active: boolean;
+  vehicle: VehicleDto;
   dyno: DynoDto | null;
   readOnly: boolean;
   audio: DynoAudio | null;
@@ -74,6 +84,7 @@ interface DynoAudioTabProps {
  */
 export function DynoAudioTab({
   active,
+  vehicle,
   dyno,
   readOnly,
   audio,
@@ -85,17 +96,37 @@ export function DynoAudioTab({
   const fileRef = useRef<HTMLInputElement>(null);
   const fftId = useId();
   const clusterId = useId();
-  const recorder = useAudioRecorder();
   const analysis = useAudioAnalysis();
+  const saveToDyno = useSaveToDyno(vehicle, dyno, onDynoChange);
   const [options, setOptions] = useState<AudioAnalysisOptions>(DEFAULT_AUDIO_OPTIONS);
   const [analyzedAudio, setAnalyzedAudio] = useState<DynoAudio | null>(null);
   const [filter, setFilter] = useState<ClusterFilter | null>(null);
   const [selection, setSelection] = useState<ClusterSelection | null>(null);
   const [loadingSource, setLoadingSource] = useState(false);
   const [notice, setNotice] = useState<NoticeMessage | null>(null);
+  const [saveNotice, setSaveNotice] = useState<NoticeMessage | null>(null);
   const [saving, setSaving] = useState(false);
 
   const a = t.dyno.audio;
+  const { reset: resetAnalysis } = analysis;
+  const loadAudio = useCallback(
+    (next: DynoAudio) => {
+      resetAnalysis();
+      setNotice(null);
+      setSaveNotice(null);
+      onAudioChange(next);
+    },
+    [resetAnalysis, onAudioChange],
+  );
+  // Leaving the page mid-recording keeps what was captured (see useAudioRecorder).
+  const onInterrupted = useCallback(
+    (recorded: DynoAudio | null) => {
+      if (recorded) loadAudio(recorded);
+      setNotice({ kind: 'info', text: recorded ? a.interrupted : a.interruptedEmpty });
+    },
+    [loadAudio, a.interrupted, a.interruptedEmpty],
+  );
+  const recorder = useAudioRecorder({ onInterrupted });
   const result =
     analysis.state.result && analyzedAudio && analyzedAudio === audio
       ? analysis.state.result
@@ -104,15 +135,10 @@ export function DynoAudioTab({
   const activeSelection =
     selection && activeFilter && selection.filter === activeFilter ? selection : null;
   const running = analysis.state.status === 'running';
+  const recording = recorder.status === 'recording';
 
   const setOption = (key: keyof AudioAnalysisOptions) => (value: number | null) =>
     setOptions((prev) => ({ ...prev, [key]: value ?? prev[key] }));
-
-  const loadAudio = (next: DynoAudio) => {
-    analysis.reset();
-    setNotice(null);
-    onAudioChange(next);
-  };
 
   const loadFile = async (file: File) => {
     const invalid = validateAudioFile(file);
@@ -160,6 +186,7 @@ export function DynoAudioTab({
       return;
     }
     setNotice(null);
+    setSaveNotice(null);
     await recorder.start();
   };
 
@@ -200,16 +227,18 @@ export function DynoAudioTab({
   };
 
   const saveCurve = async () => {
-    if (!dyno || !activeSelection || readOnly) return;
+    if (!activeSelection || readOnly) return;
     setSaving(true);
+    setSaveNotice(null);
     try {
-      const saved = await repository.saveDynoData(dyno.id, {
-        drehzahl: toDrehzahlSeries(activeSelection.fit),
-      });
-      onDynoChange(saved);
-      setNotice({ kind: 'success', text: a.curveSaved });
+      const saved = await saveToDyno((target) =>
+        repository.saveDynoData(target.id, {
+          drehzahl: toDrehzahlSeries(activeSelection.fit),
+        }),
+      );
+      if (saved) setSaveNotice({ kind: 'success', text: a.curveSaved });
     } catch {
-      setNotice({ kind: 'error', text: t.sim.errorGeneric });
+      setSaveNotice({ kind: 'error', text: t.sim.errorGeneric });
     } finally {
       setSaving(false);
     }
@@ -286,6 +315,30 @@ export function DynoAudioTab({
       <div className="grid gap-4 lg:grid-cols-2">
         <Section title={a.sourceTitle}>
           <p className="text-muted-foreground text-[0.8125rem]">{a.sourceHint}</p>
+          <Button
+            type="button"
+            size="lg"
+            variant={recording ? 'destructive' : 'default'}
+            disabled={
+              loadingSource || recorder.status === 'requesting' || recorder.status === 'processing'
+            }
+            onClick={() => void toggleRecording()}
+            className={cn(
+              'h-14 w-full text-[1.0625rem] sm:w-auto sm:min-w-[16rem]',
+              recording && 'bg-destructive text-background hover:bg-destructive/85',
+            )}
+            data-testid="dyno-audio-record"
+          >
+            {recording ? <Square className="size-5" /> : <Mic className="size-5" />}
+            {recording ? a.stopRecording : a.record}
+          </Button>
+          {recording && (
+            <RecordingPanel
+              elapsedMs={recorder.elapsedMs}
+              level={recorder.level}
+              quiet={recorder.quiet}
+            />
+          )}
           <div className="flex flex-wrap gap-2">
             <Button
               type="button"
@@ -311,24 +364,6 @@ export function DynoAudioTab({
             />
             <Button
               type="button"
-              variant={recorder.status === 'recording' ? 'destructive' : 'secondary'}
-              disabled={
-                loadingSource ||
-                recorder.status === 'requesting' ||
-                recorder.status === 'processing'
-              }
-              onClick={() => void toggleRecording()}
-              data-testid="dyno-audio-record"
-            >
-              {recorder.status === 'recording' ? (
-                <Square className="h-4 w-4" />
-              ) : (
-                <Mic className="h-4 w-4" />
-              )}
-              {recorder.status === 'recording' ? a.stopRecording : a.record}
-            </Button>
-            <Button
-              type="button"
               variant="secondary"
               disabled={loadingSource || recorder.status !== 'idle'}
               onClick={() => void loadDemo()}
@@ -338,18 +373,13 @@ export function DynoAudioTab({
               {a.demo}
             </Button>
           </div>
-          {recorder.status === 'recording' && (
-            <p className="text-destructive flex items-center gap-2 text-[0.8125rem]" role="status">
-              <span className="bg-destructive h-2 w-2 animate-pulse rounded-full" />
-              {a.recording}
-            </p>
-          )}
           {(loadingSource || recorder.status === 'processing') && (
             <p className="text-muted-foreground text-[0.8125rem]" role="status">
               {a.decoding}
             </p>
           )}
           {recorderError && <DynoNotice message={{ kind: 'error', text: recorderError }} />}
+          <DynoNotice message={notice} testId="dyno-audio-source-notice" />
           {audio ? (
             <div className="space-y-2" data-testid="dyno-audio-loaded">
               <p className="text-[0.8125rem] font-medium">
@@ -472,7 +502,7 @@ export function DynoAudioTab({
           {running && (
             <div className="space-y-1" role="status" data-testid="dyno-audio-progress">
               <Progress value={Math.round(analysis.state.progress * 100)} />
-              <p className="text-muted-foreground text-xs">
+              <p className="text-muted-foreground text-[0.8125rem]">
                 {a.analyzing} {Math.round(analysis.state.progress * 100)} %
               </p>
             </div>
@@ -486,7 +516,7 @@ export function DynoAudioTab({
               testId="dyno-audio-error"
             />
           )}
-          <p className="text-muted-foreground text-xs">{a.filterHint}</p>
+          <p className="text-muted-foreground text-[0.8125rem]">{a.filterHint}</p>
         </Section>
       </div>
 
@@ -531,35 +561,104 @@ export function DynoAudioTab({
             />
           )}
           {plotted < total && (
-            <p className="text-muted-foreground text-xs">
+            <p className="text-muted-foreground text-[0.8125rem]">
               {fillTemplate(a.shownOf, { shown: plotted, total })}
             </p>
           )}
           {activeSelection && (
-            <div className="flex flex-wrap items-center gap-2">
-              <Button
-                type="button"
-                disabled={!dyno || readOnly || saving || activeSelection.fit.length === 0}
-                onClick={() => void saveCurve()}
-                data-testid="dyno-audio-save"
-              >
-                <Save className="h-4 w-4" />
-                {a.saveCurve}
-              </Button>
-              {(!dyno || readOnly) && (
-                <span className="text-muted-foreground text-xs">{a.needDyno}</span>
-              )}
+            <div className="space-y-2">
+              <div className="flex flex-wrap items-center gap-2">
+                <Button
+                  type="button"
+                  disabled={readOnly || saving || activeSelection.fit.length === 0}
+                  onClick={() => void saveCurve()}
+                  data-testid="dyno-audio-save"
+                >
+                  <Save className="h-4 w-4" />
+                  {a.saveCurve}
+                </Button>
+                {(!dyno || readOnly) && (
+                  <span className="text-muted-foreground text-[0.8125rem]">
+                    {readOnly ? t.dyno.readOnlyDyno : a.needDyno}
+                  </span>
+                )}
+              </div>
+              <DynoNotice message={saveNotice} testId="dyno-audio-notice" />
             </div>
           )}
         </Section>
       )}
 
-      <DynoNotice message={notice} testId="dyno-audio-notice" />
       {dyno && dyno.drehzahl.length > 0 && (
-        <p className="text-muted-foreground text-xs" data-testid="dyno-audio-stored">
+        <p className="text-muted-foreground text-[0.8125rem]" data-testid="dyno-audio-stored">
           {fillTemplate(a.storedCurve, { count: dyno.drehzahl.length })}
         </p>
       )}
+    </div>
+  );
+}
+
+const LEVEL_BAR: Record<LevelState, string> = {
+  low: 'bg-warning',
+  ok: 'bg-success',
+  clipping: 'bg-destructive',
+};
+
+/** Live view while recording: elapsed time, input level meter and a hint if nothing is heard. */
+function RecordingPanel({
+  elapsedMs,
+  level,
+  quiet,
+}: {
+  elapsedMs: number;
+  level: InputLevel | null;
+  quiet: boolean;
+}) {
+  const { t } = useLocale();
+  const a = t.dyno.audio;
+  const state = level ? classifyLevel(level) : null;
+  const levelText =
+    state === 'clipping' ? a.levelClipping : state === 'low' ? a.levelLow : a.levelOk;
+  return (
+    <div
+      className="bg-raised border-destructive/70 space-y-3 rounded-md border p-4"
+      data-testid="dyno-audio-recording"
+    >
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <p className="text-destructive flex items-center gap-2 text-[0.9375rem] font-semibold">
+          <span
+            aria-hidden
+            className="bg-destructive h-3 w-3 rounded-full motion-safe:animate-pulse"
+          />
+          {a.recording}
+        </p>
+        <p
+          role="timer"
+          aria-label={a.elapsed}
+          className="font-data text-4xl leading-none"
+          data-testid="dyno-audio-elapsed"
+        >
+          {formatClock(elapsedMs)}
+        </p>
+      </div>
+      {level && state && (
+        <div className="space-y-1.5">
+          <div className="flex items-center justify-between gap-2 text-[0.8125rem]">
+            <span className="text-muted-foreground">{a.level}</span>
+            <span className="font-semibold" data-testid="dyno-audio-level" data-level={state}>
+              {levelText}
+            </span>
+          </div>
+          <div aria-hidden className="bg-background h-3 overflow-hidden rounded-sm border">
+            <div
+              className={cn('h-full', LEVEL_BAR[state])}
+              style={{ width: `${Math.round(meterFraction(level.rms) * 100)}%` }}
+            />
+          </div>
+        </div>
+      )}
+      {quiet && <DynoNotice message={{ kind: 'info', text: a.quietWarning }} />}
+      <p className="text-muted-foreground text-[0.8125rem]">{a.recordHint}</p>
     </div>
   );
 }

@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import type { VehicleDto } from '@sim-tuning/common/schemas';
 import { FIELD_BASE_UNITS } from '@sim-tuning/common/units';
-import { Section } from '@/components/sim/shared/module-page';
+import { SaveToVehicleButton, Section } from '@/components/sim/shared/module-page';
 import { ResultValue, UnitNumberField } from '@/components/sim/shared/unit-number-field';
-import { SaveMotorButton } from './save-motor-button';
+import { useWorkDraft } from '@/hooks/useWorkDraft';
+import { workDraftKey } from '@/lib/sim/drafts/work-draft';
 import {
   buildVergaserUpdate,
   computeVergaser,
@@ -16,12 +17,20 @@ import {
 } from '@/lib/sim/einlass/einlass-helpers';
 import { useLocale } from '@/providers/i18n/locale-context';
 
+const PANEL = 'einlass.vergaser';
+
+/** Fields stored on the vehicle; the resistance factors are scratch values. */
+const VEHICLE_FIELDS = ['hubraumV', 'resonanzU'] as const;
+
 /** v2 `EinlassVergaserView`: carburettor bore and main jet. */
 export function EinlassVergaser({ vehicle }: { vehicle: VehicleDto }) {
   const { t } = useLocale();
   const v = t.einlass.vergaser;
-  const readOnly = vehicle.isSystem;
-  const [draft, setDraft] = useState<VergaserDraft>(() => vergaserDraftFromVehicle(vehicle));
+  const { draft, setDraft, dirty, reset, commit } = useWorkDraft<VergaserDraft>(
+    workDraftKey(vehicle.id, PANEL),
+    () => vergaserDraftFromVehicle(vehicle),
+    { compare: VEHICLE_FIELDS },
+  );
   const set = (key: keyof VergaserDraft) => (value: number | null) =>
     setDraft((d) => ({ ...d, [key]: value }));
   const result = computeVergaser(draft);
@@ -36,7 +45,6 @@ export function EinlassVergaser({ vehicle }: { vehicle: VehicleDto }) {
             value={draft.hubraumV}
             baseUnit={FIELD_BASE_UNITS.motor.hubraumV}
             onChange={set('hubraumV')}
-            readOnly={readOnly}
             testId="einlass-vergaser-hubraumV"
           />
           <UnitNumberField
@@ -44,14 +52,12 @@ export function EinlassVergaser({ vehicle }: { vehicle: VehicleDto }) {
             value={draft.resonanzU}
             suffix="U/min"
             onChange={set('resonanzU')}
-            readOnly={readOnly}
             testId="einlass-vergaser-resonanzU"
           />
           <UnitNumberField
             label={v.vergaserFaktor}
             value={draft.vergaserFaktor}
             onChange={set('vergaserFaktor')}
-            readOnly={readOnly}
             hint={faktorHint(VERGASER_WIDERSTAND_DEFAULT)}
             testId="einlass-vergaser-faktor"
           />
@@ -69,7 +75,6 @@ export function EinlassVergaser({ vehicle }: { vehicle: VehicleDto }) {
           label={v.hauptdueseFaktor}
           value={draft.hauptdueseFaktor}
           onChange={set('hauptdueseFaktor')}
-          readOnly={readOnly}
           hint={faktorHint(HAUPTDUESE_WIDERSTAND_DEFAULT)}
           testId="einlass-vergaser-hauptduese-faktor"
         />
@@ -85,8 +90,10 @@ export function EinlassVergaser({ vehicle }: { vehicle: VehicleDto }) {
         </div>
       </Section>
       <div className="lg:col-span-2">
-        <SaveMotorButton
+        <SaveToVehicleButton
           buildUpdate={(name) => buildVergaserUpdate(name, draft, result)}
+          onSaved={(saved) => commit(workDraftKey(saved.id, PANEL))}
+          draft={{ dirty, onReset: reset }}
           hint={t.einlass.saveHint}
           testId="einlass-vergaser-save"
         />

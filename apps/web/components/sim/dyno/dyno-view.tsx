@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useCallback, useEffect, useState } from 'react';
+import { Copy } from 'lucide-react';
 import type { DynoDto } from '@sim-tuning/common/schemas';
 import { Button } from '@sim-tuning/ui/components/ui/button';
 import { Card } from '@sim-tuning/ui/components/ui/card';
@@ -8,13 +9,15 @@ import { Spinner } from '@sim-tuning/ui/components/ui/spinner';
 import { ModulePage } from '@/components/sim/shared/module-page';
 import { useLocale } from '@/providers/i18n/locale-context';
 import { useSimData } from '@/providers/sim/sim-data-context';
+import { useSubTab } from '@/lib/navigation/nav-state';
 import type { DynoAudio } from '@/lib/sim/dyno/audio-input';
 import { DynoAudioTab } from './dyno-audio-tab';
 import { DynoDataTab } from './dyno-data-tab';
 import { DynoDiagnosisTab } from './dyno-diagnosis-tab';
 import { DynoRuntimeTab } from './dyno-runtime-tab';
 
-type DynoTab = 'data' | 'audio' | 'runtime' | 'diagnosis';
+const DYNO_TABS = ['data', 'audio', 'runtime', 'diagnosis'] as const;
+type DynoTab = (typeof DYNO_TABS)[number];
 
 interface LoadedDyno {
   vehicleId: string;
@@ -28,8 +31,10 @@ interface LoadedDyno {
  */
 export function DynoView() {
   const { t } = useLocale();
-  const { repository, selectedVehicle } = useSimData();
-  const [tab, setTab] = useState<DynoTab>('data');
+  const { repository, selectedVehicle, setVehicle, selectVehicle } = useSimData();
+  const [tab, setTab] = useSubTab<DynoTab>(DYNO_TABS, 'data');
+  const [duplicating, setDuplicating] = useState(false);
+  const [duplicateFailed, setDuplicateFailed] = useState(false);
   const [loaded, setLoaded] = useState<LoadedDyno | null>(null);
   const [audio, setAudio] = useState<DynoAudio | null>(null);
 
@@ -70,14 +75,40 @@ export function DynoView() {
     { key: 'diagnosis', label: t.dyno.tabs.diagnosis },
   ];
 
-  const noDynoHint =
-    !dyno && ready ? (
-      <Card className="flex flex-row flex-wrap items-center justify-between gap-3 border-dashed p-4 text-sm">
-        <span>{readOnly ? t.dyno.readOnlyDyno : t.dyno.noDyno}</span>
-        {!readOnly && (
-          <Button type="button" size="sm" variant="secondary" onClick={() => setTab('data')}>
-            {t.dyno.goToData}
-          </Button>
+  const duplicate = async () => {
+    if (!selectedVehicle) return;
+    setDuplicating(true);
+    setDuplicateFailed(false);
+    try {
+      const copy = await repository.duplicateVehicle(selectedVehicle.id);
+      setVehicle(copy);
+      selectVehicle(copy.id);
+    } catch {
+      setDuplicateFailed(true);
+    } finally {
+      setDuplicating(false);
+    }
+  };
+
+  // Own vehicles get their dyno automatically on the first save; starter vehicles need a copy.
+  const readOnlyHint =
+    readOnly && ready ? (
+      <Card className="flex flex-row flex-wrap items-center justify-between gap-3 border-dashed p-4 text-[0.9375rem]">
+        <span>{t.dyno.readOnlyDyno}</span>
+        <Button
+          type="button"
+          size="sm"
+          variant="secondary"
+          disabled={duplicating}
+          onClick={() => void duplicate()}
+        >
+          <Copy className="h-4 w-4" aria-hidden />
+          {t.dyno.duplicateVehicle}
+        </Button>
+        {duplicateFailed && (
+          <p role="alert" className="text-destructive w-full text-[0.8125rem]">
+            {t.sim.errorGeneric}
+          </p>
         )}
       </Card>
     ) : null;
@@ -107,9 +138,10 @@ export function DynoView() {
             />
           </div>
           <div hidden={tab !== 'audio'} data-testid="dyno-panel-audio" className="space-y-4">
-            {noDynoHint}
+            {readOnlyHint}
             <DynoAudioTab
               active={tab === 'audio'}
+              vehicle={selectedVehicle}
               dyno={dyno}
               readOnly={readOnly}
               audio={audio}
@@ -118,7 +150,7 @@ export function DynoView() {
             />
           </div>
           <div hidden={tab !== 'runtime'} data-testid="dyno-panel-runtime" className="space-y-4">
-            {noDynoHint}
+            {readOnlyHint}
             <DynoRuntimeTab
               active={tab === 'runtime'}
               vehicle={selectedVehicle}
@@ -133,7 +165,7 @@ export function DynoView() {
             data-testid="dyno-panel-diagnosis"
             className="space-y-4"
           >
-            {noDynoHint}
+            {readOnlyHint}
             <DynoDiagnosisTab
               key={`${selectedVehicle.id}:${dyno?.id ?? 'none'}:${dyno?.environmentId ?? ''}`}
               active={tab === 'diagnosis'}

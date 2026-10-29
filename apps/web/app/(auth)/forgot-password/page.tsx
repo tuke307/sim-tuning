@@ -49,19 +49,21 @@ export default function ForgotPasswordPage() {
               <span className="font-display block text-[1.125rem] font-bold tracking-[0.12em] uppercase">
                 SimTuning
               </span>
-              <span className="text-muted-foreground block text-xs">{t.nav.tagline}</span>
+              <span className="text-muted-foreground block text-[0.8125rem]">{t.nav.tagline}</span>
             </div>
           </Link>
         </div>
 
         <div>
           <h1 className="font-display text-2xl font-bold">{t.auth.forgotTitle}</h1>
-          <p className="text-muted-foreground mt-1 text-xs leading-relaxed">{t.auth.forgotSub}</p>
+          <p className="text-muted-foreground mt-1 text-[0.8125rem] leading-relaxed">
+            {t.auth.forgotSub}
+          </p>
         </div>
 
         {submittedMessage ? (
           <div className="space-y-4">
-            <div className="border-primary/50 bg-primary/8 text-foreground flex items-start gap-2.5 rounded-md border p-4 text-xs leading-relaxed">
+            <div className="border-primary/50 bg-primary/8 text-foreground flex items-start gap-2.5 rounded-md border p-4 text-[0.8125rem] leading-relaxed">
               <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" />
               <span>{submittedMessage}</span>
             </div>
@@ -74,11 +76,13 @@ export default function ForgotPasswordPage() {
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-1.5">
-              <Label htmlFor="reset-email" className="text-xs font-semibold">
+              <Label htmlFor="reset-email" className="text-[0.8125rem] font-semibold">
                 {t.auth.emailLabel}
               </Label>
               <Input
                 id="reset-email"
+                name="email"
+                autoComplete="email"
                 type="email"
                 required
                 value={email}
@@ -88,7 +92,7 @@ export default function ForgotPasswordPage() {
               />
             </div>
 
-            {error && <p className="text-destructive text-xs">{error}</p>}
+            {error && <p className="text-destructive text-[0.8125rem]">{error}</p>}
 
             <Button type="submit" size="lg" disabled={loading} className="w-full">
               <Mail className="h-4 w-4" />
@@ -96,7 +100,7 @@ export default function ForgotPasswordPage() {
             </Button>
 
             <div className="border-t pt-3 text-center">
-              <Button variant="link" asChild className="text-muted-foreground text-xs">
+              <Button variant="link" asChild className="text-muted-foreground text-[0.8125rem]">
                 <Link href="/login">
                   <ArrowLeft className="h-3.5 w-3.5" /> {t.auth.backToSignIn}
                 </Link>

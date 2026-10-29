@@ -111,12 +111,32 @@
         }
       }
     },
+    "Alle Messdaten dieses Dynos werden dauerhaft gelöscht.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All measurement data of this dyno will be permanently deleted."
+          }
+        }
+      }
+    },
     "Alle eigenen Fahrzeuge, Umgebungen und Dynos auf diesem Gerät werden gelöscht.": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "All your vehicles, environments and dynos on this device will be deleted."
+          }
+        }
+      }
+    },
+    "Als eigenes Fahrzeug speichern": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save as own vehicle"
           }
         }
       }
@@ -221,12 +241,52 @@
         }
       }
     },
+    "Aufnahme beendet, weil die App in den Hintergrund gewechselt ist. Die bisher aufgenommenen Daten bleiben erhalten.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recording stopped because the app moved to the background. The audio captured so far has been kept."
+          }
+        }
+      }
+    },
     "Aufnahme starten": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Start recording"
+          }
+        }
+      }
+    },
+    "Aufnahme verwerfen?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Discard recording?"
+          }
+        }
+      }
+    },
+    "Aufnahme wurde vom System unterbrochen (z. B. Anruf). Die bisher aufgenommenen Daten bleiben erhalten.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recording was interrupted by the system (e.g. a call). The audio captured so far has been kept."
+          }
+        }
+      }
+    },
+    "Aufnahmedauer": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recording time"
           }
         }
       }
@@ -461,6 +521,36 @@
         }
       }
     },
+    "Der Bildschirm bleibt während der Aufnahme an. Die Aufnahme wird nur auf diesem Gerät ausgewertet.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The screen stays on while recording. The recording is analysed on this device only."
+          }
+        }
+      }
+    },
+    "Der Bildschirm bleibt während der Messfahrt an.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The screen stays on during the test run."
+          }
+        }
+      }
+    },
+    "Der Dyno wird automatisch angelegt, sobald du die erste Messung speicherst.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The dyno is created automatically when you save your first measurement."
+          }
+        }
+      }
+    },
     "Design": {
       "localizations": {
         "en": {
@@ -507,6 +597,56 @@
           "stringUnit": {
             "state": "translated",
             "value": "The items are described in the parts list."
+          }
+        }
+      }
+    },
+    "Die aktuelle Aufnahme wurde noch nicht als Drehzahlkurve gespeichert.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The current recording has not been saved as an RPM curve yet."
+          }
+        }
+      }
+    },
+    "Die gespeicherte Drehzahlkurve wird ersetzt.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The saved RPM curve will be replaced."
+          }
+        }
+      }
+    },
+    "Die gespeicherte Leistungskurve wird ersetzt.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The saved power curve will be replaced."
+          }
+        }
+      }
+    },
+    "Die gespeicherte Messfahrt dieser Messart wird ersetzt.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The saved test run of this type will be replaced."
+          }
+        }
+      }
+    },
+    "Die letzte Messfahrt wurde noch nicht gespeichert.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The last test run has not been saved yet."
           }
         }
       }
@@ -621,6 +761,16 @@
         }
       }
     },
+    "Drehzahlkurve gespeichert (%lld Punkte)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "RPM curve saved (%lld points)"
+          }
+        }
+      }
+    },
     "Drehzahlkurve übernehmen": {
       "localizations": {
         "en": {
@@ -711,6 +861,16 @@
         }
       }
     },
+    "Dyno löschen?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete dyno?"
+          }
+        }
+      }
+    },
     "E-Mail": {
       "localizations": {
         "en": {
@@ -747,6 +907,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Inputs"
+          }
+        }
+      }
+    },
+    "Eingangspegel": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Input level"
           }
         }
       }
@@ -871,6 +1041,16 @@
         }
       }
     },
+    "Ersetzen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Replace"
+          }
+        }
+      }
+    },
     "Exportieren (JSON)": {
       "localizations": {
         "en": {
@@ -977,6 +1157,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Error"
+          }
+        }
+      }
+    },
+    "Fehlermeldung schließen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dismiss error"
+          }
+        }
+      }
+    },
+    "Fertig": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Done"
           }
         }
       }
@@ -1211,6 +1411,16 @@
         }
       }
     },
+    "Im Fahrzeug gespeichert": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saved to vehicle"
+          }
+        }
+      }
+    },
     "Im Fahrzeug speichern": {
       "localizations": {
         "en": {
@@ -1351,6 +1561,16 @@
         }
       }
     },
+    "Kopie ‚%@‘ angelegt und ausgewählt": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copy ‘%@’ created and selected"
+          }
+        }
+      }
+    },
     "Krümmer": {
       "localizations": {
         "en": {
@@ -1471,6 +1691,16 @@
         }
       }
     },
+    "Leistungskurve gespeichert (%lld Punkte)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Power curve saved (%lld points)"
+          }
+        }
+      }
+    },
     "Leistungskurve speichern": {
       "localizations": {
         "en": {
@@ -1511,6 +1741,16 @@
         }
       }
     },
+    "Maximale Aufnahmedauer erreicht. Die Aufnahme wurde beendet.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maximum recording length reached. Recording stopped."
+          }
+        }
+      }
+    },
     "Maximale Leistung": {
       "localizations": {
         "en": {
@@ -1541,12 +1781,42 @@
         }
       }
     },
+    "Messfahrt beendet, weil die App in den Hintergrund gewechselt ist. Die bisherigen Messpunkte bleiben erhalten.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Test run stopped because the app moved to the background. The points recorded so far have been kept."
+          }
+        }
+      }
+    },
+    "Messfahrt gespeichert (%lld Messpunkte)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Test run saved (%lld points)"
+          }
+        }
+      }
+    },
     "Messfahrt starten": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Start test run"
+          }
+        }
+      }
+    },
+    "Messfahrt verwerfen?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Discard test run?"
           }
         }
       }
@@ -1701,6 +1971,16 @@
         }
       }
     },
+    "Nach Rieck: n = 1750·φ / √(V·l / F).": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "After Rieck: n = 1750·φ / √(V·l / F)."
+          }
+        }
+      }
+    },
     "Nachkommastellen": {
       "localizations": {
         "en": {
@@ -1821,6 +2101,36 @@
         }
       }
     },
+    "Pegel gut": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Level good"
+          }
+        }
+      }
+    },
+    "Pegel niedrig": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Level low"
+          }
+        }
+      }
+    },
+    "Pegel übersteuert": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Level clipping"
+          }
+        }
+      }
+    },
     "Pleuellänge": {
       "localizations": {
         "en": {
@@ -1911,6 +2221,26 @@
         }
       }
     },
+    "Rückgängig": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Undo"
+          }
+        }
+      }
+    },
+    "Schallgeschwindigkeit": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Speed of sound"
+          }
+        }
+      }
+    },
     "Schleifmaße": {
       "localizations": {
         "en": {
@@ -1931,12 +2261,32 @@
         }
       }
     },
+    "Sehr leises Signal. Prüfe, ob das Mikrofon frei ist (Hülle, Halterung).": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Very quiet signal. Check that the microphone is not covered (case, mount)."
+          }
+        }
+      }
+    },
     "Sichern": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Save"
+          }
+        }
+      }
+    },
+    "Speichere …": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saving …"
           }
         }
       }
@@ -2191,12 +2541,42 @@
         }
       }
     },
+    "Verwerfen und neu aufnehmen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Discard and record again"
+          }
+        }
+      }
+    },
+    "Verwerfen und neu starten": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Discard and start again"
+          }
+        }
+      }
+    },
     "Vorauslass": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Blowdown"
+          }
+        }
+      }
+    },
+    "Vorhandene Daten ersetzen?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Replace existing data?"
           }
         }
       }

@@ -8,9 +8,6 @@ export const deMotor: TranslationDictionary['motor'] = {
   tabVerdichtung: 'Verdichtung',
   tabSteuerdiagramm: 'Diagramm',
   tabUmrechnung: 'Umrechnung',
-  applyToVehicle: 'Ins Fahrzeug übernehmen',
-  applied: 'Im Fahrzeug gespeichert',
-  applyReadOnlyHint: 'Dupliziere das Startfahrzeug, um Ergebnisse zu speichern.',
   resetToVehicle: 'Fahrzeugwerte laden',
   missingInputs: 'Fülle alle Eingaben aus, um Ergebnisse zu sehen.',
   hubraum: {
@@ -43,7 +40,7 @@ export const deMotor: TranslationDictionary['motor'] = {
   steuerdiagramm: {
     inputsTitle: 'Steuerzeiten',
     preset: 'Typische Steuerzeiten',
-    presetPlaceholder: 'Vorlage wählen…',
+    presetPlaceholder: 'Voreinstellung wählen…',
     presets: {
       sehrKurz: 'Sehr kurz',
       kurz: 'Kurz',

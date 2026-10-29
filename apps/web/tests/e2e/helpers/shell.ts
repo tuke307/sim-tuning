@@ -35,6 +35,25 @@ export async function navigateToTab(page: Page, tab: ShellTab): Promise<void> {
   }
 }
 
+/** URL of a shell view: the active view lives in `?m=` (Home is the bare root). */
+export function shellViewUrl(tab: ShellTab): string {
+  return tab === 'home' ? '/' : `/?m=${tab}`;
+}
+
+/** Open a view directly by URL (deep link / reload behaviour). */
+export async function gotoView(page: Page, tab: ShellTab): Promise<void> {
+  await page.goto(shellViewUrl(tab));
+}
+
+/** Assert the URL reflects the given view, e.g. after back/forward navigation. */
+export async function expectView(page: Page, tab: ShellTab, timeout = 10_000): Promise<void> {
+  if (tab === 'home') {
+    await expect(page).not.toHaveURL(/[?&]m=/, { timeout });
+    return;
+  }
+  await expect(page).toHaveURL(new RegExp(`[?&]m=${tab}(&|$)`), { timeout });
+}
+
 /**
  * Assert the header sync/connection status contains the expected text. The status is always
  * announced to assistive tech, but only shown visually when the user can act on it.

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useId, useState } from 'react';
+import React, { useId } from 'react';
 import type { SteuerdiagrammPort } from '@sim-tuning/common/logic';
 import type { VehicleDto } from '@sim-tuning/common/schemas';
 import { Label } from '@sim-tuning/ui/components/ui/label';
@@ -12,6 +12,8 @@ import {
   type StuecklisteGroup,
 } from '@/components/sim/shared/drawing';
 import { Section } from '@/components/sim/shared/module-page';
+import { useWorkDraft } from '@/hooks/useWorkDraft';
+import { workDraftKey } from '@/lib/sim/drafts/work-draft';
 import { ResultValue, UnitNumberField } from '@/components/sim/shared/unit-number-field';
 import {
   computeSteuerzeiten,
@@ -29,6 +31,7 @@ import {
 } from './steuerdiagramm-svg';
 
 const KW = '°KW';
+const PANEL = 'motor.steuerdiagramm';
 
 /** v2 MotorSteuerdiagrammView + PortTimingPopup presets. */
 export function SteuerdiagrammPanel({ vehicle }: { vehicle: VehicleDto }) {
@@ -36,11 +39,20 @@ export function SteuerdiagrammPanel({ vehicle }: { vehicle: VehicleDto }) {
   const { rounding } = useSimData();
   const presetId = useId();
   const s = t.motor.steuerdiagramm;
-  const [timings, setTimings] = useState<Record<SteuerdiagrammPort, number | null>>({
-    einlass: vehicle.motor?.einlass?.steuerzeitSZ ?? null,
-    auslass: vehicle.motor?.auslass?.steuerzeitSZ ?? null,
-    ueberstroemer: vehicle.motor?.ueberstroemer?.steuerzeitSZ ?? null,
-  });
+  const {
+    draft: timings,
+    setDraft: setTimings,
+    dirty,
+    reset,
+    commit,
+  } = useWorkDraft<Record<SteuerdiagrammPort, number | null>>(
+    workDraftKey(vehicle.id, PANEL),
+    () => ({
+      einlass: vehicle.motor?.einlass?.steuerzeitSZ ?? null,
+      auslass: vehicle.motor?.auslass?.steuerzeitSZ ?? null,
+      ueberstroemer: vehicle.motor?.ueberstroemer?.steuerzeitSZ ?? null,
+    }),
+  );
   const result = computeSteuerzeiten(timings);
   const { format } = new Intl.NumberFormat(undefined, {
     maximumFractionDigits: rounding.roundingAccuracy,
@@ -186,6 +198,8 @@ export function SteuerdiagrammPanel({ vehicle }: { vehicle: VehicleDto }) {
                     }
                   : null
               }
+              onSaved={(saved) => commit(workDraftKey(saved.id, PANEL))}
+              draft={{ dirty, onReset: reset }}
             />
           </Section>
           <Section title={s.anglesTitle}>

@@ -1,19 +1,20 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { ModulePage } from '@/components/sim/shared/module-page';
+import { useSubTab } from '@/lib/navigation/nav-state';
 import { useLocale } from '@/providers/i18n/locale-context';
 import { useSimData } from '@/providers/sim/sim-data-context';
 import { AuslassAnwendung } from './auslass-anwendung';
 import { AuslassTheorie } from './auslass-theorie';
 
-type AuslassTab = 'theorie' | 'anwendung';
+const AUSLASS_TABS = ['theorie', 'anwendung'] as const;
 
 /** Exhaust module (v2 `AuslassMainView`): Theorie and Anwendung sub-tabs. */
 export function AuslassView() {
   const { t } = useLocale();
   const { selectedVehicle } = useSimData();
-  const [tab, setTab] = useState<AuslassTab>('theorie');
+  const [tab, setTab] = useSubTab(AUSLASS_TABS, 'theorie');
 
   return (
     <ModulePage
@@ -29,7 +30,7 @@ export function AuslassView() {
     >
       {selectedVehicle &&
         (tab === 'theorie' ? (
-          // Keyed by vehicle so the draft is re-initialised when another vehicle is picked.
+          // Keyed by vehicle so each vehicle gets its own work draft.
           <AuslassTheorie key={selectedVehicle.id} vehicle={selectedVehicle} />
         ) : (
           <AuslassAnwendung key={selectedVehicle.id} vehicle={selectedVehicle} />

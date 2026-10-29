@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useId, useState } from 'react';
+import React, { useId } from 'react';
 import {
   convertUnit,
   convertValueForUnit,
@@ -13,6 +13,7 @@ import { Label } from '@sim-tuning/ui/components/ui/label';
 import { NativeSelect } from '@sim-tuning/ui/components/ui/native-select';
 import { cn } from '@sim-tuning/ui/lib/utils';
 import { NumberInput } from '@/components/sim/number-input';
+import { useUnitPreference } from '@/hooks/useUnitPreference';
 import { useSimData } from '@/providers/sim/sim-data-context';
 
 export interface UnitNumberFieldProps {
@@ -47,7 +48,7 @@ export function UnitNumberField({
 }: UnitNumberFieldProps) {
   const id = useId();
   const { rounding } = useSimData();
-  const [unit, setUnit] = useState<UnitId | undefined>(baseUnit);
+  const [unit, setUnit] = useUnitPreference(baseUnit);
   const units = baseUnit ? QUANTITY_UNITS[UNITS[baseUnit].quantity] : [];
 
   const displayed =

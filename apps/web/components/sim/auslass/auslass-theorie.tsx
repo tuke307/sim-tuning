@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import type { VehicleDto } from '@sim-tuning/common/schemas';
 import { FIELD_BASE_UNITS } from '@sim-tuning/common/units';
-import { Section } from '@/components/sim/shared/module-page';
+import { SaveToVehicleButton, Section } from '@/components/sim/shared/module-page';
 import { ResultValue, UnitNumberField } from '@/components/sim/shared/unit-number-field';
+import { useWorkDraft } from '@/hooks/useWorkDraft';
+import { workDraftKey } from '@/lib/sim/drafts/work-draft';
 import { FactorSlider } from './factor-slider';
-import { SaveMotorButton } from './save-motor-button';
 import {
   buildTheorieUpdate,
   computeTheorie,
@@ -16,13 +17,28 @@ import {
 import { useLocale } from '@/providers/i18n/locale-context';
 import { useSimData } from '@/providers/sim/sim-data-context';
 
+const PANEL = 'auslass.theorie';
+
+/** Fields stored on the vehicle; the gas temperature of the velocity calculator is scratch. */
+const VEHICLE_FIELDS = [
+  'kruemmerD',
+  'kruemmerF',
+  'flaecheA',
+  'steuerzeitSZ',
+  'abgasT',
+  'resonanzU',
+] as const;
+
 /** v2 `AuslassTheorieView`: header length/diameter, gas velocity and resonance length. */
 export function AuslassTheorie({ vehicle }: { vehicle: VehicleDto }) {
   const { t } = useLocale();
   const { rounding } = useSimData();
   const th = t.auslass.theorie;
-  const readOnly = vehicle.isSystem;
-  const [draft, setDraft] = useState<TheorieDraft>(() => theorieDraftFromVehicle(vehicle));
+  const { draft, setDraft, dirty, reset, commit } = useWorkDraft<TheorieDraft>(
+    workDraftKey(vehicle.id, PANEL),
+    () => theorieDraftFromVehicle(vehicle),
+    { compare: VEHICLE_FIELDS },
+  );
   const set = (key: keyof TheorieDraft) => (value: number | null) =>
     setDraft((d) => ({ ...d, [key]: value }));
   const result = computeTheorie(draft);
@@ -39,14 +55,12 @@ export function AuslassTheorie({ vehicle }: { vehicle: VehicleDto }) {
             value={draft.kruemmerD}
             baseUnit={FIELD_BASE_UNITS.auspuff.kruemmerD}
             onChange={set('kruemmerD')}
-            readOnly={readOnly}
             testId="auslass-theorie-kruemmerD"
           />
           <FactorSlider
             label={th.kruemmerF}
             value={draft.kruemmerF}
             onChange={set('kruemmerF')}
-            readOnly={readOnly}
             testId="auslass-theorie-kruemmerF"
           />
           <ResultValue
@@ -63,7 +77,6 @@ export function AuslassTheorie({ vehicle }: { vehicle: VehicleDto }) {
             value={draft.flaecheA}
             baseUnit={FIELD_BASE_UNITS.auslass.flaecheA}
             onChange={set('flaecheA')}
-            readOnly={readOnly}
             testId="auslass-theorie-flaecheA"
           />
           <div className="bg-card rounded-md border px-3 py-2.5">
@@ -88,7 +101,6 @@ export function AuslassTheorie({ vehicle }: { vehicle: VehicleDto }) {
             value={draft.gasT}
             baseUnit={FIELD_BASE_UNITS.auspuff.abgasT}
             onChange={set('gasT')}
-            readOnly={readOnly}
             testId="auslass-theorie-gasT"
           />
           <ResultValue
@@ -106,7 +118,6 @@ export function AuslassTheorie({ vehicle }: { vehicle: VehicleDto }) {
               value={draft.steuerzeitSZ}
               suffix="°KW"
               onChange={set('steuerzeitSZ')}
-              readOnly={readOnly}
               testId="auslass-theorie-steuerzeitSZ"
             />
             <UnitNumberField
@@ -114,7 +125,6 @@ export function AuslassTheorie({ vehicle }: { vehicle: VehicleDto }) {
               value={draft.abgasT}
               baseUnit={FIELD_BASE_UNITS.auspuff.abgasT}
               onChange={set('abgasT')}
-              readOnly={readOnly}
               testId="auslass-theorie-abgasT"
             />
             <UnitNumberField
@@ -122,7 +132,6 @@ export function AuslassTheorie({ vehicle }: { vehicle: VehicleDto }) {
               value={draft.resonanzU}
               suffix="U/min"
               onChange={set('resonanzU')}
-              readOnly={readOnly}
               testId="auslass-theorie-resonanzU"
             />
           </div>
@@ -134,8 +143,10 @@ export function AuslassTheorie({ vehicle }: { vehicle: VehicleDto }) {
           />
         </Section>
       </div>
-      <SaveMotorButton
+      <SaveToVehicleButton
         buildUpdate={(name) => buildTheorieUpdate(name, draft, result)}
+        onSaved={(saved) => commit(workDraftKey(saved.id, PANEL))}
+        draft={{ dirty, onReset: reset }}
         hint={th.saveHint}
         testId="auslass-theorie-save"
       />

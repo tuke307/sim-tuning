@@ -10,13 +10,22 @@ import { Card } from '@sim-tuning/ui/components/ui/card';
 import { Input } from '@sim-tuning/ui/components/ui/input';
 import { Label } from '@sim-tuning/ui/components/ui/label';
 import { Tabs, TabsList, TabsTrigger } from '@sim-tuning/ui/components/ui/tabs';
+import { PASSWORD_RULES } from '@sim-tuning/common/schemas';
 import { useAuth } from '@/providers/auth/auth-context';
 import { useLocale } from '@/providers/i18n/locale-context';
 
 export default function LoginPage() {
   const router = useRouter();
-  const { login, register, resendConfirmation, continueOfflineLocal, error, infoMessage, loading } =
-    useAuth();
+  const {
+    login,
+    register,
+    resendConfirmation,
+    continueOfflineLocal,
+    error,
+    errorCode,
+    infoMessage,
+    loading,
+  } = useAuth();
   const { t } = useLocale();
   const [mode, setMode] = useState<'login' | 'register'>('login');
   const [name, setName] = useState('');
@@ -44,7 +53,7 @@ export default function LoginPage() {
               <span className="font-display block text-[1.125rem] font-bold tracking-[0.12em] uppercase">
                 SimTuning
               </span>
-              <span className="text-muted-foreground block text-xs">{t.nav.tagline}</span>
+              <span className="text-muted-foreground block text-[0.8125rem]">{t.nav.tagline}</span>
             </div>
           </Link>
         </div>
@@ -59,11 +68,13 @@ export default function LoginPage() {
         <form onSubmit={handleSubmit} className="space-y-4">
           {mode === 'register' && (
             <div className="space-y-1.5">
-              <Label htmlFor="name" className="text-xs font-semibold">
+              <Label htmlFor="name" className="text-[0.8125rem] font-semibold">
                 {t.auth.nameLabel}
               </Label>
               <Input
                 id="name"
+                name="name"
+                autoComplete="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Tuner"
@@ -73,12 +84,15 @@ export default function LoginPage() {
           )}
 
           <div className="space-y-1.5">
-            <Label htmlFor="email" className="text-xs font-semibold">
+            <Label htmlFor="email" className="text-[0.8125rem] font-semibold">
               {t.auth.emailLabel}
             </Label>
             <Input
               id="email"
+              name="email"
               type="email"
+              autoComplete="email"
+              inputMode="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -89,13 +103,13 @@ export default function LoginPage() {
 
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
-              <Label htmlFor="password" className="text-xs font-semibold">
+              <Label htmlFor="password" className="text-[0.8125rem] font-semibold">
                 {t.auth.passwordLabel}
               </Label>
               {mode === 'login' && (
                 <Link
                   href="/forgot-password"
-                  className="text-primary text-xs font-semibold hover:underline"
+                  className="text-primary text-[0.8125rem] font-semibold hover:underline"
                 >
                   {t.auth.forgotPasswordLink}
                 </Link>
@@ -103,17 +117,25 @@ export default function LoginPage() {
             </div>
             <Input
               id="password"
+              name="password"
               type="password"
+              autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
               required
+              minLength={mode === 'register' ? PASSWORD_RULES.minLength : undefined}
+              aria-describedby={mode === 'register' ? 'password-hint' : undefined}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder={t.auth.passwordMinHint}
               className="h-10"
             />
+            {mode === 'register' && (
+              <p id="password-hint" className="text-muted-foreground text-[0.8125rem]">
+                {t.auth.passwordMinHint}
+              </p>
+            )}
           </div>
 
           {infoMessage && (
-            <div className="border-primary/50 bg-primary/8 text-foreground space-y-2 rounded-md border p-3.5 text-xs">
+            <div className="border-primary/50 bg-primary/8 text-foreground space-y-2 rounded-md border p-3.5 text-[0.9375rem]">
               <div className="flex items-start gap-2">
                 <MailCheck className="mt-0.5 h-4 w-4 shrink-0" />
                 <span>{infoMessage}</span>
@@ -134,8 +156,10 @@ export default function LoginPage() {
 
           {error && (
             <div className="space-y-2">
-              <p className="text-destructive text-xs">{error}</p>
-              {error.toLowerCase().includes('confirm your email') && email.trim() && (
+              <p role="alert" className="text-destructive text-[0.9375rem]">
+                {error}
+              </p>
+              {errorCode === 'EMAIL_NOT_CONFIRMED' && email.trim() && (
                 <Button
                   type="button"
                   variant="secondary"
@@ -170,7 +194,7 @@ export default function LoginPage() {
               continueOfflineLocal();
               router.push('/');
             }}
-            className="text-muted-foreground hover:text-foreground text-xs font-semibold"
+            className="text-muted-foreground hover:text-foreground text-[0.8125rem] font-semibold"
           >
             {t.auth.continueGuestBtn}
           </Button>

@@ -35,7 +35,7 @@ export default function DeleteAccountPage() {
               <span className="font-display block text-[1.125rem] font-bold tracking-[0.12em] uppercase">
                 SimTuning
               </span>
-              <span className="text-muted-foreground block text-xs">
+              <span className="text-muted-foreground block text-[0.8125rem]">
                 Account Deletion Confirmation
               </span>
             </div>
@@ -44,7 +44,7 @@ export default function DeleteAccountPage() {
 
         {!token ? (
           <div className="space-y-4">
-            <div className="border-destructive/60 bg-destructive/8 text-destructive flex items-start gap-2.5 rounded-md border p-3.5 text-xs">
+            <div className="border-destructive/60 bg-destructive/8 text-destructive flex items-start gap-2.5 rounded-md border p-3.5 text-[0.8125rem]">
               <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
               <div>
                 <p className="font-bold">Missing Account Deletion Token</p>
@@ -64,7 +64,7 @@ export default function DeleteAccountPage() {
               <CheckCircle2 className="h-8 w-8" />
             </div>
             <h1 className="font-display text-2xl font-bold">Account Permanently Deleted</h1>
-            <p className="text-muted-foreground text-xs leading-relaxed">
+            <p className="text-muted-foreground text-[0.8125rem] leading-relaxed">
               Your SimTuning account and all associated vehicles, engine setups, and dyno runs have
               been permanently deleted.
             </p>
@@ -78,11 +78,11 @@ export default function DeleteAccountPage() {
               <h1 className="font-display text-2xl font-bold">
                 Confirm Permanent Account Deletion
               </h1>
-              <p className="text-muted-foreground text-xs leading-relaxed">
+              <p className="text-muted-foreground text-[0.8125rem] leading-relaxed">
                 Please confirm in your browser that you want to permanently delete your SimTuning
                 account. This action is irreversible and will immediately erase:
               </p>
-              <ul className="text-muted-foreground list-disc space-y-1 pl-5 text-xs">
+              <ul className="text-muted-foreground list-disc space-y-1 pl-5 text-[0.8125rem]">
                 <li>Your account profile, credentials, and preferences</li>
                 <li>All vehicles with their engine, intake, and exhaust setups</li>
                 <li>All dyno runs, recordings, and measurement history</li>
@@ -90,7 +90,7 @@ export default function DeleteAccountPage() {
             </div>
 
             {error && (
-              <div className="border-destructive/60 bg-destructive/8 text-destructive flex items-start gap-2.5 rounded-md border p-3.5 text-xs">
+              <div className="border-destructive/60 bg-destructive/8 text-destructive flex items-start gap-2.5 rounded-md border p-3.5 text-[0.8125rem]">
                 <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
                 <span>{error}</span>
               </div>

@@ -9,9 +9,9 @@ import SwiftUI
 /// Stückliste below.
 struct SteuerdiagrammView: View {
     @Environment(AppModel.self) private var model
-    @State private var einlass: Double?
-    @State private var auslass: Double?
-    @State private var ueberstroemer: Double?
+    @Draft(.steuerdiagramm, "einlass") private var einlass
+    @Draft(.steuerdiagramm, "auslass") private var auslass
+    @Draft(.steuerdiagramm, "ueberstroemer") private var ueberstroemer
     @State private var highlighted: Int?
     @State private var drawIn = 0.0
 
@@ -94,10 +94,10 @@ struct SteuerdiagrammView: View {
                 angleRows("Überströmer", ueberstroemer.map { EngineLogic.getSteuerwinkelOeffnet(ueberstroemer: $0) },
                           ueberstroemer.map { EngineLogic.getSteuerwinkelSchliesst(ueberstroemer: $0) })
             }
-            VehicleActionsSection(apply: apply, save: save)
+            VehicleActionsSection(calculator: .steuerdiagramm, apply: apply, save: save)
         }
-        .moduleChrome("Steuerdiagramm")
-        .onAppear { if einlass == nil && auslass == nil { apply() } }
+        .calculatorChrome("Steuerdiagramm")
+        .calculatorDraft(.steuerdiagramm, seed: apply)
     }
 
     @ViewBuilder
@@ -138,7 +138,7 @@ struct SteuerdiagrammView: View {
         motor.einlass = EinlassInputDto(steuerzeitSZ: .some(einlass))
         motor.auslass = AuslassInputDto(steuerzeitSZ: .some(auslass))
         motor.ueberstroemer = UeberstroemerInputDto(steuerzeitSZ: .some(ueberstroemer))
-        Task { await model.saveToSelectedVehicle(VehicleInputDto(motor: motor)) }
+        Task { await model.saveToSelectedVehicle(VehicleInputDto(motor: motor), from: .steuerdiagramm) }
     }
 }
 

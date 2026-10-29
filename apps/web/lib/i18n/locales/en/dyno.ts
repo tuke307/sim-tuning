@@ -9,9 +9,11 @@ export const enDyno = {
     runtime: 'Run',
     diagnosis: 'Diagnosis',
   },
-  noDyno: 'This vehicle has no dyno yet. Create one under Data.',
-  goToData: 'Create dyno',
-  readOnlyDyno: 'Duplicate the starter vehicle to create a dyno for it.',
+  noDyno:
+    'No dyno yet. You do not have to create one first – saving under Audio or Run creates it automatically.',
+  duplicateVehicle: 'Duplicate vehicle',
+  readOnlyDyno:
+    'Starter vehicles are read-only. Duplicate the vehicle to save curves and runs for it.',
   data: {
     sectionTitle: 'Dyno',
     createTitle: 'New dyno',
@@ -60,6 +62,18 @@ export const enDyno = {
     sourceRecording: 'Recording',
     sourceDemo: 'Demo recording',
     recording: 'Recording…',
+    recordHint: 'The screen stays on while recording. Keep the app in the foreground.',
+    elapsed: 'Recording time',
+    level: 'Input level',
+    levelLow: 'Level low',
+    levelOk: 'Level OK',
+    levelClipping: 'Level too high (clipping)',
+    quietWarning:
+      'No engine sound detected? Make sure the microphone is not covered and points towards the engine.',
+    interrupted:
+      'The app went to the background, so the recording was stopped. Everything recorded up to that point has been kept.',
+    interruptedEmpty:
+      'The app went to the background before anything was recorded. Please start the recording again.',
     decoding: 'Decoding audio…',
     micDenied: 'Microphone access was denied. Allow it in the browser settings to record.',
     micUnsupported: 'Recording is not supported in this browser. Upload a file instead.',
@@ -104,7 +118,7 @@ export const enDyno = {
     shownOf: 'Showing {shown} of {total} points',
     saveCurve: 'Save as RPM curve',
     curveSaved: 'RPM curve saved',
-    needDyno: 'Create a dyno under Data to save the curve.',
+    needDyno: 'Saving creates the dyno for this vehicle automatically.',
     storedCurve: 'Stored RPM curve: {count} points',
   },
   runtime: {
@@ -137,7 +151,7 @@ export const enDyno = {
     save: 'Save run',
     saved: 'Run saved',
     audioReady: 'Engine sound recorded – analyze it under Audio.',
-    needDyno: 'Create a dyno under Data to save runs.',
+    needDyno: 'Saving creates the dyno for this vehicle automatically.',
     accelerationTitle: 'Acceleration',
     rolloutTitle: 'Coast-down',
     timeAxis: 'Time in s',
