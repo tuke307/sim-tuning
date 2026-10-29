@@ -5,17 +5,17 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@sim-tuning/ui/lib/utils';
 
 const badgeVariants = cva(
-  'inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-[color,background-color] overflow-hidden',
+  'inline-flex items-center justify-center rounded-xs border border-current/40 px-1.5 py-0.5 text-[0.6875rem] font-semibold uppercase tracking-[0.06em] w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none overflow-hidden',
   {
     variants: {
       variant: {
-        default: 'bg-primary/12 text-primary [a&]:hover:bg-primary/18',
+        default: 'text-primary',
         solid: 'bg-primary text-primary-foreground [a&]:hover:bg-primary/90',
-        accent: 'bg-primary/12 text-primary [a&]:hover:bg-primary/18',
-        secondary: 'bg-secondary text-secondary-foreground [a&]:hover:bg-secondary/80',
-        success: 'bg-success/12 text-success',
-        warning: 'bg-warning/15 text-warning',
-        destructive: 'bg-destructive/12 text-destructive [a&]:hover:bg-destructive/18',
+        accent: 'text-primary',
+        secondary: 'bg-raised text-muted-foreground border-border',
+        success: 'text-success',
+        warning: 'text-warning',
+        destructive: 'text-destructive',
         outline: 'border border-border text-foreground [a&]:hover:bg-secondary',
       },
     },
