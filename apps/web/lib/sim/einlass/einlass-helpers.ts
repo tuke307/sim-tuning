@@ -30,8 +30,6 @@ export interface KanalDraft {
   kurbelgehaeuseV: Maybe;
   /** Resonance rpm (U/min). */
   resonanzU: Maybe;
-  /** Intake pipe diameter (mm). */
-  durchmesserD: Maybe;
 }
 
 export function kanalDraftFromVehicle(vehicle: VehicleDto | null): KanalDraft {
@@ -41,25 +39,24 @@ export function kanalDraftFromVehicle(vehicle: VehicleDto | null): KanalDraft {
     steuerzeitSZ: motor?.einlass?.steuerzeitSZ ?? null,
     kurbelgehaeuseV: motor?.kurbelgehaeuseV ?? null,
     resonanzU: motor?.resonanzU ?? null,
-    durchmesserD: motor?.einlass?.durchmesserD ?? null,
   };
 }
 
 /**
- * Intake resonance length in mm (v2 result unit). Inputs are converted to cm², cm³ and cm like
- * v2. Returns `null` while inputs are incomplete or the result is not finite (e.g. rpm = 0).
+ * Intake resonance length in mm. Inputs are converted to cm² and cm³ for the formula. Returns
+ * `null` while inputs are incomplete or the result is not finite (e.g. rpm or volume = 0).
  */
 export function computeKanalResonanzLaenge(draft: KanalDraft): number | null {
-  const { flaecheA, steuerzeitSZ, kurbelgehaeuseV, resonanzU, durchmesserD } = draft;
-  if (!has(flaecheA) || !has(steuerzeitSZ) || !has(kurbelgehaeuseV)) return null;
-  if (!has(resonanzU) || !has(durchmesserD)) return null;
+  const { flaecheA, steuerzeitSZ, kurbelgehaeuseV, resonanzU } = draft;
+  if (!has(flaecheA) || !has(steuerzeitSZ) || !has(kurbelgehaeuseV) || !has(resonanzU)) {
+    return null;
+  }
   return finite(
     einlass.getResonanzLaenge(
       convertUnit(flaecheA, 'squareMillimeter', 'squareCentimeter'),
       steuerzeitSZ,
       convertUnit(kurbelgehaeuseV, 'cubicMillimeter', 'cubicCentimeter'),
       resonanzU,
-      convertUnit(durchmesserD, 'millimeter', 'centimeter'),
     ),
   );
 }
@@ -74,7 +71,6 @@ export function buildKanalUpdate(motorName: string, draft: KanalDraft): Partial<
       einlass: {
         flaecheA: draft.flaecheA ?? null,
         steuerzeitSZ: draft.steuerzeitSZ ?? null,
-        durchmesserD: draft.durchmesserD ?? null,
       },
     },
   };

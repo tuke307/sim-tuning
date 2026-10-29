@@ -14,7 +14,6 @@ export const deEinlass: TranslationDictionary['einlass'] = {
     steuerzeitSZ: 'Einlass-Steuerwinkel',
     resonanzU: 'Resonanzdrehzahl',
     kurbelgehaeuseV: 'Kurbelgehäusevolumen',
-    durchmesserD: 'Ø Ansaugleitung',
     resonanzL: 'Einlass-Resonanzlänge',
     hint: 'Alle Eingaben ausfüllen, um die Resonanzlänge zu berechnen.',
   },

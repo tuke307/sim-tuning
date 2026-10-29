@@ -230,7 +230,8 @@ struct AudioDynoView: View {
                 try AudioDyno.analyze(audio.samples, sampleRate: Double(audio.sampleRate), options: options)
             }.value
             analysis = result
-            selectedCluster = result.clusters.indices.max { result.clusters[$0].count < result.clusters[$1].count }
+            // Firing-frequency track, not the largest cluster: harmonics are often louder.
+            selectedCluster = result.fundamental
         } catch {
             model.report(error)
         }

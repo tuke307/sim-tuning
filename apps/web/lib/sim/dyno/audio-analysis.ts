@@ -1,8 +1,8 @@
 import {
   AUDIO_DYNO_DEFAULTS,
   AUDIO_FFT_SIZES,
-  calculateClusters,
   calculateRotationalSpeed,
+  calculateTracks,
   computeSpectrogram,
   createSpectrogramSettings,
   type DrehzahlPoint,
@@ -107,14 +107,17 @@ export function calculateSpectrogramChunked(
 
 export interface AnalysisResult {
   points: DrehzahlPoint[];
+  /** Engine-speed tracks (DBSCAN clusters joined by `mergeClusterTracks`). */
   clusters: DrehzahlPoint[][];
+  /** Suggested track (lowest-order engine track), -1 if none. */
+  fundamental: number;
   /** Spectrogram grid size, shown as info. */
   columns: number;
   rows: number;
   durationMs: number;
 }
 
-/** Full pipeline: spectrogram → RPM points → DBSCAN clusters. `null` when cancelled. */
+/** Full pipeline: spectrogram → RPM points → DBSCAN tracks. `null` when cancelled. */
 export function runAudioAnalysis(
   samples: Float64Array,
   sampleRate: number,
@@ -128,11 +131,12 @@ export function runAudioAnalysis(
   if (!spectrogram) return null;
   const points = calculateRotationalSpeed(spectrogram, options.intensity);
   if (onProgress?.(0.93) === false) return null;
-  const clusters = calculateClusters(points, options.epsilon);
+  const { clusters, fundamental } = calculateTracks(points, options.epsilon);
   onProgress?.(1);
   return {
     points,
     clusters,
+    fundamental,
     columns: spectrogram.ffts.length,
     rows: spectrogram.settings.height,
     durationMs: (samples.length / sampleRate) * 1000,

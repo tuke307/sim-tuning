@@ -13,8 +13,6 @@ struct EngineParityTests {
         #expect(EngineLogic.getCompression(hubraum: 49900, brennraum: 5880) == g("compression2"))
         #expect(EngineLogic.getCylinderHoleDiameter(hubraum: 50000, hub: 17000) == g("cylinderHoleDiameter"))
         #expect(EngineLogic.getCylinderHoleDiameter(hubraum: 49900, hub: 44) == g("cylinderHoleDiameter2"))
-        #expect(EngineLogic.getDisplacement(bohrungsdurchmesser: 38, hub: 17000) == g("displacement"))
-        #expect(EngineLogic.getDisplacement(bohrungsdurchmesser: 38, hub: 44) == g("displacement2"))
         #expect(EngineLogic.getDistanceToOT(pleullaenge: 44, hubradius: 22, deachsierung: 2, kwgrad: 120)
             == g("distanceToOT"))
         #expect(EngineLogic.getDistanceToOT(pleullaenge: 95, hubradius: 22, deachsierung: 2, kwgrad: 67.5)
@@ -78,13 +76,7 @@ struct EngineParityTests {
 struct EinlassParityTests {
     let g = Golden.number
 
-    @Test func resonanceLengthAndCarburettorSizing() {
-        #expect(EinlassLogic.getResonanzLaenge(einlassflaeche: 20, einlasssteuerwinkel: 120,
-                                               kurbelgehausevolumen: 17000, resonanzdrehzahl: 8000,
-                                               ansaugleitungsdurchmesser: 20) == g("einlassResonanz"))
-        #expect(EinlassLogic.getResonanzLaenge(einlassflaeche: 300, einlasssteuerwinkel: 135,
-                                               kurbelgehausevolumen: 149_700, resonanzdrehzahl: 5500,
-                                               ansaugleitungsdurchmesser: 16) == g("einlassResonanz2"))
+    @Test func carburettorSizing() {
         #expect(EinlassLogic.getVergaserDurchmesser(hubvolumen: 50000, resonanzdrehzahl: 8000, widerstandsFaktor: 0.9)
             == g("vergaserD"))
         #expect(EinlassLogic.getVergaserDurchmesser(hubvolumen: 49900, resonanzdrehzahl: 5500, widerstandsFaktor: 0.85)
@@ -101,13 +93,8 @@ struct AuslassParityTests {
     let g = Golden.number
 
     @Test func singleFormulas() {
-        #expect(AuslassLogic.getGasGeschwindigkeit(abgastemperatur: 550) == g("gasV"))
-        #expect(AuslassLogic.getKruemmerDurchmesser(auslassflaeche: 2, percentage: 10) == g("kruemmerD"))
-        #expect(AuslassLogic.getKruemmerDurchmesser(auslassflaeche: 400, percentage: 150) == g("kruemmerD2"))
         #expect(AuslassLogic.getKruemmerLaenge(kruemmerdurchmesser: 20, drehmomentfaktor: 20, auslassLaenge: 20)
             == g("kruemmerL"))
-        #expect(AuslassLogic.getResonanzLaenge(auslassSteuerwinkel: 180, abgasTemperatur: 550, resonanzDrehzahl: 8000)
-            == g("auslassResonanz"))
         #expect(AuslassLogic.getVehiclePortDuration(auslassSteuerzeit: 180, drehzahl: 8000) == g("portDuration"))
     }
 
@@ -116,7 +103,8 @@ struct AuslassParityTests {
         let input = AuslassLogic.AuspuffInput(
             resonanzU: 8000,
             auslass: .init(laengeL: 100, steuerzeitSZ: 190, durchmesserD: 45.83, flaecheA: 20),
-            auspuff: .init(abgasT: 548.69, diffusorStage: stage, diffusorW1: 7.5, kruemmerF: 10, kruemmerW: 2,
+            // v2 users typed the speed of sound (548.69 m/s) here; 500 °C gives exactly that.
+            auspuff: .init(abgasT: 500, diffusorStage: stage, diffusorW1: 7.5, kruemmerF: 10, kruemmerW: 2,
                            mittelteilF: 2.9, gegenKonusW: 8, endrohrL: 295, endrohrD: 27)
         )
         let result = AuslassLogic.calculateAuspuff(input)
@@ -139,5 +127,36 @@ struct DynoParityTests {
                                           g: 9.81, aw: 0.6, s: 0), Golden.number("leistung"))
         expectClose(DynoLogic.getLeistung(n: 4500, t: 2, p: 1.18, cw: 0.8, i: 9, r: 0.3, m: 160, c: 0.015,
                                           g: 9.81, aw: 0.7, s: 0.05), Golden.number("leistung2"))
+    }
+}
+
+/// Mirror of the TS "literature" suite: formulas v2 got wrong, pinned to the sources
+/// (Werkstatthandbuch S 51, Bitterli, Rechensheet-2Takt).
+@Suite("literature — formulas v2 got wrong")
+struct LiteratureTests {
+    @Test func displacement() {
+        #expect(EngineLogic.getDisplacement(bohrungsdurchmesser: 38, hub: 44) == 49901.1)
+        #expect(EngineLogic.getDisplacement(bohrungsdurchmesser: 45, hub: 44) == 69979)
+    }
+
+    @Test func intakeResonanceLength() {
+        #expect(EinlassLogic.getResonanzLaenge(einlassflaeche: 10, einlasssteuerwinkel: 360,
+                                               kurbelgehausevolumen: 290, resonanzdrehzahl: 9500) == 1516.48)
+        #expect(EinlassLogic.getResonanzLaenge(einlassflaeche: 3, einlasssteuerwinkel: 135,
+                                               kurbelgehausevolumen: 149.7, resonanzdrehzahl: 5500) == 369.76)
+    }
+
+    @Test func speedOfSoundAndExhaustResonanceLength() {
+        #expect(AuslassLogic.getGasGeschwindigkeit(abgastemperatur: 500) == 548.69)
+        #expect(AuslassLogic.getGasGeschwindigkeit(abgastemperatur: 550) == 566.16)
+        #expect(AuslassLogic.getResonanzLaenge(auslassSteuerwinkel: 190, schallgeschwindigkeit: 548.69,
+                                               resonanzDrehzahl: 8000) == 1085.95)
+        #expect(AuslassLogic.getResonanzLaenge(auslassSteuerwinkel: 190, abgasTemperatur: 500,
+                                               resonanzDrehzahl: 8000) == 1085.95)
+    }
+
+    @Test func headerDiameterFromPortArea() {
+        #expect(AuslassLogic.getKruemmerDurchmesser(auslassflaeche: 1100, percentage: 10) == 39.25)
+        #expect(AuslassLogic.getKruemmerDurchmesser(auslassflaeche: 1100, percentage: 50) == 45.83)
     }
 }

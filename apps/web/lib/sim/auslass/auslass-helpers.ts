@@ -19,8 +19,8 @@ const orNull = (value: Maybe): number | null => value ?? null;
 export const KRUEMMER_FAKTOR_MIN = 6;
 export const KRUEMMER_FAKTOR_MAX = 12;
 
-/** Percentages v2 shows as header diameter range (`D(10 %) – D(20 %)`). */
-export const KRUEMMER_PERCENT_RANGE = [10, 20] as const;
+/** Flange area 1.1–1.5 × port area (Rechensheet-2Takt), shown as `D(10 %) – D(50 %)`. */
+export const KRUEMMER_PERCENT_RANGE = [10, 50] as const;
 
 /** Diffusor stages offered by v2; only stage 1 is computed (stages 2/3 zero the diffusor). */
 export const DIFFUSOR_STAGES = [1, 2, 3] as const;
@@ -65,11 +65,11 @@ export interface TheorieResult {
   /** Header length (mm), v2: `getKruemmerLaenge(D, F, 0)`. */
   kruemmerL: number | null;
   /**
-   * Header diameter range (mm) for 10 % and 20 %. v2 converts the area to cm², so the formula
+   * Header diameter range (mm) for 10 % and 50 %. v2 converts the area to cm², so the formula
    * yields cm; v2 labelled it "mm" — we convert the cm result to mm for display.
    */
   kruemmerDRange: [number, number] | null;
-  /** Gas velocity (m/s). */
+  /** Speed of sound in the exhaust gas (m/s). */
   gasV: number | null;
   /** Tuned length (mm). */
   resonanzL: number | null;
@@ -96,7 +96,13 @@ export function computeTheorie(draft: TheorieDraft): TheorieResult {
 
   const resonanzL =
     has(draft.steuerzeitSZ) && has(draft.abgasT) && has(draft.resonanzU)
-      ? finite(auslass.getResonanzLaenge(draft.steuerzeitSZ, draft.abgasT, draft.resonanzU))
+      ? finite(
+          auslass.getResonanzLaengeFromTemperatur(
+            draft.steuerzeitSZ,
+            draft.abgasT,
+            draft.resonanzU,
+          ),
+        )
       : null;
 
   return { kruemmerL, kruemmerDRange, gasV, resonanzL };

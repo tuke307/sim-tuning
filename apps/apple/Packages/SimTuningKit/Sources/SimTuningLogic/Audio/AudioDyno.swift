@@ -60,18 +60,20 @@ public enum AudioDyno {
     }
 
     /// v2 `CalculateRotationalSpeed`: every bin whose magnitude × intensity saturates at 255
-    /// becomes a point. v2 quirk kept: the row index is not offset by the band start.
+    /// becomes a point. The bin index is offset by the band start (`fftIndex1`); v2 omitted it and
+    /// reported every speed ≈ `frequenzbeginn` too low.
     public static func calculateRotationalSpeed(_ spectrogram: Spectrogram,
                                                 intensityPercent: Double = Defaults.intensity) -> [DrehzahlPoint] {
         let intensity = intensityPercent / 100
         let stepLengthSec = spectrogram.settings.stepLengthSec
         let hzPerPixel = spectrogram.settings.hzPerPixel
+        let bandStart = spectrogram.settings.fftIndex1
         var points: [DrehzahlPoint] = []
         for (col, column) in spectrogram.ffts.enumerated() {
             for row in 0..<column.count where min(column[row] * intensity, 255) == 255 {
                 points.append(DrehzahlPoint(
                     x: Rounding.roundTo(Double(col) * stepLengthSec * 1000, 4),
-                    y: Rounding.roundTo(Double(row) * hzPerPixel * 60, 4)
+                    y: Rounding.roundTo(Double(bandStart + row) * hzPerPixel * 60, 4)
                 ))
             }
         }
@@ -81,6 +83,93 @@ public enum AudioDyno {
     /// v2 `CalculateClusters` (minimum 5 points per cluster).
     public static func calculateClusters<T: Point2D>(_ points: [T], epsilon: Double = Defaults.epsilon) -> [[T]] {
         DBSCAN.cluster(points, epsilon: epsilon, minimumPointsPerCluster: Defaults.minimumPointsPerCluster)
+    }
+
+    /// Track joining tolerances: time overlap/gap between clusters, relative rpm jump and the window
+    /// (ms) at each cluster end whose median speed is compared.
+    public enum TrackDefaults {
+        public static let maxGapMs = 500.0
+        public static let maxJumpRatio = 0.1
+        public static let edgeMs = 200.0
+    }
+
+    private struct TrackEnds {
+        var start: Double
+        var end: Double
+        var rpmStart: Double
+        var rpmEnd: Double
+    }
+
+    private static func median(_ values: [Double]) -> Double {
+        let sorted = values.sorted()
+        let mid = sorted.count / 2
+        return sorted.count % 2 == 1 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2
+    }
+
+    private static func trackEnds(_ points: [DrehzahlPoint]) -> TrackEnds {
+        let xs = points.map(\.x)
+        let start = xs.min() ?? 0
+        let end = xs.max() ?? 0
+        return TrackEnds(
+            start: start, end: end,
+            rpmStart: median(points.filter { $0.x <= start + TrackDefaults.edgeMs }.map(\.y)),
+            rpmEnd: median(points.filter { $0.x >= end - TrackDefaults.edgeMs }.map(\.y))
+        )
+    }
+
+    /// Joins DBSCAN clusters that continue each other into one engine-speed track (port of
+    /// `mergeClusterTracks`). DBSCAN uses one ε for ms and U/min, so one pull often breaks into
+    /// several clusters; a cluster is appended to the track whose end it starts near in time and
+    /// speed. Tracks are returned by start time.
+    public static func mergeClusterTracks(_ clusters: [[DrehzahlPoint]]) -> [[DrehzahlPoint]] {
+        // Stable sort by start time (ties keep the DBSCAN order, like the TypeScript port).
+        let ordered = clusters.filter { !$0.isEmpty }
+            .map { (points: $0, ends: trackEnds($0)) }
+            .enumerated()
+            .sorted { lhs, rhs in
+                lhs.element.ends.start == rhs.element.ends.start
+                    ? lhs.offset < rhs.offset
+                    : lhs.element.ends.start < rhs.element.ends.start
+            }
+            .map(\.element)
+        var tracks: [(points: [DrehzahlPoint], ends: TrackEnds)] = []
+        for cluster in ordered {
+            var best: Int?
+            var bestJump = Double.infinity
+            for (index, track) in tracks.enumerated() {
+                guard cluster.ends.start >= track.ends.start,
+                      abs(cluster.ends.start - track.ends.end) <= TrackDefaults.maxGapMs else { continue }
+                let jump = abs(cluster.ends.rpmStart - track.ends.rpmEnd) / track.ends.rpmEnd
+                if jump <= TrackDefaults.maxJumpRatio && jump < bestJump {
+                    best = index
+                    bestJump = jump
+                }
+            }
+            if let best, cluster.ends.end > tracks[best].ends.end {
+                tracks[best].points += cluster.points
+                tracks[best].ends.end = cluster.ends.end
+                tracks[best].ends.rpmEnd = cluster.ends.rpmEnd
+            } else {
+                tracks.append(cluster)
+            }
+        }
+        return tracks.map(\.points)
+    }
+
+    /// Index of the track most likely to be the firing frequency: among tracks lasting at least
+    /// half as long as the longest, the one with the lowest median speed (harmonics are often
+    /// the larger clusters). `nil` when there are no tracks.
+    public static func pickFundamentalTrack(_ tracks: [[DrehzahlPoint]]) -> Int? {
+        let spans = tracks.map { track -> Double in
+            guard track.count >= Defaults.minimumPointsPerCluster else { return 0 }
+            let xs = track.map(\.x)
+            return (xs.max() ?? 0) - (xs.min() ?? 0)
+        }
+        let longest = spans.max() ?? 0
+        guard longest > 0 else { return nil }
+        return tracks.indices
+            .filter { spans[$0] >= longest / 2 }
+            .min { median(tracks[$0].map(\.y)) < median(tracks[$1].map(\.y)) }
     }
 
     /// v2 `LoadSpecificCluster`: fits a degree-5 polynomial through a cluster and samples it every
@@ -108,7 +197,10 @@ public enum AudioDyno {
     public struct Analysis: Sendable, Equatable {
         public let spectrogram: Spectrogram
         public let points: [DrehzahlPoint]
+        /// Engine-speed tracks: DBSCAN clusters joined by `mergeClusterTracks`.
         public let clusters: [[DrehzahlPoint]]
+        /// Suggested track (`pickFundamentalTrack`).
+        public let fundamental: Int?
     }
 
     /// Runs the whole pipeline in one go — call it off the main actor.
@@ -116,7 +208,8 @@ public enum AudioDyno {
         -> Analysis {
         let spectrogram = try calculateSpectrogram(samples, sampleRate: sampleRate, options: options)
         let points = calculateRotationalSpeed(spectrogram, intensityPercent: options.intensity)
-        let clusters = calculateClusters(points, epsilon: options.epsilon)
-        return Analysis(spectrogram: spectrogram, points: points, clusters: clusters)
+        let clusters = mergeClusterTracks(calculateClusters(points, epsilon: options.epsilon))
+        return Analysis(spectrogram: spectrogram, points: points, clusters: clusters,
+                        fundamental: pickFundamentalTrack(clusters))
     }
 }

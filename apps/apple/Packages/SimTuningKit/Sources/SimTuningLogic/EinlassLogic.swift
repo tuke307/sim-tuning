@@ -2,20 +2,18 @@ import Foundation
 
 /// Intake calculations, ported 1:1 from `packages/common/src/logic/einlass.ts` (v2 `EinlassLogic`).
 public enum EinlassLogic {
-    /// Resonance length of the intake tract (v2 formula and scaling kept as-is).
+    /// Resonance length of the intake tract in mm, from `n = 1750·φ / √(V·l / F)` (Rieck; Bitterli
+    /// §5.2; Rechensheet-2Takt) solved for `l = 3 062 500·φ²·F / (n²·V)` [cm]. `F` in cm², `φ` in
+    /// °KW, `V` (crankcase) in cm³. v2 multiplied by `V` and subtracted `1/d`; not kept.
     public static func getResonanzLaenge(
         einlassflaeche: Double,
         einlasssteuerwinkel: Double,
         kurbelgehausevolumen: Double,
-        resonanzdrehzahl: Double,
-        ansaugleitungsdurchmesser: Double
+        resonanzdrehzahl: Double
     ) -> Double {
-        let winkel2 = einlasssteuerwinkel * einlasssteuerwinkel
-        let drehzahl2 = resonanzdrehzahl * resonanzdrehzahl
-        let laenge = einlassflaeche
-            * (((3_062_500 * winkel2) / drehzahl2) * kurbelgehausevolumen - 1 / ansaugleitungsdurchmesser)
-            * 10
-        return Rounding.roundTo(laenge, 2)
+        let laengeCm = (3_062_500 * einlasssteuerwinkel * einlasssteuerwinkel * einlassflaeche)
+            / (resonanzdrehzahl * resonanzdrehzahl * kurbelgehausevolumen)
+        return Rounding.roundTo(laengeCm * 10, 2)
     }
 
     /// Carburettor bore: `k · √(Vh/1000 · n)`, default resistance factor 0.9.

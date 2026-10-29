@@ -2,15 +2,16 @@ import Foundation
 
 /// Exhaust calculations, ported 1:1 from `packages/common/src/logic/auslass.ts` (v2 `AuslassLogic`).
 public enum AuslassLogic {
-    /// Exhaust gas velocity (m/s) from gas temperature (°C): `331 + 0.6·T`.
+    /// Speed of sound in the exhaust gas (m/s) from the gas temperature (°C): `c = √(κ·R·T)` with
+    /// κ = 1.32, R = 295 J/(kg·K) (Rechensheet-2Takt, typically 540–560 m/s). v2 used `331 + 0.6·T`.
     public static func getGasGeschwindigkeit(abgastemperatur: Double) -> Double {
-        Rounding.roundTo(331 + 0.6 * abgastemperatur, 2)
+        Rounding.roundTo((1.32 * 295 * (abgastemperatur + 273.15)).squareRoot(), 2)
     }
 
-    /// Header diameter from the exhaust port area. v2 quirk kept: `percentage / 100` is an integer
-    /// division, so percentages below 100 do not enlarge the area.
+    /// Header (flange) diameter: port area enlarged by `percentage` (Rechensheet-2Takt: 1.1–1.5 ×,
+    /// i.e. 10–50 %). v2 truncated `percentage / 100`, so percentages below 100 had no effect.
     public static func getKruemmerDurchmesser(auslassflaeche: Double, percentage: Double = 10) -> Double {
-        let factor = 1 + Rounding.truncate(percentage / 100)
+        let factor = 1 + percentage / 100
         return Rounding.roundTo(((auslassflaeche * factor).squareRoot() / Double.pi.squareRoot()) * 2, 2)
     }
 
@@ -21,14 +22,24 @@ public enum AuslassLogic {
         Rounding.roundTo(drehmomentfaktor * kruemmerdurchmesser - auslassLaenge, 2)
     }
 
-    /// Tuned length (mm) from exhaust timing (°KW), gas velocity/temperature and resonance rpm.
+    /// Tuned length (mm) `l = c·φ / (12·n)` from exhaust timing `φ` (°KW), speed of sound `c`
+    /// (m/s) and resonance rpm `n` (Bitterli §7.2; Rechensheet-2Takt). v2 passed °C as `c`.
+    public static func getResonanzLaenge(
+        auslassSteuerwinkel: Double, schallgeschwindigkeit: Double, resonanzDrehzahl: Double
+    ) -> Double {
+        Rounding.roundTo(
+            ((auslassSteuerwinkel * schallgeschwindigkeit) / ((360 * 2 * resonanzDrehzahl) / 60)) * 1000,
+            2
+        )
+    }
+
+    /// Tuned length (mm) directly from the exhaust gas temperature (°C).
     public static func getResonanzLaenge(
         auslassSteuerwinkel: Double, abgasTemperatur: Double, resonanzDrehzahl: Double
     ) -> Double {
-        Rounding.roundTo(
-            ((auslassSteuerwinkel * abgasTemperatur) / ((360 * 2 * resonanzDrehzahl) / 60)) * 1000,
-            2
-        )
+        getResonanzLaenge(auslassSteuerwinkel: auslassSteuerwinkel,
+                          schallgeschwindigkeit: getGasGeschwindigkeit(abgastemperatur: abgasTemperatur),
+                          resonanzDrehzahl: resonanzDrehzahl)
     }
 
     /// Port open duration (v2 formula, unrounded).

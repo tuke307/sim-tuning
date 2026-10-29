@@ -82,6 +82,11 @@ graphify-out
 # Python 
 __pycache__/
 
+# third-party reference material (APKs, decompiled sources, sample data) — never commit
+docs/reference/
+# text/images extracted from the reference books (local working copies)
+docs/extracted/
+
 # SwiftPM & Xcode build artifacts
 .build/
 **/.build/

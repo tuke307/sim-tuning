@@ -14,9 +14,9 @@ public enum EngineLogic {
         Rounding.roundTo((2 * (hubraum / hub).squareRoot()) / Double.pi.squareRoot(), 2)
     }
 
-    /// v2 quirk: uses `π·d/4·h` (not `d²`). Kept for parity.
+    /// Displacement `π·d²/4·h` (mm³ from mm), rounded to 1 decimal. v2 omitted the square.
     public static func getDisplacement(bohrungsdurchmesser: Double, hub: Double) -> Double {
-        Rounding.roundTo(((Double.pi * bohrungsdurchmesser) / 4) * hub, 1)
+        Rounding.roundTo(((Double.pi * bohrungsdurchmesser * bohrungsdurchmesser) / 4) * hub, 1)
     }
 
     /// Piston distance below TDC (mm) for a crank angle in °KW, with connecting rod and offset.

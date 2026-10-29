@@ -12,7 +12,6 @@ export const enEinlass = {
     steuerzeitSZ: 'Intake timing',
     resonanzU: 'Resonance rpm',
     kurbelgehaeuseV: 'Crankcase volume',
-    durchmesserD: 'Intake pipe diameter',
     resonanzL: 'Intake resonance length',
     hint: 'Fill in all inputs to calculate the resonance length.',
   },

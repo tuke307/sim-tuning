@@ -49,11 +49,10 @@ test.describe('Dyno module', () => {
     await expect(page.getByTestId('dyno-audio-chart')).toBeVisible();
 
     await page.getByTestId('dyno-audio-filter').click();
-    await expect(page.getByTestId('dyno-audio-clusters')).toHaveText('15');
-    await expect(page.getByTestId('dyno-audio-chart')).toContainText('Graph 15');
-
-    // "Graph 2" is the main engine-speed harmonic of the v2 demo recording (2863 points).
-    await page.getByTestId('dyno-audio-cluster').selectOption('1');
+    // v2's 15 DBSCAN clusters, with the two halves of the firing-frequency track joined.
+    await expect(page.getByTestId('dyno-audio-clusters')).toHaveText('12');
+    // The firing-frequency track ("Graph 1", 4947 points) is pre-selected, not the louder harmonic.
+    await expect(page.getByTestId('dyno-audio-cluster')).toHaveValue('0');
     await expect(page.getByTestId('dyno-audio-chart')).toContainText('Fitted curve');
     await page.getByTestId('dyno-audio-save').click();
     await expect(page.getByTestId('dyno-audio-notice')).toHaveText('RPM curve saved');
