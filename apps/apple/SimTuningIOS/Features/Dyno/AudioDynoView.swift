@@ -116,7 +116,7 @@ struct AudioDynoView: View {
     @State private var importing = false
 
     var body: some View {
-        Form {
+        SheetForm(module: .dyno, subsheet: 1, subtitle: "Audio-Dyno") {
             Section("Aufnahme") {
                 if isRecording {
                     Button("Aufnahme beenden", systemImage: "stop.circle.fill", role: .destructive) { stopRecording() }
@@ -161,6 +161,8 @@ struct AudioDynoView: View {
                             }
                         }
                     }
+                    .chartForegroundStyleScale(range: Theme.series)
+                    .stChartStyle()
                     .frame(height: 240)
                     Picker("Graph", selection: $selectedCluster) {
                         Text("Keiner").tag(Int?.none)

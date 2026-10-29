@@ -23,7 +23,9 @@ struct NumberField: View {
     var body: some View {
         LabeledContent {
             HStack(spacing: 4) {
-                TextField(title, text: $text)
+                // Short prompt: a long monospaced placeholder would push the value onto a second line.
+                TextField(title, text: $text, prompt: Text(verbatim: "–"))
+                    .font(.stData)
                     .keyboardType(.decimalPad)
                     .multilineTextAlignment(.trailing)
                     .focused($focused)
@@ -34,7 +36,7 @@ struct NumberField: View {
                     }
                 if let unit {
                     Text(verbatim: unit)
-                        .foregroundStyle(.secondary)
+                        .stUnitStyle()
                         .accessibilityHidden(true)
                 }
             }
@@ -79,8 +81,8 @@ struct ResultRow: View {
     var body: some View {
         LabeledContent {
             Text(verbatim: value)
-                .font(.body.monospacedDigit().weight(.semibold))
-                .foregroundStyle(.primary)
+                .font(.stData(.body, weight: .semibold))
+                .foregroundStyle(Theme.foreground)
                 .textSelection(.enabled)
         } label: {
             Text(title)
@@ -140,6 +142,49 @@ struct VehicleActionsSection: View {
                 Text("Startfahrzeuge sind schreibgeschützt. Beim Speichern wird eine Kopie angelegt.")
             }
         }
+    }
+}
+
+/// Module sheet: grouped form on the drafting-table background, opened by the Schriftfeld.
+/// Rows sit on the `card` surface with hairline separators (no shadows, no system grey).
+struct SheetForm<Content: View>: View {
+    let module: Module
+    var subsheet: Int?
+    var subtitle: LocalizedStringKey?
+    @ViewBuilder let content: Content
+
+    var body: some View {
+        // A grouped `List` rather than `Form`: on iOS a Form always renders inset, rounded cards;
+        // the list keeps the same native rows and controls with edge-to-edge sheets.
+        List {
+            Section {
+                Schriftfeld(module: module, subsheet: subsheet, subtitle: subtitle)
+                    .schriftfeldRow()
+            }
+            Group { content }
+                .stRows()
+        }
+        // The decimal pad has no return key: scrolling puts the keyboard away.
+        .scrollDismissesKeyboard(.immediately)
+        .stScreen()
+    }
+}
+
+/// Module index list (hub screens) with the same chrome as `SheetForm`.
+struct SheetList<Content: View>: View {
+    let module: Module
+    @ViewBuilder let content: Content
+
+    var body: some View {
+        List {
+            Section {
+                Schriftfeld(module: module)
+                    .schriftfeldRow()
+            }
+            Group { content }
+                .stRows()
+        }
+        .stScreen()
     }
 }
 

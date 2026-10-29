@@ -14,89 +14,93 @@ struct ProfileView: View {
     var body: some View {
         @Bindable var model = model
         NavigationStack {
-            Form {
-                if model.isSignedIn {
-                    Section("Konto") {
-                        LabeledContent("E-Mail") { Text(verbatim: model.user?.email ?? "–") }
-                        if let name = model.user?.name { LabeledContent("Name") { Text(verbatim: name) } }
-                        Button("Abmelden", systemImage: "rectangle.portrait.and.arrow.right", role: .destructive) {
-                            Task { await model.signOut() }
+            List {
+                Group {
+                    if model.isSignedIn {
+                        Section("Konto") {
+                            LabeledContent("E-Mail") { Text(verbatim: model.user?.email ?? "–") }
+                            if let name = model.user?.name { LabeledContent("Name") { Text(verbatim: name) } }
+                            Button("Abmelden", systemImage: "rectangle.portrait.and.arrow.right", role: .destructive) {
+                                Task { await model.signOut() }
+                            }
+                        }
+                    } else {
+                        Section {
+                            Picker("Modus", selection: $isRegistering) {
+                                Text("Anmelden").tag(false)
+                                Text("Registrieren").tag(true)
+                            }
+                            .pickerStyle(.segmented)
+                            TextField("E-Mail", text: $email)
+                                .textContentType(.username)
+                                .keyboardType(.emailAddress)
+                                .textInputAutocapitalization(.never)
+                                .autocorrectionDisabled()
+                            SecureField("Passwort", text: $password)
+                                .textContentType(isRegistering ? .newPassword : .password)
+                            if isRegistering {
+                                TextField("Name (optional)", text: $displayName)
+                                    .textContentType(.name)
+                            }
+                            Button {
+                                Task { await submit() }
+                            } label: {
+                                if isBusy { ProgressView() } else { Text(isRegistering ? "Registrieren" : "Anmelden") }
+                            }
+                            .disabled(!canSubmit || isBusy)
+                        } header: {
+                            Text("Konto")
+                        } footer: {
+                            if isRegistering {
+                                Text("Mindestens 8 Zeichen, mit mindestens einem Buchstaben und einer Zahl.")
+                            } else {
+                                Text("Ohne Anmeldung arbeitest du im Gastmodus. Deine Daten bleiben auf diesem Gerät.")
+                            }
+                        }
+                        if let info {
+                            Section { Text(verbatim: info) }
                         }
                     }
-                } else {
+
+                    Section("Darstellung") {
+                        Picker("Sprache", selection: $model.preferences.language) {
+                            Text("System").tag(LanguagePreference.system)
+                            Text(verbatim: "Deutsch").tag(LanguagePreference.de)
+                            Text(verbatim: "English").tag(LanguagePreference.en)
+                        }
+                        Picker("Design", selection: $model.preferences.theme) {
+                            Text("System").tag(ThemePreference.system)
+                            Text("Hell").tag(ThemePreference.light)
+                            Text("Dunkel").tag(ThemePreference.dark)
+                        }
+                    }
                     Section {
-                        Picker("Modus", selection: $isRegistering) {
-                            Text("Anmelden").tag(false)
-                            Text("Registrieren").tag(true)
+                        Stepper(value: $model.preferences.roundingAccuracy,
+                                in: RoundingAccuracy.min...RoundingAccuracy.max) {
+                            LabeledContent("Nachkommastellen") {
+                                Text(verbatim: "\(model.preferences.roundingAccuracy)")
+                            }
                         }
-                        .pickerStyle(.segmented)
-                        TextField("E-Mail", text: $email)
-                            .textContentType(.username)
-                            .keyboardType(.emailAddress)
-                            .textInputAutocapitalization(.never)
-                            .autocorrectionDisabled()
-                        SecureField("Passwort", text: $password)
-                            .textContentType(isRegistering ? .newPassword : .password)
-                        if isRegistering {
-                            TextField("Name (optional)", text: $displayName)
-                                .textContentType(.name)
-                        }
-                        Button {
-                            Task { await submit() }
-                        } label: {
-                            if isBusy { ProgressView() } else { Text(isRegistering ? "Registrieren" : "Anmelden") }
-                        }
-                        .disabled(!canSubmit || isBusy)
+                        Toggle("Ergebnisse runden", isOn: $model.preferences.roundOnUnitChange)
                     } header: {
-                        Text("Konto")
-                    } footer: {
-                        if isRegistering {
-                            Text("Mindestens 8 Zeichen, mit mindestens einem Buchstaben und einer Zahl.")
-                        } else {
-                            Text("Ohne Anmeldung arbeitest du im Gastmodus. Deine Daten bleiben auf diesem Gerät.")
+                        Text("Einheiten")
+                    }
+
+                    if !model.isSignedIn {
+                        Section {
+                            Button("Gastdaten zurücksetzen", systemImage: "trash", role: .destructive) { confirmReset = true }
                         }
                     }
-                    if let info {
-                        Section { Text(verbatim: info) }
-                    }
-                }
 
-                Section("Darstellung") {
-                    Picker("Sprache", selection: $model.preferences.language) {
-                        Text("System").tag(LanguagePreference.system)
-                        Text(verbatim: "Deutsch").tag(LanguagePreference.de)
-                        Text(verbatim: "English").tag(LanguagePreference.en)
-                    }
-                    Picker("Design", selection: $model.preferences.theme) {
-                        Text("System").tag(ThemePreference.system)
-                        Text("Hell").tag(ThemePreference.light)
-                        Text("Dunkel").tag(ThemePreference.dark)
-                    }
-                }
-                Section {
-                    Stepper(value: $model.preferences.roundingAccuracy,
-                            in: RoundingAccuracy.min...RoundingAccuracy.max) {
-                        LabeledContent("Nachkommastellen") {
-                            Text(verbatim: "\(model.preferences.roundingAccuracy)")
-                        }
-                    }
-                    Toggle("Ergebnisse runden", isOn: $model.preferences.roundOnUnitChange)
-                } header: {
-                    Text("Einheiten")
-                }
-
-                if !model.isSignedIn {
                     Section {
-                        Button("Gastdaten zurücksetzen", systemImage: "trash", role: .destructive) { confirmReset = true }
+                        LabeledContent("Version") {
+                            Text(verbatim: Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "–")
+                        }
                     }
                 }
-
-                Section {
-                    LabeledContent("Version") {
-                        Text(verbatim: Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "–")
-                    }
-                }
+                .stRows()
             }
+            .stScreen()
             .navigationTitle("Profil")
             .onChange(of: model.preferences) { _, _ in Task { await model.syncPreferences() } }
             .confirmationDialog("Gastdaten zurücksetzen?", isPresented: $confirmReset, titleVisibility: .visible) {
