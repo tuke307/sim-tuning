@@ -8,10 +8,10 @@ final class SimTuningIOSUITests: XCTestCase {
     }
 
     @MainActor
-    private func launch(light: Bool = false) -> XCUIApplication {
+    private func launch(light: Bool = false, error: Bool = false) -> XCUIApplication {
         let app = XCUIApplication()
         app.launchArguments = ["--uitesting", "-AppleLanguages", "(de)", "-AppleLocale", "de_DE"]
-            + (light ? ["--uitesting-light"] : [])
+            + (light ? ["--uitesting-light"] : []) + (error ? ["--uitesting-error"] : [])
         app.launch()
         return app
     }
@@ -138,20 +138,24 @@ final class SimTuningIOSUITests: XCTestCase {
     @MainActor
     func testAuspuffDrawingLight() { checkAuspuff(light: true) }
 
-    /// iPhone shows at most five tabs; the rest live behind "Mehr".
+    /// Exactly the five module tabs fit the iPhone tab bar (no "Mehr" overflow).
     @MainActor
     private func openTab(_ app: XCUIApplication, _ label: String) {
         let tab = app.tabBars.buttons[label]
-        if tab.waitForExistence(timeout: 3) {
-            tab.tap()
-            return
+        XCTAssertTrue(tab.waitForExistence(timeout: 5), "Expected tab '\(label)'")
+        tab.tap()
+    }
+
+    /// Replaces the text of a (seeded) number field.
+    @MainActor
+    private func replace(_ field: XCUIElement, with text: String) {
+        // Values are trailing-aligned: tap the trailing edge so the cursor lands after the text.
+        field.coordinate(withNormalizedOffset: CGVector(dx: 0.98, dy: 0.5)).tap()
+        let current = field.value as? String ?? ""
+        if !current.isEmpty, current != "–" {
+            field.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: current.count))
         }
-        let more = app.tabBars.buttons["Mehr"]
-        XCTAssertTrue(more.waitForExistence(timeout: 5), "Expected tab '\(label)' or 'Mehr'")
-        more.tap()
-        let entry = app.cells.staticTexts[label].firstMatch
-        XCTAssertTrue(entry.waitForExistence(timeout: 5), "Expected '\(label)' in Mehr")
-        entry.tap()
+        field.typeText(text)
     }
 
     @MainActor
@@ -166,11 +170,82 @@ final class SimTuningIOSUITests: XCTestCase {
     func testNavigatesAllTabs() {
         let app = launch()
         XCTAssertTrue(app.navigationBars["Fahrzeuge"].waitForExistence(timeout: 10))
+        XCTAssertFalse(app.tabBars.buttons["Mehr"].exists, "Five tabs must not overflow into 'Mehr'")
         for (tab, title) in [("Motor", "Motor"), ("Einlass", "Einlass"), ("Auslass", "Auslass"), ("Dyno", "Dyno"),
-                             ("Profil", "Profil"), ("Fahrzeuge", "Fahrzeuge")] {
+                             ("Fahrzeuge", "Fahrzeuge")] {
             openTab(app, tab)
             XCTAssertTrue(app.navigationBars[title].waitForExistence(timeout: 5), "Expected screen '\(title)'")
+            // Profil is reachable from every module's navigation bar.
+            XCTAssertTrue(app.navigationBars[title].buttons["profile.open"].waitForExistence(timeout: 5),
+                          "Expected Profil button on '\(title)'")
         }
+        app.navigationBars["Fahrzeuge"].buttons["profile.open"].tap()
+        XCTAssertTrue(app.navigationBars["Profil"].waitForExistence(timeout: 5))
+        app.buttons["profile.done"].tap()
+        XCTAssertTrue(app.navigationBars["Fahrzeuge"].waitForExistence(timeout: 5))
+    }
+
+    /// Errors show as a non-modal banner: the screen below stays usable and the banner can be closed.
+    @MainActor
+    func testErrorBannerIsNonModalAndDismissable() {
+        let app = launch(error: true)
+        XCTAssertTrue(app.navigationBars["Fahrzeuge"].waitForExistence(timeout: 10))
+        let banner = app.descendants(matching: .any)["error.banner"].firstMatch
+        XCTAssertTrue(banner.waitForExistence(timeout: 5))
+        XCTAssertFalse(app.alerts.firstMatch.exists)
+        XCTAssertTrue(app.navigationBars["Fahrzeuge"].buttons["profile.open"].isHittable)
+        attachScreenshot("error-banner")
+        // The banner also closes itself after a few seconds; either way it must go away.
+        let dismiss = app.buttons["error.dismiss"]
+        if dismiss.exists && dismiss.isHittable { dismiss.tap() }
+        XCTAssertTrue(banner.waitForNonExistence(timeout: 8))
+    }
+
+    /// Saving on a starter vehicle creates a visible copy that can be undone.
+    @MainActor
+    func testStarterSaveCreatesCopyWithUndo() {
+        let app = launch()
+        selectStarterVehicle(app)
+        openTab(app, "Motor")
+        let link = app.buttons["motor.verdichtung"].firstMatch
+        XCTAssertTrue(link.waitForExistence(timeout: 5))
+        link.tap()
+        let save = app.buttons["vehicle.save"].firstMatch
+        var attempts = 0
+        while !(save.exists && save.isHittable) && attempts < 15 {
+            scrollStep(app, up: true)
+            attempts += 1
+        }
+        XCTAssertEqual(save.label, "Als eigenes Fahrzeug speichern")
+        save.tap()
+        let feedback = app.descendants(matching: .any)["vehicle.save.feedback"].firstMatch
+        XCTAssertTrue(feedback.waitForExistence(timeout: 5))
+        XCTAssertTrue(feedback.label.contains("S51 B1-4 (Kopie)"), feedback.label)
+        // The own copy is selected now; undo deletes it and selects the starter again.
+        XCTAssertEqual(save.label, "Im Fahrzeug speichern")
+        app.buttons["vehicle.save.undo"].firstMatch.tap()
+        XCTAssertTrue(feedback.waitForNonExistence(timeout: 5))
+        let restored = NSPredicate(format: "label == %@", "Als eigenes Fahrzeug speichern")
+        expectation(for: restored, evaluatedWith: save)
+        waitForExpectations(timeout: 5)
+    }
+
+    @MainActor
+    func testCalculatorInputsSurviveNavigation() {
+        let app = launch()
+        selectStarterVehicle(app)
+        openTab(app, "Motor")
+        let link = app.buttons["motor.verdichtung"].firstMatch
+        XCTAssertTrue(link.waitForExistence(timeout: 5))
+        link.tap()
+        let ziel = app.textFields["verdichtung.ziel"]
+        XCTAssertTrue(ziel.waitForExistence(timeout: 5))
+        replace(ziel, with: "11")
+        app.navigationBars.buttons["Motor"].firstMatch.tap()
+        XCTAssertTrue(link.waitForExistence(timeout: 5))
+        link.tap()
+        XCTAssertTrue(ziel.waitForExistence(timeout: 5))
+        XCTAssertEqual(ziel.value as? String, "11")
     }
 
     @MainActor
@@ -183,13 +258,12 @@ final class SimTuningIOSUITests: XCTestCase {
         link.tap()
 
         // Same input as the v2 golden `compression2`: 49 900 mm³ / 5 880 mm³ → 9,5 : 1.
+        // The fields are seeded from the selected vehicle; replace them.
         let hubraum = app.textFields["verdichtung.hubraum"]
         XCTAssertTrue(hubraum.waitForExistence(timeout: 5))
-        hubraum.tap()
-        hubraum.typeText("49,9")
+        replace(hubraum, with: "49,9")
         let brennraum = app.textFields["verdichtung.brennraum"]
-        brennraum.tap()
-        brennraum.typeText("5,88")
+        replace(brennraum, with: "5,88")
 
         let result = app.descendants(matching: .any)["verdichtung.result"].firstMatch
         XCTAssertTrue(result.waitForExistence(timeout: 5))

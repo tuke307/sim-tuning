@@ -26,10 +26,10 @@ struct EinlassView: View {
 /// volume (cm³) and resonance rpm, `l = 3 062 500·φ²·F / (n²·V)` (Rieck, Rechensheet-2Takt).
 struct EinlassKanalView: View {
     @Environment(AppModel.self) private var model
-    @State private var flaecheMm2: Double?
-    @State private var steuerwinkel: Double?
-    @State private var kurbelgehaeuseCm3: Double?
-    @State private var resonanzU: Double?
+    @Draft(.kanal, "flaecheMm2") private var flaecheMm2
+    @Draft(.kanal, "steuerwinkel") private var steuerwinkel
+    @Draft(.kanal, "kurbelgehaeuseCm3") private var kurbelgehaeuseCm3
+    @Draft(.kanal, "resonanzU") private var resonanzU
 
     private var resonanzlaenge: Double? {
         guard let flaecheMm2, let steuerwinkel, let kurbelgehaeuseCm3, let resonanzU,
@@ -55,10 +55,10 @@ struct EinlassKanalView: View {
             } footer: {
                 Text("Nach Rieck: n = 1750·φ / √(V·l / F).")
             }
-            VehicleActionsSection(apply: apply, save: save)
+            VehicleActionsSection(calculator: .kanal, apply: apply, save: save)
         }
-        .moduleChrome("Kanal")
-        .onAppear { if resonanzU == nil { apply() } }
+        .calculatorChrome("Kanal")
+        .calculatorDraft(.kanal, seed: apply)
     }
 
     private func apply() {
@@ -74,18 +74,18 @@ struct EinlassKanalView: View {
         motor.resonanzU = .some(resonanzU)
         motor.kurbelgehaeuseV = .some(kurbelgehaeuseCm3.map { $0 * 1000 })
         motor.einlass = EinlassInputDto(flaecheA: .some(flaecheMm2), steuerzeitSZ: .some(steuerwinkel))
-        Task { await model.saveToSelectedVehicle(VehicleInputDto(motor: motor)) }
+        Task { await model.saveToSelectedVehicle(VehicleInputDto(motor: motor), from: .kanal) }
     }
 }
 
 /// v2 `EinlassVergaserViewModel`: carburettor bore from displacement (cm³) and rpm, main jet.
 struct VergaserView: View {
     @Environment(AppModel.self) private var model
-    @State private var hubraumCm3: Double?
-    @State private var resonanzU: Double?
-    @State private var widerstand: Double? = 0.9
-    @State private var vergaserMm: Double?
-    @State private var duesenFaktor: Double? = 0.95
+    @Draft(.vergaser, "hubraumCm3") private var hubraumCm3
+    @Draft(.vergaser, "resonanzU") private var resonanzU
+    @Draft(.vergaser, "widerstand", default: 0.9) private var widerstand
+    @Draft(.vergaser, "vergaserMm") private var vergaserMm
+    @Draft(.vergaser, "duesenFaktor", default: 0.95) private var duesenFaktor
 
     private var berechnet: Double? {
         guard let hubraumCm3, let resonanzU else { return nil }
@@ -109,10 +109,10 @@ struct VergaserView: View {
                                                                    widerstandsFaktor: duesenFaktor ?? 0.95)
                 }))
             }
-            VehicleActionsSection(apply: apply, save: save)
+            VehicleActionsSection(calculator: .vergaser, apply: apply, save: save)
         }
-        .moduleChrome("Vergaser")
-        .onAppear { if hubraumCm3 == nil { apply() } }
+        .calculatorChrome("Vergaser")
+        .calculatorDraft(.vergaser, seed: apply)
     }
 
     private func apply() {
@@ -125,6 +125,6 @@ struct VergaserView: View {
     private func save() {
         var motor = MotorInputDto()
         motor.einlass = EinlassInputDto(vergaser: VergaserInputDto(durchmesserD: .some(vergaserMm ?? berechnet)))
-        Task { await model.saveToSelectedVehicle(VehicleInputDto(motor: motor)) }
+        Task { await model.saveToSelectedVehicle(VehicleInputDto(motor: motor), from: .vergaser) }
     }
 }

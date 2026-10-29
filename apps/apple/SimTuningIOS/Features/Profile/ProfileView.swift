@@ -3,6 +3,7 @@ import SwiftUI
 
 struct ProfileView: View {
     @Environment(AppModel.self) private var model
+    @Environment(\.dismiss) private var dismiss
     @State private var email = ""
     @State private var password = ""
     @State private var displayName = ""
@@ -114,6 +115,14 @@ struct ProfileView: View {
             }
             .stScreen()
             .navigationTitle("Profil")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Fertig") { dismiss() }
+                        .accessibilityIdentifier("profile.done")
+                }
+            }
+            .errorBanner()
             .onChange(of: model.preferences) { _, _ in Task { await model.syncPreferences() } }
             .confirmationDialog("Gastdaten zurücksetzen?", isPresented: $confirmReset, titleVisibility: .visible) {
                 Button("Zurücksetzen", role: .destructive) { Task { await model.resetGuestData() } }

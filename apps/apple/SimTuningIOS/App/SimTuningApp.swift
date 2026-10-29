@@ -19,22 +19,23 @@ struct SimTuningApp: App {
     }
 }
 
+/// The five module tabs (iPhone shows at most five without a "More" tab). Profil opens as a sheet
+/// from the toolbar of every module (`ProfileToolbarButton`).
 enum AppTab: String, CaseIterable, Hashable {
-    case vehicles, motor, einlass, auslass, dyno, profile
+    case vehicles, motor, einlass, auslass, dyno
 
-    var module: Module? {
+    var module: Module {
         switch self {
         case .vehicles: .vehicles
         case .motor: .motor
         case .einlass: .einlass
         case .auslass: .auslass
         case .dyno: .dyno
-        case .profile: nil
         }
     }
 
-    /// Selected tab item tint: the module's section colour (signal for Profil).
-    var tint: Color { module?.color ?? Theme.primary }
+    /// Selected tab item tint: the module's section colour.
+    var tint: Color { module.color }
 }
 
 struct RootView: View {
@@ -58,18 +59,15 @@ struct RootView: View {
             Tab("Dyno", systemImage: "gauge.with.dots.needle.67percent", value: AppTab.dyno) {
                 DynoView().tint(Theme.primary)
             }
-            Tab("Profil", systemImage: "person.crop.circle", value: AppTab.profile) {
-                ProfileView().tint(Theme.primary)
-            }
         }
         // The tab bar tints the selected item in the module colour; content keeps the signal
         // colour for controls (set per tab above).
         .tint(model.selectedTab.tint)
-        .alert("Fehler", isPresented: Binding(get: { model.errorMessage != nil },
-                                               set: { if !$0 { model.errorMessage = nil } })) {
-            Button("OK", role: .cancel) { model.errorMessage = nil }
-        } message: {
-            Text(verbatim: model.errorMessage ?? "")
+        .sheet(isPresented: $model.isProfilePresented) {
+            ProfileView()
+                .tint(Theme.primary)
+                .environment(\.locale, model.preferences.locale)
+                .preferredColorScheme(model.preferences.colorScheme)
         }
     }
 }

@@ -18,15 +18,15 @@
     "NSLocationWhenInUseUsageDescription" : {
       "extractionState" : "manual",
       "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "SimTuning zeichnet während einer Messfahrt Geschwindigkeit und Position auf, um Beschleunigung und Ausrollen für den Dyno auszuwerten." } },
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "SimTuning records speed and position during a test run to evaluate acceleration and coast-down for the dyno." } }
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "SimTuning zeichnet nur während einer Messfahrt Geschwindigkeit und Position auf, um Beschleunigung und Ausrollen für den Dyno auszuwerten." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "SimTuning records speed and position only during a test run to evaluate acceleration and coast-down for the dyno." } }
       }
     },
     "NSMicrophoneUsageDescription" : {
       "extractionState" : "manual",
       "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "SimTuning nimmt das Motorgeräusch auf, um daraus die Drehzahlkurve für den Audio-Dyno zu berechnen. Die Aufnahme wird nur auf dem Gerät ausgewertet." } },
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "SimTuning records the engine sound to compute the RPM curve for the audio dyno. The recording is analysed on this device only." } }
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "SimTuning nimmt das Motorgeräusch auf, um daraus die Drehzahlkurve für den Audio-Dyno zu berechnen. Die Aufnahme wird nur auf diesem Gerät ausgewertet und verlässt es nie." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "SimTuning records the engine sound to compute the RPM curve for the audio dyno. The recording is analysed on this device only and never leaves it." } }
       }
     }
   },

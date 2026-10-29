@@ -12,6 +12,8 @@ struct DynoView: View {
     @State private var name = ""
     @State private var exportDocument: JSONFileDocument?
     @State private var importing = false
+    @State private var confirmDelete = false
+    @FocusState private var nameFocused: Bool
 
     var body: some View {
         NavigationStack {
@@ -29,16 +31,8 @@ struct DynoView: View {
                                 }
                             }
                         }
-                    } else if let dyno {
-                        dynoSections(dyno)
                     } else {
-                        Section("Neuer Dyno") {
-                            TextField("Name", text: $name)
-                            Button("Dyno anlegen", systemImage: "plus") {
-                                Task { await createDyno(vehicle) }
-                            }
-                            .disabled(name.trimmingCharacters(in: .whitespaces).isEmpty)
-                        }
+                        dynoSections(vehicle)
                     }
                 } else {
                     ContentUnavailableView("Kein Fahrzeug ausgewählt", systemImage: "car.side",
@@ -59,46 +53,65 @@ struct DynoView: View {
             .fileImporter(isPresented: $importing, allowedContentTypes: [.json]) { result in
                 Task { await importDyno(result) }
             }
+            .confirmationDialog("Dyno löschen?", isPresented: $confirmDelete, titleVisibility: .visible) {
+                Button("Löschen", role: .destructive) {
+                    Task { await deleteDyno() }
+                }
+            } message: {
+                Text("Alle Messdaten dieses Dynos werden dauerhaft gelöscht.")
+            }
         }
     }
 
+    /// Own vehicles go straight to the measurements; the dyno itself is created on the first save.
     @ViewBuilder
-    private func dynoSections(_ dyno: DynoDto) -> some View {
-        Section("Dyno") {
-            LabeledContent("Name") { Text(verbatim: dyno.name) }
+    private func dynoSections(_ vehicle: VehicleDto) -> some View {
+        Section {
+            TextField("Name", text: $name)
+                .focused($nameFocused)
+                .submitLabel(.done)
+                .onSubmit { Task { await rename() } }
             Picker("Umgebung", selection: Binding(
-                get: { dyno.environmentId ?? "" },
-                set: { id in Task { await save(DynoInputDto(name: dyno.name, environmentId: .some(id.isEmpty ? nil : id))) } }
+                get: { dyno?.environmentId ?? "" },
+                set: { id in Task { await save(DynoInputDto(name: currentName, environmentId: .some(id.isEmpty ? nil : id))) } }
             )) {
                 Text("Keine").tag("")
                 ForEach(model.environments) { env in
                     Text(verbatim: env.name).tag(env.id)
                 }
             }
-            LabeledContent("Drehzahlpunkte") { Text(verbatim: "\(dyno.drehzahl.count)") }
-            LabeledContent("Leistungspunkte") { Text(verbatim: "\(dyno.dynoPs.count)") }
-            LabeledContent("GPS (Beschleunigung / Ausrollen)") {
-                Text(verbatim: "\(dyno.geschwindigkeit.count) / \(dyno.ausrollen.count)")
+            if let dyno {
+                LabeledContent("Drehzahlpunkte") { Text(verbatim: "\(dyno.drehzahl.count)") }
+                LabeledContent("Leistungspunkte") { Text(verbatim: "\(dyno.dynoPs.count)") }
+                LabeledContent("GPS (Beschleunigung / Ausrollen)") {
+                    Text(verbatim: "\(dyno.geschwindigkeit.count) / \(dyno.ausrollen.count)")
+                }
+            }
+        } header: {
+            Text("Dyno")
+        } footer: {
+            if dyno == nil {
+                Text("Der Dyno wird automatisch angelegt, sobald du die erste Messung speicherst.")
             }
         }
         Section("Messung") {
             NavigationLink {
-                AudioDynoView(dyno: dyno) { await load() }
+                AudioDynoView(dyno: dyno, ensureDyno: { await ensureDyno() }) { await load() }
             } label: {
                 Label("Audio-Dyno", systemImage: "waveform")
             }
             NavigationLink {
-                GpsRunView(dyno: dyno) { await load() }
+                GpsRunView(dyno: dyno, ensureDyno: { await ensureDyno() }) { await load() }
             } label: {
                 Label("GPS-Messfahrt", systemImage: "location")
             }
             NavigationLink {
-                DiagnosisView(dyno: dyno) { await load() }
+                DiagnosisView(dyno: dyno, ensureDyno: { await ensureDyno() }) { await load() }
             } label: {
                 Label("Diagnose", systemImage: "chart.xyaxis.line")
             }
         }
-        if !dyno.drehzahl.isEmpty {
+        if let dyno, !dyno.drehzahl.isEmpty {
             Section("Drehzahlverlauf") {
                 Chart {
                     ForEach(Array(Self.downsample(dyno.drehzahl, max: 400).enumerated()), id: \.offset) { _, point in
@@ -111,19 +124,16 @@ struct DynoView: View {
                 .accessibilityLabel(Text("Drehzahlverlauf"))
             }
         }
-        Section {
-            Button("Exportieren (JSON)", systemImage: "square.and.arrow.up") {
-                Task {
-                    if let export = await model.perform({ try await $0.exportDyno(id: dyno.id) }) {
-                        exportDocument = try? JSONFileDocument(export)
+        if let dyno {
+            Section {
+                Button("Exportieren (JSON)", systemImage: "square.and.arrow.up") {
+                    Task {
+                        if let export = await model.perform({ try await $0.exportDyno(id: dyno.id) }) {
+                            exportDocument = try? JSONFileDocument(export)
+                        }
                     }
                 }
-            }
-            Button("Dyno löschen", systemImage: "trash", role: .destructive) {
-                Task {
-                    await model.perform { try await $0.deleteDyno(id: dyno.id) }
-                    await load()
-                }
+                Button("Dyno löschen", systemImage: "trash", role: .destructive) { confirmDelete = true }
             }
         }
     }
@@ -137,25 +147,62 @@ struct DynoView: View {
     private func load() async {
         guard let vehicle = model.selectedVehicle, !vehicle.isSystem else {
             dyno = nil
+            name = ""
             return
         }
         do {
             dyno = try await model.repository.getDyno(vehicleId: vehicle.id)
-            if name.isEmpty { name = "\(vehicle.name) Dyno" }
+            if !nameFocused { name = dyno?.name ?? Self.defaultName(vehicle) }
         } catch {
             model.report(error)
         }
     }
 
-    private func createDyno(_ vehicle: VehicleDto) async {
-        dyno = await model.perform { try await $0.saveDyno(vehicleId: vehicle.id, DynoInputDto(name: name)) }
+    static func defaultName(_ vehicle: VehicleDto) -> String {
+        String("\(vehicle.name) Dyno".prefix(120))
+    }
+
+    private var currentName: String {
+        let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        if !trimmed.isEmpty { return trimmed }
+        return dyno?.name ?? model.selectedVehicle.map(Self.defaultName) ?? "Dyno"
+    }
+
+    /// Returns the vehicle's dyno, creating it with the entered (or default) name on first use.
+    private func ensureDyno() async -> DynoDto? {
+        if let dyno { return dyno }
+        guard let vehicle = model.selectedVehicle, !vehicle.isSystem else { return nil }
+        // `saveDyno` upserts per vehicle, so a concurrent second call cannot create a duplicate.
+        let created = await model.perform { try await $0.saveDyno(vehicleId: vehicle.id, DynoInputDto(name: currentName)) }
+        if let created { dyno = created }
+        return created
+    }
+
+    private func rename() async {
+        let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard let dyno else {
+            if trimmed.isEmpty, let vehicle = model.selectedVehicle { name = Self.defaultName(vehicle) }
+            return
+        }
+        guard !trimmed.isEmpty, trimmed != dyno.name else {
+            name = dyno.name
+            return
+        }
+        await save(DynoInputDto(name: trimmed))
     }
 
     private func save(_ input: DynoInputDto) async {
-        guard let vehicle = model.selectedVehicle else { return }
+        guard let vehicle = model.selectedVehicle, !vehicle.isSystem else { return }
         if let updated = await model.perform({ try await $0.saveDyno(vehicleId: vehicle.id, input) }) {
             dyno = updated
+            name = updated.name
         }
+    }
+
+    private func deleteDyno() async {
+        guard let dyno else { return }
+        await model.perform { try await $0.deleteDyno(id: dyno.id) }
+        await load()
     }
 
     /// Import is untrusted input: size-limited, decoded strictly and validated by the repository.

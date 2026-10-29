@@ -36,9 +36,10 @@ struct VehiclesView: View {
                 ToolbarItem(placement: .topBarLeading) {
                     BrandLogo(variant: .mark, size: 30)
                 }
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItemGroup(placement: .topBarTrailing) {
                     Button("Fahrzeug anlegen", systemImage: "plus") { creating = true }
                         .accessibilityIdentifier("vehicles.add")
+                    ProfileToolbarButton()
                 }
             }
             .sheet(isPresented: $creating) {
@@ -100,7 +101,7 @@ struct VehiclesView: View {
                     }
                 }
             }
-            .tint(Theme.einlass)
+            .tint(.gray)
         }
         .contextMenu {
             Button("Duplizieren", systemImage: "plus.square.on.square") {
@@ -175,6 +176,7 @@ struct VehicleEditView: View {
                 }
             }
             .onAppear(perform: load)
+            .errorBanner()
         }
     }
 
