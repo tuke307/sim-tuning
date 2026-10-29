@@ -1,8 +1,9 @@
 name: Production
 
-# v3 is still being rebuilt: production deploys are manual until the cutover phase, when the
-# push trigger moves to the new default branch.
+# Every push to main deploys the services whose paths changed; a manual run deploys everything.
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 
 concurrency:
