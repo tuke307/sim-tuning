@@ -83,16 +83,13 @@ export function SettingsView() {
       {/* Account & Preferences Grid */}
       <div className="grid gap-4 lg:grid-cols-2">
         {/* Account & Session Security Card */}
-        <Card className="space-y-4 rounded-[1.25rem] p-5">
+        <Card className="space-y-4 rounded-md p-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5">
               <User className="text-primary h-5 w-5" />
               <h2 className="font-display text-lg font-bold">{t.profile.accountSectionTitle}</h2>
             </div>
-            <Badge
-              variant={authMode === 'AUTHENTICATED' ? 'success' : 'warning'}
-              className="rounded-full px-3 py-1 text-xs"
-            >
+            <Badge variant={authMode === 'AUTHENTICATED' ? 'success' : 'warning'}>
               {authMode === 'AUTHENTICATED'
                 ? t.profile.authenticatedBadge
                 : t.profile.offlineLocalBadge}
@@ -100,7 +97,7 @@ export function SettingsView() {
           </div>
 
           {user && (
-            <div className="bg-secondary/40 rounded-2xl p-3.5 text-xs">
+            <div className="bg-raised rounded-md p-3.5 text-xs">
               <p className="text-sm font-bold">{user.name || 'Tuner'}</p>
               <p className="text-muted-foreground">{user.email}</p>
               <p className="text-muted-foreground mt-1 text-xs">
@@ -112,7 +109,7 @@ export function SettingsView() {
           {authMode === 'AUTHENTICATED' ? (
             <div className="space-y-3">
               {authInfoMessage && (
-                <div className="border-primary/40 bg-primary/12 text-primary flex items-start gap-2 rounded-2xl border p-3 text-xs">
+                <div className="border-primary/50 bg-primary/8 text-foreground flex items-start gap-2 rounded-md border p-3 text-xs">
                   <MailCheck className="mt-0.5 h-4 w-4 shrink-0" />
                   <span>{authInfoMessage}</span>
                 </div>
@@ -204,7 +201,7 @@ export function SettingsView() {
               )}
 
               {authInfoMessage && (
-                <div className="border-primary/40 bg-primary/12 text-primary space-y-2 rounded-2xl border p-3 text-xs">
+                <div className="border-primary/50 bg-primary/8 text-foreground space-y-2 rounded-md border p-3 text-xs">
                   <div className="flex items-start gap-2">
                     <MailCheck className="mt-0.5 h-4 w-4 shrink-0" />
                     <span>{authInfoMessage}</span>
@@ -256,7 +253,7 @@ export function SettingsView() {
         </Card>
 
         {/* Units & App Preferences Card */}
-        <Card className="space-y-4 rounded-[1.25rem] p-5">
+        <Card className="space-y-4 rounded-md p-5">
           <h2 className="font-display text-lg font-bold">{t.profile.preferencesTitle}</h2>
 
           <div className="space-y-3 text-xs">
@@ -320,7 +317,7 @@ export function SettingsView() {
                 onChange={(e) =>
                   void updatePreferences({ roundingAccuracy: Number(e.target.value) })
                 }
-                className="w-auto tabular-nums"
+                className="w-auto font-data"
               >
                 {Array.from(
                   { length: ROUNDING_ACCURACY.max - ROUNDING_ACCURACY.min + 1 },

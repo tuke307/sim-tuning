@@ -66,17 +66,17 @@ export function AuslassTheorie({ vehicle }: { vehicle: VehicleDto }) {
             readOnly={readOnly}
             testId="auslass-theorie-flaecheA"
           />
-          <div className="bg-secondary/50 rounded-2xl px-4 py-3">
-            <p className="text-muted-foreground text-xs">{th.kruemmerDRange}</p>
+          <div className="bg-card rounded-md border px-3 py-2.5">
+            <p className="text-muted-foreground text-[0.75rem]">{th.kruemmerDRange}</p>
             <p
-              className="font-rounded text-lg font-semibold tabular-nums"
+              className="font-data text-[1.25rem] leading-tight"
               data-testid="auslass-theorie-kruemmerDRange"
             >
               {result.kruemmerDRange
                 ? `${fmt.format(result.kruemmerDRange[0])} – ${fmt.format(result.kruemmerDRange[1])}`
                 : '–'}
               {result.kruemmerDRange && (
-                <span className="text-muted-foreground ml-1 text-sm">mm</span>
+                <span className="unit-caps text-muted-foreground ml-1.5 text-[0.875rem]">mm</span>
               )}
             </p>
           </div>

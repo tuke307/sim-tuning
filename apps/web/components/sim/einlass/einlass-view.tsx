@@ -17,6 +17,7 @@ export function EinlassView() {
 
   return (
     <ModulePage
+      module="einlass"
       title={t.einlass.title}
       subtitle={t.einlass.subtitle}
       tabs={[

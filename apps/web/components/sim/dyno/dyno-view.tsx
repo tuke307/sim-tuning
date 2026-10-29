@@ -72,7 +72,7 @@ export function DynoView() {
 
   const noDynoHint =
     !dyno && ready ? (
-      <Card className="flex flex-wrap items-center justify-between gap-3 rounded-[1.25rem] p-4 text-sm">
+      <Card className="flex flex-row flex-wrap items-center justify-between gap-3 border-dashed p-4 text-sm">
         <span>{readOnly ? t.dyno.readOnlyDyno : t.dyno.noDyno}</span>
         {!readOnly && (
           <Button type="button" size="sm" variant="secondary" onClick={() => setTab('data')}>
@@ -84,6 +84,7 @@ export function DynoView() {
 
   return (
     <ModulePage
+      module="dyno"
       title={t.dyno.title}
       subtitle={t.dyno.subtitle}
       tabs={tabs}

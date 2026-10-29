@@ -31,7 +31,7 @@ function ChartFrame({
     <div
       data-slot="chart"
       data-testid={testId}
-      className="[&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line]:stroke-border/60 h-80 w-full text-xs [&_.recharts-surface]:outline-hidden"
+      className="drawing-grid [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-axis-line]:stroke-foreground/60 [&_.recharts-cartesian-axis-tick-line]:stroke-foreground/60 [&_.recharts-cartesian-grid_line]:stroke-border [&_.recharts-label]:fill-muted-foreground h-80 w-full rounded-md border p-2 pt-3 text-xs [&_.recharts-cartesian-axis-tick_text]:[font-family:var(--font-mono)] [&_.recharts-surface]:outline-hidden"
     >
       <ResponsiveContainer width="100%" height="100%">
         {children}
@@ -40,19 +40,29 @@ function ChartFrame({
   );
 }
 
-/** Distinct cluster colours ("Graph 1…n"), cycling for many clusters. */
+/**
+ * Distinct cluster colours ("Graph 1…n"), cycling for many clusters: signal, Lagunenblau,
+ * Ibisrot, Billardgrün, Saharabraun, then ink tones.
+ */
 export const SERIES_COLORS = [
   'var(--chart-1)',
   'var(--chart-2)',
   'var(--chart-3)',
   'var(--chart-4)',
   'var(--chart-5)',
-  '#0ea5e9',
-  '#a855f7',
-  '#22c55e',
-  '#ef4444',
-  '#eab308',
+  'var(--foreground)',
+  'var(--muted-foreground)',
 ];
+
+const TOOLTIP_STYLE: React.CSSProperties = {
+  background: 'var(--popover)',
+  border: '1px solid var(--border)',
+  borderRadius: 4,
+  color: 'var(--popover-foreground)',
+  fontFamily: 'var(--font-mono)',
+  fontSize: '0.75rem',
+  fontVariantNumeric: 'tabular-nums slashed-zero',
+};
 
 export const seriesColor = (index: number) => SERIES_COLORS[index % SERIES_COLORS.length]!;
 
@@ -91,7 +101,7 @@ export function DynoScatterChart({
   return (
     <ChartFrame testId={testId}>
       <ScatterChart margin={{ top: 8, right: 16, bottom: 24, left: 8 }}>
-        <CartesianGrid strokeDasharray="3 3" />
+        <CartesianGrid />
         <XAxis
           type="number"
           dataKey="x"
@@ -111,7 +121,8 @@ export function DynoScatterChart({
         />
         <ZAxis range={[14, 14]} />
         <Tooltip
-          cursor={{ strokeDasharray: '3 3' }}
+          contentStyle={TOOLTIP_STYLE}
+          cursor={{ stroke: 'var(--primary)', strokeWidth: 1 }}
           formatter={(value) => (typeof value === 'number' ? formatTick(value) : String(value))}
         />
         <Legend verticalAlign="top" itemSorter={null} />
@@ -158,7 +169,7 @@ export function PowerCurveChart({
   return (
     <ChartFrame testId={testId}>
       <LineChart data={points} margin={{ top: 8, right: 16, bottom: 24, left: 8 }}>
-        <CartesianGrid strokeDasharray="3 3" />
+        <CartesianGrid />
         <XAxis
           type="number"
           dataKey="drehzahl"
@@ -179,6 +190,8 @@ export function PowerCurveChart({
           label={{ value: yLabel, angle: -90, position: 'insideLeft', offset: 4 }}
         />
         <Tooltip
+          contentStyle={TOOLTIP_STYLE}
+          cursor={{ stroke: 'var(--primary)', strokeWidth: 1 }}
           labelFormatter={(value) => `${formatTick(Number(value))} U/min`}
           formatter={(value) =>
             typeof value === 'number'

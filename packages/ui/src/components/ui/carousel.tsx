@@ -311,7 +311,7 @@ function ServiceCarouselCard({
 }) {
   return (
     <CarouselItem className={cn('basis-full md:basis-1/2 lg:basis-1/3', className)}>
-      <div className="relative h-125 rounded overflow-hidden shadow-2xl bg-secondary/30 border border-foreground/10 group cursor-pointer">
+      <div className="relative h-125 rounded overflow-hidden bg-secondary/30 border border-foreground/10 group cursor-pointer">
         {/* Background Image */}
         <img
           src={imageSrc}
@@ -319,7 +319,7 @@ function ServiceCarouselCard({
           className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
         />
         {aiBadgeLabel && (
-          <span className="absolute top-2 right-2 z-10 inline-flex items-center gap-1 rounded px-2 py-0.5 bg-black/60 text-white text-[0.625rem] leading-none font-medium backdrop-blur-sm pointer-events-none select-none">
+          <span className="absolute top-2 right-2 z-10 inline-flex items-center gap-1 rounded px-2 py-0.5 bg-black/60 text-white text-[0.625rem] leading-none font-medium pointer-events-none select-none">
             ✦ {aiBadgeLabel}
           </span>
         )}

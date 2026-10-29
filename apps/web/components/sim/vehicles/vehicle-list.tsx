@@ -21,7 +21,7 @@ export function VehicleList({ vehicles, selectedId, onSelect, onCreate }: Vehicl
   const { t } = useLocale();
   const sorted = [...vehicles].sort((a, b) => Number(a.isSystem) - Number(b.isSystem));
   return (
-    <Card className="space-y-3 rounded-[1.25rem] p-4">
+    <Card className="space-y-3 rounded-md p-4">
       <div className="flex items-center justify-between gap-2">
         <h2 className="text-[0.9375rem] font-semibold">{t.vehicles.listTitle}</h2>
         <Button type="button" size="sm" onClick={onCreate} data-testid="vehicle-create">
@@ -40,10 +40,8 @@ export function VehicleList({ vehicles, selectedId, onSelect, onCreate }: Vehicl
                 aria-current={selected ? 'true' : undefined}
                 data-testid={`vehicle-item-${vehicle.id}`}
                 className={cn(
-                  'focus-visible:ring-ring/50 flex w-full items-center gap-3 rounded-2xl border px-3.5 py-2.5 text-left transition-colors outline-none focus-visible:ring-[3px]',
-                  selected
-                    ? 'border-primary/50 bg-primary/10'
-                    : 'hover:bg-secondary border-transparent',
+                  'flex min-h-14 w-full items-center gap-3 rounded-md border px-3 py-2.5 text-left outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring',
+                  selected ? 'border-primary bg-raised' : 'hover:bg-raised border-transparent',
                 )}
               >
                 <span className="min-w-0 flex-1">

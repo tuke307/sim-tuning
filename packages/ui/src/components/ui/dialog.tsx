@@ -30,7 +30,7 @@ function DialogOverlay({
     <DialogPrimitive.Overlay
       data-slot="dialog-overlay"
       className={cn(
-        'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-scrim/55 backdrop-blur-[2px]',
+        'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-scrim/70',
         className,
       )}
       {...props}
@@ -129,9 +129,9 @@ function DialogContent({
         data-slot="dialog-content"
         onOpenAutoFocus={handleOpenAutoFocus}
         className={cn(
-          'bg-card text-card-foreground border-border data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed z-50 grid w-full grid-cols-[minmax(0,1fr)] gap-3 overflow-x-hidden overflow-y-auto overscroll-contain border shadow-2xl duration-200 focus:outline-hidden',
-          'max-sm:inset-x-0 max-sm:top-auto max-sm:bottom-0 max-sm:max-h-[92dvh] max-sm:max-w-full max-sm:translate-x-0 max-sm:translate-y-0 max-sm:rounded-t-3xl max-sm:rounded-b-none max-sm:border-x-0 max-sm:border-b-0 max-sm:p-4 max-sm:pt-0 max-sm:pb-[calc(1rem+env(safe-area-inset-bottom,0px))] max-sm:data-[state=closed]:slide-out-to-bottom max-sm:data-[state=open]:slide-in-from-bottom',
-          'sm:top-[50%] sm:left-[50%] sm:max-h-[90dvh] sm:max-w-lg sm:translate-x-[-50%] sm:translate-y-[-50%] sm:gap-4 sm:rounded-3xl sm:p-6 sm:data-[state=closed]:zoom-out-95 sm:data-[state=open]:zoom-in-95',
+          'bg-card text-card-foreground border-border data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed z-50 grid w-full grid-cols-[minmax(0,1fr)] gap-3 overflow-x-hidden overflow-y-auto overscroll-contain border duration-200 focus:outline-hidden',
+          'max-sm:inset-x-0 max-sm:top-auto max-sm:bottom-0 max-sm:max-h-[92dvh] max-sm:max-w-full max-sm:translate-x-0 max-sm:translate-y-0 max-sm:rounded-t-md max-sm:rounded-b-none max-sm:border-x-0 max-sm:border-b-0 max-sm:p-4 max-sm:pt-0 max-sm:pb-[calc(1rem+env(safe-area-inset-bottom,0px))] max-sm:data-[state=closed]:slide-out-to-bottom max-sm:data-[state=open]:slide-in-from-bottom',
+          'sm:top-[50%] sm:left-[50%] sm:max-h-[90dvh] sm:max-w-lg sm:translate-x-[-50%] sm:translate-y-[-50%] sm:gap-4 sm:rounded-md sm:p-6 sm:data-[state=closed]:zoom-out-95 sm:data-[state=open]:zoom-in-95',
           className,
         )}
         {...props}
@@ -143,12 +143,12 @@ function DialogContent({
           {...handlers}
           className="sticky top-0 z-10 -mx-4 flex h-6 shrink-0 cursor-grab touch-none items-center justify-center bg-inherit focus-visible:outline-hidden active:cursor-grabbing sm:hidden"
         >
-          <span aria-hidden="true" className="bg-muted-foreground/25 h-1.5 w-10 rounded-full" />
+          <span aria-hidden="true" className="bg-border h-1 w-10 rounded-xs" />
         </button>
         {children}
         <DialogPrimitive.Close
           ref={closeRef}
-          className="ring-offset-card focus:ring-ring bg-secondary/80 text-muted-foreground hover:bg-secondary hover:text-foreground absolute top-4 right-4 flex size-8 items-center justify-center rounded-full transition-colors focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none max-sm:hidden [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
+          className="text-muted-foreground hover:bg-raised hover:text-foreground absolute top-3 right-3 flex size-11 items-center justify-center rounded-md border border-transparent hover:border-border outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:pointer-events-none max-sm:hidden [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
         >
           <XIcon />
           <span className="sr-only">Close</span>
