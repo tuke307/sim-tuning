@@ -13,7 +13,6 @@
     "SMTP_PASS",
     "EMAIL_FROM",
     "LOG_LEVEL",
-    "SEED_USER_EMAIL",
     "CI",
     "PLAYWRIGHT_BASE_URL",
     "MAILPIT_URL",

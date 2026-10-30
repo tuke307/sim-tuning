@@ -1,0 +1,8 @@
+// Local accounts (same seed user as marienmuehle / kds-werkzeugbau / luki-fitti).
+[
+  {
+    "email": "tonymeissner70@gmail.com",
+    "name": "Tony Meißner",
+    "passwordHash": "$2a$10$XjR4VbpQEHhAXoO8hjqorOe6D8PbICcXsyNSa6rKY9rYazajaPSjm",
+  },
+]

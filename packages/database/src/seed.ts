@@ -1,10 +1,41 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { parse as parseJsonc } from 'jsonc-parser';
 import prisma from './client';
 import logger from '@sim-tuning/logger';
 import { STARTER_ENVIRONMENTS, STARTER_VEHICLES } from '@sim-tuning/common/catalog';
 
+interface SeedUser {
+  email: string;
+  name: string;
+  passwordHash: string;
+}
+
+const currentDir = path.dirname(fileURLToPath(import.meta.url));
+
+async function loadSeedUsers(): Promise<SeedUser[]> {
+  const filePath = path.join(currentDir, '..', 'data', 'users.jsonc');
+  return parseJsonc(await fs.promises.readFile(filePath, 'utf-8'));
+}
+
 async function main(): Promise<void> {
+  const seedUsers = await loadSeedUsers();
+
   try {
     await prisma.$transaction(async (tx) => {
+      // Skipped in production so fixture credentials never reach a live database.
+      if (process.env.NODE_ENV !== 'production') {
+        for (const seedUser of seedUsers) {
+          const email = seedUser.email.toLowerCase();
+          await tx.user.upsert({
+            where: { email },
+            update: {},
+            create: { email, name: seedUser.name, passwordHash: seedUser.passwordHash },
+          });
+        }
+      }
+
       await tx.emailTemplate.upsert({
         where: { type: 'ACCOUNT_CONFIRMATION' },
         update: {
