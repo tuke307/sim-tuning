@@ -3,3 +3,6 @@
 SWIFT_VERSION = 6.0
 MARKETING_VERSION = 3.0.0
 CURRENT_PROJECT_VERSION = 1
+SIMTUNING_BUNDLE_ID = de.tonyluke.simtuning
+
+#include? "Local.xcconfig"
