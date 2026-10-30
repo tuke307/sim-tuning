@@ -1,6 +1,6 @@
 # Own compose project, database, user and volumes so local SimTuning data never mixes with
 # other stacks (e.g. luki-fitti). Host ports use a dedicated block: 5450/6390/8090/3010/3011/1030/8030.
-name: sim-tuning-dev
+name: sim-tuning
 
 services:
   db:
@@ -15,10 +15,8 @@ services:
       # CURRENT_TIMESTAMP match the app's UTC convention.
       - TZ=UTC
       - PGTZ=UTC
-      - POSTGRES_DB=simtuning_dev
-      - POSTGRES_USER=simtuning
     volumes:
-      - simtuning_dev_pgdata:/var/lib/postgresql
+      - simtuning_pgdata:/var/lib/postgresql
     networks:
       - sim_tuning_network
   db-migrate:
@@ -99,7 +97,7 @@ services:
       - 6390:6379
     command: redis-server --appendonly yes
     volumes:
-      - simtuning_dev_redis:/data
+      - simtuning_redis:/data
     networks:
       - sim_tuning_network
     healthcheck:
@@ -110,8 +108,8 @@ services:
       start_period: 10s
 
 volumes:
-  simtuning_dev_pgdata:
-  simtuning_dev_redis:
+  simtuning_pgdata:
+  simtuning_redis:
 
 networks:
   sim_tuning_network:
