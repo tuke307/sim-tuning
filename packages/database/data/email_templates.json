@@ -1,0 +1,20 @@
+[
+  {
+    "type": "ACCOUNT_CONFIRMATION",
+    "name": "Account Confirmation",
+    "subject": "SimTuning — Confirm your account ({{ name }})",
+    "htmlFile": "account-confirmation.mjml"
+  },
+  {
+    "type": "PASSWORD_RESET",
+    "name": "Password Reset",
+    "subject": "SimTuning — Reset your password",
+    "htmlFile": "password-reset.mjml"
+  },
+  {
+    "type": "ACCOUNT_DELETION",
+    "name": "Account Deletion",
+    "subject": "SimTuning — Confirm account deletion",
+    "htmlFile": "account-deletion.mjml"
+  }
+]
